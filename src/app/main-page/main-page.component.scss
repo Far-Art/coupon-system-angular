@@ -1,0 +1,11 @@
+@import '/src/styles';
+
+.bg-main {
+  background-image: url('/assets/images/main-bg.png');
+  background-size: 100%;
+}
+
+.inset {
+  box-shadow: inset 0 0 0 3px hsl(0, 0%, 0%);
+}
+

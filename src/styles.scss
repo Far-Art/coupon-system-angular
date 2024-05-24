@@ -1,1 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Main Palette
+$color1: #e7103d; // rgb(255, 32, 78)
+$color2: #A0153E; // rgb(160, 21, 62)
+$color3: #5D0E41; // rgb(93, 14, 65)
+$color4: #00224D; // rgb(0, 34, 77)
+$color1-light: #fad1d8;
+$color-light-transparent: rgba(252, 249, 250, 0.7);
+
+// Secondary Palette
+//$color1: #86469C; // rgb(134, 70, 156)
+//$color2: #BC7FCD; // rgb(188, 127, 205)
+//$color3: #FB9AD1; // rgb(251, 154, 209)
+//$color4: #FFCDEA; // rgb(255, 205, 234)
+
+
+$shadow-color: 286deg 36% 56%;
+$shadow-elevation-high: 0px 0.1px 0.1px hsl(var($shadow-color) / 0.13),
+0.1px 0.4px 0.4px -0.5px hsl(var($shadow-color) / 0.13),
+0.2px 0.8px 0.9px -0.9px hsl(var($shadow-color) / 0.12),
+0.3px 1.5px 1.6px -1.4px hsl(var($shadow-color) / 0.12),
+0.6px 2.7px 3px -1.9px hsl(var($shadow-color) / 0.11),
+1px 4.5px 4.9px -2.4px hsl(var($shadow-color) / 0.11),
+1.5px 7.2px 7.9px -2.8px hsl(var($shadow-color) / 0.1);
+
+.bg-primary {
+  background-color: #f8f3f4 !important;
+}
+
+.bg-secondary {
+  background-color: $color1 !important;
+}
+
+.btn-primary {
+  background-color: #f8f3f4 !important;
+  border-color: $color1 !important;
+
+  svg {
+    color: $color1;
+  }
+}
