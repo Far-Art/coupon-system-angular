@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Coupon} from "../../../../shared/models/coupon.model";
 import {WishListService} from "../wish-list.service";
 import {Subscription} from "rxjs";
@@ -24,7 +24,7 @@ export class WishListModalComponent implements OnInit, OnDestroy {
   }
 
   openModal() {
-    this.modalService.open(this.wishContent, {scrollable: true});
+    this.modalService.open(this.wishContent, {scrollable: true, modalDialogClass: 'top-5rem'});
   }
 
   ngOnDestroy(): void {

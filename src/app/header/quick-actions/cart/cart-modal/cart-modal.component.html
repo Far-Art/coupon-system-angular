@@ -1,7 +1,6 @@
 <ng-template #cartContent let-modal>
   <div class="modal-header">
     <h4 class="modal-title text-primary user-select-none">{{'cart' | titlecase}}</h4>
-    <button type="button" class="btn-close user-select-none" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <div *ngFor="let coupon of cartList">

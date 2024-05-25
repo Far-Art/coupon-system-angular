@@ -1,7 +1,6 @@
-<ng-template #wishContent let-modal>
+<ng-template #wishContent let-modal class="top-50">
   <div class="modal-header">
     <h4 class="modal-title text-primary user-select-none">{{'wish list' | titlecase}}</h4>
-    <button type="button" class="btn-close user-select-none" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <div *ngFor="let coupon of wishList">
