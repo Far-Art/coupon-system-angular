@@ -8,11 +8,12 @@ interface ICouponParams {
   endDate: Date,
   amount: number,
   price: number,
-  imageUrl: string
+  imageUrl: string,
+  companyName: string
 }
 
 export class Coupon {
-  
+
   constructor(public params: ICouponParams
   ) {}
 

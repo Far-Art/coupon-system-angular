@@ -1,57 +1,139 @@
-<div class="container-fluid h-100">
-  <div class="card">
-    <div class="card-header">
-      <ul class="nav nav-tabs card-header-tabs position-relative">
-        <li class="nav-item">
-          <a class="nav-link">
-            <h5 class="card-title">{{ coupon.params.title }}</h5>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                 class="bi bi-card-text" viewBox="0 0 16 16">
-              <path
-                  d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
-              <path
-                  d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
-            </svg>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                 class="bi bi-info-circle" viewBox="0 0 16 16">
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-              <path
-                  d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-            </svg>
-          </a>
-        </li>
-        <li class="nav-item" (click)="onAddToCart()">
-          <a class="nav-link">
-            <svg *ngIf="!isAdded" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5"/>
-              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-            </svg>
-            <svg *ngIf="isAdded" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-            </svg>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <img src="{{coupon.params.imageUrl}}"
-         alt="{{coupon.params.title}} coupon"
-         class="card-img object-fit-cover">
+<div class="card rounded-2 overflow-hidden mt-3 card-size">
+  <img src="{{coupon.params.imageUrl}}"
+       alt="{{coupon.params.title}} coupon"
+       class="object-fit-cover">
 
-    <div class="card-body position-relative">
-      <p class="position-absolute top-50 end-0 translate-middle-y card-text">{{ coupon.params.price }}</p>
+  <div class="mb-5 position-relative">
+    <div class="d-flex flex-row bg-light-semi-transparent">
+      <!-- TITLE -->
+      <div class="p-2 m-2 flex-grow-1 fs-6 fw-semibold text-primary user-select-none" (click)="onTitleClick()">
+        {{ coupon.params.title | titlecase | sliceTxt: 22 }}
+        <span class="position-absolute top-0 start-0 pl-1 pt-1 fs-7 ">{{ coupon.params.category }}</span>
+      </div>
+
+      <!-- INFO -->
+      <div class="p-2 m-2 text-primary" (click)="onInfoClick()" role="button" [style.cursor]="isDescriptionShown ? 'pointer': 'default'">
+        <svg *ngIf="isDescriptionShown" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-info-circle" viewBox="0 0 16 16">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+          <path
+              d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+        </svg>
+        <svg *ngIf="!isDescriptionShown" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-info-circle-fill"
+             viewBox="0 0 16 16">
+          <path
+              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
+        </svg>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="p-2 m-2 text-primary" (click)="onDescriptionClick()" role="button" [style.cursor]="!isDescriptionShown ? 'pointer': 'default'">
+        <svg *ngIf="!isDescriptionShown" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-chat-right-text" viewBox="0 0 16 16">
+          <path
+              d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
+          <path
+              d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+        </svg>
+        <svg *ngIf="isDescriptionShown" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-chat-right-text-fill" viewBox="0 0 16 16">
+          <path
+              d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9.586a1 1 0 0 1 .707.293l2.853 2.853a.5.5 0 0 0 .854-.353zM3.5 3h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1m0 2.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1 0-1m0 2.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1"/>
+        </svg>
+      </div>
+
+      <!-- WISH LIST -->
+      <div class="p-2 m-2 text-primary" (click)="onWishListClick()" role="button">
+        <svg *ngIf="!isAddedToWish" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-heart"
+             viewBox="0 0 16 16">
+          <path
+              d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+        </svg>
+        <!-- TODO pop this on wish list remove -->
+        <!--        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heartbreak-fill" viewBox="0 0 16 16">-->
+        <!--          <path d="M8.931.586 7 3l1.5 4-2 3L8 15C22.534 5.396 13.757-2.21 8.931.586M7.358.77 5.5 3 7 7l-1.5 3 1.815 4.537C-6.533 4.96 2.685-2.467 7.358.77"/>-->
+        <!--        </svg>-->
+        <svg @showHeartIcon *ngIf="isAddedToWish" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+             fill="currentColor"
+             class="bi bi-heart-fill" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+        </svg>
+      </div>
+
+      <!-- CART -->
+      <div class="p-2 m-2 text-primary" (click)="onCartClick()" [ngClass]="{'disabled': isSaleEnded}" role="button">
+        <!-- ADD ICON -->
+        <svg *ngIf="!isAddedToCart && !isSaleEnded" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+             fill="currentColor"
+             class="bi bi-bag-plus text-primary" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5"/>
+          <path
+              d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+        </svg>
+        <!-- ADDED SUCCESSFULLY ICON -->
+        <!-- TODO remove is isShowCartRemoveIcon after resolving animation -->
+        <svg @addToCart *ngIf="isAddedToCart && !isSaleEnded && !isShowCartRemoveIcon"
+             xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+             fill="currentColor"
+             class="bi bi-bag-check text-success" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+                d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+          <path
+              d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+        </svg>
+        <!-- REMOVE FROM CART ICON -->
+        <!-- TODO change to is addedToCart after resolving animation -->
+        <svg @showRemoveIcon *ngIf="isShowCartRemoveIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+             fill="currentColor"
+             class="bi bi-bag-dash text-success"
+             viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M5.5 10a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
+          <path
+              d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+        </svg>
+        <!-- ADDING DISABLED ICON -->
+        <svg *ngIf="isSaleEnded" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+             class="bi bi-bag-x text-dark" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+                d="M6.146 8.146a.5.5 0 0 1 .708 0L8 9.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 10l1.147 1.146a.5.5 0 0 1-.708.708L8 10.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 10 6.146 8.854a.5.5 0 0 1 0-.708"/>
+          <path
+              d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+        </svg>
+      </div>
     </div>
   </div>
+
+  <!-- INFO CONTENT -->
+  <ng-container *ngIf="!isDescriptionShown">
+    <div class="d-flex flex-row"
+         [ngClass]="{'justify-content-between' : !isSaleEnded && isShowTimer, 'justify-content-start' : isSaleEnded, 'justify-content-end': !isSaleEnded && !isShowTimer}">
+      <!-- TIMER -->
+      <div *ngIf="isShowTimer"
+           class="p-2 mb-2 fs-6 fw-semibold bg-light-semi-transparent rounded-end text-primary position-relative user-select-none">
+        <ng-container *ngIf="isSaleEnded">
+          {{ 'sale ended' | titlecase }}
+        </ng-container>
+        <ng-container *ngIf="!isSaleEnded">
+          <span class="fs-7 position-absolute top-0 user-select-none">{{ 'ends in:' | titlecase }}</span>
+          {{ timerValue | date: 'HH:mm:ss' }}
+        </ng-container>
+      </div>
+      <!-- PRICE -->
+      <div *ngIf="!isSaleEnded" class="p-2 mb-2 fs-6 fw-semibold bg-light-semi-transparent rounded-start text-primary user-select-none">
+        {{ coupon.params.price | currency: 'ILS' }}
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- DESCRIPTION CONTENT -->
+  <ng-container *ngIf="isDescriptionShown">
+    <div class="p-2 m-0 w-100 h-75 fs-6 bg-light-semi-transparent text-primary position-absolute mt-5 overflow-y-auto">
+      <p class="fw-semibold text-decoration-underline">{{ 'brought to you by: ' + coupon.params.companyName | titlecase }}</p>
+      <p>{{ coupon.params.description }}</p>
+    </div>
+  </ng-container>
 </div>
 
-<div>
-
-</div>

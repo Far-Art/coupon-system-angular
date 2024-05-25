@@ -1,10 +1,11 @@
-<nav class="navbar bg-primary sticky-top">
-  <div class="d-flex flex-row justify-content-between w-100">
-    <div class="main-logo">
+<nav class="navbar fixed-top bg-light-semi-transparent">
+  <div class="d-flex flex-row justify-content-between w-100 p-2">
+    <!-- TODO make logo blink on some events -->
+    <div class="main-logo align-self-center">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 507.64 499.24">
         <defs>
           <style>.cls-1 {
-              fill: #a0153e;
+              fill: #e7103d;
           }
 
           .cls-2, .cls-3 {
@@ -44,9 +45,13 @@
         </g>
       </svg>
     </div>
-    <sc-quick-actions></sc-quick-actions>
-    <div >
-      <button type="button" class="btn btn-secondary">menu</button>
+    <sc-quick-actions class="align-self-center"></sc-quick-actions>
+    <div class="text-primary m-2 align-self-center" style="transform: scale(180%)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list"
+           viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+      </svg>
     </div>
   </div>
 </nav>

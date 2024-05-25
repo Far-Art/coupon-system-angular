@@ -1,0 +1,18 @@
+@import '/src/styles';
+
+.btn-primary {
+
+  > * {
+    transition: all ease 500ms;
+  }
+
+  &:hover {
+    transition: all ease 500ms;
+
+    > * {
+      transform: translateY(-0.3rem);
+      transition: all ease 500ms;
+    }
+  }
+
+}
