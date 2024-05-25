@@ -11,14 +11,8 @@ export class WishListService {
 
   private listSubject = new BehaviorSubject<Coupon[]>(this.list);
 
-  private isShowModalSubject = new BehaviorSubject<boolean>(false);
-
   get coupons$() {
     return this.listSubject.asObservable();
-  }
-
-  get modalVisible$() {
-    return this.isShowModalSubject.asObservable();
   }
 
   get couponsInWish(): number {
@@ -38,14 +32,6 @@ export class WishListService {
     const i = this.list.findIndex(c => c.params.id === coupon.params.id);
     this.list.splice(i, 1);
     this.listSubject.next(this.list.slice());
-  }
-
-  showModal() {
-    this.isShowModalSubject.next(true);
-  }
-
-  closeModal() {
-    this.isShowModalSubject.next(false);
   }
 
   constructor() { }

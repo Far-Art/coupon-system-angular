@@ -1,7 +1,8 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Coupon} from "../../../../shared/models/coupon.model";
 import {WishListService} from "../wish-list.service";
 import {Subscription} from "rxjs";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'sc-wish-list-modal',
@@ -9,16 +10,21 @@ import {Subscription} from "rxjs";
   styleUrls: ['./wish-list-modal.component.scss']
 })
 export class WishListModalComponent implements OnInit, OnDestroy {
+
   wishList: Coupon[] = [];
 
-  @Input() id!: string;
+  @ViewChild('wishContent') private wishContent!: TemplateRef<any>;
 
   private wishSubscription!: Subscription;
 
-  constructor(private wishListService: WishListService) {}
+  constructor(private wishListService: WishListService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.wishSubscription = this.wishListService.coupons$.subscribe(coupons => this.wishList = coupons);
+  }
+
+  openModal() {
+    this.modalService.open(this.wishContent, {scrollable: true});
   }
 
   ngOnDestroy(): void {

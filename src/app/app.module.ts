@@ -16,6 +16,7 @@ import {CouponsModule} from "./features/coupons/coupons.module";
 import {CartModalComponent} from './header/quick-actions/cart/cart-modal/cart-modal.component';
 import {FilterModalComponent} from './header/quick-actions/filter/filter-modal/filter-modal.component';
 import {WishListModalComponent} from './header/quick-actions/wish-list/wish-list-modal/wish-list-modal.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {WishListModalComponent} from './header/quick-actions/wish-list/wish-list
     NgOptimizedImage,
     CouponsModule,
     SharedModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

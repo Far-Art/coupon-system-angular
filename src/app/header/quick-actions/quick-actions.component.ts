@@ -1,8 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CartService} from "./cart/cart.service";
 import {WishListService} from "./wish-list/wish-list.service";
 import {Subscription} from "rxjs";
 import {FilterService} from "./filter/filter.service";
+import {WishListModalComponent} from "./wish-list/wish-list-modal/wish-list-modal.component";
+import {CartModalComponent} from "./cart/cart-modal/cart-modal.component";
+import {FilterModalComponent} from "./filter/filter-modal/filter-modal.component";
 
 @Component({
   selector: 'sc-quick-actions',
@@ -15,7 +18,9 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   filterBadgeVal: number = 0;
   wishBadgeVal: number   = 0;
 
-  isWishListVisible: boolean = false;
+  @ViewChild('wishModal') wishModal     = ElementRef<any>;
+  @ViewChild('filterModal') filterModal = ElementRef<any>;
+  @ViewChild('cartModal') cartModal     = ElementRef<any>;
 
   private cartSubscription!: Subscription;
   private wishSubscription!: Subscription;
@@ -37,12 +42,16 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
 
   }
 
-  onCartClick(): void {}
+  onCartClick(): void {
+    (this.cartModal as unknown as CartModalComponent).openModal();
+  }
 
-  onFilterClick(): void {}
+  onFilterClick(): void {
+    (this.filterModal as unknown as FilterModalComponent).openModal();
+  }
 
   onWishListClick(): void {
-    this.isWishListVisible = !this.isWishListVisible;
+    (this.wishModal as unknown as WishListModalComponent).openModal();
   }
 
   ngOnDestroy(): void {

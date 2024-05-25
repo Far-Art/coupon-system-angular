@@ -1,0 +1,40 @@
+@import "src/styles";
+
+// variables override - start
+$primary: $color-red-500;
+
+@import "bootstrap/scss/bootstrap";
+// variables override - end
+
+// class overrides - start
+.bg-primary {
+  background-color: $color-white;
+}
+
+.bg-secondary {
+  background-color: $primary;
+}
+
+.btn-primary {
+  background-color: $color-white;
+
+  svg {
+    color: $primary;
+  }
+
+  > * {
+    transition: all ease 500ms;
+  }
+
+  &:hover {
+    transition: all ease 500ms;
+    background-color: $color-white;
+
+    > * {
+      transform: translateY(-0.3rem);
+      transition: all ease 500ms;
+    }
+  }
+}
+
+// class overrides - end
