@@ -30,6 +30,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   filters: FilterKeys = {};
 
   isCategoriesCollapsed = true;
+  isCompaniesCollapsed = true;
 
   constructor(private modalService: NgbModal, private filterService: FilterService, private couponsService: CouponsService) {}
 
