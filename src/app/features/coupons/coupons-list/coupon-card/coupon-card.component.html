@@ -1,7 +1,7 @@
-<div class="card rounded-2 overflow-hidden mt-3 card-size">
+<div class="card rounded-2 overflow-hidden mt-3">
   <img src="{{coupon.params.imageUrl}}"
        alt="{{coupon.params.title}} coupon"
-       class="object-fit-cover">
+       class="object-fit-cover user-select-none">
 
   <div class="mb-5 position-relative">
     <div class="d-flex flex-row bg-light-semi-transparent">
@@ -11,8 +11,8 @@
         <span class="position-absolute top-0 start-0 pl-1 pt-1 fs-7 ">{{ coupon.params.category }}</span>
       </div>
 
-      <!-- INFO -->
-      <div class="p-2 m-2 text-primary" (click)="onInfoClick()" role="button" [style.cursor]="isDescriptionShown ? 'pointer': 'default'">
+      <!-- INFO BUTTON -->
+      <div class="p-2 m-2 text-primary" (click)="switchInfoDescription()" role="button">
         <svg *ngIf="isDescriptionShown" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
              class="bi bi-info-circle" viewBox="0 0 16 16">
           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
@@ -27,8 +27,8 @@
         </svg>
       </div>
 
-      <!-- DESCRIPTION -->
-      <div class="p-2 m-2 text-primary" (click)="onDescriptionClick()" role="button" [style.cursor]="!isDescriptionShown ? 'pointer': 'default'">
+      <!-- DESCRIPTION BUTTON -->
+      <div class="p-2 m-2 text-primary" (click)="switchInfoDescription()" role="button">
         <svg *ngIf="!isDescriptionShown" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
              class="bi bi-chat-right-text" viewBox="0 0 16 16">
           <path
@@ -43,7 +43,7 @@
         </svg>
       </div>
 
-      <!-- WISH LIST -->
+      <!-- WISH LIST BUTTON -->
       <div class="p-2 m-2 text-primary" (click)="onWishListClick()" role="button">
         <svg *ngIf="!isAddedToWish" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
              class="bi bi-heart"

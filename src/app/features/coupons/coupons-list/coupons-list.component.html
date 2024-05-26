@@ -1,3 +1,5 @@
-<div class="container-fluid">
-  <sc-coupon-card *ngFor="let coupon of coupons" [coupon]="coupon"></sc-coupon-card>
+<div class="container">
+  <div class="row row-cols-auto gy-3 gx-5 justify-content-center">
+    <sc-coupon-card *ngFor="let coupon of coupons" [coupon]="coupon"></sc-coupon-card>
+  </div>
 </div>

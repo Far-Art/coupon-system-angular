@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Coupon} from "../../../shared/models/coupon.model";
 import {BehaviorSubject} from "rxjs";
+import {LogoService} from "../../logo.service";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class WishListService {
 
   addToWish(coupon: Coupon) {
     this.list.push(coupon);
+    this.logoService.blink();
     this.listSubject.next(this.list.slice());
   }
 
@@ -34,5 +36,6 @@ export class WishListService {
     this.listSubject.next(this.list.slice());
   }
 
-  constructor() { }
+  constructor(private logoService: LogoService
+  ) { }
 }

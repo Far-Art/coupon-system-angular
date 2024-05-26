@@ -94,17 +94,12 @@ export class CouponCardComponent implements OnInit, OnDestroy {
     this.isAddedToWish ? this.wishListService.addToWish(this.coupon) : this.wishListService.removeFromWish(this.coupon);
   }
 
-  onInfoClick() {
-    this.isDescriptionShown = false;
-  }
-
   onTitleClick() {
     this.isDescriptionShown = false;
   }
 
-
-  onDescriptionClick() {
-    this.isDescriptionShown = true;
+  switchInfoDescription(){
+    this.isDescriptionShown = !this.isDescriptionShown;
   }
 
   ngOnDestroy(): void {

@@ -22,9 +22,9 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   @ViewChild('filterModal') filterModal = ElementRef<any>;
   @ViewChild('cartModal') cartModal     = ElementRef<any>;
 
-  private cartSubscription!: Subscription;
   private wishSubscription!: Subscription;
-
+  private filterSubscription!: Subscription;
+  private cartSubscription!: Subscription;
 
   constructor(
       private cartService: CartService,
@@ -33,13 +33,9 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.wishSubscription = this.wishListService.coupons$.subscribe(() => {
-      this.wishBadgeVal = this.wishListService.couponsInWish;
-    });
-    this.cartSubscription = this.cartService.coupons$.subscribe(() => {
-      this.cartBadgeVal = this.cartService.couponsInCart;
-    });
-
+    this.wishSubscription   = this.wishListService.coupons$.subscribe(() => this.wishBadgeVal = this.wishListService.couponsInWish);
+    this.cartSubscription   = this.cartService.coupons$.subscribe(() => this.cartBadgeVal = this.cartService.couponsInCart);
+    this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.filtersApplied);
   }
 
   onCartClick(): void {
@@ -57,5 +53,6 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.cartSubscription.unsubscribe();
     this.wishSubscription.unsubscribe();
+    this.filterSubscription.unsubscribe();
   }
 }

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Coupon} from "../../../shared/models/coupon.model";
 import {BehaviorSubject} from "rxjs";
+import {LogoService} from "../../logo.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class CartService {
 
   addToCart(coupon: Coupon) {
     this.list.push(coupon);
+    this.logoService.blink();
     this.couponsSubject.next(this.list.slice());
   }
 
@@ -34,5 +36,5 @@ export class CartService {
     return this.list.length;
   }
 
-  constructor() { }
+  constructor(private logoService: LogoService) { }
 }

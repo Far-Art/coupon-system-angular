@@ -17,7 +17,7 @@ export class CouponsListComponent implements OnInit, OnDestroy {
   constructor(private couponService: CouponsService) {}
 
   ngOnInit(): void {
-    this.subscription = this.couponService.coupons$().subscribe(list => this.coupons = list);
+    this.subscription = this.couponService.coupons$.subscribe(list => this.coupons = list);
   }
 
   ngOnDestroy(): void {

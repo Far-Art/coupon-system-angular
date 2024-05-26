@@ -1,0 +1,10 @@
+.glyph-arrow {
+  transition: transform 300ms;
+  height: 1rem;
+  width: 1rem;
+  top: 0;
+
+  &.glyph-arrow-rotate {
+    transform: rotate(90deg);
+  }
+}

@@ -3,10 +3,7 @@
 .card {
   box-shadow: $shadow-elevation-high;
   border: 3px solid $color-white;
-}
-
-.card-size {
-  height: 11rem;
+  min-width: 300px;
 }
 
 .mb-5 {
