@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {Coupon} from "../../../../shared/models/coupon.model";
-import {CartService} from "../cart.service";
+import {Coupon} from "../../../shared/models/coupon.model";
+import {CartService} from "./cart.service";
 import {Subscription} from "rxjs";
+import {CouponsService} from "../../../features/coupons/coupons.service";
 
 @Component({
   selector: 'sc-cart-modal',
@@ -17,11 +18,15 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
   private cartSubscription!: Subscription;
 
-  constructor(private modalService: NgbModal, private cartService: CartService) {
-  }
+  constructor(
+      private modalService: NgbModal,
+      private cartService: CartService,
+      private couponService: CouponsService // TODO remove after test
+  ) {}
 
   ngOnInit(): void {
-    this.cartSubscription = this.cartService.coupons$.subscribe(coupons => this.cartList = coupons);
+    // this.cartSubscription = this.cartService.coupons$.subscribe(coupons => this.cartList = coupons);
+    this.couponService.coupons$.subscribe(coupons => this.cartList = coupons);
   }
 
   openModal() {

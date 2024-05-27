@@ -37,4 +37,38 @@ $primary: $color-red-500;
   }
 }
 
+.modal {
+  backdrop-filter: blur(3px) grayscale(1);
+  background-color: rgba(38, 28, 64, 0.55);
+}
+
+.modal-dialog {
+  max-height: calc(100% - 7rem);
+}
+
+//  sm: 576px
+@media (min-width: 576px) {
+
+}
+
+//  md: 768px
+@media (min-width: 768px) {
+
+}
+
+//  lg: 992px
+@media (min-width: 992px) {
+
+}
+
+//  xl: 1200px
+@media (min-width: 1200px) {
+
+}
+
+//  xl: 1400px
+@media (min-width: 1400px) {
+
+}
+
 // class overrides - end

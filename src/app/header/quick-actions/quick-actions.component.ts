@@ -3,9 +3,9 @@ import {CartService} from "./cart/cart.service";
 import {WishListService} from "./wish-list/wish-list.service";
 import {Subscription} from "rxjs";
 import {FilterService} from "./filter/filter.service";
-import {WishListModalComponent} from "./wish-list/wish-list-modal/wish-list-modal.component";
-import {CartModalComponent} from "./cart/cart-modal/cart-modal.component";
-import {FilterModalComponent} from "./filter/filter-modal/filter-modal.component";
+import {WishListModalComponent} from "./wish-list/wish-list-modal.component";
+import {CartModalComponent} from "./cart/cart-modal.component";
+import {FilterModalComponent} from "./filter/filter-modal.component";
 
 @Component({
   selector: 'sc-quick-actions',

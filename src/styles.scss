@@ -27,6 +27,15 @@ rgba(0, 0, 0, 0.05) 0px 8px 16px,
 rgba(0, 0, 0, 0.05) 0px 16px 32px,
 rgba(0, 0, 0, 0.05) 0px 32px 64px;
 
+.blur {
+  backdrop-filter: blur(10px);
+}
+
+.bg-main {
+  background-image: url('/assets/images/main-bg.png');
+  background-size: 17rem;
+}
+
 .bg-light-transparent {
   background-color: $color-light-transparent;
   box-shadow: $shadow-elevation-low;
@@ -41,4 +50,53 @@ rgba(0, 0, 0, 0.05) 0px 32px 64px;
 
 .top-5rem {
   top: 5rem;
+}
+
+.pt-6 {
+  padding-top: 6rem;
+}
+
+.pb-6 {
+  padding-bottom: 6rem;
+}
+
+//  sm: 576px
+@media (min-width: 576px) {
+  .pt-6 {
+    padding-top: calc(6rem * 1.2);
+  }
+}
+
+//  md: 768px
+@media (min-width: 768px) {
+  .pt-6 {
+    padding-top: calc(6rem * 1.4);
+  }
+
+  .bg-main {
+    background-size: 22rem;
+  }
+}
+
+//  lg: 992px
+@media (min-width: 992px) {
+  .bg-main {
+    background-size: 26rem;
+  }
+}
+
+//  xl: 1200px
+@media (min-width: 1200px) {
+
+}
+
+//  xl: 1400px
+@media (min-width: 1400px) {
+  .pt-6 {
+    padding-top: calc(6rem * 1.6);
+  }
+
+  .bg-main {
+    background-size: 30rem;
+  }
 }

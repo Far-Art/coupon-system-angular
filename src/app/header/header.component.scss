@@ -1,10 +1,11 @@
 @import '/src/styles';
 
 .main-logo {
-  min-width: 25px;
+  min-width: 35px;
   width: 10%;
+  max-width: calc(5rem - 5px);
 }
 
-.navbar {
-  //max-height: 5rem;
+.d-flex {
+  max-height: 5rem;
 }

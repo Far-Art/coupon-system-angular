@@ -1,0 +1,14 @@
+<ng-template #cartContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-primary user-select-none">{{ 'cart' | titlecase }}</h4>
+  </div>
+  <div class="modal-body">
+    <!--    <div *ngFor="let coupon of cartList">-->
+    <!--      {{ coupon.params.title }}-->
+    <!--    </div>-->
+    <sc-coupon-table [coupons]="cartList"></sc-coupon-table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>

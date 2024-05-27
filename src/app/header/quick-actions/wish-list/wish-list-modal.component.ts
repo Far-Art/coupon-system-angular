@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Coupon} from "../../../../shared/models/coupon.model";
-import {WishListService} from "../wish-list.service";
+import {Coupon} from "../../../shared/models/coupon.model";
+import {WishListService} from "./wish-list.service";
 import {Subscription} from "rxjs";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 

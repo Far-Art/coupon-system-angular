@@ -10,10 +10,12 @@ import {NgOptimizedImage} from "@angular/common";
 import {QuickActionsComponent} from './header/quick-actions/quick-actions.component';
 import {SharedModule} from "./shared/shared.module";
 import {CouponsModule} from "./features/coupons/coupons.module";
-import {CartModalComponent} from './header/quick-actions/cart/cart-modal/cart-modal.component';
-import {FilterModalComponent} from './header/quick-actions/filter/filter-modal/filter-modal.component';
-import {WishListModalComponent} from './header/quick-actions/wish-list/wish-list-modal/wish-list-modal.component';
+import {CartModalComponent} from './header/quick-actions/cart/cart-modal.component';
+import {FilterModalComponent} from './header/quick-actions/filter/filter-modal.component';
+import {WishListModalComponent} from './header/quick-actions/wish-list/wish-list-modal.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { CouponTableComponent } from './header/quick-actions/shared/coupon-table/coupon-table.component';
+import { CouponItemComponent } from './header/quick-actions/shared/coupon-table/coupon-item/coupon-item.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     QuickActionsComponent,
     CartModalComponent,
     FilterModalComponent,
-    WishListModalComponent
+    WishListModalComponent,
+    CouponTableComponent,
+    CouponItemComponent
   ],
   imports: [
     BrowserModule,
