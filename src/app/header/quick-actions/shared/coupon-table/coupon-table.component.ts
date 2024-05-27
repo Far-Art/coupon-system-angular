@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, QueryList, ViewChildren} from '@angular/core';
 import {Coupon} from "../../../../shared/models/coupon.model";
+import {NgbdSortableHeader, SortEvent} from "../../../../shared/directives/sortable.directive";
 
 @Component({
   selector: 'sc-coupon-table',
@@ -10,4 +11,17 @@ export class CouponTableComponent {
 
   @Input() coupons: Coupon[] = [];
 
+  @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // this.service.sortColumn = column;
+    // this.service.sortDirection = direction;
+  }
 }
