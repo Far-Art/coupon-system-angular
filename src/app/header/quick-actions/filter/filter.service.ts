@@ -4,11 +4,11 @@ import {BehaviorSubject, take} from "rxjs";
 import {CouponsService} from "../../../features/coupons/coupons.service";
 
 export interface FilterKeys {
-  categories?: string[],
-  companyNames?: string[],
-  priceRange?: { start?: number, end?: number },
-  dateRange?: { start?: Date, end?: Date },
-  freeText?: string
+  categories: string[],
+  companyNames: string[],
+  priceRange: { start: number, end: number },
+  dateRange: { start: Date, end: Date },
+  freeText: string
 }
 
 @Injectable({
@@ -17,10 +17,6 @@ export interface FilterKeys {
 export class FilterService {
 
   private activeFilters: FilterKeys | null = null;
-
-  private categoryMap = new Map<string, Coupon[]>();
-
-  private companyNameMap: Map<string, Coupon[]> = new Map();
 
   private filteredCouponsSubject = new BehaviorSubject<Coupon[]>([]);
 
@@ -50,15 +46,15 @@ export class FilterService {
   }
 
   get filtersToDisplay(): FilterKeys {
-    let keys: FilterKeys = {};
+    let keys: FilterKeys;
 
     if (this.coupons) {
       const categories = new Set<string>();
       const names      = new Set<string>();
       let minPrice     = this.coupons[0].params.price;
       let maxPrice     = this.coupons[0].params.price;
-      let starDate  = this.coupons[0].params.startDate;
-      let endDate   = this.coupons[0].params.endDate;
+      let starDate     = this.coupons[0].params.startDate;
+      let endDate      = this.coupons[0].params.endDate;
 
       for (let i = 1; i < this.coupons.length; i++) {
         const c = this.coupons[i];
@@ -73,7 +69,8 @@ export class FilterService {
         categories: [...categories],
         companyNames: [...names],
         priceRange: {start: minPrice, end: maxPrice},
-        dateRange: {start: starDate, end: endDate}
+        dateRange: {start: starDate, end: endDate},
+        freeText: ''
       }
     }
     return keys;

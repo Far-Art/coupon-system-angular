@@ -5,7 +5,6 @@
           class="form-control"
           placeholder="dd/mm/yyyy"
           name="dp"
-          [defaultValue]="_value"
           [displayMonths]="1"
           [navigation]="'select'"
           [outsideDays]="'hidden'"
@@ -14,9 +13,11 @@
           [minDate]="_minDate"
           [maxDate]="_maxDate"
           ngbDatepicker
+          [value]="_displayedDate"
+          (dateSelect)="onDateSelect($event)"
           #d="ngbDatepicker"
       />
-      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+      <button class="btn btn-outline-secondary" (click)="d.toggle()"  type="button">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-week"
              viewBox="0 0 16 16">
           <path

@@ -1,12 +1,20 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {NgbDate, NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Component({
   selector: 'sc-date-picker',
   templateUrl: './date-picker.component.html',
-  styleUrls: ['./date-picker.component.scss']
+  styleUrls: ['./date-picker.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: DatePickerComponent
+    }
+  ]
 })
-export class DatePickerComponent implements OnInit {
+export class DatePickerComponent implements OnInit, ControlValueAccessor {
 
   @Input() value?: Date | string;
 
@@ -14,11 +22,13 @@ export class DatePickerComponent implements OnInit {
 
   @Input() maxDate?: Date | string;
 
-  _value!: string;
+  @Output() valueEmitter = new EventEmitter<Date>();
 
-  _minDate!: NgbDateStruct;
+  _displayedDate: string;
 
-  _maxDate!: NgbDateStruct;
+  _minDate: NgbDateStruct;
+
+  _maxDate: NgbDateStruct;
 
   constructor(private formatter: NgbDateParserFormatter) {}
 
@@ -26,9 +36,7 @@ export class DatePickerComponent implements OnInit {
     const date = new Date();
 
     if (this.value) {
-      const dateArr = this.formatDate(this.value).split('/');
-      this._value   = this.formatter.format(this.parseDate(this.value));
-
+      this._displayedDate = this.formatter.format(this.parseDate(this.value));
     }
 
     if (this.minDate) {
@@ -68,9 +76,10 @@ export class DatePickerComponent implements OnInit {
     }
   }
 
-  private formatDate(date: string | Date): string {
-    const parsed = this.parseDate(date);
-    return `${parsed.day}/${parsed.month}/${parsed.year}`;
+  onDateSelect(ngbDate: NgbDate) {
+    const date = new Date(new Date().setFullYear(ngbDate.year, ngbDate.month - 1, ngbDate.day));
+    this.onChange(date);
+    this.valueEmitter.emit(date);
   }
 
   private parseDate(date: string | Date): NgbDateStruct {
@@ -86,6 +95,20 @@ export class DatePickerComponent implements OnInit {
       month: +dateArr[1],
       day: +dateArr[2]
     }
+  }
+
+  onChange = (date: Date) => {};
+
+  registerOnChange(fn: (value: Date) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+  }
+
+  writeValue(date: Date): void {
+    this.value          = date;
+    this._displayedDate = this.formatter.format(this.parseDate(this.value));
   }
 
 }

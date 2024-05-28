@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {SliceTxtPipe} from './pipes/slice-txt.pipe';
 import {UnfocusDirective} from './directives/unfocus.directive';
 import {DatePickerComponent} from './components/date-picker/date-picker.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgbDateAdapter, NgbDateParserFormatter, NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap";
 import {CsDateFormatterService} from "./components/date-picker/cs-date-formatter.service";
 import {CsDateAdapterService} from "./components/date-picker/cs-date-adapter.service";
@@ -19,10 +19,13 @@ import {CsDateAdapterService} from "./components/date-picker/cs-date-adapter.ser
     SliceTxtPipe,
     UnfocusDirective,
     DatePickerComponent,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     NgbInputDatepicker
   ],
   providers: [

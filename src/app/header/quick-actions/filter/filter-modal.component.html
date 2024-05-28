@@ -1,217 +1,192 @@
 <ng-template #filterContent let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title text-primary user-select-none">{{ 'filters' | titlecase }}</h4>
-  </div>
-  <div class="modal-body">
-
-    <!-- CATEGORIES -->
-    <nav class="navbar bg-body-secondary rounded-top-2 m-1">
-      <div class="container-fluid user-select-none transition-smooth" role="button"
-           (click)="isCategoriesCollapsed = !isCategoriesCollapsed">
-        <span class="transition-smooth" [ngClass]="{'text-primary': !isCategoriesCollapsed}">
-          Categories
-          <span *ngIf="appliedFilters.categories" class="badge transition-smooth"
-                [ngClass]="{'text-bg-primary': !isCategoriesCollapsed, 'text-bg-secondary': isCategoriesCollapsed}">
-          {{ appliedFilters.categories.length }}
-          </span>
-        </span>
-        <div class="position-relative glyph-arrow" [ngClass]="{'glyph-arrow-rotate': !isCategoriesCollapsed}">
-          <div *ngIf="isCategoriesCollapsed" class="position-absolute top-50 start-50 translate-middle">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                 fill="currentColor"
-                 class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-              <path
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-            </svg>
-          </div>
-          <div @fade *ngIf="!isCategoriesCollapsed"
-               class="position-absolute top-50 start-50 translate-middle text-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                 height="16"
-                 fill="currentColor"
-                 class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-              <path
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-            </svg>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="modal-header">
+      <h4 class="modal-title text-primary user-select-none">{{ 'filters' | titlecase }}</h4>
+    </div>
+    <div class="modal-body">
+      <div class="accordion" id="accordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#categoriesCollapse"
+                    aria-expanded="true"
+                    aria-controls="categoriesCollapse">
+              Categories
+            </button>
+          </h2>
+          <div id="categoriesCollapse" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+            <div class="accordion-body" formArrayName="categories">
+              <div class="form-check user-select-none m-1"
+                   *ngFor="let cat of getControlArray('categories').controls; let i = index">
+                <input class="form-check-input"
+                       type="checkbox"
+                       id="{{filtersKeyValue.categories[i]}}"
+                       [formControlName]="i"
+                       [value]=cat.value>
+                <label class="form-check-label text-hover"
+                       for="{{filtersKeyValue.categories[i]}}">{{ filtersKeyValue.categories[i] | titlecase }}</label>
+              </div>
+              <hr>
+              <a class="text-hover" (click)="onCategoryReset()">Reset categories</a>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
-    <div class="bg-body-tertiary p-2" [(ngbCollapse)]="isCategoriesCollapsed"
-         [attr.aria-expanded]="!isCategoriesCollapsed">
-      <div class="form-check user-select-none m-1" *ngFor="let cat of filtersKeyValue.categories">
-        <input class="form-check-input" type="checkbox" id="{{cat}}" value="{{cat}}">
-        <label class="form-check-label" for="{{cat}}">{{ cat | titlecase }}</label>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#companiesCollapse"
+                    aria-expanded="false"
+                    aria-controls="companiesCollapse">
+              Companies
+            </button>
+          </h2>
+          <div id="companiesCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body" formArrayName="companyNames">
+              <div class="form-check user-select-none m-1"
+                   *ngFor="let com of getControlArray('companyNames').controls; let i = index">
+                <input class="form-check-input"
+                       type="checkbox"
+                       id="{{filtersKeyValue.companyNames[i] + i}}"
+                       [formControlName]="i"
+                       value="{{com}}">
+                <label class="form-check-label text-hover"
+                       for="{{filtersKeyValue.companyNames[i] + i}}">{{ filtersKeyValue.companyNames[i] | titlecase }}</label>
+              </div>
+              <hr>
+              <a class="text-hover" (click)="onCompanyReset()">Reset companies</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#priceCollapse"
+                    aria-expanded="false"
+                    aria-controls="priceCollapse">
+              Price
+            </button>
+          </h2>
+          <div id="priceCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+              <div class="row align-content-center" formGroupName="priceRange">
+                <div class="col flex-grow-1">
+                  <div class="input-group">
+                    <span class="input-group-text fs-4">₪</span>
+                    <div class="form-floating">
+                      <input type="number"
+                             class="form-control"
+                             formControlName="start"
+                             id="minPrice"
+                             placeholder="min price"
+                             [min]="filtersKeyValue.priceRange.start"
+                             [max]="filtersKeyValue.priceRange.end - 1">
+                      <label for="minPrice">Min price</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group">
+                    <span class="input-group-text fs-4">₪</span>
+                    <div class="form-floating">
+                      <input type="number"
+                             class="form-control"
+                             id="maxPrice"
+                             placeholder="max price"
+                             formControlName="end"
+                             [min]="filtersKeyValue.priceRange.start + 1"
+                             [max]="filtersKeyValue.priceRange.end">
+                      <label for="minPrice">Max price</label>
+                    </div>
+                  </div>
+                  <br>
+                </div>
+              </div>
+              <hr>
+              <a class="text-hover" (click)="onPriceReset()">Reset price</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#dateCollapse"
+                    aria-expanded="false"
+                    aria-controls="dateCollapse">
+              Date
+            </button>
+          </h2>
+          <div id="dateCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
+            <div class="accordion-body">
+              <div class="row align-content-center" formGroupName="dateRange">
+                <div class="row align-content-center">
+                  <div class="col-sm-3 align-self-center">
+                    Start date
+                  </div>
+                  <div class="col-sm-5 mb-2">
+                    <sc-date-picker formControlName="start"
+                                    [value]="getControl('dateRange.start').value"
+                                    id="startDate"
+                                    [minDate]="filtersKeyValue.dateRange.start"
+                                    [maxDate]="filtersKeyValue.dateRange.end">
+                    </sc-date-picker>
+                  </div>
+                </div>
+                <div class="row align-content-center">
+                  <div class="col-sm-3 align-self-center">
+                    End date
+                  </div>
+                  <div class="col-sm-5">
+                    <sc-date-picker formControlName="end"
+                                    [value]="getControl('dateRange.end').value"
+                                    id="endDate"
+                                    [minDate]="filtersKeyValue.dateRange.start"
+                                    [maxDate]="filtersKeyValue.dateRange.end">
+                    </sc-date-picker>
+                    <br>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <a class="text-hover" (click)="onDateReset()">Reset dates</a>
+            </div>
+          </div>
+        </div>
       </div>
       <br>
-    </div>
 
-    <!-- COMPANY-NAMES -->
-    <nav class="navbar bg-body-secondary m-1">
-      <div class="container-fluid user-select-none transition-smooth" role="button"
-           (click)="isCompaniesCollapsed = !isCompaniesCollapsed">
-        <span class="transition-smooth" [ngClass]="{'text-primary': !isCompaniesCollapsed}">
-          Company
-          <span *ngIf="appliedFilters.companyNames" class="badge transition-smooth"
-                [ngClass]="{'text-bg-primary': !isCompaniesCollapsed, 'text-bg-secondary': isCompaniesCollapsed}">
-            {{ appliedFilters.companyNames.length }}
-          </span>
-        </span>
-        <div class="position-relative glyph-arrow" [ngClass]="{'glyph-arrow-rotate': !isCompaniesCollapsed}">
-          <div *ngIf="isCompaniesCollapsed" class="position-absolute top-50 start-50 translate-middle">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                 fill="currentColor"
-                 class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-              <path
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-            </svg>
-          </div>
-          <div @fade *ngIf="!isCompaniesCollapsed"
-               class="position-absolute top-50 start-50 translate-middle text-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                 height="16"
-                 fill="currentColor"
-                 class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-              <path
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <div class="bg-body-tertiary p-2" [(ngbCollapse)]="isCompaniesCollapsed"
-         [attr.aria-expanded]="!isCompaniesCollapsed">
-      <div class="form-check user-select-none m-1" *ngFor="let com of filtersKeyValue.companyNames">
-        <input class="form-check-input" type="checkbox" id="{{com}}" value="{{com}}">
-        <label class="form-check-label" for="{{com}}">{{ com | titlecase }}</label>
-      </div>
-      <br>
-    </div>
-
-    <!-- PRICE -->
-    <nav class="navbar bg-body-secondary m-1">
-      <div class="container-fluid user-select-none transition-smooth" role="button"
-           (click)="isPriceCollapsed = !isPriceCollapsed">
-        <span class="transition-smooth" [ngClass]="{'text-primary': !isPriceCollapsed}">
-          Price
-        </span>
-        <div class="position-relative glyph-arrow" [ngClass]="{'glyph-arrow-rotate': !isPriceCollapsed}">
-          <div *ngIf="isPriceCollapsed" class="position-absolute top-50 start-50 translate-middle">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                 fill="currentColor"
-                 class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-              <path
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-            </svg>
-          </div>
-          <div @fade *ngIf="!isPriceCollapsed"
-               class="position-absolute top-50 start-50 translate-middle text-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                 height="16"
-                 fill="currentColor"
-                 class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-              <path
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </nav>
-    <div class="bg-body-tertiary p-2 row" [(ngbCollapse)]="isPriceCollapsed"
-         [attr.aria-expanded]="!isPriceCollapsed">
-      <div class="col flex-grow-1">
-        <div class="input-group">
-          <span class="input-group-text fs-4">₪</span>
-          <div class="form-floating">
-            <input type="number"
-                   class="form-control"
-                   id="minPrice"
-                   placeholder="min price"
-                   [defaultValue]="filtersKeyValue.priceRange?.start"
-                   min="{{filtersKeyValue.priceRange?.start}}"
-                   max="{{filtersKeyValue.priceRange?.end! - 1}}">
-            <label for="minPrice">Min price</label>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="input-group">
-          <span class="input-group-text fs-4">₪</span>
-          <div class="form-floating">
-            <input type="number"
-                   class="form-control"
-                   id="maxPrice"
-                   placeholder="max price"
-                   [defaultValue]="filtersKeyValue.priceRange?.end"
-                   min="{{filtersKeyValue.priceRange?.start! + 1}}"
-                   max="{{filtersKeyValue.priceRange?.end}}">
-            <label for="minPrice">Max price</label>
-          </div>
-        </div>
-        <br>
+      <div class="input-group mb-3">
+        <button class="btn btn-secondary" type="button" id="freeText">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+               class="bi bi-search" viewBox="0 0 16 16">
+            <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+          </svg>
+        </button>
+        <textarea type="text"
+                  class="form-control"
+                  placeholder="Free text search"
+                  aria-label="Free text search"
+                  aria-describedby="freeText"
+                  rows="1">
+      </textarea>
       </div>
     </div>
 
-    <!-- DATE -->
-    <nav class="navbar bg-body-secondary rounded-bottom-2 m-1">
-      <div class="container-fluid user-select-none transition-smooth" role="button"
-           (click)="isDateCollapsed = !isDateCollapsed">
-        <span class="transition-smooth" [ngClass]="{'text-primary': !isDateCollapsed}">
-          Date
-        </span>
-        <div class="position-relative glyph-arrow" [ngClass]="{'glyph-arrow-rotate': !isDateCollapsed}">
-          <div *ngIf="isDateCollapsed" class="position-absolute top-50 start-50 translate-middle">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                 fill="currentColor"
-                 class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-              <path
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-            </svg>
-          </div>
-          <div @fade *ngIf="!isDateCollapsed" class="position-absolute top-50 start-50 translate-middle text-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                 height="16"
-                 fill="currentColor"
-                 class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-              <path
-                  d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </nav>
 
-    <div class="bg-body-tertiary p-2 row align-content-center"
-         [(ngbCollapse)]="isDateCollapsed"
-         [attr.aria-expanded]="!isDateCollapsed">
-      <div class="row align-content-center">
-        <div class="col-sm-3 align-self-center">
-          Min date
-        </div>
-        <div class="col-sm-5 mb-2">
-          <sc-date-picker [value]="filtersKeyValue.dateRange?.start"
-                          [minDate]="filtersKeyValue.dateRange?.start"
-                          [maxDate]="filtersKeyValue.dateRange?.end">
-          </sc-date-picker>
-        </div>
-      </div>
-      <div class="row align-content-center">
-        <div class="col-sm-3 align-self-center">
-          Max date
-        </div>
-        <div class="col-sm-5">
-          <sc-date-picker [value]="filtersKeyValue.dateRange?.end"
-                          [minDate]="filtersKeyValue.dateRange?.start"
-                          [maxDate]="filtersKeyValue.dateRange?.end">
-          </sc-date-picker>
-          <br>
-        </div>
-      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger">Reset</button>
+      <button type="submit" class="btn btn-secondary" (click)="modal.close('Close click')">Apply</button>
     </div>
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="onReset()">Reset</button>
-    <button type="submit" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
-  </div>
+  </form>
 </ng-template>
