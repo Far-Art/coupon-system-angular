@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CouponsService} from "../coupons.service";
-import {Coupon} from "../../../shared/models/coupon.model";
-import {Subscription} from "rxjs";
+import {CouponsService} from '../coupons.service';
+import {Coupon} from '../../../shared/models/coupon.model';
+import {Subscription} from 'rxjs';
+
 
 @Component({
   selector: 'cs-coupons-list',
@@ -17,7 +18,7 @@ export class CouponsListComponent implements OnInit, OnDestroy {
   constructor(private couponService: CouponsService) {}
 
   ngOnInit(): void {
-    this.subscription = this.couponService.coupons$.subscribe(list => this.coupons = list);
+    this.subscription = this.couponService.displayedCoupons$.subscribe(list => this.coupons = list);
   }
 
   ngOnDestroy(): void {

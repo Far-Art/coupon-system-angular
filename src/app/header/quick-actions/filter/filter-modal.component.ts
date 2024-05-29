@@ -1,25 +1,29 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {FilterKeys, FilterService} from "./filter.service";
-import {CouponsService} from "../../../features/coupons/coupons.service";
-import {Subscription} from "rxjs";
-import {animate, style, transition, trigger} from "@angular/animations";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FilterKeys, FilterService} from './filter.service';
+import {CouponsService} from '../../../features/coupons/coupons.service';
+import {Subscription} from 'rxjs';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+
+
+interface MainFormType {
+  dateRange: FormGroup<{
+    start: FormControl<Date>,
+    end: FormControl<Date>
+  }>,
+  freeText: FormControl<string>;
+  categories: FormArray;
+  priceRange: FormGroup<{
+    start: FormControl<number>,
+    end: FormControl<number>
+  }>,
+  companyNames: FormArray
+}
 
 @Component({
   selector: 'sc-filter-modal',
   templateUrl: './filter-modal.component.html',
-  styleUrls: ['./filter-modal.component.scss'],
-  animations: [
-    trigger('fade', [
-      transition(':enter', [
-        animate('300ms ease', style({opacity: 1})),
-      ]),
-      transition(':leave', [
-        animate('300ms ease', style({opacity: 0})),
-      ])
-    ]),
-  ]
+  styleUrls: ['./filter-modal.component.scss']
 })
 export class FilterModalComponent implements OnInit, OnDestroy {
 
@@ -28,76 +32,62 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   private couponSub: Subscription;
   private filtersSub: Subscription;
 
+  private prevForm: FormGroup<MainFormType>;
+  form: FormGroup<MainFormType>;
+
   filtersKeyValue: FilterKeys;
-
-  appliedFilters: FilterKeys;
-
-  form: FormGroup<{
-    dateRange: FormGroup<{ start: FormControl<Date | undefined | null>; end: FormControl<Date | undefined | null> }>;
-    freeText: FormControl<string | undefined | null>;
-    categories: FormArray<any>;
-    priceRange: FormGroup<{
-      start: FormControl<number | undefined | null>;
-      end: FormControl<number | undefined | null>
-    }>;
-    companyNames: FormArray<any>
-  }>;
 
   constructor(
       private modalService: NgbModal,
       private filterService: FilterService,
-      private couponsService: CouponsService,
-      private fb: FormBuilder
+      private couponsService: CouponsService
   ) {}
 
   ngOnInit(): void {
-    this.initAppliedFilters();
-
-    // this.onFormReset();
-
-    this.couponSub = this.couponsService.coupons$.subscribe(coupons => {
-      this.filterService.rebuildFilters(coupons);
-    });
-
-    this.filtersSub = this.filterService.filteredCoupons$.subscribe(coupons => {
-      this.filtersKeyValue = this.filterService.filtersToDisplay;
-      if (!this.form) {
-        this.initForm(this.filtersKeyValue);
-      }
-      // this.filterService.rebuildFilters(coupons);
+    this.couponSub = this.couponsService.originCoupons$.subscribe(coupons => {
+      this.filterService.getFiltersToDisplay().subscribe(filters => {
+        this.filtersKeyValue = filters;
+        if (!this.form) {
+          this.initForm(this.filtersKeyValue);
+        }
+      });
     });
   }
 
+  // TODO recalculate filters key values
   openModal() {
     this.modalService.open(this.filterContent, {
-      scrollable: true, modalDialogClass: 'top-5rem', beforeDismiss: () => {
-        this.onSubmit();
-        return true;
-      }
+      scrollable: true, modalDialogClass: 'top-5rem'
     });
-  }
-
-  applyFilters() {
-    // TODO replace with real object after building form
-    const tempFilters: FilterKeys = this.appliedFilters;
-    this.filterService.applyFilters(tempFilters);
-  }
-
-  onFilterClick(key: string, value: string | number | Date) {
-    const keys = key.split('.');
-    if (keys.length > 1) {
-      (this.appliedFilters as any)[keys[0]][keys[1]] = value;
-    } else {
-      const _value: string[] = (this.appliedFilters as any)[keys[0]];
-      const i                = _value.indexOf(value as string);
-      i >= 0 ? _value.splice(i, 1) : _value.push(value as string);
-    }
-    console.log(this.appliedFilters);
   }
 
   onSubmit() {
-    console.log('submit');
-    console.log(this.form);
+    const applied: FilterKeys = this.form.value as FilterKeys;
+    this.prevForm             = Object.create(this.form);
+
+    if (!applied.freeText) {
+      // convert boolean values back to string and remove nulls
+      applied.categories = applied.categories.map((el, index) => {
+        return el ? this.filtersKeyValue.categories[index] : el;
+      }).filter(el => !!el);
+
+      // convert boolean values back to string and remove nulls
+      applied.companyNames = applied.companyNames.map((el, index) => {
+        return el ? this.filtersKeyValue.companyNames[index] : el;
+      }).filter(el => !!el);
+
+      // remove value if user did not change value or is bad value
+      if (!this.form.get('priceRange').dirty || this.form.get('priceRange').invalid) {
+        applied.priceRange = null;
+      }
+
+      // remove value if user did not change value or is bad value
+      if (!this.form.get('dateRange').dirty || this.form.get('dateRange').invalid) {
+        applied.dateRange = null;
+      }
+    }
+
+    this.filterService.applyFilters(this.form.pristine ? null : applied);
   }
 
   getControl(name: string) {
@@ -106,35 +96,6 @@ export class FilterModalComponent implements OnInit, OnDestroy {
 
   getControlArray(name: string) {
     return this.form.get(name) as FormArray;
-  }
-
-  private initAppliedFilters() {
-    this.appliedFilters = {
-      categories: [],
-      companyNames: [],
-      priceRange: {start: null, end: null},
-      dateRange: {start: null, end: null},
-      freeText: ''
-    }
-  }
-
-  private initForm(initial: FilterKeys) {
-    this.form = new FormGroup({
-      categories: new FormArray([]),
-      companyNames: new FormArray([]),
-      priceRange: new FormGroup({
-        start: new FormControl<number | undefined>(initial.priceRange.start, [Validators.min(initial.priceRange.start), Validators.max(initial.priceRange.end)]),
-        end: new FormControl<number | undefined>(initial.priceRange.end, [Validators.min(initial.priceRange.start), Validators.max(initial.priceRange.end)])
-      }),
-      dateRange: new FormGroup({
-        start: new FormControl<Date | undefined>(initial.dateRange.start),
-        end: new FormControl<Date | undefined>(initial.dateRange.end)
-      }),
-      freeText: new FormControl<string | undefined>(initial.freeText)
-    });
-
-    initial.categories.forEach(c => (this.form.get('categories') as FormArray).push(new FormControl(null)));
-    initial.companyNames.forEach(c => (this.form.get('companyNames') as FormArray).push(new FormControl(null)));
   }
 
   onCategoryReset() {
@@ -146,16 +107,46 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   }
 
   onPriceReset() {
+    this.form.get('priceRange').reset();
     this.form.get('priceRange').setValue({
       start: this.filtersKeyValue.priceRange.start,
       end: this.filtersKeyValue.priceRange.end
     });
   }
 
+  // TODO reset date values
   onDateReset() {
+    this.form.get('dateRange').reset();
     this.form.get('dateRange').setValue({
       start: this.filtersKeyValue.dateRange.start,
       end: this.filtersKeyValue.dateRange.end
+    });
+  }
+
+  onFormReset() {
+    this.initForm(this.filtersKeyValue);
+    this.filterService.applyFilters(null);
+  }
+
+  // TODO reset form values to previous ones
+  onCancel() {
+    // this.form.patchValue(this.prevForm.value);
+    this.modalService.dismissAll('Close click');
+  }
+
+  private initForm(initial: FilterKeys) {
+    this.form = new FormGroup({
+      categories: new FormArray([...initial.categories.map(() => new FormControl(null))]),
+      companyNames: new FormArray([...initial.companyNames.map(() => new FormControl(null))]),
+      priceRange: new FormGroup({
+        start: new FormControl<number>(initial.priceRange.start, [Validators.min(initial.priceRange.start), Validators.max(initial.priceRange.end)]),
+        end: new FormControl<number>(initial.priceRange.end, [Validators.min(initial.priceRange.start), Validators.max(initial.priceRange.end)])
+      }),
+      dateRange: new FormGroup({
+        start: new FormControl<Date>(initial.dateRange.start),
+        end: new FormControl<Date>(initial.dateRange.end)
+      }),
+      freeText: new FormControl<string>(null)
     });
   }
 

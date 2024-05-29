@@ -1,8 +1,8 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Coupon} from "../../../../shared/models/coupon.model";
-import {CartService} from "../../../../header/quick-actions/cart/cart.service";
-import {WishListService} from "../../../../header/quick-actions/wish-list/wish-list.service";
-import {animate, style, transition, trigger} from "@angular/animations";
+import {Coupon} from '../../../../shared/models/coupon.model';
+import {animate, style, transition, trigger} from '@angular/animations';
+import {CouponsService} from '../../coupons.service';
+
 
 @Component({
   selector: 'sc-coupon-card',
@@ -13,25 +13,25 @@ import {animate, style, transition, trigger} from "@angular/animations";
   animations: [
     trigger('icon', [
       transition(':enter', [
-        animate('400ms ease', style({opacity: 1})),
+        animate('400ms ease', style({opacity: 1}))
       ]),
       transition(':leave', [
-        animate('400ms ease', style({opacity: 0})),
+        animate('400ms ease', style({opacity: 0}))
       ])
     ]),
     trigger('addToCart', [
       transition(':enter', [
-        animate('400ms ease', style({transform: 'scale(150%)', opacity: 0})),
+        animate('400ms ease', style({transform: 'scale(150%)', opacity: 0}))
       ])
     ]),
     trigger('showRemoveIcon', [
       transition(':enter', [
-        animate('400ms ease', style({opacity: 1})),
+        animate('400ms ease', style({opacity: 1}))
       ])
     ]),
     trigger('showHeartIcon', [
       transition(':enter', [
-        animate('400ms ease', style({transform: 'scale(150%)', opacity: 0})),
+        animate('400ms ease', style({transform: 'scale(150%)', opacity: 0}))
       ])
     ])
   ]
@@ -48,11 +48,11 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   isSaleEnded          = false;
   isShowCartRemoveIcon = false; // TODO rework after angular.io site is available again
 
-  constructor(private cartService: CartService, private wishListService: WishListService) {}
+  constructor(private couponsService: CouponsService) {}
 
   ngOnInit(): void {
-    this.isAddedToCart = this.cartService.isPresent(this.coupon);
-    this.isAddedToWish = this.wishListService.isPresent(this.coupon);
+    this.isAddedToCart = this.couponsService.isPresentInCart(this.coupon);
+    this.isAddedToWish = this.couponsService.isPresentInWish(this.coupon);
 
     // 86_400_000 = 24 hours in millis
     this.isShowTimer = this.coupon.params.endDate.getTime() - new Date().getTime() < 86_400_000;
@@ -77,13 +77,13 @@ export class CouponCardComponent implements OnInit, OnDestroy {
       this.isAddedToCart = !this.isAddedToCart;
       // this.isAddedToCart ? this.cartService.addToCart(this.coupon) : this.cartService.removeFromCart(this.coupon);
       if (this.isAddedToCart) {
-        this.cartService.addToCart(this.coupon);
+        this.couponsService.addToCart(this.coupon);
         timeout = setTimeout(() => this.isShowCartRemoveIcon = true, 400);
       } else {
         if (timeout) {
           clearTimeout(timeout);
         }
-        this.cartService.removeFromCart(this.coupon);
+        this.couponsService.removeFromCart(this.coupon);
         this.isShowCartRemoveIcon = false;
       }
     }
@@ -91,14 +91,14 @@ export class CouponCardComponent implements OnInit, OnDestroy {
 
   onWishListClick() {
     this.isAddedToWish = !this.isAddedToWish;
-    this.isAddedToWish ? this.wishListService.addToWish(this.coupon) : this.wishListService.removeFromWish(this.coupon);
+    this.isAddedToWish ? this.couponsService.addToWish(this.coupon) : this.couponsService.removeFromWish(this.coupon);
   }
 
   onTitleClick() {
     this.isDescriptionShown = false;
   }
 
-  switchInfoDescription(){
+  switchInfoDescription() {
     this.isDescriptionShown = !this.isDescriptionShown;
   }
 

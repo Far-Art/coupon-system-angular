@@ -103,12 +103,11 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
-  }
+  registerOnTouched(fn: any): void {}
 
   writeValue(date: Date): void {
     this.value          = date;
-    this._displayedDate = this.formatter.format(this.parseDate(this.value));
+    this._displayedDate = date ? this.formatter.format(this.parseDate(this.value)) : 'Please select a date';
   }
 
 }

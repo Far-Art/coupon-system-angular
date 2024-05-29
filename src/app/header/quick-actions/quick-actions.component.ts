@@ -1,11 +1,11 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {CartService} from "./cart/cart.service";
-import {WishListService} from "./wish-list/wish-list.service";
-import {Subscription} from "rxjs";
-import {FilterService} from "./filter/filter.service";
-import {WishListModalComponent} from "./wish-list/wish-list-modal.component";
-import {CartModalComponent} from "./cart/cart-modal.component";
-import {FilterModalComponent} from "./filter/filter-modal.component";
+import {Subscription} from 'rxjs';
+import {FilterService} from './filter/filter.service';
+import {WishListModalComponent} from './wish-list/wish-list-modal.component';
+import {CartModalComponent} from './cart/cart-modal.component';
+import {FilterModalComponent} from './filter/filter-modal.component';
+import {CouponsService} from '../../features/coupons/coupons.service';
+
 
 @Component({
   selector: 'sc-quick-actions',
@@ -15,7 +15,7 @@ import {FilterModalComponent} from "./filter/filter-modal.component";
 export class QuickActionsComponent implements OnInit, OnDestroy {
 
   cartBadgeVal: number   = 0;
-  filterBadgeVal: number = 0;
+  filterBadgeVal: string = '';
   wishBadgeVal: number   = 0;
 
   @ViewChild('wishModal') wishModal     = ElementRef<any>;
@@ -27,15 +27,14 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   private cartSubscription!: Subscription;
 
   constructor(
-      private cartService: CartService,
-      private wishListService: WishListService,
-      private filterService: FilterService
+      private filterService: FilterService,
+      private couponsService: CouponsService
   ) { }
 
   ngOnInit(): void {
-    this.wishSubscription   = this.wishListService.coupons$.subscribe(() => this.wishBadgeVal = this.wishListService.couponsInWish);
-    this.cartSubscription   = this.cartService.coupons$.subscribe(() => this.cartBadgeVal = this.cartService.couponsInCart);
-    this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.filtersApplied);
+    this.wishSubscription   = this.couponsService.couponsInWish$.subscribe(() => this.wishBadgeVal = this.couponsService.couponsInWish);
+    this.cartSubscription   = this.couponsService.couponsInCart$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
+    this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.getFiltersBadgeValue);
   }
 
   onCartClick(): void {

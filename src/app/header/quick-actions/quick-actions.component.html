@@ -1,35 +1,4 @@
 <div class="btn-group" role="toolbar">
-  <!-- CART -->
-  <button type="button"
-          unfocus
-          class="btn btn-primary position-relative"
-          (click)="onCartClick()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"
-         viewBox="0 0 16 16">
-      <path
-          d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-    </svg>
-    <span *ngIf="cartBadgeVal > 0"
-          class="position-absolute top-100 start-0 translate-middle badge rounded-pill bg-danger">
-    {{ cartBadgeVal }}
-    </span>
-  </button>
-  <!-- FILTERS -->
-  <button type="button"
-          unfocus
-          class="btn btn-primary position-relative"
-          (click)="onFilterClick()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel"
-         viewBox="0 0 16 16">
-      <path
-          d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
-    </svg>
-    <span *ngIf="filterBadgeVal > 0"
-          class="position-absolute top-100 start-50 translate-middle badge rounded-pill bg-danger">
-    {{ filterBadgeVal }}
-    </span>
-  </button>
-
   <!-- WISH-LIST -->
   <button type="button"
           unfocus
@@ -42,8 +11,40 @@
     </svg>
     <span *ngIf="wishBadgeVal > 0"
           data-mdb-animation="fade-out"
-          class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger fade show">
+          class="position-absolute top-100 start-0 translate-middle badge rounded-pill bg-danger fade show">
     {{ wishBadgeVal }}
+    </span>
+  </button>
+
+  <!-- FILTERS -->
+  <button type="button"
+          unfocus
+          class="btn btn-primary position-relative"
+          (click)="onFilterClick()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel"
+         viewBox="0 0 16 16">
+      <path
+          d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+    </svg>
+    <span *ngIf="filterBadgeVal"
+          class="position-absolute top-100 start-50 z-1 translate-middle badge rounded-pill bg-danger">
+    {{ filterBadgeVal }}
+    </span>
+  </button>
+
+  <!-- CART -->
+  <button type="button"
+          unfocus
+          class="btn btn-primary position-relative"
+          (click)="onCartClick()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"
+         viewBox="0 0 16 16">
+      <path
+          d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+    </svg>
+    <span *ngIf="cartBadgeVal > 0"
+          class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+    {{ cartBadgeVal }}
     </span>
   </button>
 </div>
