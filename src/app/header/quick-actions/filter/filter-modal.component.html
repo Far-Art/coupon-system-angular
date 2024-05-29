@@ -16,17 +16,18 @@
               Categories
             </button>
           </h2>
-          <div id="categoriesCollapse" class="accordion-collapse collapse show" data-bs-parent="#accordion">
+          <div id="categoriesCollapse" class="accordion-collapse collapse show"
+          data-bs-parent="#accordion">
             <div class="accordion-body" formArrayName="categories">
               <div class="form-check user-select-none m-2"
                    *ngFor="let cat of getControlArray('categories').controls; let i = index">
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
-                       id="{{filtersKeyValue.categories[i]}}"
+                       id="{{filtersKeyValue.categories.value[i]}}"
                        [formControlName]="i">
                 <label class="form-check-label text-hover"
                        [ngClass]="{'text-primary': cat.value}"
-                       for="{{filtersKeyValue.categories[i]}}">{{ filtersKeyValue.categories[i] | titlecase }}</label>
+                       for="{{filtersKeyValue.categories.value[i]}}">{{ filtersKeyValue.categories.value[i] | titlecase }}</label>
               </div>
               <hr>
               <a class="text-hover left-90 position-relative" (click)="onCategoryReset()">reset</a>
@@ -51,11 +52,12 @@
                    *ngFor="let com of getControlArray('companyNames').controls; let i = index">
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
-                       id="{{filtersKeyValue.companyNames[i] + i}}"
+                       id="{{filtersKeyValue.companyNames.value[i] + i}}"
                        [formControlName]="i">
                 <label class="form-check-label text-hover"
                        [ngClass]="{'text-primary': com.value}"
-                       for="{{filtersKeyValue.companyNames[i] + i}}">{{ filtersKeyValue.companyNames[i] | titlecase }}</label>
+                       for="{{filtersKeyValue.companyNames.value[i] + i}}">{{ filtersKeyValue.companyNames.value[i] |
+                    titlecase }}</label>
               </div>
               <hr>
               <a class="text-hover position-relative left-90" (click)="onCompanyReset()">reset</a>

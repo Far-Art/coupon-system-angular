@@ -7,17 +7,18 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 
 
 interface MainFormType {
+  categories: FormArray,
+  companyNames: FormArray,
   dateRange: FormGroup<{
     start: FormControl<Date>,
-    end: FormControl<Date>
+    end: FormControl<Date>,
   }>,
-  freeText: FormControl<string>;
-  categories: FormArray;
   priceRange: FormGroup<{
     start: FormControl<number>,
-    end: FormControl<number>
+    end: FormControl<number>,
   }>,
-  companyNames: FormArray
+  freeText: FormControl<string>;
+
 }
 
 @Component({
@@ -62,18 +63,20 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const applied: FilterKeys = this.form.value as FilterKeys;
-    this.prevForm             = Object.create(this.form);
+    const applied: FilterKeys  = this.form.value as FilterKeys;
+    applied.categories.value   = applied.categories as unknown as string[];
+    applied.companyNames.value = applied.companyNames as unknown as string[];
+    this.prevForm              = Object.create(this.form);
 
     if (!applied.freeText) {
       // convert boolean values back to string and remove nulls
-      applied.categories = applied.categories.map((el, index) => {
-        return el ? this.filtersKeyValue.categories[index] : el;
+      applied.categories.value = applied.categories.value.map((el, index) => {
+        return el ? this.filtersKeyValue.categories.value[index] : el;
       }).filter(el => !!el);
 
       // convert boolean values back to string and remove nulls
-      applied.companyNames = applied.companyNames.map((el, index) => {
-        return el ? this.filtersKeyValue.companyNames[index] : el;
+      applied.companyNames.value = applied.companyNames.value.map((el, index) => {
+        return el ? this.filtersKeyValue.companyNames.value[index] : el;
       }).filter(el => !!el);
 
       // remove value if user did not change value or is bad value
@@ -95,15 +98,15 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   }
 
   getControlArray(name: string) {
-    return this.form.get(name) as FormArray;
+    return this.form.get(name.split('.')) as FormArray;
   }
 
   onCategoryReset() {
-    (this.form.get('categories') as FormArray).reset();
+    this.getControlArray('categories').reset();
   }
 
   onCompanyReset() {
-    (this.form.get('companyNames') as FormArray).reset();
+    this.getControlArray('companyNames').reset();
   }
 
   onPriceReset() {
@@ -136,8 +139,8 @@ export class FilterModalComponent implements OnInit, OnDestroy {
 
   private initForm(initial: FilterKeys) {
     this.form = new FormGroup({
-      categories: new FormArray([...initial.categories.map(() => new FormControl(null))]),
-      companyNames: new FormArray([...initial.companyNames.map(() => new FormControl(null))]),
+      categories: new FormArray([...initial.categories.value.map(() => new FormControl(null))]),
+      companyNames: new FormArray([...initial.companyNames.value.map(() => new FormControl(null))]),
       priceRange: new FormGroup({
         start: new FormControl<number>(initial.priceRange.start, [Validators.min(initial.priceRange.start), Validators.max(initial.priceRange.end)]),
         end: new FormControl<number>(initial.priceRange.end, [Validators.min(initial.priceRange.start), Validators.max(initial.priceRange.end)])

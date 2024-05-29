@@ -5,10 +5,24 @@ import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
 export interface FilterKeys {
-  categories: string[],
-  companyNames: string[],
-  priceRange: { start: number, end: number },
-  dateRange: { start: Date, end: Date },
+  categories: {
+    value: string[],
+    isDisabled?: boolean
+  },
+  companyNames: {
+    value: string[],
+    isDisabled?: boolean
+  },
+  priceRange: {
+    start: number,
+    end: number,
+    isDisabled?: boolean
+  },
+  dateRange: {
+    start: Date,
+    end: Date,
+    isDisabled?: boolean
+  },
   freeText: string
 }
 
@@ -31,8 +45,8 @@ export class FilterService {
       if (this.activeFilters.freeText) return 'free text';
       if (this.activeFilters.dateRange) num++;
       if (this.activeFilters.priceRange) num++;
-      if (this.activeFilters.companyNames.length > 0) num++;
-      if (this.activeFilters.categories.length > 0) num++;
+      if (this.activeFilters.companyNames.value.length > 0) num++;
+      if (this.activeFilters.categories.value.length > 0) num++;
     }
     return '' + (num > 0 ? num : '');
   }
@@ -61,8 +75,12 @@ export class FilterService {
           if (c.params.endDate > endDate) endDate = c.params.endDate;
         }
         keys = {
-          categories: [...categories],
-          companyNames: [...names],
+          categories: {
+            value: [...categories]
+          },
+          companyNames: {
+            value: [...names]
+          },
           priceRange: {start: minPrice, end: maxPrice},
           dateRange: {start: starDate, end: endDate},
           freeText: null
@@ -73,6 +91,7 @@ export class FilterService {
   }
 
   applyFilters(filters: FilterKeys) {
+    // TODO recalculate filter key values
     this.activeFilters = filters;
 
     if (filters == null) {
@@ -107,7 +126,7 @@ export class FilterService {
       this.couponsService.originCoupons$.pipe(take(1)).subscribe(coupons => {
         if (filters.categories) {
           coupons.forEach((coupon: Coupon) => {
-            if (filters.categories.includes(coupon.params.category)) {
+            if (filters.categories.value.includes(coupon.params.category)) {
               set.add(coupon);
             }
           });
@@ -115,7 +134,7 @@ export class FilterService {
 
         if (filters.companyNames) {
           (set.size === 0 ? coupons : set).forEach((coupon: Coupon) => {
-            if (filters.companyNames.includes(coupon.params.companyName)) {
+            if (filters.companyNames.value.includes(coupon.params.companyName)) {
               set.add(coupon);
             }
           });
