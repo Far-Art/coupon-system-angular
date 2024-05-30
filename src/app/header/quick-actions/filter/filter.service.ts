@@ -1,27 +1,27 @@
 import {Injectable} from '@angular/core';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {BehaviorSubject, map, Observable, take} from 'rxjs';
+import {BehaviorSubject, concatMap, map, Observable, take} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
 export interface FilterKeys {
   categories: {
-    value: string[],
+    name: string,
+    isChecked: boolean,
     isDisabled?: boolean
-  },
+  }[],
   companyNames: {
-    value: string[],
+    name: string,
+    isChecked: boolean,
     isDisabled?: boolean
-  },
+  }[],
   priceRange: {
     start: number,
-    end: number,
-    isDisabled?: boolean
+    end: number
   },
   dateRange: {
     start: Date,
-    end: Date,
-    isDisabled?: boolean
+    end: Date
   },
   freeText: string
 }
@@ -31,7 +31,7 @@ export interface FilterKeys {
 })
 export class FilterService {
 
-  private activeFilters: FilterKeys | null = null;
+  private _activeFilters: FilterKeys | null = null;
 
   private filteredCouponsSubject = new BehaviorSubject<Coupon[]>([]);
 
@@ -41,68 +41,37 @@ export class FilterService {
 
   get getFiltersBadgeValue(): string {
     let num = 0;
-    if (this.activeFilters) {
-      if (this.activeFilters.freeText) return 'free text';
-      if (this.activeFilters.dateRange) num++;
-      if (this.activeFilters.priceRange) num++;
-      if (this.activeFilters.companyNames.value.length > 0) num++;
-      if (this.activeFilters.categories.value.length > 0) num++;
+    if (this._activeFilters) {
+      if (this._activeFilters.freeText) return 'free text';
+      if (this._activeFilters.dateRange) num++;
+      if (this._activeFilters.priceRange) num++;
+      if (this._activeFilters.categories.length > 0) num += this._activeFilters.categories.filter(v => v.isChecked).length;
+      if (this._activeFilters.companyNames.length > 0) num += this._activeFilters.companyNames.filter(v => v.isChecked).length;
     }
-    return '' + (num > 0 ? num : '');
+    return `${num > 0 ? num : ''}`;
   }
 
   constructor(private couponsService: CouponsService) { }
 
-  getFiltersToDisplay(): Observable<FilterKeys> {
-    return this.couponsService.originCoupons$.pipe(take(1), map(coupons => {
-      let keys: FilterKeys;
-
-      if (coupons.length > 0) {
-        const categories = new Set<string>();
-        const names      = new Set<string>();
-        let minPrice     = coupons[0].params.price;
-        let maxPrice     = coupons[0].params.price;
-        let starDate     = coupons[0].params.startDate;
-        let endDate      = coupons[0].params.endDate;
-
-        for (let i = 1; i < coupons.length; i++) {
-          const c = coupons[i];
-          categories.add(c.params.category)
-          names.add(c.params.companyName);
-          if (c.params.price < minPrice) minPrice = c.params.price;
-          if (c.params.price > maxPrice) maxPrice = c.params.price;
-          if (c.params.startDate < starDate) starDate = c.params.startDate;
-          if (c.params.endDate > endDate) endDate = c.params.endDate;
-        }
-        keys = {
-          categories: {
-            value: [...categories]
-          },
-          companyNames: {
-            value: [...names]
-          },
-          priceRange: {start: minPrice, end: maxPrice},
-          dateRange: {start: starDate, end: endDate},
-          freeText: null
-        }
-      }
-      return keys;
-    }));
+  get getFiltersToDisplay$(): Observable<FilterKeys> {
+    return this.couponsService.displayedCoupons$.pipe(
+        take(1),
+        concatMap(coupons => {
+          return this.updateFilterKeys(coupons);
+        }));
   }
 
-  applyFilters(filters: FilterKeys) {
-    // TODO recalculate filter key values
-    this.activeFilters = filters;
+  updateDisplayedCoupons(filters: FilterKeys): void {
+    this._activeFilters = filters;
 
     if (filters == null) {
       this.couponsService.originCoupons$.pipe(take(1)).subscribe(coupons => {
         this.filteredCouponsSubject.next(coupons);
-        this.couponsService.coupons = coupons;
+        this.couponsService.displayedCoupons = coupons;
       });
-      return;
     }
 
-    const set = new Set<Coupon>();
+    const map = new Map<number, Coupon>();
 
     // if free text supplied, don't apply other filters
     if (filters.freeText) {
@@ -114,52 +83,102 @@ export class FilterService {
               if (prm.title.toLowerCase().includes(txt)
                   || prm.description.toLowerCase().includes(txt)
                   || prm.companyName.toLowerCase().includes(txt)) {
-                set.add(c);
+                map.set(c.params.id, c);
               }
             });
-            const filtered = [...set];
-            this.filteredCouponsSubject.next([...set]);
-            this.couponsService.coupons = filtered;
           });
-
     } else {
       this.couponsService.originCoupons$.pipe(take(1)).subscribe(coupons => {
-        if (filters.categories) {
+        if (filters.categories?.length > 0) {
           coupons.forEach((coupon: Coupon) => {
-            if (filters.categories.value.includes(coupon.params.category)) {
-              set.add(coupon);
+            if (filters.categories.map(obj => obj.name).includes(coupon.params.category)) {
+              map.set(coupon.params.id, coupon);
             }
           });
         }
 
-        if (filters.companyNames) {
-          (set.size === 0 ? coupons : set).forEach((coupon: Coupon) => {
-            if (filters.companyNames.value.includes(coupon.params.companyName)) {
-              set.add(coupon);
+        if (filters.companyNames?.length > 0) {
+          (map.size === 0 ? coupons : map).forEach((coupon: Coupon) => {
+            if (filters.companyNames.map(obj => obj.name).includes(coupon.params.companyName)) {
+              map.set(coupon.params.id, coupon);
             }
           });
         }
 
         if (filters.priceRange) {
-          (set.size === 0 ? coupons : set).forEach((coupon: Coupon) => {
+          (map.size === 0 ? coupons : map).forEach((coupon: Coupon) => {
             if (filters.priceRange.start <= coupon.params.price && filters.priceRange.end >= coupon.params.price) {
-              set.add(coupon);
+              map.set(coupon.params.id, coupon);
             }
           });
         }
 
         if (filters.dateRange) {
-          (set.size === 0 ? coupons : set).forEach((coupon: Coupon) => {
+          (map.size === 0 ? coupons : map).forEach((coupon: Coupon) => {
             if (filters.dateRange.start <= coupon.params.startDate && filters.dateRange.end >= coupon.params.endDate) {
-              set.add(coupon);
+              map.set(coupon.params.id, coupon);
             }
           });
         }
-
-        const filtered = [...set];
-        this.filteredCouponsSubject.next(filtered);
-        this.couponsService.coupons = filtered;
       });
     }
+
+    const filtered = [...map.values()];
+    this.filteredCouponsSubject.next([...map.values()]);
+    this.couponsService.displayedCoupons = filtered;
+    this.updateFilterKeys(filtered);
+  }
+
+  private updateFilterKeys(displayedCoupons: Coupon[]): Observable<FilterKeys | null> {
+    return this.couponsService.originCoupons$
+        .pipe(
+            take(1),
+            map(originCoupons => {
+              let keys: FilterKeys | null = null;
+
+              if (displayedCoupons.length > 0) {
+                let minPrice = displayedCoupons[0].params.price;
+                let maxPrice = displayedCoupons[0].params.price;
+                let starDate = displayedCoupons[0].params.startDate;
+                let endDate  = displayedCoupons[0].params.endDate;
+
+                for (let i = 1; i < displayedCoupons.length; i++) {
+                  const c = displayedCoupons[i];
+                  if (c.params.price < minPrice) minPrice = c.params.price;
+                  if (c.params.price > maxPrice) maxPrice = c.params.price;
+                  if (c.params.startDate < starDate) starDate = c.params.startDate;
+                  if (c.params.endDate > endDate) endDate = c.params.endDate;
+                }
+
+                const categories: Map<string, { name: string, isChecked: boolean, isDisabled: boolean }> = new Map();
+                const names: Map<string, { name: string, isChecked: boolean, isDisabled: boolean }>      = new Map();
+
+                for (let i = 0; i < originCoupons.length; i++) {
+                  const c = originCoupons[i];
+
+                  categories.set(c.params.category, {
+                    name: c.params.category,
+                    isChecked: false,
+                    isDisabled: !displayedCoupons.map(v => v.params.category).includes(c.params.category)
+                  })
+
+                  names.set(c.params.companyName, {
+                    name: c.params.companyName,
+                    isChecked: false,
+                    isDisabled: !displayedCoupons.map(v => v.params.companyName).includes(c.params.companyName)
+                  });
+                }
+
+                keys = {
+                  categories: [...categories.values()],
+                  companyNames: [...names.values()],
+                  priceRange: {start: minPrice, end: maxPrice},
+                  dateRange: {start: starDate, end: endDate},
+                  freeText: null
+                }
+              }
+              return keys;
+            }));
+
   }
 }
