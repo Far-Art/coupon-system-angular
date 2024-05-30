@@ -61,7 +61,7 @@ export class FilterService {
         }));
   }
 
-  updateDisplayedCoupons(filters: FilterKeys): void {
+  updateDisplayedCoupons(filters: FilterKeys) {
     this._activeFilters = filters;
 
     if (filters == null) {
@@ -69,6 +69,7 @@ export class FilterService {
         this.filteredCouponsSubject.next(coupons);
         this.couponsService.displayedCoupons = coupons;
       });
+      return null;
     }
 
     const map = new Map<number, Coupon>();
@@ -126,7 +127,7 @@ export class FilterService {
     const filtered = [...map.values()];
     this.filteredCouponsSubject.next([...map.values()]);
     this.couponsService.displayedCoupons = filtered;
-    this.updateFilterKeys(filtered);
+    return this.updateFilterKeys(filtered);
   }
 
   private updateFilterKeys(displayedCoupons: Coupon[]): Observable<FilterKeys | null> {
@@ -135,6 +136,7 @@ export class FilterService {
             take(1),
             map(originCoupons => {
               let keys: FilterKeys | null = null;
+              console.log('HERE!!!!!!!!!');
 
               if (displayedCoupons.length > 0) {
                 let minPrice = displayedCoupons[0].params.price;

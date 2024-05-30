@@ -54,16 +54,17 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.couponSub = this.filterService.getFiltersToDisplay$
-    .subscribe(filters => {
-      console.log('here');
-      this.filtersKeyValue = filters;
-      if (!this.form) {
-        this.form     = this.initForm(this.filtersKeyValue);
-        this.prevForm = this.initForm(this.filtersKeyValue);
-      }
-      this.form.patchValue(filters);
-    });
+    this.couponSub = this.couponsService.displayedCoupons$.pipe(concatMap(() => {
+      return this.filterService.getFiltersToDisplay$.pipe(concatMap(() => this.filterService.getFiltersToDisplay$))
+    }))
+        .subscribe(filters => {
+          this.filtersKeyValue = filters;
+          if (!this.form) {
+            this.form     = this.initForm(this.filtersKeyValue);
+            this.prevForm = this.initForm(this.filtersKeyValue);
+          }
+          this.form.patchValue(filters);
+        });
   }
 
   openModal() {
