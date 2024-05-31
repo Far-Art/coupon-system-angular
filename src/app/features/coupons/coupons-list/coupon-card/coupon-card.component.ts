@@ -58,10 +58,10 @@ export class CouponCardComponent implements OnInit, OnDestroy {
     this.isShowTimer = this.coupon.params.endDate.getTime() - new Date().getTime() < 86_400_000;
     if (this.isShowTimer) {
       this.timerValue = new Date(this.coupon.params.endDate.getTime() - new Date().getTime());
-      const timeout   = setInterval(() => {
-        if (new Date().getTime() <= this.timerValue!.getTime()) {
+      const timeoutInterval   = setInterval(() => {
+        if (new Date() <= this.timerValue) {
           this.isSaleEnded = true
-          clearInterval(timeout);
+          clearInterval(timeoutInterval);
           return;
         }
         this.timerValue = new Date(this.timerValue!.getTime() - 1000);
@@ -73,11 +73,12 @@ export class CouponCardComponent implements OnInit, OnDestroy {
     if (!this.isSaleEnded) {
 
       // TODO rework after resolving animation
-      let timeout;
+      let timeout: any;
       this.isAddedToCart = !this.isAddedToCart;
       // this.isAddedToCart ? this.cartService.addToCart(this.coupon) : this.cartService.removeFromCart(this.coupon);
       if (this.isAddedToCart) {
         this.couponsService.addToCart(this.coupon);
+        // noinspection JSUnusedAssignment
         timeout = setTimeout(() => this.isShowCartRemoveIcon = true, 400);
       } else {
         if (timeout) {

@@ -2,7 +2,7 @@
   <div *ngIf="form == null" class="modal-header">
     <h4 class="modal-title text-primary user-select-none">
       <div class="spinner-border" role="status"></div>
-      {{ '&nbsp;&nbsp;Loading filters...' | titlecase }}
+      {{ '&nbsp;&nbsp;Loading filters..' | titlecase }}
     </h4>
   </div>
   <form *ngIf="form != null" [formGroup]="form" (ngSubmit)="onSubmit()" (reset)="onFormReset()">
@@ -28,17 +28,15 @@
             <div class="accordion-body" formArrayName="categories">
               <div class="form-check user-select-none m-2"
                    [formGroupName]="i"
-                   *ngFor="let c of getControlArray('categories').controls; let i = index">
+                   *ngFor="let c of form.controls.categories.controls; let i = index">
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
-                       [disabled]="filtersKeyValue.categories[i].isDisabled"
-                       id="{{filtersKeyValue.categories[i].name}}"
+                       id="{{c.value.name}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
-                       [ngClass]="{'text-primary': getControl('categories.' + i + '.isChecked').value}"
-                       for="{{filtersKeyValue.categories[i].name}}">{{
-                    filtersKeyValue.categories[i].name | titlecase
-                  }}</label>
+                       [ngClass]="{'text-primary': c.value.isChecked}"
+                       for="{{c.value.name}}">{{ c.value.name | titlecase }}
+                </label>
               </div>
               <hr>
               <a class="text-hover left-90 position-relative" (click)="onCategoryReset()">reset</a>
@@ -62,18 +60,15 @@
             <div class="accordion-body" formArrayName="companyNames">
               <div class="form-check user-select-none m-2"
                    [formGroupName]="i"
-                   *ngFor="let c of getControlArray('companyNames').controls; let i = index">
+                   *ngFor="let c of form.controls.companyNames.controls; let i = index">
                 <input class="form-check-input drop-shadow-low"
-                       [disabled]="filtersKeyValue.companyNames[i].isDisabled"
                        type="checkbox"
-                       id="{{filtersKeyValue.companyNames[i].name + i}}"
+                       id="{{c.value.name + i}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
-                       [ngClass]="{'text-primary': getControl('companyNames.' + i + '.isChecked').value}"
-                       for="{{filtersKeyValue.companyNames[i].name + i}}">{{
-                    filtersKeyValue.companyNames[i].name |
-                        titlecase
-                  }}</label>
+                       [ngClass]="{'text-primary': c.value.isChecked}"
+                       for="{{c.value.name + i}}">{{ c.value.name | titlecase }}
+                </label>
               </div>
               <hr>
               <a class="text-hover position-relative left-90" (click)="onCompanyReset()">reset</a>
@@ -84,6 +79,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
+                    (click)="recalculateFilters()"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#priceCollapse"
@@ -104,8 +100,8 @@
                              formControlName="start"
                              id="minPrice"
                              placeholder="min price"
-                             [min]="filtersKeyValue?.priceRange.start"
-                             [max]="filtersKeyValue?.priceRange.end - 1">
+                             [min]="form.controls.priceRange.value.start"
+                             [max]="form.controls.priceRange.value.end - 1">
                       <label for="minPrice">Min price</label>
                     </div>
                   </div>
@@ -119,8 +115,8 @@
                              id="maxPrice"
                              placeholder="max price"
                              formControlName="end"
-                             [min]="filtersKeyValue.priceRange.start + 1"
-                             [max]="filtersKeyValue.priceRange.end">
+                             [min]="form.controls.priceRange.value.start + 1"
+                             [max]="form.controls.priceRange.value.end">
                       <label for="minPrice">Max price</label>
                     </div>
                   </div>
@@ -135,6 +131,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
+                    (click)="recalculateFilters()"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#dateCollapse"
@@ -152,10 +149,10 @@
                   </div>
                   <div class="col-sm-5 mb-2">
                     <sc-date-picker formControlName="start"
-                                    [value]="getControl('dateRange.start').value"
+                                    [value]="form.controls.dateRange.value.start"
                                     id="startDate"
-                                    [minDate]="filtersKeyValue.dateRange.start"
-                                    [maxDate]="filtersKeyValue.dateRange.end">
+                                    [minDate]="form.controls.dateRange.value.start"
+                                    [maxDate]="form.controls.dateRange.value.end">
                     </sc-date-picker>
                   </div>
                 </div>
@@ -165,10 +162,10 @@
                   </div>
                   <div class="col-sm-5">
                     <sc-date-picker formControlName="end"
-                                    [value]="getControl('dateRange.end').value"
+                                    [value]="form.controls.dateRange.value.end"
                                     id="endDate"
-                                    [minDate]="filtersKeyValue.dateRange.start"
-                                    [maxDate]="filtersKeyValue.dateRange.end">
+                                    [minDate]="form.controls.dateRange.value.start"
+                                    [maxDate]="form.controls.dateRange.value.end">
                     </sc-date-picker>
                     <br>
                   </div>
@@ -182,7 +179,7 @@
       <br>
 
       <div class="input-group mb-3 drop-shadow-low">
-        <button [disabled]="!getControl('freeText').value"
+        <button [disabled]="!form.controls.freeText.value"
                 (click)="modal.close('Close click')"
                 class="btn btn-secondary"
                 type="submit"

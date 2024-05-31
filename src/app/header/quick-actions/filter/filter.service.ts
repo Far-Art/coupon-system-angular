@@ -1,28 +1,30 @@
 import {Injectable} from '@angular/core';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {BehaviorSubject, concatMap, map, Observable, take} from 'rxjs';
+import {BehaviorSubject, concatMap, map, Observable, take, tap} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
+interface Key {
+  name: string,
+  isChecked: boolean,
+  isDisabled?: boolean
+}
+
+interface DateKey {
+  start: Date,
+  end: Date
+}
+
+interface PriceKey {
+  start: number,
+  end: number
+}
+
 export interface FilterKeys {
-  categories: {
-    name: string,
-    isChecked: boolean,
-    isDisabled?: boolean
-  }[],
-  companyNames: {
-    name: string,
-    isChecked: boolean,
-    isDisabled?: boolean
-  }[],
-  priceRange: {
-    start: number,
-    end: number
-  },
-  dateRange: {
-    start: Date,
-    end: Date
-  },
+  categories: Key[],
+  companyNames: Key[],
+  priceRange: PriceKey,
+  dateRange: DateKey,
   freeText: string
 }
 
@@ -61,73 +63,56 @@ export class FilterService {
         }));
   }
 
-  updateDisplayedCoupons(filters: FilterKeys) {
+  updateDisplayedCoupons(filters: FilterKeys | null): void {
     this._activeFilters = filters;
 
+    // if no filters, supply all coupons
     if (filters == null) {
-      this.couponsService.originCoupons$.pipe(take(1)).subscribe(coupons => {
-        this.filteredCouponsSubject.next(coupons);
-        this.couponsService.displayedCoupons = coupons;
-      });
-      return null;
+      this.couponsService.originCoupons$.pipe(take(1)).pipe(tap(coupons => {
+        this.notify(coupons);
+      })).subscribe(() => null);
+      return;
     }
 
-    const map = new Map<number, Coupon>();
+    this.couponsService.originCoupons$.pipe(take(1),
+        tap(coupons => {
+          this.notify(this.filter(coupons, filters));
+        })).subscribe(() => null);
+  }
 
+  private notify(coupons: Coupon[]) {
+    this.filteredCouponsSubject.next(coupons);
+    this.couponsService.displayedCoupons = coupons;
+  }
+
+  private filter(coupons: Coupon[], filters: FilterKeys) {
     // if free text supplied, don't apply other filters
-    if (filters.freeText) {
-      this.couponsService.originCoupons$.pipe(take(1))
-          .subscribe(coupons => {
-            const txt = filters.freeText.toLowerCase();
-            coupons.forEach(c => {
-              const prm = c.params;
-              if (prm.title.toLowerCase().includes(txt)
-                  || prm.description.toLowerCase().includes(txt)
-                  || prm.companyName.toLowerCase().includes(txt)) {
-                map.set(c.params.id, c);
-              }
-            });
-          });
-    } else {
-      this.couponsService.originCoupons$.pipe(take(1)).subscribe(coupons => {
-        if (filters.categories?.length > 0) {
-          coupons.forEach((coupon: Coupon) => {
-            if (filters.categories.map(obj => obj.name).includes(coupon.params.category)) {
-              map.set(coupon.params.id, coupon);
-            }
-          });
-        }
+    return coupons.filter(c => {
+      return this.hasFreeText(c, filters) ||
+          this.hasCategory(c, filters.categories) &&
+          this.hasCompanyName(c, filters.companyNames) &&
+          this.hasPriceOrDateRange(c, filters.priceRange) &&
+          this.hasPriceOrDateRange(c, filters.dateRange);
+    });
+  }
 
-        if (filters.companyNames?.length > 0) {
-          (map.size === 0 ? coupons : map).forEach((coupon: Coupon) => {
-            if (filters.companyNames.map(obj => obj.name).includes(coupon.params.companyName)) {
-              map.set(coupon.params.id, coupon);
-            }
-          });
-        }
+  private hasCategory(coupon: Coupon, categories: Key[]): boolean {
+    return (categories.length === 0 || categories.every(c => !c.isChecked) || categories.every(c => c.isChecked)) || categories.some(c => c.isChecked && c.name.toLowerCase().localeCompare(coupon.params.category.toLowerCase()) === 0);
+  }
 
-        if (filters.priceRange) {
-          (map.size === 0 ? coupons : map).forEach((coupon: Coupon) => {
-            if (filters.priceRange.start <= coupon.params.price && filters.priceRange.end >= coupon.params.price) {
-              map.set(coupon.params.id, coupon);
-            }
-          });
-        }
+  private hasCompanyName(coupon: Coupon, companies: Key[]): boolean {
+    return (companies.length === 0 || companies.every(c => !c.isChecked) || companies.every(c => c.isChecked)) || companies.some(c => c.isChecked && c.name.toLowerCase().localeCompare(coupon.params.companyName.toLowerCase()) === 0);
+  }
 
-        if (filters.dateRange) {
-          (map.size === 0 ? coupons : map).forEach((coupon: Coupon) => {
-            if (filters.dateRange.start <= coupon.params.startDate && filters.dateRange.end >= coupon.params.endDate) {
-              map.set(coupon.params.id, coupon);
-            }
-          });
-        }
-      });
-    }
+  private hasPriceOrDateRange(coupon: Coupon, range: PriceKey | DateKey): boolean {
+    return range == null || coupon.params.price >= range.start && coupon.params.price <= range.end;
+  }
 
-    const filtered = [...map.values()];
-    this.filteredCouponsSubject.next([...map.values()]);
-    this.couponsService.displayedCoupons = filtered;
-    return this.updateFilterKeys(filtered);
+  private hasFreeText(coupon: Coupon, filter: FilterKeys): boolean {
+    const prm = coupon.params;
+    return filter.freeText && (prm.title.toLowerCase().includes(filter.freeText.toLowerCase())
+        || prm.description.toLowerCase().includes(filter.freeText.toLowerCase())
+        || prm.companyName.toLowerCase().includes(filter.freeText.toLowerCase()));
   }
 
   private updateFilterKeys(displayedCoupons: Coupon[]): Observable<FilterKeys | null> {
@@ -136,7 +121,6 @@ export class FilterService {
             take(1),
             map(originCoupons => {
               let keys: FilterKeys | null = null;
-              console.log('HERE!!!!!!!!!');
 
               if (displayedCoupons.length > 0) {
                 let minPrice = displayedCoupons[0].params.price;
@@ -179,6 +163,8 @@ export class FilterService {
                   freeText: null
                 }
               }
+
+              this._activeFilters = keys;
               return keys;
             }));
 

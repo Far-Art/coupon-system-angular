@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {LogoService} from "./logo.service";
-import {Subscription} from "rxjs";
+import {LogoService} from './logo.service';
+import {Subscription} from 'rxjs';
+import {CouponsService} from '../features/coupons/coupons.service';
+
 
 @Component({
   selector: 'cs-header',
@@ -9,18 +11,22 @@ import {Subscription} from "rxjs";
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  private subscription!: Subscription;
+  constructor(private logoService: LogoService, private couponsService: CouponsService) {}
 
-  constructor(private logoService: LogoService) {}
+  private couponSub: Subscription;
+  private logoSub: Subscription;
 
-  isBlinked = false;
+  isBlinked  = false;
+  couponsNum = 0
 
   ngOnInit(): void {
-    this.logoService.blinked$.subscribe(() => this.logoBlink());
+    this.logoSub   = this.logoService.blinked$.subscribe(() => this.logoBlink());
+    this.couponSub = this.couponsService.displayedCoupons$.subscribe(coupons => this.couponsNum = coupons.length);
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.couponSub.unsubscribe();
+    this.logoSub.unsubscribe();
   }
 
   private logoBlink() {
