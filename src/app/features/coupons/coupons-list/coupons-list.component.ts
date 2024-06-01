@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CouponsService} from '../coupons.service';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {Subscription} from 'rxjs';
+import {map, Subscription} from 'rxjs';
 
 
 @Component({
@@ -11,17 +11,38 @@ import {Subscription} from 'rxjs';
 })
 export class CouponsListComponent implements OnInit, OnDestroy {
 
-  coupons: Coupon[] = [];
+  coupons: { coupon: Coupon, isInCart: boolean, isInWish: boolean }[] = [];
 
-  private subscription!: Subscription;
+  private displayedSub: Subscription;
+  private cartSub: Subscription;
+  private wishSub: Subscription;
 
   constructor(private couponService: CouponsService) {}
 
   ngOnInit(): void {
-    this.subscription = this.couponService.displayedCoupons$.subscribe(list => this.coupons = list);
+    this.displayedSub = this.couponService.displayedCoupons$.pipe(map(coupons => {
+      return coupons.map(c => {
+        return {
+          coupon: c,
+          isInCart: this.couponService.isPresentInCart(c),
+          isInWish: this.couponService.isPresentInWish(c)
+        }
+      });
+    })).subscribe(list => this.coupons = list);
+  }
+
+  onCartListener(event: { isAdded: boolean, coupon: Coupon }) {
+    console.log(event);
+    event.isAdded ? this.couponService.addToCart(event.coupon) : this.couponService.removeFromCart(event.coupon);
+  }
+
+  onWishListener(event: { isAdded: boolean, coupon: Coupon }) {
+    event.isAdded ? this.couponService.addToWish(event.coupon) : this.couponService.removeFromWish(event.coupon);
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.displayedSub.unsubscribe();
+    this.cartSub.unsubscribe();
+    this.wishSub.unsubscribe();
   }
 }

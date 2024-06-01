@@ -1,64 +1,51 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Coupon} from '../../../../shared/models/coupon.model';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {CouponsService} from '../../coupons.service';
 
 
 @Component({
   selector: 'sc-coupon-card',
   templateUrl: './coupon-card.component.html',
   styleUrls: ['./coupon-card.component.scss'],
-
-  // TODO fix animations
   animations: [
-    trigger('icon', [
+    trigger('popUp', [
       transition(':enter', [
-        animate('400ms ease', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        animate('400ms ease', style({opacity: 0}))
-      ])
-    ]),
-    trigger('addToCart', [
-      transition(':enter', [
-        animate('400ms ease', style({transform: 'scale(150%)', opacity: 0}))
-      ])
-    ]),
-    trigger('showRemoveIcon', [
-      transition(':enter', [
-        animate('400ms ease', style({opacity: 1}))
-      ])
-    ]),
-    trigger('showHeartIcon', [
-      transition(':enter', [
-        animate('400ms ease', style({transform: 'scale(150%)', opacity: 0}))
+        style({opacity: 1, scale: 1}),
+        animate('300ms ease-in-out', style({opacity: 1, scale: 3})),
+        animate('300ms ease-in-out', style({opacity: 0, scale: 0.5}))
       ])
     ])
   ]
 })
 export class CouponCardComponent implements OnInit, OnDestroy {
 
-  @Input() coupon!: Coupon;
+  // 86_400_000 millis is equal to 24 hours
+  private activateTimer = 86_400_000;
 
-  isAddedToCart        = false;
-  isAddedToWish        = false;
-  isDescriptionShown   = false;
-  isShowTimer          = true;
+  @Input() coupon: Coupon;
+  @Input() isAddedToCart? = false;
+  @Input() isAddedToWish? = false;
+
+  isDescriptionShown = false;
+  isShowTimer        = true;
   timerValue: Date | undefined;
-  isSaleEnded          = false;
-  isShowCartRemoveIcon = false; // TODO rework after angular.io site is available again
+  isSaleEnded        = false;
 
-  constructor(private couponsService: CouponsService) {}
+  cartOnAddAnimationTrigger    = false;
+  wishOnAddAnimationTrigger    = false;
+  cartOnRemoveAnimationTrigger = false;
+  wishOnRemoveAnimationTrigger = false;
+
+  @Output() onCartClickEmitter = new EventEmitter<{ isAdded: boolean, coupon: Coupon }>();
+  @Output() onWishClickEmitter = new EventEmitter<{ isAdded: boolean, coupon: Coupon }>();
+
+  constructor() {}
 
   ngOnInit(): void {
-    this.isAddedToCart = this.couponsService.isPresentInCart(this.coupon);
-    this.isAddedToWish = this.couponsService.isPresentInWish(this.coupon);
-
-    // 86_400_000 = 24 hours in millis
-    this.isShowTimer = this.coupon.params.endDate.getTime() - new Date().getTime() < 86_400_000;
+    this.isShowTimer = this.coupon.params.endDate.getTime() - new Date().getTime() < this.activateTimer;
     if (this.isShowTimer) {
-      this.timerValue = new Date(this.coupon.params.endDate.getTime() - new Date().getTime());
-      const timeoutInterval   = setInterval(() => {
+      this.timerValue       = new Date(this.coupon.params.endDate.getTime() - new Date().getTime());
+      const timeoutInterval = setInterval(() => {
         if (new Date() <= this.timerValue) {
           this.isSaleEnded = true
           clearInterval(timeoutInterval);
@@ -71,28 +58,44 @@ export class CouponCardComponent implements OnInit, OnDestroy {
 
   onCartClick() {
     if (!this.isSaleEnded) {
+      this.isAddedToCart                = !this.isAddedToCart;
+      this.cartOnRemoveAnimationTrigger = this.isAddedToCart === false;
 
-      // TODO rework after resolving animation
-      let timeout: any;
-      this.isAddedToCart = !this.isAddedToCart;
-      // this.isAddedToCart ? this.cartService.addToCart(this.coupon) : this.cartService.removeFromCart(this.coupon);
       if (this.isAddedToCart) {
-        this.couponsService.addToCart(this.coupon);
-        // noinspection JSUnusedAssignment
-        timeout = setTimeout(() => this.isShowCartRemoveIcon = true, 400);
-      } else {
-        if (timeout) {
-          clearTimeout(timeout);
-        }
-        this.couponsService.removeFromCart(this.coupon);
-        this.isShowCartRemoveIcon = false;
+        this.cartOnAddAnimationTrigger = true;
+        setTimeout(() => {
+          this.cartOnAddAnimationTrigger = false;
+        }, 600);
       }
+
+      if (this.cartOnRemoveAnimationTrigger) {
+        setTimeout(() => {
+          this.cartOnRemoveAnimationTrigger = false;
+        }, 600);
+      }
+
+      this.onCartClickEmitter.emit({isAdded: this.isAddedToCart, coupon: this.coupon});
     }
   }
 
   onWishListClick() {
-    this.isAddedToWish = !this.isAddedToWish;
-    this.isAddedToWish ? this.couponsService.addToWish(this.coupon) : this.couponsService.removeFromWish(this.coupon);
+    this.isAddedToWish                = !this.isAddedToWish;
+    this.wishOnRemoveAnimationTrigger = this.isAddedToWish === false;
+
+    if (this.isAddedToWish) {
+      this.wishOnAddAnimationTrigger = true;
+      setTimeout(() => {
+        this.wishOnAddAnimationTrigger = false;
+      }, 600);
+    }
+
+    if (this.wishOnRemoveAnimationTrigger) {
+      setTimeout(() => {
+        this.wishOnRemoveAnimationTrigger = false;
+      }, 600);
+    }
+
+    this.onWishClickEmitter.emit({isAdded: this.isAddedToWish, coupon: this.coupon});
   }
 
   onTitleClick() {

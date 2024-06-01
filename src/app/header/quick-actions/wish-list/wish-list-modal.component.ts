@@ -21,7 +21,8 @@ export class WishListModalComponent implements OnInit, OnDestroy {
   constructor(private couponsService: CouponsService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
-    this.wishSubscription = this.couponsService.couponsInWish$.subscribe(coupons => this.wishList = coupons);
+    this.wishSubscription = this.couponsService.couponsInWish$
+        .subscribe(data => this.wishList = data.coupons);
   }
 
   openModal() {

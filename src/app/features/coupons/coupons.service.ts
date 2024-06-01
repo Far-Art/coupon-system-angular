@@ -297,8 +297,14 @@ export class CouponsService {
 
   private displayedCouponsSubject = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
   private originCouponsSubject    = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
-  private cartSubject             = new BehaviorSubject<Coupon[]>([]);
-  private wishSubject             = new BehaviorSubject<Coupon[]>([]);
+  private cartSubject             = new BehaviorSubject<{ coupons: Coupon[], lastId: number | null }>({
+    coupons: [],
+    lastId: null
+  });
+  private wishSubject             = new BehaviorSubject<{ coupons: Coupon[], lastId: number | null }>({
+    coupons: [],
+    lastId: null
+  });
 
   get originCoupons$() {
     return this.originCouponsSubject.asObservable();
@@ -308,11 +314,11 @@ export class CouponsService {
     return this.displayedCouponsSubject.asObservable();
   }
 
-  get couponsInCart$(): Observable<Coupon[]> {
+  get couponsInCart$(): Observable<{ coupons: Coupon[], lastId: number | null }> {
     return this.cartSubject.asObservable();
   }
 
-  get couponsInWish$(): Observable<Coupon[]> {
+  get couponsInWish$(): Observable<{ coupons: Coupon[], lastId: number | null }> {
     return this.wishSubject.asObservable();
   }
 
@@ -321,38 +327,44 @@ export class CouponsService {
   }
 
   addToCart(coupon: Coupon) {
-    const set = new Set<Coupon>(this.cartSubject.value);
+    const set = new Set<Coupon>(this.cartSubject.value.coupons);
     set.add(coupon);
     this.logo.blink();
-    this.cartSubject.next([...set]);
+    this.cartSubject.next({coupons: [...set], lastId: null});
   }
 
-  isPresentInCart(coupon: Coupon): boolean {
-    return this.cartSubject.value.find(c => c.params.id === coupon.params.id) !== undefined;
-  }
-
-  get couponsInCart(): number {
-    return this.cartSubject.value.length;
+  addToWish(coupon: Coupon) {
+    const set = new Set<Coupon>(this.wishSubject.value.coupons);
+    set.add(coupon);
+    this.logo.blink();
+    this.wishSubject.next({coupons: [...set], lastId: null});
   }
 
   removeFromCart(coupon: Coupon) {
     this.removeCoupon(coupon, this.cartSubject.value);
+    console.log(this.cartSubject.value);
     this.cartSubject.next(this.cartSubject.value);
   }
 
-  addToWish(coupon: Coupon) {
-    const set = new Set<Coupon>(this.wishSubject.value);
-    set.add(coupon);
-    this.logo.blink();
-    this.wishSubject.next([...set]);
+  removeFromWish(coupon: Coupon) {
+    this.removeCoupon(coupon, this.wishSubject.value);
+    this.wishSubject.next(this.wishSubject.value);
+  }
+
+  isPresentInCart(coupon: Coupon): boolean {
+    return this.cartSubject.value.coupons.find(c => c.params.id === coupon.params.id) !== undefined;
   }
 
   isPresentInWish(coupon: Coupon): boolean {
-    return this.wishSubject.value.find(c => c.params.id === coupon.params.id) !== undefined;
+    return this.wishSubject.value.coupons.find(c => c.params.id === coupon.params.id) !== undefined;
+  }
+
+  get couponsInCart(): number {
+    return this.cartSubject.value.coupons.length;
   }
 
   get couponsInWish(): number {
-    return this.wishSubject.value.length;
+    return this.wishSubject.value.coupons.length;
   }
 
   moveToWish(coupon: Coupon) {
@@ -363,15 +375,17 @@ export class CouponsService {
     this.addToCart(coupon);
   }
 
-  removeFromWish(coupon: Coupon) {
-    this.removeCoupon(coupon, this.wishSubject.value);
-    this.wishSubject.next(this.wishSubject.value);
-  }
-
-  private removeCoupon(coupon: Coupon, list: Coupon[]) {
-    const i = list.findIndex(c => c.params.id === coupon.params.id);
+  /**
+   * remove coupon and return its id or null if absent
+   * @param coupon
+   * @param list
+   * @private
+   */
+  private removeCoupon(coupon: Coupon, list: { coupons: Coupon[], lastId: number | null }) {
+    const i = list.coupons.findIndex(c => c.params.id === coupon.params.id);
     if (i >= 0) {
-      list.splice(i, 1);
+      list.coupons.splice(i, 1);
+      list.lastId = coupon.params.id
     }
   }
 
