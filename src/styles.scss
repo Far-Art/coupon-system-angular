@@ -28,6 +28,10 @@ rgba(0, 0, 0, 0.05) 0px 8px 16px,
 rgba(0, 0, 0, 0.05) 0px 16px 32px,
 rgba(0, 0, 0, 0.05) 0px 32px 64px;
 
+.color-white {
+  color: $color-white !important;
+}
+
 .drop-shadow-low {
   box-shadow: $shadow-elevation-low;
 }

@@ -11,8 +11,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
     trigger('popUp', [
       transition(':enter', [
         style({opacity: 1, scale: 1}),
-        animate('300ms ease-in-out', style({opacity: 1, scale: 3})),
-        animate('300ms ease-in-out', style({opacity: 0, scale: 0.5}))
+        animate('500ms ease-out', style({opacity: 0, scale: 3.5}))
       ])
     ])
   ]
@@ -21,6 +20,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
 
   // 86_400_000 millis is equal to 24 hours
   private activateTimer = 86_400_000;
+  private animationDismissTime = 500;
 
   @Input() coupon: Coupon;
   @Input() isAddedToCart? = false;
@@ -65,13 +65,13 @@ export class CouponCardComponent implements OnInit, OnDestroy {
         this.cartOnAddAnimationTrigger = true;
         setTimeout(() => {
           this.cartOnAddAnimationTrigger = false;
-        }, 600);
+        }, this.animationDismissTime);
       }
 
       if (this.cartOnRemoveAnimationTrigger) {
         setTimeout(() => {
           this.cartOnRemoveAnimationTrigger = false;
-        }, 600);
+        }, this.animationDismissTime);
       }
 
       this.onCartClickEmitter.emit({isAdded: this.isAddedToCart, coupon: this.coupon});
@@ -86,13 +86,13 @@ export class CouponCardComponent implements OnInit, OnDestroy {
       this.wishOnAddAnimationTrigger = true;
       setTimeout(() => {
         this.wishOnAddAnimationTrigger = false;
-      }, 600);
+      }, this.animationDismissTime);
     }
 
     if (this.wishOnRemoveAnimationTrigger) {
       setTimeout(() => {
         this.wishOnRemoveAnimationTrigger = false;
-      }, 600);
+      }, this.animationDismissTime);
     }
 
     this.onWishClickEmitter.emit({isAdded: this.isAddedToWish, coupon: this.coupon});
