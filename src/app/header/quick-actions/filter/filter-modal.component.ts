@@ -121,7 +121,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
 
   openModal() {
     this.modal = this.modalService.open(this.filterContent, {
-      scrollable: true, modalDialogClass: 'top-5rem'
+      scrollable: true, modalDialogClass: ''
     });
   }
 

@@ -26,7 +26,7 @@ export class WishListModalComponent implements OnInit, OnDestroy {
   }
 
   openModal() {
-    this.modalService.open(this.wishContent, {scrollable: true, modalDialogClass: 'top-5rem'});
+    this.modalService.open(this.wishContent, {scrollable: true, modalDialogClass: ''});
   }
 
   ngOnDestroy(): void {

@@ -29,7 +29,7 @@ export class CartModalComponent implements OnInit, OnDestroy {
   }
 
   openModal() {
-    this.modalService.open(this.cartContent, {scrollable: true, modalDialogClass: 'top-5rem'});
+    this.modalService.open(this.cartContent, {scrollable: true, modalDialogClass: ''});
   }
 
   ngOnDestroy(): void {

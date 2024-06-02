@@ -40,10 +40,10 @@ $primary: $color-red-500;
 .modal {
   backdrop-filter: blur(3px) grayscale(1);
   background-color: rgba(38, 28, 64, 0.55);
+  overflow: hidden;
 }
 
 .modal-dialog {
-  max-height: calc(100% - 7rem);
 }
 
 //  sm: 576px
