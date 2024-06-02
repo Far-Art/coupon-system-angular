@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/cor
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {FilterKeys, FilterService} from './filter.service';
 import {Subscription, take} from 'rxjs';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 
 
 interface MainFormType {
@@ -61,19 +61,6 @@ export class FilterModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  openModal() {
-    this.modal = this.modalService.open(this.filterContent, {
-      scrollable: true, modalDialogClass: 'top-5rem'
-    });
-  }
-
-  recalculateFilters() {
-    this.filterService.getFiltersToDisplay$.pipe(take(1)).subscribe(filters => {
-      this.filtersKeyValue = filters;
-      this.onSubmit();
-    });
-  }
-
   onSubmit() {
     const applied: FilterKeys = this.form.value as FilterKeys;
 
@@ -95,6 +82,12 @@ export class FilterModalComponent implements OnInit, OnDestroy {
     this.filterService.updateDisplayedCoupons(this.form.pristine ? null : applied);
   }
 
+  onFormReset() {
+    this.form = this.initForm(this.filtersKeyValue);
+    // TODO sending null breaks form controls
+    this.filterService.updateDisplayedCoupons(null);
+  }
+
   onCategoryReset() {
     this.form.controls.categories.reset();
   }
@@ -105,7 +98,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
 
   onPriceReset() {
     this.form.controls.priceRange.reset();
-    this.form.controls.priceRange.patchValue({
+    this.form.controls.priceRange.setValue({
       start: this.filtersKeyValue.priceRange.start,
       end: this.filtersKeyValue.priceRange.end
     });
@@ -114,16 +107,10 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   // TODO reset date values
   onDateReset() {
     this.form.controls.dateRange.reset();
-    this.form.controls.dateRange.patchValue({
+    this.form.controls.dateRange.setValue({
       start: this.filtersKeyValue.dateRange.start,
       end: this.filtersKeyValue.dateRange.end
     });
-  }
-
-  onFormReset() {
-    this.initForm(this.filtersKeyValue);
-    // TODO sending null breaks form controls
-    this.filterService.updateDisplayedCoupons(null);
   }
 
   // TODO reset form values to previous ones
@@ -132,18 +119,27 @@ export class FilterModalComponent implements OnInit, OnDestroy {
     this.modal.close('Close click');
   }
 
+  openModal() {
+    this.modal = this.modalService.open(this.filterContent, {
+      scrollable: true, modalDialogClass: 'top-5rem'
+    });
+  }
+
+  recalculateFilters() {
+    this.filterService.getFiltersToDisplay$.pipe(take(1)).subscribe(filters => {
+      if (filters) {
+        // TODO update form controls
+        this.filtersKeyValue = filters;
+      }
+    });
+  }
+
   private initForm(initial: FilterKeys): FormGroup<MainFormType> {
     const form = new FormGroup({
       categories: new FormArray([]),
       companyNames: new FormArray([]),
-      priceRange: new FormGroup({
-        start: new FormControl<number>(initial?.priceRange.start, [Validators.min(initial?.priceRange.start), Validators.max(initial?.priceRange.end)]),
-        end: new FormControl<number>(initial?.priceRange.end, [Validators.min(initial?.priceRange.start), Validators.max(initial?.priceRange.end)])
-      }),
-      dateRange: new FormGroup({
-        start: new FormControl<Date>(initial?.dateRange.start),
-        end: new FormControl<Date>(initial?.dateRange.end)
-      }),
+      priceRange: this.initPriceRange(initial),
+      dateRange: this.initDateRange(initial),
       freeText: new FormControl<string>(null)
     });
 
@@ -153,7 +149,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
         isChecked: new FormControl(false),
         isDisabled: new FormControl(false)
       }));
-    })
+    });
 
     initial?.companyNames.forEach(key => {
       (form.controls.companyNames as FormArray).push(new FormGroup({
@@ -161,8 +157,23 @@ export class FilterModalComponent implements OnInit, OnDestroy {
         isChecked: new FormControl(false),
         isDisabled: new FormControl(false)
       }));
-    })
+    });
+
     return form;
+  }
+
+  private initPriceRange(initial: FilterKeys) {
+    return new FormGroup({
+      start: new FormControl<number>(initial?.priceRange.start),
+      end: new FormControl<number>(initial?.priceRange.end)
+    });
+  }
+
+  private initDateRange(initial: FilterKeys) {
+    return new FormGroup({
+      start: new FormControl<Date>(initial?.dateRange.start),
+      end: new FormControl<Date>(initial?.dateRange.end)
+    });
   }
 
   ngOnDestroy(): void {
