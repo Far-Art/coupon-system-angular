@@ -100,8 +100,8 @@
                              formControlName="start"
                              id="minPrice"
                              placeholder="min price"
-                             [min]="form.controls.priceRange.value.start"
-                             [max]="form.controls.priceRange.value.end - 1">
+                             [min]="filtersKeyValue.priceRange.start"
+                             [max]="filtersKeyValue.priceRange.end">
                       <label for="minPrice">Min price</label>
                     </div>
                   </div>
@@ -115,8 +115,8 @@
                              id="maxPrice"
                              placeholder="max price"
                              formControlName="end"
-                             [min]="form.controls.priceRange.value.start + 1"
-                             [max]="form.controls.priceRange.value.end">
+                             [min]="filtersKeyValue.priceRange.start"
+                             [max]="filtersKeyValue.priceRange.end">
                       <label for="minPrice">Max price</label>
                     </div>
                   </div>
@@ -151,8 +151,8 @@
                     <sc-date-picker formControlName="start"
                                     [value]="form.controls.dateRange.value.start"
                                     id="startDate"
-                                    [minDate]="form.controls.dateRange.value.start"
-                                    [maxDate]="form.controls.dateRange.value.end">
+                                    [minDate]="filtersKeyValue.dateRange.start"
+                                    [maxDate]="filtersKeyValue.dateRange.end">
                     </sc-date-picker>
                   </div>
                 </div>
@@ -164,8 +164,8 @@
                     <sc-date-picker formControlName="end"
                                     [value]="form.controls.dateRange.value.end"
                                     id="endDate"
-                                    [minDate]="form.controls.dateRange.value.start"
-                                    [maxDate]="form.controls.dateRange.value.end">
+                                    [minDate]="filtersKeyValue.dateRange.start"
+                                    [maxDate]="filtersKeyValue.dateRange.end">
                     </sc-date-picker>
                     <br>
                   </div>
@@ -201,8 +201,7 @@
 
     <div class="modal-footer">
       <button type="reset" class="btn btn-danger" (click)="modal.close('Close click')">Reset</button>
-      <button type="button" class="btn btn-light" (click)="onCancel()">Cancel
-      </button>
+      <button type="button" class="btn btn-light" (click)="onCancel()">Cancel</button>
       <button type="submit" class="btn btn-secondary" (click)="modal.close('Close click')">Apply</button>
     </div>
   </form>

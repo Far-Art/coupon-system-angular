@@ -64,7 +64,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   onSubmit() {
     const applied: FilterKeys = this.form.value as FilterKeys;
 
-    this.prevForm = Object.create(this.form);
+    this.prevForm.patchValue(this.form.value);
 
     if (!applied.freeText) {
       // remove value if user did not change value or is bad value
@@ -84,16 +84,15 @@ export class FilterModalComponent implements OnInit, OnDestroy {
 
   onFormReset() {
     this.form = this.initForm(this.filtersKeyValue);
-    // TODO sending null breaks form controls
     this.filterService.updateDisplayedCoupons(null);
   }
 
   onCategoryReset() {
-    this.form.controls.categories.reset();
+    this.form.controls.categories.controls.forEach(c => c.patchValue({isChecked: false, isDisabled: false}));
   }
 
   onCompanyReset() {
-    this.form.controls.companyNames.reset();
+    this.form.controls.companyNames.controls.forEach(c => c.patchValue({isChecked: false, isDisabled: false}));
   }
 
   onPriceReset() {
@@ -113,9 +112,8 @@ export class FilterModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  // TODO reset form values to previous ones
   onCancel() {
-    // this.form.patchValue(this.prevForm.value);
+    this.form.patchValue(this.prevForm.value);
     this.modal.close('Close click');
   }
 
@@ -128,8 +126,9 @@ export class FilterModalComponent implements OnInit, OnDestroy {
   recalculateFilters() {
     this.filterService.getFiltersToDisplay$.pipe(take(1)).subscribe(filters => {
       if (filters) {
-        // TODO update form controls
-        this.filtersKeyValue = filters;
+        Object.assign(this.filtersKeyValue, filters);
+        this.form.controls.priceRange.patchValue(filters.priceRange);
+        this.form.controls.dateRange.patchValue(filters.dateRange);
       }
     });
   }

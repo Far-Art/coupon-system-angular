@@ -342,7 +342,6 @@ export class CouponsService {
 
   removeFromCart(coupon: Coupon) {
     this.removeCoupon(coupon, this.cartSubject.value);
-    console.log(this.cartSubject.value);
     this.cartSubject.next(this.cartSubject.value);
   }
 

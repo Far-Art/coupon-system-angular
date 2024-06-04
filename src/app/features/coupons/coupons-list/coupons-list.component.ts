@@ -32,7 +32,6 @@ export class CouponsListComponent implements OnInit, OnDestroy {
   }
 
   onCartListener(event: { isAdded: boolean, coupon: Coupon }) {
-    console.log(event);
     event.isAdded ? this.couponService.addToCart(event.coupon) : this.couponService.removeFromCart(event.coupon);
   }
 
