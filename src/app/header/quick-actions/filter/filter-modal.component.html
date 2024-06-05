@@ -1,11 +1,11 @@
-<ng-template #filterContent let-modal>
-  <div *ngIf="form == null" class="modal-header">
-    <h4 class="modal-title text-primary user-select-none">
-      <div class="spinner-border" role="status"></div>
-      {{ '&nbsp;&nbsp;Loading filters..' | titlecase }}
-    </h4>
-  </div>
-  <form *ngIf="form != null" [formGroup]="form" (ngSubmit)="onSubmit()" (reset)="onFormReset()">
+<ng-template #filterModal let-modal>
+  <form class="modal-content" [formGroup]="form" (ngSubmit)="onSubmit()" (reset)="onFormReset()">
+    <div *ngIf="form == null" class="modal-header">
+      <h4 class="modal-title text-primary user-select-none">
+        <div class="spinner-border" role="status"></div>
+        {{ '&nbsp;&nbsp;Loading filters..' | titlecase }}
+      </h4>
+    </div>
     <div class="modal-header">
       <h4 class="modal-title text-primary user-select-none">{{ 'filters' | titlecase }}</h4>
     </div>
@@ -15,6 +15,8 @@
           <h2 class="accordion-header">
             <button class="accordion-button bg-light-semi-transparent"
                     type="button"
+                    unfocus
+                    [disabled]="form.controls.freeText.value"
                     (click)="recalculateFilters()"
                     data-bs-toggle="collapse"
                     data-bs-target="#categoriesCollapse"
@@ -31,6 +33,7 @@
                    *ngFor="let c of form.controls.categories.controls; let i = index">
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
+                       unfocus
                        id="{{c.value.name}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
@@ -48,6 +51,8 @@
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
                     type="button"
+                    unfocus
+                    [disabled]="form.controls.freeText.value"
                     (click)="recalculateFilters()"
                     data-bs-toggle="collapse"
                     data-bs-target="#companiesCollapse"
@@ -63,6 +68,7 @@
                    *ngFor="let c of form.controls.companyNames.controls; let i = index">
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
+                       unfocus
                        id="{{c.value.name + i}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
@@ -79,6 +85,8 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
+                    unfocus
+                    [disabled]="form.controls.freeText.value"
                     (click)="recalculateFilters()"
                     type="button"
                     data-bs-toggle="collapse"
@@ -132,6 +140,8 @@
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
                     (click)="recalculateFilters()"
+                    unfocus
+                    [disabled]="form.controls.freeText.value"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#dateCollapse"
@@ -149,7 +159,6 @@
                   </div>
                   <div class="col-sm-5 mb-2">
                     <sc-date-picker formControlName="start"
-                                    [value]="form.controls.dateRange.value.start"
                                     id="startDate"
                                     [minDate]="filtersKeyValue.dateRange.start"
                                     [maxDate]="filtersKeyValue.dateRange.end">
@@ -162,7 +171,6 @@
                   </div>
                   <div class="col-sm-5">
                     <sc-date-picker formControlName="end"
-                                    [value]="form.controls.dateRange.value.end"
                                     id="endDate"
                                     [minDate]="filtersKeyValue.dateRange.start"
                                     [maxDate]="filtersKeyValue.dateRange.end">
@@ -178,10 +186,11 @@
       </div>
       <br>
 
-      <div class="input-group mb-3 drop-shadow-low">
-        <button [disabled]="!form.controls.freeText.value"
+      <div class="input-group mb-3 drop-shadow-low position-relative">
+        <button [disabled]="!form.controls.freeText.value || form.controls.freeText.invalid"
                 (click)="modal.close('Close click')"
-                class="btn btn-secondary"
+                unfocus
+                class="btn btn-outline-secondary"
                 type="submit"
                 id="freeText">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -195,14 +204,30 @@
                class="form-control"
                placeholder="Free text search"
                aria-label="Free text search"
+               [minlength]="3"
+               [maxlength]="25"
                aria-describedby="freeText">
+        <h3 class="text-primary position-absolute top-25"
+            *ngIf="form.controls.freeText.value"
+            style="right: 1rem; top: 4%; z-index:5; cursor: pointer"
+            (click)="form.controls.freeText.reset()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+               viewBox="0 0 16 16">
+            <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+          </svg>
+        </h3>
       </div>
     </div>
 
     <div class="modal-footer">
-      <button type="reset" class="btn btn-danger" (click)="modal.close('Close click')">Reset</button>
-      <button type="button" class="btn btn-light" (click)="onCancel()">Cancel</button>
-      <button type="submit" class="btn btn-secondary" (click)="modal.close('Close click')">Apply</button>
+      <button unfocus type="reset" class="btn btn-outline-danger" (click)="modal.close('Close click')">Reset</button>
+      <button unfocus type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancel</button>
+      <button unfocus type="submit" class="btn btn-outline-success" (click)="modal.close('Close click')"
+              [disabled]="form.controls.freeText.invalid">
+        Apply
+      </button>
     </div>
   </form>
 </ng-template>
+

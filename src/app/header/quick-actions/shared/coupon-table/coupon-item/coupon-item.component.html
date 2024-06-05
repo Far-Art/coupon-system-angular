@@ -1,8 +1,12 @@
-<div *ngIf="coupon" class="container text-center">
-  <div class="row">
-    <div class="col">{{coupon.params.title}}</div>
-    <div class="col">{{coupon.params.category}}</div>
-    <div class="col">{{coupon.params.price}}</div>
-    <img class="col w-25" src="{{coupon.params.imageUrl}}" alt="{{'Title of ' + coupon.params.title}}">
+<div class="d-flex text-center">
+  <div class="w-50 m-0 align-self-center text-start">{{ coupon.params.title | titlecase }}</div>
+  <div class="vr"></div>
+  <div class="w-50 m-0 align-self-center">{{ coupon.params.category | titlecase }}</div>
+  <div class="vr"></div>
+  <div class="w-50 m-0 align-self-center">{{ coupon.params.price | currency:"ILS" }}</div>
+  <div class="vr"></div>
+  <div class="w-25 m-0 align-self-center">
+    <img src="{{coupon.params.imageUrl}}"
+         alt="{{'Title of ' + coupon.params.title}}">
   </div>
 </div>

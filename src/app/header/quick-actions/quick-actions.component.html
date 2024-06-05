@@ -2,7 +2,8 @@
   <!-- WISH-LIST -->
   <button type="button"
           unfocus
-          class="btn btn-primary position-relative"
+          [disabled]="wishBadgeVal == 0"
+          class="btn btn-outline-primary position-relative"
           (click)="onWishListClick()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
          viewBox="0 0 16 16">
@@ -19,7 +20,8 @@
   <!-- FILTERS -->
   <button type="button"
           unfocus
-          class="btn btn-primary position-relative"
+          class="btn btn-outline-primary position-relative"
+          style="border-left-color: transparent; border-right-color: transparent;"
           (click)="onFilterClick()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel"
          viewBox="0 0 16 16">
@@ -35,7 +37,8 @@
   <!-- CART -->
   <button type="button"
           unfocus
-          class="btn btn-primary position-relative"
+          [disabled]="cartBadgeVal == 0"
+          class="btn btn-outline-primary position-relative"
           (click)="onCartClick()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"
          viewBox="0 0 16 16">

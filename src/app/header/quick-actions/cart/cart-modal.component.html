@@ -1,14 +1,27 @@
-<ng-template #cartContent let-modal>
+<ng-template #cartModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title text-primary user-select-none">{{ 'cart' | titlecase }}</h4>
   </div>
   <div class="modal-body">
-    <!--    <div *ngFor="let coupon of cartList">-->
-    <!--      {{ coupon.params.title }}-->
-    <!--    </div>-->
-    <sc-coupon-table [coupons]="cartList"></sc-coupon-table>
+    <sc-coupon-table [coupons]="cartList" (selectedCoupons)="onCouponsSelect($event)"></sc-coupon-table>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    <ng-container *ngIf="selectedCoupons.length > 0">
+      <button unfocus type="button" class="btn btn-outline-danger" (click)="onDelete()">Delete</button>
+      <button unfocus type="button" class="btn btn-outline-secondary" (click)="onMove()">Move To Wish</button>
+      <button unfocus type="button" class="btn btn-outline-success" (click)="onCancel()">Cancel</button>
+    </ng-container>
+    <button type="button" class="btn btn-outline-success"
+            (click)="onBuy()">
+      {{ 'buy for ' | titlecase }}
+      {{
+        totalPrice | currency: "ILS"
+      }}
+    </button>
+    <button unfocus
+            type="button"
+            class="btn btn-outline-success"
+            (click)="modal.close('Close click')">Close
+    </button>
   </div>
 </ng-template>

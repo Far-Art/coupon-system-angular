@@ -36,8 +36,8 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   cartOnRemoveAnimationTrigger = false;
   wishOnRemoveAnimationTrigger = false;
 
-  @Output() onCartClickEmitter = new EventEmitter<{ isAdded: boolean, coupon: Coupon }>();
-  @Output() onWishClickEmitter = new EventEmitter<{ isAdded: boolean, coupon: Coupon }>();
+  @Output() onCartClickEmitter = new EventEmitter<{ isChecked: boolean, coupon: Coupon }>();
+  @Output() onWishClickEmitter = new EventEmitter<{ isChecked: boolean, coupon: Coupon }>();
 
   constructor() {}
 
@@ -74,7 +74,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
         }, this.animationDismissTime);
       }
 
-      this.onCartClickEmitter.emit({isAdded: this.isAddedToCart, coupon: this.coupon});
+      this.onCartClickEmitter.emit({isChecked: this.isAddedToCart, coupon: this.coupon});
     }
   }
 
@@ -95,7 +95,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
       }, this.animationDismissTime);
     }
 
-    this.onWishClickEmitter.emit({isAdded: this.isAddedToWish, coupon: this.coupon});
+    this.onWishClickEmitter.emit({isChecked: this.isAddedToWish, coupon: this.coupon});
   }
 
   onTitleClick() {

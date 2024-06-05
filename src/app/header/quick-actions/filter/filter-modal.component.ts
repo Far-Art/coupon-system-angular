@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {FilterKeys, FilterService} from './filter.service';
 import {Subscription, take} from 'rxjs';
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 
 
 interface MainFormType {
@@ -32,15 +32,16 @@ interface MainFormType {
   templateUrl: './filter-modal.component.html',
   styleUrls: ['./filter-modal.component.scss']
 })
-export class FilterModalComponent implements OnInit, OnDestroy {
+export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('filterContent', {static: true}) private filterContent: TemplateRef<unknown>;
+  @ViewChild('filterModal') private filterContent: TemplateRef<any>;
 
   private filtersSub: Subscription;
 
   private modal: NgbModalRef = null;
 
   private prevForm: FormGroup<MainFormType>;
+
   form: FormGroup<MainFormType>;
 
   filtersKeyValue: FilterKeys | null;
@@ -59,11 +60,26 @@ export class FilterModalComponent implements OnInit, OnDestroy {
       }
       this.form.patchValue(filters);
     });
+
+  }
+
+  ngAfterViewInit(): void {
+    this.form.controls.freeText.valueChanges.subscribe(val => {
+      if (val) {
+        const elements = document.getElementsByClassName('accordion-item');
+        for (let i = 0; i < elements.length; i++) {
+          const button = elements[i].children[0].children[0];
+          const div    = elements[i].children[1];
+
+          button.classList.add('collapsed');
+          div.classList.remove('show');
+        }
+      }
+    });
   }
 
   onSubmit() {
     const applied: FilterKeys = this.form.value as FilterKeys;
-
     this.prevForm.patchValue(this.form.value);
 
     if (!applied.freeText) {
@@ -139,7 +155,7 @@ export class FilterModalComponent implements OnInit, OnDestroy {
       companyNames: new FormArray([]),
       priceRange: this.initPriceRange(initial),
       dateRange: this.initDateRange(initial),
-      freeText: new FormControl<string>(null)
+      freeText: new FormControl<string>(null, Validators.minLength(3))
     });
 
     initial?.categories.forEach(key => {

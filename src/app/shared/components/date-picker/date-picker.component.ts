@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NgbDate, NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {NgbDate, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+
 
 @Component({
   selector: 'sc-date-picker',
@@ -33,6 +34,7 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
   constructor(private formatter: NgbDateParserFormatter) {}
 
   ngOnInit(): void {
+    // TODO rework this component
     const date = new Date();
 
     if (this.value) {
@@ -108,6 +110,12 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
   writeValue(date: Date): void {
     this.value          = date;
     this._displayedDate = date ? this.formatter.format(this.parseDate(this.value)) : 'Please select a date';
+  }
+
+  parseDate2(date: string) {
+    const s      = date.replace(/[ :]/g, '-').split('-');
+    const parsed = new Date(+s[0], +s[1], +s[2], +s[3], +s[4], +s[5]);
+    return parsed;
   }
 
 }

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 // Main Palette
-$color-red-100: #fad1d8;
+$color-red-100: #faebed;
 $color-red-300: #d74747;
 $color-red-500: #e7103d;
 $color-red-600: #A0153E;
@@ -44,6 +44,16 @@ html, body {
   html, body {
     height: 100svh;
   }
+}
+
+*:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+button:disabled {
+  pointer-events: visible !important;
+  opacity: 0.5 !important;
 }
 
 .color-white {

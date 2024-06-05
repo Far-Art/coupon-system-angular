@@ -326,27 +326,33 @@ export class CouponsService {
     this.displayedCouponsSubject.next(coupons);
   }
 
-  addToCart(coupon: Coupon) {
+  addToCart(coupons: Coupon[]) {
     const set = new Set<Coupon>(this.cartSubject.value.coupons);
-    set.add(coupon);
+    coupons.forEach(c => set.add(c));
+
     this.logo.blink();
     this.cartSubject.next({coupons: [...set], lastId: null});
   }
 
-  addToWish(coupon: Coupon) {
+  addToWish(coupons: Coupon[]) {
     const set = new Set<Coupon>(this.wishSubject.value.coupons);
-    set.add(coupon);
+    coupons.forEach(c => set.add(c));
+
     this.logo.blink();
     this.wishSubject.next({coupons: [...set], lastId: null});
   }
 
-  removeFromCart(coupon: Coupon) {
-    this.removeCoupon(coupon, this.cartSubject.value);
+  removeFromCart(coupons: Coupon[]) {
+    coupons.forEach(c => {
+      this.removeCoupon(c, this.cartSubject.value);
+    });
     this.cartSubject.next(this.cartSubject.value);
   }
 
-  removeFromWish(coupon: Coupon) {
-    this.removeCoupon(coupon, this.wishSubject.value);
+  removeFromWish(coupons: Coupon[]) {
+    coupons.forEach(c => {
+      this.removeCoupon(c, this.wishSubject.value);
+    });
     this.wishSubject.next(this.wishSubject.value);
   }
 
@@ -366,12 +372,18 @@ export class CouponsService {
     return this.wishSubject.value.coupons.length;
   }
 
-  moveToWish(coupon: Coupon) {
-    this.addToWish(coupon);
+  moveToWish(coupons: Coupon[]) {
+    this.removeFromCart(coupons);
+    this.addToWish(coupons);
+    this.cartSubject.next(this.cartSubject.value);
+    this.displayedCouponsSubject.next(this.displayedCouponsSubject.value);
   }
 
-  moveToCart(coupon: Coupon) {
-    this.addToCart(coupon);
+  moveToCart(coupons: Coupon[]) {
+    this.removeFromWish(coupons);
+    this.addToCart(coupons);
+    this.wishSubject.next(this.wishSubject.value);
+    this.displayedCouponsSubject.next(this.displayedCouponsSubject.value);
   }
 
   /**
@@ -389,5 +401,4 @@ export class CouponsService {
   }
 
   constructor(private logo: LogoService) { }
-
 }

@@ -31,12 +31,12 @@ export class CouponsListComponent implements OnInit, OnDestroy {
     })).subscribe(list => this.coupons = list);
   }
 
-  onCartListener(event: { isAdded: boolean, coupon: Coupon }) {
-    event.isAdded ? this.couponService.addToCart(event.coupon) : this.couponService.removeFromCart(event.coupon);
+  onCartListener(event: { isChecked: boolean, coupon: Coupon }) {
+    event.isChecked ? this.couponService.addToCart([event.coupon]) : this.couponService.removeFromCart([event.coupon]);
   }
 
-  onWishListener(event: { isAdded: boolean, coupon: Coupon }) {
-    event.isAdded ? this.couponService.addToWish(event.coupon) : this.couponService.removeFromWish(event.coupon);
+  onWishListener(event: { isChecked: boolean, coupon: Coupon }) {
+    event.isChecked ? this.couponService.addToWish([event.coupon]) : this.couponService.removeFromWish([event.coupon]);
   }
 
   ngOnDestroy(): void {
