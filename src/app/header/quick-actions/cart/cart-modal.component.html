@@ -6,11 +6,24 @@
     <sc-coupon-table [coupons]="cartList" (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
   </div>
   <div class="modal-footer">
+
     <ng-container *ngIf="selectedCoupons.length > 0">
-      <button unfocus type="button" class="btn btn-outline-danger" (click)="onDelete()">Delete</button>
-      <button unfocus type="button" class="btn btn-outline-secondary" (click)="onMove()">Move To Wish</button>
+      <div class="btn-group dropup" role="group">
+        <button unfocus
+                type="button"
+                class="btn btn-outline-primary btn-sm dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+          Manage
+        </button>
+        <ul class="dropdown-menu">
+          <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
+          <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
+        </ul>
+      </div>
     </ng-container>
-    <button type="button" class="btn btn-outline-success"
+
+    <button type="button" class="btn btn-sm btn-outline-success"
             (click)="onBuy()">
       {{ 'buy for ' | titlecase }}
       {{
@@ -19,7 +32,7 @@
     </button>
     <button unfocus
             type="button"
-            class="btn btn-outline-success"
+            class="btn btn-sm btn-outline-success"
             (click)="modal.dismiss('Close click')">Close
     </button>
   </div>

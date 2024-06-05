@@ -32,7 +32,7 @@ export class CouponTableComponent implements OnInit, OnDestroy {
   constructor(private couponsService: CouponsService, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.couponsSub = this.couponsService.couponsInCart$.subscribe(() => {
+    this.couponsSub = this.couponsService.displayedCoupons$.subscribe(() => {
       this.changeDetector.detectChanges();
     });
   }
