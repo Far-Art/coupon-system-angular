@@ -1,4 +1,4 @@
-<ng-template #wishModal let-modal class="top-50">
+<ng-template #wishModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title text-primary user-select-none">{{ 'wish list' | titlecase }}</h4>
   </div>
@@ -6,16 +6,14 @@
     <sc-coupon-table [coupons]="wishList" (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
   </div>
   <div class="modal-footer">
-    <ng-container *ngIf="selectedCoupons">
+    <ng-container *ngIf="selectedCoupons.length > 0">
       <button unfocus type="button" class="btn btn-outline-danger" (click)="onDelete()">Delete</button>
       <button unfocus type="button" class="btn btn-outline-secondary" (click)="onMove()">Move To Cart</button>
-      <button unfocus type="button" class="btn btn-outline-success" (click)="onCancel()">Cancel</button>
     </ng-container>
-    <button *ngIf="!selectedCoupons"
-            type="button"
+    <button type="button"
             class="btn btn-outline-success"
             unfocus
-            (click)="modal.close('Close click')">Close
+            (click)="modal.dismiss('Close click')">Close
     </button>
   </div>
 </ng-template>

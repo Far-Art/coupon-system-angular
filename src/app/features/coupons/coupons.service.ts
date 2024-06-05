@@ -347,6 +347,7 @@ export class CouponsService {
       this.removeCoupon(c, this.cartSubject.value);
     });
     this.cartSubject.next(this.cartSubject.value);
+    this.displayedCouponsSubject.next(this.displayedCouponsSubject.value);
   }
 
   removeFromWish(coupons: Coupon[]) {
@@ -354,6 +355,7 @@ export class CouponsService {
       this.removeCoupon(c, this.wishSubject.value);
     });
     this.wishSubject.next(this.wishSubject.value);
+    this.displayedCouponsSubject.next(this.displayedCouponsSubject.value);
   }
 
   isPresentInCart(coupon: Coupon): boolean {

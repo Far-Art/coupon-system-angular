@@ -12,15 +12,15 @@ import {CouponsService} from '../../../features/coupons/coupons.service';
 })
 export class WishListModalComponent implements OnInit, OnDestroy {
 
-  @ViewChild('wishModal') private wishContent: TemplateRef<any>;
+  @ViewChild('wishModal') private wishModal: TemplateRef<any>;
 
   wishList: Coupon[] = [];
 
-  selectedCoupons: Coupon[];
+  selectedCoupons: Coupon[] = [];
 
   private modal: NgbModalRef = null;
 
-  private wishSubscription!: Subscription;
+  private wishSubscription: Subscription;
 
   constructor(private couponsService: CouponsService, private modalService: NgbModal) {}
 
@@ -33,12 +33,12 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
   openModal() {
     if (this.wishList.length > 0) {
-      this.modal = this.modalService.open(this.wishContent, {scrollable: true, modalDialogClass: ''});
+      this.modal = this.modalService.open(this.wishModal, {scrollable: true, modalDialogClass: ''});
     }
   }
 
   onCouponsSelected(coupons: Coupon[]) {
-    this.selectedCoupons.push(...coupons);
+    this.selectedCoupons = coupons;
   }
 
   onCancel() {

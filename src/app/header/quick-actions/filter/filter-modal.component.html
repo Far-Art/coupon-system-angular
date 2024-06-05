@@ -188,7 +188,7 @@
 
       <div class="input-group mb-3 drop-shadow-low position-relative">
         <button [disabled]="!form.controls.freeText.value || form.controls.freeText.invalid"
-                (click)="modal.close('Close click')"
+                (click)="modal.dismiss('Close click')"
                 unfocus
                 class="btn btn-outline-secondary"
                 type="submit"
@@ -221,9 +221,9 @@
     </div>
 
     <div class="modal-footer">
-      <button unfocus type="reset" class="btn btn-outline-danger" (click)="modal.close('Close click')">Reset</button>
+      <button unfocus type="reset" class="btn btn-outline-danger" (click)="modal.dismiss('Close click')">Reset</button>
       <button unfocus type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancel</button>
-      <button unfocus type="submit" class="btn btn-outline-success" (click)="modal.close('Close click')"
+      <button unfocus type="submit" class="btn btn-outline-success" (click)="modal.dismiss('Close click')"
               [disabled]="form.controls.freeText.invalid">
         Apply
       </button>

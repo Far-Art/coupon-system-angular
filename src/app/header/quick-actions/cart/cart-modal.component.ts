@@ -3,7 +3,6 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Coupon} from '../../../shared/models/coupon.model';
 import {Subscription} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
-import {FormGroup} from '@angular/forms';
 
 
 @Component({
@@ -13,9 +12,7 @@ import {FormGroup} from '@angular/forms';
 })
 export class CartModalComponent implements OnInit, OnDestroy {
 
-  @ViewChild('cartModal') private cartContent: TemplateRef<any>;
-
-  cartForm: FormGroup;
+  @ViewChild('cartModal') private cartModal: TemplateRef<any>;
 
   cartList: Coupon[] = [];
 
@@ -40,10 +37,19 @@ export class CartModalComponent implements OnInit, OnDestroy {
   }
 
   openModal() {
-    this.modal = this.modalService.open(this.cartContent, {scrollable: true, modalDialogClass: ''});
+    this.modal = this.modalService
+        .open(this.cartModal,
+            {
+              scrollable: true,
+              modalDialogClass: '',
+              beforeDismiss: () => {
+                this.onCancel();
+                return true;
+              }
+            });
   }
 
-  onCouponsSelect(coupons: Coupon[]) {
+  onCouponsSelected(coupons: Coupon[]) {
     this.selectedCoupons = coupons;
   }
 
