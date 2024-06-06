@@ -16,6 +16,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {CouponTableComponent} from './header/quick-actions/shared/coupon-table/coupon-table.component';
 import {CouponItemComponent} from './header/quick-actions/shared/coupon-table/coupon-item/coupon-item.component';
 import { FooterComponent } from './footer/footer/footer.component';
+import { LoginComponent } from './auth/login/login.component';
+import { OffCanvasComponent } from './header/offcanvas/off-canvas.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { FooterComponent } from './footer/footer/footer.component';
     WishListModalComponent,
     CouponTableComponent,
     CouponItemComponent,
-    FooterComponent
+    FooterComponent,
+    LoginComponent,
+    OffCanvasComponent
   ],
   imports: [
     BrowserModule,
