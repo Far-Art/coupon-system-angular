@@ -3,7 +3,7 @@
 
     <div class="row">
       <div class="col w-25">
-        <div class="main-logo align-self-center justify-content-end">
+        <div class="main-logo align-self-center justify-content-end" routerLink="/home">
           <svg *ngIf="!isBlinked" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 486 493">
             <defs>
@@ -94,9 +94,9 @@
     <div class="row justify-content-end">
       <div class="col w-25">
         <div class="text-primary m-2 align-self-center">
-          <sc-offcanvas>
+          <sc-offcanvas [title]="('hello ' + userName) | titlecase">
             <div class="list-group list-group-flush">
-              <a href="#" class="list-group-item list-group-item-action">
+              <a routerLink='/auth' class="list-group-item list-group-item-action">
                 Authentication
               </a>
             </div>
@@ -106,11 +106,10 @@
     </div>
 
   </div>
-  <sc-auth></sc-auth>
 
   <!-- TODO HIDE ON SCROLL -->
   <div class="container-xxl d-flex flex-row justify-content-center">
-    <div class="text-primary bg-light-transparent h6 rounded-4 p-3 pt-1 pb-1 mt-1"> {{
+    <div class="text-primary bg-light-transparent h6 rounded-4 p-3 pt-1 pb-1 mt-1 user-select-none"> {{
         (couponsNum > 0 ? 'displaying ' + couponsNum + ' coupons' : 'none found') | titlecase
       }}
     </div>

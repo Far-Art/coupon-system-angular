@@ -2,7 +2,7 @@
   <!-- WISH-LIST -->
   <button type="button"
           unfocus
-          [disabled]="wishBadgeVal == 0"
+          [disabled]="wishBadgeVal === 0"
           class="btn btn-outline-primary position-relative"
           (click)="onWishListClick()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
@@ -37,7 +37,7 @@
   <!-- CART -->
   <button type="button"
           unfocus
-          [disabled]="cartBadgeVal == 0"
+          [disabled]="cartBadgeVal === 0"
           class="btn btn-outline-primary position-relative"
           (click)="onCartClick()">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"

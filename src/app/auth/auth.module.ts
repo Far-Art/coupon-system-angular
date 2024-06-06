@@ -5,6 +5,7 @@ import {LoginComponent} from './login/login.component';
 import {CoreModule} from '../core.module';
 import {AuthService} from './auth.service';
 import { SignupComponent } from './signup/signup.component';
+import {AuthRoutingModule} from './auth-routing.module';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SignupComponent } from './signup/signup.component';
   ],
   imports: [
     CommonModule,
-    CoreModule
+    CoreModule,
+    AuthRoutingModule
   ],
   providers: [
     AuthService

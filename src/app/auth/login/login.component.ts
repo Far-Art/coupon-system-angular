@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../auth.service';
+import {AuthService, LoginData, LoginForm} from '../auth.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 
@@ -10,7 +10,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  form: FormGroup<{ email: FormControl<string>, password: FormControl<string> }>;
+  form: FormGroup<LoginForm>;
 
   minLength: number;
 
@@ -21,15 +21,19 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.minLength = this.authService.minLength;
     this.maxLength = this.authService.maxLength;
-    this.initForm();
+
+    if (this.authService.loginForm) {
+      this.form = this.authService.loginForm;
+    } else {
+      this.initForm();
+      this.authService.loginForm = this.form;
+    }
   }
 
   onSubmit() {
     if (this.form.valid) {
-      this.authService.login({
-        email: this.form.value.email,
-        password: this.form.value.password
-      });
+      this.authService.login({...this.form.value as LoginData});
+      this.initForm();
     }
   }
 

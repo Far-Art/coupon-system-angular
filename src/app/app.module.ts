@@ -9,6 +9,8 @@ import {FooterComponent} from './footer/footer/footer.component';
 import {HeaderModule} from './header/header.module';
 import {CoreModule} from './core.module';
 import {AuthModule} from './auth/auth.module';
+import {AppRoutingModule} from './app-routing.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -20,10 +22,12 @@ import {AuthModule} from './auth/auth.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CoreModule,
     SharedModule,
     HeaderModule,
     CouponsModule,
+    AppRoutingModule,
     AuthModule
   ],
   providers: [],
