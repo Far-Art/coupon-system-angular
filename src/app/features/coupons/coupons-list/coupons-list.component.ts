@@ -14,8 +14,6 @@ export class CouponsListComponent implements OnInit, OnDestroy {
   coupons: { coupon: Coupon, isInCart: boolean, isInWish: boolean }[] = [];
 
   private displayedSub: Subscription;
-  private cartSub: Subscription;
-  private wishSub: Subscription;
 
   constructor(private couponService: CouponsService) {}
 
@@ -41,7 +39,5 @@ export class CouponsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.displayedSub.unsubscribe();
-    this.cartSub.unsubscribe();
-    this.wishSub.unsubscribe();
   }
 }

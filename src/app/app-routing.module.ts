@@ -4,8 +4,8 @@ import {MainPageComponent} from './main-page/main-page.component';
 
 
 const routes: Routes = [
-  {path: 'home', component: MainPageComponent},
-  {path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)}
+  {path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
+  {path: '', component: MainPageComponent, pathMatch: 'full'},
 ];
 
 @NgModule({
