@@ -26,9 +26,7 @@
     <button type="button" class="btn btn-sm btn-outline-success"
             (click)="onBuy()">
       {{ 'buy for ' | titlecase }}
-      {{
-        totalPrice | currency: "ILS"
-      }}
+      {{ totalPrice | currency: "ILS" }}
     </button>
     <button unfocus
             type="button"

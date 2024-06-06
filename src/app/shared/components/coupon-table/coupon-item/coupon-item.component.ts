@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Coupon} from "../../../../../shared/models/coupon.model";
+import {Coupon} from "../../../models/coupon.model";
 
 @Component({
   selector: 'sc-coupon-item',

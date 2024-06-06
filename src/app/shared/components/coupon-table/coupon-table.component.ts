@@ -8,9 +8,9 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import {Coupon} from '../../../../shared/models/coupon.model';
+import {Coupon} from '../../models/coupon.model';
 import {Subscription} from 'rxjs';
-import {CouponsService} from '../../../../features/coupons/coupons.service';
+import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
 @Component({
