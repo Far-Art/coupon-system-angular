@@ -1,0 +1,130 @@
+<form class="user-select-none w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="input-group has-validation">
+    <span class="input-group-text">@</span>
+    <div class="form-floating">
+      <select formControlName="type" class="form-select" aria-label="Default select example">
+        <option value="customer">Customer</option>
+        <option value="company">Company</option>
+      </select>
+      <label for="signup-email">User Type</label>
+    </div>
+  </div>
+
+  <div class="input-group has-validation mt-3">
+    <span class="input-group-text">@</span>
+    <div class="form-floating">
+      <input type="email"
+             formControlName="email"
+             required
+             class="form-control"
+             [ngClass]="{'is-valid': form.controls.email.valid, 'is-invalid': form.controls.email.touched
+             && form.controls.email.invalid}"
+             id="signup-email"
+             placeholder="Email">
+      <label for="signup-email">Email</label>
+    </div>
+  </div>
+  <div class="p-5 pt-0 pb-0">
+    <div *ngIf="form.controls.email.touched && !form.controls.email.value" class="text-danger">
+      Please enter an email.
+    </div>
+    <div *ngIf="form.controls.email.touched && form.controls.email.value && form.controls.email.invalid"
+         class="text-danger">
+      Please enter a valid email.
+    </div>
+  </div>
+
+  <div class="input-group has-validation mt-3">
+    <span class="input-group-text">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock"
+           viewBox="0 0 16 16">
+        <path
+            d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2M3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1z"/>
+      </svg>
+    </span>
+    <div class="form-floating">
+      <input type="password"
+             formControlName="password"
+             required
+             class="form-control"
+             [ngClass]="{'is-valid': form.controls.password.valid, 'is-invalid': form.controls.password.touched
+             && form.controls.password.invalid}"
+             id="signup-password"
+             [minlength]="minLength"
+             [maxlength]="maxLength"
+             placeholder="Password">
+      <label for="signup-password">Password</label>
+    </div>
+  </div>
+  <div class="p-5 pt-0">
+    <div *ngIf="form.controls.password.touched && !form.controls.password.value"
+         class="text-danger">
+      Please enter a password.
+    </div>
+    <div *ngIf="form.controls.password.touched && form.controls.password.value &&
+      form.controls.password.invalid"
+         class="text-danger">
+      Password must be between {{ minLength }} and {{ maxLength }} characters.
+    </div>
+  </div>
+
+  <div class="input-group has-validation mt-3">
+    <span class="input-group-text">@</span>
+    <div class="form-floating">
+      <input type="email"
+             formControlName="name"
+             required
+             class="form-control"
+             [ngClass]="{'is-valid': form.controls.name.valid, 'is-invalid': form.controls.name.touched
+             && form.controls.name.invalid}"
+             id="signup-name"
+             [minLength]="3"
+             placeholder="Name">
+      <label for="signup-name">{{type === 'customer' ? 'First' : 'Company'}} Name</label>
+    </div>
+  </div>
+  <div class="p-5 pt-0 pb-0">
+    <div *ngIf="form.controls.name.touched && !form.controls.name.value" class="text-danger">
+      Please enter a {{type === 'customer' ? 'First' : 'Company'}} name.
+    </div>
+    <div *ngIf="form.controls.name.touched && form.controls.name.value && form.controls.name.invalid"
+         class="text-danger">
+      {{type === 'customer' ? 'First' : 'Company'}} name must be at least 3 characters.
+    </div>
+  </div>
+
+  <div *ngIf="type === 'customer'">
+    <div class="input-group has-validation mt-3">
+      <span class="input-group-text">@</span>
+      <div class="form-floating">
+        <input type="text"
+               formControlName="lastName"
+               class="form-control"
+               [required]="type === 'customer'"
+               [ngClass]="{'is-valid': form.controls.lastName.valid, 'is-invalid': form.controls.lastName.touched
+             && form.controls.lastName.invalid}"
+               id="signup-lastname"
+               [minLength]="3"
+               placeholder="Last Name">
+        <label for="signup-lastname">Last Name</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 pt-0 pb-0">
+    <div *ngIf="form.controls.lastName.touched && !form.controls.lastName.value" class="text-danger">
+      Please enter a last name.
+    </div>
+    <div *ngIf="form.controls.lastName.touched && form.controls.lastName.value && form.controls.lastName.invalid"
+         class="text-danger">
+      Last name must be at least 3 characters.
+    </div>
+  </div>
+
+  <div class="list-group text-center mt-3">
+    <button [disabled]="form.invalid"
+            class="fw-bolder list-group-item list-group-item-success list-group-item-action"
+            type="submit">Signup
+    </button>
+  </div>
+</form>

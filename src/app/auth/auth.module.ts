@@ -4,12 +4,14 @@ import {AuthComponent} from './auth.component';
 import {LoginComponent} from './login/login.component';
 import {CoreModule} from '../core.module';
 import {AuthService} from './auth.service';
+import { SignupComponent } from './signup/signup.component';
 
 
 @NgModule({
   declarations: [
     AuthComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   exports: [
     AuthComponent
