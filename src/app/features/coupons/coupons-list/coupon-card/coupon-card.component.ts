@@ -23,8 +23,8 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   private animationDismissTime = 500;
 
   @Input() coupon: Coupon;
-  @Input() isAddedToCart? = false;
-  @Input() isAddedToWish? = false;
+  @Input() isAddedToCart = false;
+  @Input() isAddedToWish = false;
 
   isDescriptionShown = false;
   isShowTimer        = true;

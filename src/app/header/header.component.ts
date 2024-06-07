@@ -1,8 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {LogoService} from './logo.service';
 import {Subscription} from 'rxjs';
-import {CouponsService} from '../features/coupons/coupons.service';
 import {AuthService} from '../auth/auth.service';
+import {ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -12,36 +11,20 @@ import {AuthService} from '../auth/auth.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  constructor(
-      private logoService: LogoService,
-      private couponsService: CouponsService,
-      private auth: AuthService
-  ) {}
-
-  private couponSub: Subscription;
-  private logoSub: Subscription;
-  private authSub: Subscription;
-
-  isBlinked  = false;
-  couponsNum = 0
+  constructor(private auth: AuthService, private route: ActivatedRoute) {}
 
   userName: string;
+  isShowHome = false;
+
+  private authSub: Subscription;
 
   ngOnInit(): void {
-    this.logoSub   = this.logoService.blinked$.subscribe(() => this.logoBlink());
-    this.couponSub = this.couponsService.displayedCoupons$.subscribe(coupons => this.couponsNum = coupons.length);
-    this.authSub   = this.auth.userName$.subscribe(name => this.userName = name);
+    this.isShowHome = this.route.snapshot.url.length > 0;
+    this.authSub    = this.auth.userName$.subscribe(name => this.userName = name);
   }
 
   ngOnDestroy(): void {
-    this.couponSub.unsubscribe();
-    this.logoSub.unsubscribe();
     this.authSub.unsubscribe();
-  }
-
-  private logoBlink() {
-    this.isBlinked = true;
-    setTimeout(() => this.isBlinked = false, 300);
   }
 
 }

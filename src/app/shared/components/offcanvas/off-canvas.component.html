@@ -1,0 +1,26 @@
+<ng-template #content let-offcanvas>
+  <div class="offcanvas-header user-select-none">
+    <h4 class="offcanvas-title">{{ title }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+  </div>
+  <hr>
+  <div class="offcanvas-body user-select-none" (click)="offcanvas.dismiss()">
+    <ng-content></ng-content>
+  </div>
+</ng-template>
+
+<div class="offcanvas-btn user-select-none"
+     type="button"
+     data-bs-toggle="offcanvas"
+     data-bs-target="#offcanvasRight"
+     aria-controls="offcanvasRight">
+
+  <div class="text-primary position-relative" (click)="openEnd(content)" style="min-width: 30px; min-height: 30px">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+         class="bi bi-list position-absolute translate-middle top-50 start-50"
+         viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+    </svg>
+  </div>
+</div>

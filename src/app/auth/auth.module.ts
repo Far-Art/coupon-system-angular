@@ -2,10 +2,12 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AuthComponent} from './auth.component';
 import {LoginComponent} from './login/login.component';
-import {CoreModule} from '../core.module';
+import {CoreModule} from '../core/core.module';
 import {AuthService} from './auth.service';
 import { SignupComponent } from './signup/signup.component';
 import {AuthRoutingModule} from './auth-routing.module';
+import {SharedModule} from '../shared/shared.module';
+import {HeaderModule} from '../header/header.module';
 
 
 @NgModule({
@@ -15,12 +17,15 @@ import {AuthRoutingModule} from './auth-routing.module';
     SignupComponent
   ],
   exports: [
-    AuthComponent
+    AuthComponent,
+    AuthRoutingModule
   ],
   imports: [
     CommonModule,
     CoreModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    SharedModule,
+    HeaderModule
   ],
   providers: [
     AuthService

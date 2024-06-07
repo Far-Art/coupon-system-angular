@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Coupon} from '../../shared/models/coupon.model';
-import {LogoService} from '../../header/logo.service';
+import {LogoService} from '../../header/logo/logo.service';
 
 
 @Injectable({

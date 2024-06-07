@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 
 
 @Component({
@@ -11,7 +10,7 @@ export class AppComponent implements OnInit {
 
   title = 'coupon-system-angular';
 
-  constructor(private router: Router) {}
+  constructor() {}
 
   ngOnInit(): void {
   }

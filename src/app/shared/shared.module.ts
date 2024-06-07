@@ -9,6 +9,7 @@ import {CsDateAdapterService} from './components/date-picker/cs-date-adapter.ser
 import {ControlValuePipe} from './pipes/control-value.pipe';
 import {CouponTableComponent} from './components/coupon-table/coupon-table.component';
 import {CouponItemComponent} from './components/coupon-table/coupon-item/coupon-item.component';
+import {OffCanvasComponent} from './components/offcanvas/off-canvas.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {CouponItemComponent} from './components/coupon-table/coupon-item/coupon-
     DatePickerComponent,
     CouponTableComponent,
     CouponItemComponent,
-    ControlValuePipe
+    ControlValuePipe,
+    OffCanvasComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -26,7 +28,8 @@ import {CouponItemComponent} from './components/coupon-table/coupon-item/coupon-
     UnfocusDirective,
     DatePickerComponent,
     CouponTableComponent,
-    CouponItemComponent
+    CouponItemComponent,
+    OffCanvasComponent
   ],
   imports: [
     CommonModule,
