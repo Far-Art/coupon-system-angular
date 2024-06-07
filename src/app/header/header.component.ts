@@ -19,8 +19,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authSub: Subscription;
 
   ngOnInit(): void {
-    this.isShowHome = this.route.snapshot.url.length > 0;
-    this.authSub    = this.auth.userName$.subscribe(name => this.userName = name);
+    const url: string = this.route.snapshot['_routerState'].url;
+    this.isShowHome   = url.length > 1;
+    this.authSub      = this.auth.userName$.subscribe(name => this.userName = name);
   }
 
   ngOnDestroy(): void {

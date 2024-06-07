@@ -11,7 +11,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
     trigger('popUp', [
       transition(':enter', [
         style({opacity: 1, scale: 1}),
-        animate('500ms ease-out', style({opacity: 0, scale: 3.5}))
+        animate('500ms ease-out', style({opacity: 0, scale: 3.5, transform: 'translateY(-5%)'}))
       ])
     ])
   ]
