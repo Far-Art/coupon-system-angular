@@ -27,14 +27,10 @@ import {animate, style, transition, trigger} from '@angular/animations';
 export class MainPageComponent implements OnInit, OnDestroy {
 
   couponsNum = 0
-
-  private couponSub: Subscription;
-
   isHideOnScroll = false;
 
-  private prevPosition = 0;
-
-  private scrollDirection: 'up' | 'down';
+  private couponSub: Subscription;
+  private scrollSub: Subscription;
 
   constructor(
       private couponsService: CouponsService,
@@ -43,18 +39,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.couponSub = this.couponsService.displayedCoupons$.subscribe(coupons => this.couponsNum = coupons.length);
-    this.scrollbar.scrollPosition$().subscribe(pos => {
-      if (pos.y % 10 === 0) {
-        this.scrollDirection = pos.y > this.prevPosition ? 'down' : 'up';
-        if (pos.y > 150) {
-          this.prevPosition   = pos.y;
-          this.isHideOnScroll = this.scrollDirection === 'down';
-        }
+    this.scrollSub = this.scrollbar.scrollPosition$().subscribe(event => {
+      if (event.y > 150) {
+        this.isHideOnScroll = event.scrollDirection === 'down';
       }
     });
   }
 
   ngOnDestroy(): void {
     this.couponSub.unsubscribe();
+    this.scrollSub.unsubscribe();
   }
 }

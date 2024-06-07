@@ -9,17 +9,12 @@ export class ScrollbarService {
 
   private scrollPositionSubject = new BehaviorSubject<{
     x: number,
-    y: number, scrollbar: {
-      lenX: number,
-      lenY: number
-    }
+    y: number,
+    scrollDirection: 'up' | 'down'
   }>({
     x: 0,
     y: 0,
-    scrollbar: {
-      lenX: 0,
-      lenY: 0
-    }
+    scrollDirection: 'down'
   });
 
   scrollPosition$() {
@@ -32,14 +27,19 @@ export class ScrollbarService {
   }
 
   private listener() {
-    const pos = this.scrollPositionSubject;
+    const subject     = this.scrollPositionSubject;
+    let prevPositionY = 0;
+
     return function () {
-      pos.next({
-        x: window.scrollX, y: window.scrollY, scrollbar: {
-          lenX: window.innerWidth - document.documentElement.clientWidth,
-          lenY: window.innerHeight - document.documentElement.clientHeight
-        }
-      });
+      if (window.scrollY % 5 === 0) {
+        subject.next({
+          x: window.scrollX,
+          y: window.scrollY,
+          scrollDirection: window.scrollY > prevPositionY ? 'down' : 'up'
+        });
+        prevPositionY = window.scrollY;
+      }
+
     }
   }
 
