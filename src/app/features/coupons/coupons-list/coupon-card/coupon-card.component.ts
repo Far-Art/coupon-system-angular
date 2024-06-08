@@ -112,7 +112,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   }
 
   private vibrate(){
-    navigator.vibrate(50);
+    // navigator.vibrate(200);
   }
 
 }

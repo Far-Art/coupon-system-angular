@@ -3,7 +3,6 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {FilterKeys, FilterService} from './filter.service';
 import {Subscription, take} from 'rxjs';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Key} from '@ng-bootstrap/ng-bootstrap/util/key';
 
 
 interface MainFormType {

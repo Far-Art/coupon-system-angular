@@ -1,17 +1,28 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
+import {NavigationEnd, Router} from '@angular/router';
 
+
+export type Scrollbar = {
+  x: number,
+  y: number,
+  scrollDirection: 'up' | 'down'
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScrollbarService {
 
-  private scrollPositionSubject = new BehaviorSubject<{
-    x: number,
-    y: number,
-    scrollDirection: 'up' | 'down'
-  }>({
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo({top: 0, left: 0, behavior: 'instant'} as any);
+      }
+    });
+  }
+
+  private scrollPositionSubject = new BehaviorSubject<Scrollbar>({
     x: 0,
     y: 0,
     scrollDirection: 'down'
@@ -42,5 +53,4 @@ export class ScrollbarService {
 
     }
   }
-
 }
