@@ -18,9 +18,9 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   filterBadgeVal: string = '';
   wishBadgeVal: number   = 0;
 
-  @ViewChild('wishModal') wishModal     = ElementRef<any>;
-  @ViewChild('filterModal') filterModal = ElementRef<any>;
-  @ViewChild('cartModal') cartModal     = ElementRef<any>;
+  @ViewChild('wishModal', {static: true}) wishModal     = ElementRef<WishListModalComponent>;
+  @ViewChild('filterModal', {static: true}) filterModal = ElementRef<FilterModalComponent>;
+  @ViewChild('cartModal', {static: true}) cartModal     = ElementRef<CartModalComponent>;
 
   private wishSubscription!: Subscription;
   private filterSubscription!: Subscription;
@@ -33,20 +33,20 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.wishSubscription   = this.couponsService.couponsInWish$.subscribe(() => this.wishBadgeVal = this.couponsService.couponsInWish);
-    this.cartSubscription   = this.couponsService.couponsInCart$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
     this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.getFiltersBadgeValue);
+    this.cartSubscription   = this.couponsService.couponsInCart$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
   }
 
   onCartClick(): void {
-    (this.cartModal as unknown as CartModalComponent).openModal();
+    (this.cartModal as any as CartModalComponent).openModal();
   }
 
   onFilterClick(): void {
-    (this.filterModal as unknown as FilterModalComponent).openModal();
+    (this.filterModal as any as FilterModalComponent).openModal();
   }
 
   onWishListClick(): void {
-    (this.wishModal as unknown as WishListModalComponent).openModal();
+    (this.wishModal as any as WishListModalComponent).openModal();
   }
 
   ngOnDestroy(): void {

@@ -62,6 +62,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
       this.cartOnRemoveAnimationTrigger = this.isAddedToCart === false;
 
       if (this.isAddedToCart) {
+        this.vibrate();
         this.cartOnAddAnimationTrigger = true;
         setTimeout(() => {
           this.cartOnAddAnimationTrigger = false;
@@ -83,6 +84,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
     this.wishOnRemoveAnimationTrigger = this.isAddedToWish === false;
 
     if (this.isAddedToWish) {
+      this.vibrate();
       this.wishOnAddAnimationTrigger = true;
       setTimeout(() => {
         this.wishOnAddAnimationTrigger = false;
@@ -107,6 +109,10 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  private vibrate(){
+    navigator.vibrate(50);
   }
 
 }

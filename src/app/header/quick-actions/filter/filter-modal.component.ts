@@ -3,16 +3,17 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {FilterKeys, FilterService} from './filter.service';
 import {Subscription, take} from 'rxjs';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Key} from '@ng-bootstrap/ng-bootstrap/util/key';
 
 
 interface MainFormType {
   categories: FormArray<FormGroup<{
-    name: FormControl<string>,
+    key: FormControl<string>,
     isChecked: FormControl<boolean>,
     isDisabled: FormControl<boolean>
   }>>,
   companyNames: FormArray<FormGroup<{
-    name: FormControl<string>,
+    key: FormControl<string>,
     isChecked: FormControl<boolean>,
     isDisabled: FormControl<boolean>
   }>>,
@@ -24,7 +25,9 @@ interface MainFormType {
     start: FormControl<number>,
     end: FormControl<number>,
   }>,
-  freeText: FormControl<string>;
+  freeText: FormGroup<{
+    key: FormControl<string>
+  }>;
 }
 
 @Component({
@@ -36,15 +39,15 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('filterModal') private filterContent: TemplateRef<any>;
 
+  form: FormGroup<MainFormType>;
+
+  filtersKeyValue: FilterKeys | null;
+
   private filtersSub: Subscription;
 
   private modal: NgbModalRef = null;
 
   private prevForm: FormGroup<MainFormType>;
-
-  form: FormGroup<MainFormType>;
-
-  filtersKeyValue: FilterKeys | null;
 
   constructor(
       private modalService: NgbModal,
@@ -79,23 +82,19 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubmit() {
-    const applied: FilterKeys = this.form.value as FilterKeys;
+    const filterKeys: FilterKeys = this.form.value as FilterKeys;
     this.prevForm.patchValue(this.form.value);
 
-    if (!applied.freeText) {
-      // remove value if user did not change value or is bad value
-      if (!this.form.controls.priceRange.dirty || this.form.controls.priceRange.invalid) {
-        applied.priceRange = null;
-      }
+    filterKeys.freeText.isApplied = filterKeys.freeText.key?.length >= 3;
 
+    if (!filterKeys.freeText.isApplied) {
       // remove value if user did not change value or is bad value
-      if (!this.form.controls.dateRange.dirty || this.form.controls.dateRange.invalid) {
-        applied.dateRange = null;
-      }
-
+      filterKeys.priceRange.isApplied = !(!this.form.controls.priceRange.dirty || this.form.controls.priceRange.invalid);
+      // remove value if user did not change value or is bad value
+      filterKeys.dateRange.isApplied = !(!this.form.controls.dateRange.dirty || this.form.controls.dateRange.invalid);
     }
 
-    this.filterService.updateDisplayedCoupons(this.form.pristine ? null : applied);
+    this.filterService.updateDisplayedCoupons(this.form.pristine ? null : filterKeys);
   }
 
   onFormReset() {
@@ -155,12 +154,14 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
       companyNames: new FormArray([]),
       priceRange: this.initPriceRange(initial),
       dateRange: this.initDateRange(initial),
-      freeText: new FormControl<string>(null, Validators.minLength(3))
+      freeText: new FormGroup({
+        key: new FormControl<string>(null, Validators.minLength(3))
+      })
     });
 
     initial?.categories.forEach(key => {
       (form.controls.categories as FormArray).push(new FormGroup({
-        name: new FormControl(key.name),
+        key: new FormControl(key.key),
         isChecked: new FormControl(false),
         isDisabled: new FormControl(false)
       }));
@@ -168,7 +169,7 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
     initial?.companyNames.forEach(key => {
       (form.controls.companyNames as FormArray).push(new FormGroup({
-        name: new FormControl(key.name),
+        key: new FormControl(key.key),
         isChecked: new FormControl(false),
         isDisabled: new FormControl(false)
       }));

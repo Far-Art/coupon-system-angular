@@ -16,7 +16,7 @@
             <button class="accordion-button bg-light-semi-transparent"
                     type="button"
                     unfocus
-                    [disabled]="form.controls.freeText.value"
+                    [disabled]="form.controls.freeText.value.key"
                     (click)="recalculateFilters()"
                     data-bs-toggle="collapse"
                     data-bs-target="#categoriesCollapse"
@@ -34,11 +34,11 @@
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
                        unfocus
-                       id="{{c.value.name}}"
+                       id="{{c.value.key}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
                        [ngClass]="{'text-primary': c.value.isChecked}"
-                       for="{{c.value.name}}">{{ c.value.name | titlecase }}
+                       for="{{c.value.key}}">{{ c.value.key | titlecase }}
                 </label>
               </div>
               <hr>
@@ -52,7 +52,7 @@
             <button class="accordion-button collapsed bg-light-semi-transparent"
                     type="button"
                     unfocus
-                    [disabled]="form.controls.freeText.value"
+                    [disabled]="form.controls.freeText.value.key"
                     (click)="recalculateFilters()"
                     data-bs-toggle="collapse"
                     data-bs-target="#companiesCollapse"
@@ -69,11 +69,11 @@
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
                        unfocus
-                       id="{{c.value.name + i}}"
+                       id="{{c.value.key + i}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
                        [ngClass]="{'text-primary': c.value.isChecked}"
-                       for="{{c.value.name + i}}">{{ c.value.name | titlecase }}
+                       for="{{c.value.key + i}}">{{ c.value.key | titlecase }}
                 </label>
               </div>
               <hr>
@@ -86,7 +86,7 @@
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
                     unfocus
-                    [disabled]="form.controls.freeText.value"
+                    [disabled]="form.controls.freeText.value.key"
                     (click)="recalculateFilters()"
                     type="button"
                     data-bs-toggle="collapse"
@@ -141,7 +141,7 @@
             <button class="accordion-button collapsed bg-light-semi-transparent"
                     (click)="recalculateFilters()"
                     unfocus
-                    [disabled]="form.controls.freeText.value"
+                    [disabled]="form.controls.freeText.value.key"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#dateCollapse"
@@ -186,8 +186,8 @@
       </div>
       <br>
 
-      <div class="input-group mb-3 drop-shadow-low position-relative">
-        <button [disabled]="!form.controls.freeText.value || form.controls.freeText.invalid"
+      <div class="input-group mb-3 drop-shadow-low position-relative" formGroupName="freeText">
+        <button [disabled]="!form.controls.freeText.value.key || form.controls.freeText.invalid"
                 (click)="modal.dismiss('Close click')"
                 unfocus
                 class="btn btn-outline-secondary"
@@ -200,7 +200,7 @@
           </svg>
         </button>
         <input type="text"
-               formControlName="freeText"
+               formControlName="key"
                class="form-control"
                placeholder="Free text search"
                aria-label="Free text search"
@@ -208,7 +208,7 @@
                [maxlength]="25"
                aria-describedby="freeText">
         <h3 class="text-primary position-absolute top-25"
-            *ngIf="form.controls.freeText.value"
+            *ngIf="form.controls.freeText.value.key"
             style="right: 1rem; top: 4%; z-index:5; cursor: pointer"
             (click)="form.controls.freeText.reset()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"

@@ -4,20 +4,24 @@ import {BehaviorSubject, concatMap, map, Observable, take, tap} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
-interface Key {
-  name: string,
-  isChecked: boolean,
+interface Controls {
+  isApplied?: boolean,
+  isChecked?: boolean,
   isDisabled?: boolean
 }
 
-interface DateKey {
-  start: Date,
-  end: Date
+interface Key extends Controls {
+  key: string,
 }
 
-interface PriceKey {
+interface DateKey extends Controls {
+  start: Date,
+  end: Date,
+}
+
+interface PriceKey extends Controls {
   start: number,
-  end: number
+  end: number,
 }
 
 export interface FilterKeys {
@@ -25,7 +29,7 @@ export interface FilterKeys {
   companyNames: Key[],
   priceRange: PriceKey,
   dateRange: DateKey,
-  freeText: string
+  freeText: Key
 }
 
 @Injectable({
@@ -44,9 +48,9 @@ export class FilterService {
   get getFiltersBadgeValue(): string {
     let num = 0;
     if (this._activeFilters) {
-      if (this._activeFilters.freeText) return 'free text';
-      if (this._activeFilters.dateRange) num++;
-      if (this._activeFilters.priceRange) num++;
+      if (this._activeFilters.freeText?.isApplied) return 'free text';
+      if (this._activeFilters.dateRange?.isApplied) num++;
+      if (this._activeFilters.priceRange?.isApplied) num++;
       if (this._activeFilters.categories.length > 0) num += this._activeFilters.categories.filter(v => v.isChecked).length;
       if (this._activeFilters.companyNames.length > 0) num += this._activeFilters.companyNames.filter(v => v.isChecked).length;
     }
@@ -66,7 +70,7 @@ export class FilterService {
   updateDisplayedCoupons(filters: FilterKeys | null): void {
     this._activeFilters = filters;
 
-    // if no filters, supply all coupons
+    // if no filters applied, supply all coupons
     if (filters == null) {
       this.couponsService.originCoupons$.pipe(take(1)).pipe(tap(coupons => {
         this.notify(coupons);
@@ -86,33 +90,43 @@ export class FilterService {
   }
 
   private filter(coupons: Coupon[], filters: FilterKeys) {
-    // if free text supplied, don't apply other filters
-    return coupons.filter(c => {
-      return this.hasFreeText(c, filters) ||
-          this.hasCategory(c, filters.categories) &&
-          this.hasCompanyName(c, filters.companyNames) &&
-          this.hasPriceOrDateRange(c, filters.priceRange) &&
-          this.hasPriceOrDateRange(c, filters.dateRange);
+    return coupons.filter(coupon => {
+      // if free text applied, skip other filters
+      if (filters.freeText.isApplied) {
+        return this.hasFreeText(coupon, filters);
+      }
+
+      const hasCategory = this.hasCategory(coupon, filters.categories);
+      const hasCompanyName = this.hasCompanyName(coupon, filters.companyNames);
+      const hasPrice = this.hasPriceOrDateRange(coupon, filters.priceRange);
+      const hasDate = this.hasPriceOrDateRange(coupon, filters.dateRange);
+
+      return this.hasCategory(coupon, filters.categories) &&
+          this.hasCompanyName(coupon, filters.companyNames) &&
+          this.hasPriceOrDateRange(coupon, filters.priceRange) &&
+          this.hasPriceOrDateRange(coupon, filters.dateRange);
     });
   }
 
   private hasCategory(coupon: Coupon, categories: Key[]): boolean {
-    return (categories.length === 0 || categories.every(c => !c.isChecked) || categories.every(c => c.isChecked)) || categories.some(c => c.isChecked && c.name.toLowerCase().localeCompare(coupon.params.category.toLowerCase()) === 0);
+    return (categories.length === 0 || categories.every(c => !c.isChecked) || categories.every(c => c.isChecked)) // true if none or all is checked
+        || categories.some(c => c.isChecked && c.key.toLowerCase().localeCompare(coupon.params.category.toLowerCase()) === 0);
   }
 
   private hasCompanyName(coupon: Coupon, companies: Key[]): boolean {
-    return (companies.length === 0 || companies.every(c => !c.isChecked) || companies.every(c => c.isChecked)) || companies.some(c => c.isChecked && c.name.toLowerCase().localeCompare(coupon.params.companyName.toLowerCase()) === 0);
+    return (companies.length === 0 || companies.every(c => !c.isChecked) || companies.every(c => c.isChecked)) // true if none or all is checked
+        || companies.some(c => c.isChecked && c.key.toLowerCase().localeCompare(coupon.params.companyName.toLowerCase()) === 0);
   }
 
   private hasPriceOrDateRange(coupon: Coupon, range: PriceKey | DateKey): boolean {
-    return range == null || coupon.params.price >= range.start && coupon.params.price <= range.end;
+    return range == null || !range.isApplied || (coupon.params.price >= range.start && coupon.params.price <= range.end);
   }
 
   private hasFreeText(coupon: Coupon, filter: FilterKeys): boolean {
     const prm = coupon.params;
-    return filter.freeText && (prm.title.toLowerCase().includes(filter.freeText.toLowerCase())
-        || prm.description.toLowerCase().includes(filter.freeText.toLowerCase())
-        || prm.companyName.toLowerCase().includes(filter.freeText.toLowerCase()));
+    return filter.freeText && (prm.title.toLowerCase().includes(filter.freeText.key.toLowerCase())
+        || prm.description.toLowerCase().includes(filter.freeText.key.toLowerCase())
+        || prm.companyName.toLowerCase().includes(filter.freeText.key.toLowerCase()));
   }
 
   private updateFilterKeys(displayedCoupons: Coupon[]): Observable<FilterKeys | null> {
@@ -136,21 +150,19 @@ export class FilterService {
                   if (c.params.endDate > endDate) endDate = c.params.endDate;
                 }
 
-                const categories: Map<string, { name: string, isChecked: boolean, isDisabled: boolean }> = new Map();
-                const names: Map<string, { name: string, isChecked: boolean, isDisabled: boolean }>      = new Map();
+                const categories: Map<string, Key> = new Map();
+                const names: Map<string, Key>      = new Map();
 
                 for (let i = 0; i < originCoupons.length; i++) {
                   const c = originCoupons[i];
 
                   categories.set(c.params.category, {
-                    name: c.params.category,
-                    isChecked: false,
+                    key: c.params.category,
                     isDisabled: !displayedCoupons.map(v => v.params.category).includes(c.params.category)
                   })
 
                   names.set(c.params.companyName, {
-                    name: c.params.companyName,
-                    isChecked: false,
+                    key: c.params.companyName,
                     isDisabled: !displayedCoupons.map(v => v.params.companyName).includes(c.params.companyName)
                   });
                 }
