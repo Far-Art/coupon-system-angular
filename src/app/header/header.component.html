@@ -1,4 +1,4 @@
-<nav class="navbar fixed-top bg-light-semi-transparent p-3">
+<nav class="navbar fixed-top bg-light-semi-transparent p-4 {{padding}}">
   <div class="d-flex flex-row justify-content-between w-100">
     <sc-logo></sc-logo>
 
@@ -6,10 +6,10 @@
 
     <sc-offcanvas [title]="('hello ' + userName) | titlecase">
       <div class="list-group list-group-flush">
-        <a *ngIf="isShowHome" routerLink='/' class="list-group-item list-group-item-action">
+        <a *ngIf="isShowHome" routerLink='/' class="list-group-item list-group-item-action pt-3 pb-3">
           Home
         </a>
-        <a routerLink='/auth/login' class="list-group-item list-group-item-action">
+        <a routerLink='/auth/login' class="list-group-item list-group-item-action pt-3 pb-3" routerLinkActive="active">
           Authentication
         </a>
       </div>

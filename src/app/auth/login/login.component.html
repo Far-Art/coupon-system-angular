@@ -62,13 +62,11 @@
             class="fw-bolder list-group-item list-group-item-success list-group-item-action"
             type="submit">Login
     </button>
-<!--    <button class="fw-light list-group-item list-group-item-action"-->
-<!--            type="button">Forgot Password-->
-<!--    </button>-->
+
     <button [disabled]="form.pristine"
             (click)="onReset()"
             class="fw-light list-group-item list-group-item-action list-group-item-danger"
-            type="button">Reset Form
+            type="button">Clear Form
     </button>
   </div>
 </form>
