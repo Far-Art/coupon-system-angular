@@ -23,27 +23,24 @@ export class SignupComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.minLength = this.authService.minLength;
     this.maxLength = this.authService.maxLength;
-    let lastName   = this.authService.signupForm?.value?.params?.lastName;
 
-    // TODO resolve last name lost on init or type change
-    if (this.authService.signupForm) {
-      this.form = this.authService.signupForm;
-      this.form.controls.lastName.setValue(lastName);
+    this.initForm();
+    if (this.authService.signupFormData) {
+      this.form.setValue(this.authService.signupFormData);
       this.type = this.form.controls.type.value;
     } else {
-      this.initForm();
-      this.authService.signupForm = this.form;
+      this.authService.signupFormData = this.form.value as SignupData;
     }
 
     this.form.controls.type.valueChanges.subscribe(type => {
       this.type = type;
       if (type === 'company') {
-        lastName = this.authService.signupForm?.value?.params?.lastName;
+        this.authService.signupFormData = this.form.value as SignupData;
         this.form.controls.lastName.removeValidators(Validators.required);
         this.form.controls.lastName.setValue(null);
       } else {
         this.form.controls.lastName.addValidators(Validators.required);
-        this.form.controls.lastName.setValue(lastName);
+        this.form.controls.lastName.setValue(this.authService.signupFormData.lastName);
       }
     })
   }
@@ -56,23 +53,29 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    // TODO on reset while on company type, last name field dissapears
-    // TODO after resetting form cannot select user type
     this.initForm();
-    this.authService.signupForm = this.form;
+    this.authService.signupFormData = this.form.value as SignupData;
   }
 
   private initForm(): void {
-    this.form = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(this.minLength)]),
-      name: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-      lastName: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+    const newForm = new FormGroup({
+      email: new FormControl<string>(null, [Validators.required, Validators.email]),
+      password: new FormControl<string>(null, [Validators.required, Validators.minLength(this.minLength)]),
+      name: new FormControl<string>(null, [Validators.required, Validators.minLength(3)]),
+      lastName: new FormControl<string>(null, [Validators.required, Validators.minLength(3)]),
       type: new FormControl<UserType>('customer', [Validators.required])
     })
+
+    if (this.form) {
+      this.form.setValue(newForm.value as SignupData);
+      this.form.markAsUntouched();
+      this.form.markAsPristine();
+    } else {
+      this.form = newForm;
+    }
   }
 
   ngOnDestroy(): void {
-    this.authService.signupForm = this.form;
+    this.authService.signupFormData = this.form.value as SignupData;
   }
 }

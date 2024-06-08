@@ -22,11 +22,11 @@ export class LoginComponent implements OnInit {
     this.minLength = this.authService.minLength;
     this.maxLength = this.authService.maxLength;
 
-    if (this.authService.loginForm) {
-      this.form = this.authService.loginForm;
+    this.initForm();
+    if (this.authService.loginFormData) {
+      this.form.setValue(this.authService.loginFormData);
     } else {
-      this.initForm();
-      this.authService.loginForm = this.form;
+      this.authService.loginFormData = this.form.value as LoginData;
     }
   }
 
@@ -39,14 +39,22 @@ export class LoginComponent implements OnInit {
 
   onReset() {
     this.initForm();
-    this.authService.loginForm = this.form;
+    this.authService.loginFormData = this.form.value as LoginData;
   }
 
   private initForm(): void {
-    this.form = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(this.minLength)])
-    })
+    const newForm = new FormGroup({
+      email: new FormControl<string>(null, [Validators.required, Validators.email]),
+      password: new FormControl<string>(null, [Validators.required, Validators.minLength(this.minLength)])
+    });
+
+    if (this.form) {
+      this.form.setValue(newForm.value as LoginData);
+      this.form.markAsUntouched();
+      this.form.markAsPristine();
+    } else {
+      this.form = newForm;
+    }
   }
 
 }

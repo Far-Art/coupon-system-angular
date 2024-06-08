@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {BehaviorSubject} from 'rxjs';
 
 
@@ -40,30 +40,30 @@ export class AuthService {
 
   constructor() { }
 
-  private _loginForm: FormGroup;
-  private _signupForm: FormGroup;
+  private _loginFormData: LoginData;
+  private _signupFormData: SignupData;
 
-  set loginForm(form: FormGroup) {
-    this._loginForm = form;
+  set loginFormData(data: LoginData) {
+    this._loginFormData = data;
   }
 
-  get loginForm() {
-    return this._loginForm;
+  get loginFormData() {
+    return this._loginFormData;
   }
 
-  set signupForm(form: FormGroup) {
-    this._signupForm = form;
+  set signupFormData(data: SignupData) {
+    this._signupFormData = data;
   }
 
-  get signupForm() {
-    return this._signupForm;
+  get signupFormData() {
+    return this._signupFormData;
   }
 
   login(data: LoginData) {
-    this.loginForm = null;
+    this.loginFormData = null;
   }
 
   signUp(data: SignupData) {
-    this.signupForm = null;
+    this.signupFormData = null;
   }
 }
