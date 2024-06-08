@@ -155,5 +155,10 @@
             class="fw-bolder list-group-item list-group-item-success list-group-item-action"
             type="submit">Signup
     </button>
+    <button [disabled]="form.pristine"
+            class="list-group-item list-group-item-danger list-group-item-action"
+            (click)="onReset()"
+            type="button">Reset Form
+    </button>
   </div>
 </form>

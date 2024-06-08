@@ -37,6 +37,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  onReset() {
+    this.initForm();
+    this.authService.loginForm = this.form;
+  }
+
   private initForm(): void {
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),

@@ -40,8 +40,24 @@ export class AuthService {
 
   constructor() { }
 
-  loginForm: FormGroup | null;
-  signupForm: FormGroup | null;
+  private _loginForm: FormGroup;
+  private _signupForm: FormGroup;
+
+  set loginForm(form: FormGroup) {
+    this._loginForm = form;
+  }
+
+  get loginForm() {
+    return this._loginForm;
+  }
+
+  set signupForm(form: FormGroup) {
+    this._signupForm = form;
+  }
+
+  get signupForm() {
+    return this._signupForm;
+  }
 
   login(data: LoginData) {
     this.loginForm = null;
