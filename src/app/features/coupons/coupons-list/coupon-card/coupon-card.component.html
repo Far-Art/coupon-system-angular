@@ -1,18 +1,20 @@
-<div class="card rounded-2 overflow-hidden mt-3" xmlns="http://www.w3.org/1999/html">
-  <img src="{{coupon.params.imageUrl}}"
+<div #card class="d-flex justify-content-between card rounded-2 overflow-hidden mt-3" xmlns="http://www.w3.org/1999/html">
+  <img src="{{coupon.params.image}}"
        alt="{{coupon.params.title}} coupon"
        class="object-fit-cover user-select-none">
 
-  <div class="mb-5 position-relative">
+  <div class="position-relative">
     <div class="d-flex flex-row bg-light-semi-transparent justify-content-between p-1">
       <!-- TITLE -->
-      <div class="p-3 pt-2 pb-2 flex-grow-1 fs-6 fw-semibold text-primary user-select-none" (click)="onTitleClick()">
-        <span>{{ coupon.params.title | titlecase | sliceTxt: 22 }}</span>
-        <span class="position-absolute top-0 start-0 pl-1 pt-0 fs-7">{{ coupon.params.category }}</span>
+      <div class="ps-1 pe-0 pt-2 pb-2 flex-grow-1 fs-6 fw-semibold text-primary user-select-none"
+           (click)="onTitleClick()">
+        <span #title>{{ coupon.params.title | titlecase | sliceTxt: titleMaxLen }}</span>
+        <span class="position-absolute top-0 start-0 ps-2 pt-0 fs-7">{{ coupon.params.category }}</span>
       </div>
 
       <!-- INFO BUTTON -->
-      <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative" (click)="switchInfoDescription()" role="button">
+      <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative" (click)="switchInfoDescription()"
+           role="button">
         <div *ngIf="isDescriptionShown" class="position-absolute top-25 left-25">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                class="bi bi-info-circle" viewBox="0 0 16 16">
@@ -32,7 +34,8 @@
       </div>
 
       <!-- DESCRIPTION BUTTON -->
-      <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative" (click)="switchInfoDescription()" role="button">
+      <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative" (click)="switchInfoDescription()"
+           role="button">
         <div *ngIf="!isDescriptionShown" class="position-absolute top-25 left-25">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                class="bi bi-chat-right-text" viewBox="0 0 16 16">
@@ -52,7 +55,8 @@
       </div>
 
       <!-- WISH LIST BUTTON -->
-      <div class="p-3 pt-2 pb-2 text-primary position-relative m-1 mt-0 mb-0" (click)="onWishListClick()" role="button">
+      <div class="p-3 pt-2 pb-2 text-primary position-relative m-1 mt-0 mb-0" (click)="onWishListClick()"
+           role="button">
 
         <!-- NOT ADDED -->
         <div *ngIf="!isAddedToWish" class="position-absolute top-25 left-25">
@@ -98,11 +102,11 @@
       <!-- CART -->
       <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative"
            (click)="onCartClick()"
-           [ngClass]="{'disabled': isSaleEnded}"
+           [ngClass]="{'disabled': _isSaleEnded}"
            role="button">
 
         <!-- ADD ICON -->
-        <div *ngIf="!isAddedToCart && !isSaleEnded" class="position-absolute top-25 left-25 text-primary">
+        <div *ngIf="!isAddedToCart && !_isSaleEnded" class="position-absolute top-25 left-25 text-primary">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                fill="currentColor"
                class="bi bi-bag-plus" viewBox="0 0 16 16">
@@ -128,7 +132,8 @@
 
         <!-- REMOVE FROM CART ICON -->
         <div *ngIf="isAddedToCart" class="position-absolute top-25 left-25 text-success">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-dash-fill"
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+               class="bi bi-bag-dash-fill"
                viewBox="0 0 16 16">
             <path fill-rule="evenodd"
                   d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M6 9.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
@@ -150,7 +155,7 @@
 
 
         <!-- ADDING DISABLED ICON -->
-        <div *ngIf="isSaleEnded" class="position-absolute top-25 left-25">
+        <div *ngIf="_isSaleEnded" class="position-absolute top-25 left-25">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                class="bi bi-bag-x text-dark" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -167,22 +172,22 @@
   <!-- INFO CONTENT -->
   <ng-container *ngIf="!isDescriptionShown">
     <div class="d-flex flex-row"
-         [ngClass]="{'justify-content-between' : !isSaleEnded && isShowTimer, 'justify-content-start' : isSaleEnded, 'justify-content-end': !isSaleEnded && !isShowTimer}">
+         [ngClass]="{'justify-content-between' : !_isSaleEnded && isShowTimer, 'justify-content-start' : _isSaleEnded, 'justify-content-end': !_isSaleEnded && !isShowTimer}">
 
       <!-- TIMER -->
       <div *ngIf="isShowTimer"
            class="p-2 mb-2 fs-6 fw-semibold bg-light-semi-transparent rounded-end text-primary position-relative user-select-none">
-        <ng-container *ngIf="isSaleEnded">
+        <ng-container *ngIf="_isSaleEnded">
           {{ 'sale ended' | titlecase }}
         </ng-container>
-        <ng-container *ngIf="!isSaleEnded">
+        <ng-container *ngIf="!_isSaleEnded">
           <span class="fs-7 position-absolute top-0 user-select-none">{{ 'ends in:' | titlecase }}</span>
           {{ timerValue | date: 'HH:mm:ss' }}
         </ng-container>
       </div>
 
       <!-- PRICE -->
-      <div *ngIf="!isSaleEnded"
+      <div *ngIf="!_isSaleEnded"
            class="p-2 mb-2 fs-6 fw-semibold bg-light-semi-transparent rounded-start text-primary user-select-none">
         {{ coupon.params.price | currency: 'ILS' }}
       </div>
@@ -191,13 +196,23 @@
 
   <!-- DESCRIPTION CONTENT -->
   <ng-container *ngIf="isDescriptionShown">
-    <div class="p-2 m-0 w-100 h-75 fs-6 bg-light-semi-transparent text-primary position-absolute mt-5 overflow-y-auto">
-      <p class="fw-semibold text-decoration-underline">{{
-          '\'' + coupon.params.title + '\' brought to you by: ' +
-          coupon.params.companyName  | titlecase
-        }}</p>
+    <div
+        class="description p-0 ps-2 pe-2 m-0 w-100 fs-6 bg-light-semi-transparent text-primary position-absolute mt-5 overflow-y-auto text-wrap">
+      <p class="text-decoration-underline mb-0">Title:</p>
+      <p class="fw-semibold">{{ coupon.params.title }}</p>
+      <hr>
+
+      <p class="text-decoration-underline mb-0">Company:</p>
+      <p class="mb-0 fw-lighter">name: <span class="fw-semibold mb-0">{{ coupon.params.companyName }}</span></p>
+      <p class="fw-lighter">email: <span class="fw-semibold">{{ coupon.params.companyEmail }}</span></p>
+      <hr>
+
+      <p class="text-decoration-underline mb-0">Ends on:</p>
+      <p class="fw-semibold">{{ coupon.params.endDate | date: 'd/M/yy, hh:mm' }}</p>
+      <hr>
+
+      <p class="text-decoration-underline mb-0">Description:</p>
       <p>{{ coupon.params.description }}</p>
     </div>
   </ng-container>
 </div>
-

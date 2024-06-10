@@ -16,7 +16,7 @@
       *ngFor="let c of coupons; let i = index;"
       (click)="onClick(c)">
     <div class="row position-relative">
-      <div class="col position-absolute top-50 start-50 translate-middle">
+      <div class="col position-absolute top-50 start-0 translate-middle-y">
         <input unfocus type="checkbox" class="form-check-input" [checked]="isPresent(c)">
       </div>
       <div class="col" style="margin-left: 1.5rem">

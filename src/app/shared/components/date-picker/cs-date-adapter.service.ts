@@ -1,23 +1,23 @@
-import {Injectable} from "@angular/core";
-import {NgbDateAdapter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {Injectable} from '@angular/core';
+import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Injectable()
 export class CsDateAdapterService extends NgbDateAdapter<string> {
 
   fromModel(value: string | null): NgbDateStruct | null {
-    if (value) {
-      const date = value.split('/');
-      return {
-        day: parseInt(date[0], 10),
-        month: parseInt(date[1], 10),
-        year: parseInt(date[2], 10),
-      };
-    }
-    return null;
+    if (value == null) return null;
+    const _d = value.substring(0, 10).split('-');
+    return {
+      day: parseInt(_d[2], 10),
+      month: parseInt(_d[1], 10),
+      year: parseInt(_d[0], 10)
+    };
   }
 
   toModel(date: NgbDateStruct | null): string | null {
-    return date ? date.day + '/' + date.month + '/' + date.year : null;
+    if (date == null) return null;
+    return new Date(date.year, date.month, date.day, 0, 0, 0).toISOString();
   }
 
 }

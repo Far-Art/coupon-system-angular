@@ -81,6 +81,8 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubmit() {
+    console.log('start',this.form.value.dateRange.start)
+    console.log('end',this.form.value.dateRange.end)
     const filterKeys: FilterKeys = this.form.value as FilterKeys;
     this.prevForm.patchValue(this.form.value);
 

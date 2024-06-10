@@ -8,7 +8,7 @@
   <div class="modal-footer">
     <ng-container *ngIf="selectedCoupons.length > 0">
       <button unfocus type="button" class="btn btn-outline-danger" (click)="onDelete()">Delete</button>
-      <button unfocus type="button" class="btn btn-outline-secondary" (click)="onMove()">Move To Cart</button>
+      <button [disabled]="isAnySaleEnded" unfocus type="button" class="btn btn-outline-secondary" (click)="onMove()">Move To Cart</button>
     </ng-container>
     <button type="button"
             class="btn btn-outline-success"

@@ -1,9 +1,3 @@
 <div class="row row-cols-auto gy-3 gx-5 justify-content-center">
-  <sc-coupon-card *ngFor="let data of coupons"
-                  [coupon]="data.coupon"
-                  [isAddedToCart]="data.isInCart"
-                  [isAddedToWish]="data.isInWish"
-                  (onCartClickEmitter)="onCartListener($event)"
-                  (onWishClickEmitter)="onWishListener($event)"
-  ></sc-coupon-card>
+  <sc-coupon-card *ngFor="let coupon of coupons" [coupon]="coupon"></sc-coupon-card>
 </div>

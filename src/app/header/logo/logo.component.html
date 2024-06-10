@@ -1,4 +1,4 @@
-<div class="main-logo" routerLink="/">
+<div class="main-logo position-relative user-select-none" style="cursor: pointer" routerLink="/">
   <svg *ngIf="!isBlinked"
        id="Layer_1" data-name="Layer 1"
        xmlns="http://www.w3.org/2000/svg"
@@ -78,4 +78,9 @@
     <ellipse id="Eye-2" class="cls-2" cx="345.9" cy="312.1" rx="9" ry="55.2"
              transform="translate(-119.7 295.4) rotate(-40)"/>
   </svg>
+  <h2 *ngIf="isShowTitle"
+      class="position-absolute translate-middle-y top-50 m-0 ms-5 logo-title text-primary"
+      style="width: 200px; margin-top: 0.15rem !important;">
+    Coupons As Art
+  </h2>
 </div>

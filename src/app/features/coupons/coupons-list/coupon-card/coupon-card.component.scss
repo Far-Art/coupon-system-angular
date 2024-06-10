@@ -3,8 +3,11 @@
 .card {
   box-shadow: $shadow-elevation-high;
   border: 3px solid $color-white;
-  min-width: 300px;
-  min-height: 180px;
+  text-wrap: nowrap;
+}
+
+.description {
+  height: calc(100% - 3rem);
 }
 
 .mb-5 {

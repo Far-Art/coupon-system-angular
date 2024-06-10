@@ -32,9 +32,9 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.wishSubscription   = this.couponsService.couponsInWish$.subscribe(() => this.wishBadgeVal = this.couponsService.couponsInWish);
+    this.wishSubscription   = this.couponsService.wishIds$.subscribe(() => this.wishBadgeVal = this.couponsService.couponsInWish);
     this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.getFiltersBadgeValue);
-    this.cartSubscription   = this.couponsService.couponsInCart$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
+    this.cartSubscription   = this.couponsService.cartIds$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
   }
 
   onCartClick(): void {

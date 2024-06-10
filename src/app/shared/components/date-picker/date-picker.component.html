@@ -1,8 +1,11 @@
-<form class="row row-cols-sm-auto">
+<!--<form class="row row-cols-sm-auto" [formGroup]="form">-->
   <div class="col-12">
     <div class="input-group drop-shadow-low">
       <input
+          [formControl]="formControl"
+          [value]="formControl.value"
           class="form-control"
+          type="text"
           placeholder="dd/mm/yyyy"
           name="dp"
           [displayMonths]="1"
@@ -13,11 +16,10 @@
           [minDate]="_minDate"
           [maxDate]="_maxDate"
           ngbDatepicker
-          [value]="_displayedDate"
           (dateSelect)="onDateSelect($event)"
           #d="ngbDatepicker"/>
 
-      <button class="btn btn-outline-secondary" (click)="d.toggle()"  type="button">
+      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-week"
              viewBox="0 0 16 16">
           <path
@@ -28,4 +30,4 @@
       </button>
     </div>
   </div>
-</form>
+<!--</form>-->

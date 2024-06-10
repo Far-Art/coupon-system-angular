@@ -9,7 +9,7 @@ export class SliceTxtPipe implements PipeTransform {
     if (!value) {
       return value
     }
-    return value.length > maxLen ? value.slice(0, maxLen) + '...' : value;
+    return value.length > maxLen ? value.slice(0, maxLen).replace(/\s+$/, '') + '...' : value;
   }
 
 }

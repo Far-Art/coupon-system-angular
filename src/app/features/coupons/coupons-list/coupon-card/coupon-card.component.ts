@@ -1,6 +1,19 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import {Coupon} from '../../../../shared/models/coupon.model';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {CouponsService} from '../../coupons.service';
+import {Subscription} from 'rxjs';
+import {WindowSizeService} from '../../../../shared/services/window-size.service';
 
 
 @Component({
@@ -18,18 +31,22 @@ import {animate, style, transition, trigger} from '@angular/animations';
 })
 export class CouponCardComponent implements OnInit, OnDestroy {
 
+  @ViewChild('card', {static: true}) private cardElement: ElementRef;
+  @ViewChild('title', {static: true}) private cardTitle: ElementRef;
+
   // 86_400_000 millis is equal to 24 hours
-  private activateTimer = 86_400_000;
+  private activateTimer        = 86_400_000;
   private animationDismissTime = 500;
 
   @Input() coupon: Coupon;
-  @Input() isAddedToCart = false;
-  @Input() isAddedToWish = false;
 
+  isAddedToCart      = false;
+  isAddedToWish      = false;
   isDescriptionShown = false;
   isShowTimer        = true;
   timerValue: Date | undefined;
-  isSaleEnded        = false;
+  _isSaleEnded       = false;
+  titleMaxLen: number;
 
   cartOnAddAnimationTrigger    = false;
   wishOnAddAnimationTrigger    = false;
@@ -39,30 +56,53 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   @Output() onCartClickEmitter = new EventEmitter<{ isChecked: boolean, coupon: Coupon }>();
   @Output() onWishClickEmitter = new EventEmitter<{ isChecked: boolean, coupon: Coupon }>();
 
-  constructor() {}
+  private wishSub: Subscription;
+  private cartSub: Subscription;
+  private windowSizeSub: Subscription;
+
+  constructor(
+      private couponsService: CouponsService,
+      private windowSize: WindowSizeService,
+      private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
-    this.isShowTimer = this.coupon.params.endDate.getTime() - new Date().getTime() < this.activateTimer;
-    if (this.isShowTimer) {
-      this.timerValue       = new Date(this.coupon.params.endDate.getTime() - new Date().getTime());
-      const timeoutInterval = setInterval(() => {
-        if (new Date() <= this.timerValue) {
-          this.isSaleEnded = true
-          clearInterval(timeoutInterval);
-          return;
-        }
-        this.timerValue = new Date(this.timerValue!.getTime() - 1000);
-      }, 1000);
-    }
+    this.showSaleEndTimout();
+
+    this.wishSub = this.couponsService.wishIds$.subscribe(ids => {
+      this.isAddedToWish = ids.includes(this.coupon.params.id);
+    });
+
+    this.cartSub = this.couponsService.cartIds$.subscribe(ids => {
+      this.isAddedToCart = ids.includes(this.coupon.params.id);
+    });
+
+    this.windowSizeSub = this.windowSize.windowSize$.subscribe(size => {
+      if (size.width > 1200) {
+        this.renderer.setStyle(this.cardElement.nativeElement, 'width', '550px');
+        this.renderer.setStyle(this.cardElement.nativeElement, 'height', '320px');
+        this.renderer.setStyle(this.cardTitle.nativeElement, 'font-size', '1rem');
+        this.titleMaxLen = 40;
+      } else if (size.width > 810) {
+        this.renderer.setStyle(this.cardElement.nativeElement, 'width', '330px');
+        this.renderer.setStyle(this.cardElement.nativeElement, 'height', '220px');
+        this.renderer.setStyle(this.cardTitle.nativeElement, 'font-size', '0.9rem');
+        this.titleMaxLen = 20;
+      } else {
+        this.renderer.setStyle(this.cardElement.nativeElement, 'width', '300px');
+        this.renderer.setStyle(this.cardElement.nativeElement, 'height', '180px');
+        this.renderer.setStyle(this.cardTitle.nativeElement, 'font-size', '0.8rem');
+        this.titleMaxLen = 17;
+      }
+    })
   }
 
   onCartClick() {
-    if (!this.isSaleEnded) {
-      this.isAddedToCart                = !this.isAddedToCart;
+    if (!this._isSaleEnded) {
+      this.isAddedToCart ? this.couponsService.removeFromCart(this.coupon) : this.couponsService.addToCart(this.coupon);
       this.cartOnRemoveAnimationTrigger = this.isAddedToCart === false;
 
       if (this.isAddedToCart) {
-        this.vibrate();
         this.cartOnAddAnimationTrigger = true;
         setTimeout(() => {
           this.cartOnAddAnimationTrigger = false;
@@ -74,17 +114,14 @@ export class CouponCardComponent implements OnInit, OnDestroy {
           this.cartOnRemoveAnimationTrigger = false;
         }, this.animationDismissTime);
       }
-
-      this.onCartClickEmitter.emit({isChecked: this.isAddedToCart, coupon: this.coupon});
     }
   }
 
   onWishListClick() {
-    this.isAddedToWish                = !this.isAddedToWish;
+    this.isAddedToWish ? this.couponsService.removeFromWish(this.coupon) : this.couponsService.addToWish(this.coupon);
     this.wishOnRemoveAnimationTrigger = this.isAddedToWish === false;
 
     if (this.isAddedToWish) {
-      this.vibrate();
       this.wishOnAddAnimationTrigger = true;
       setTimeout(() => {
         this.wishOnAddAnimationTrigger = false;
@@ -109,10 +146,27 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.wishSub.unsubscribe();
+    this.cartSub.unsubscribe();
+    this.windowSizeSub.unsubscribe();
   }
 
-  private vibrate(){
-    // navigator.vibrate(200);
+  private showSaleEndTimout() {
+    this._isSaleEnded = this.coupon.params.isSaleEnded;
+    this.isShowTimer  = this.coupon.params.endDate.getTime() - new Date().getTime() < this.activateTimer;
+    if (this._isSaleEnded) return;
+
+    if (this.isShowTimer) {
+      this.timerValue       = new Date(this.coupon.params.endDate.getTime() - new Date().getTime());
+      const timeoutInterval = setInterval(() => {
+        if (new Date() <= this.timerValue) {
+          this._isSaleEnded = true
+          clearInterval(timeoutInterval);
+          return;
+        }
+        this.timerValue = new Date(this.timerValue.getTime() - 1000);
+      }, 1000);
+    }
   }
 
 }

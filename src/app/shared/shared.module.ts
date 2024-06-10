@@ -10,6 +10,7 @@ import {ControlValuePipe} from './pipes/control-value.pipe';
 import {CouponTableComponent} from './components/coupon-table/coupon-table.component';
 import {CouponItemComponent} from './components/coupon-table/coupon-item/coupon-item.component';
 import {OffCanvasComponent} from './components/offcanvas/off-canvas.component';
+import {CoreModule} from '../core/core.module';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {OffCanvasComponent} from './components/offcanvas/off-canvas.component';
   ],
   imports: [
     CommonModule,
-    NgbInputDatepicker
+    NgbInputDatepicker,
+    CoreModule
   ],
   providers: [
     {provide: NgbDateParserFormatter, useClass: CsDateFormatterService},

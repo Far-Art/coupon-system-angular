@@ -30,8 +30,8 @@ export class CartModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.cartSubscription = this.couponsService.couponsInCart$.subscribe(data => {
-      this.cartList   = data.coupons;
+    this.cartSubscription = this.couponsService.cartIds$.subscribe(ids => {
+      this.cartList   = this.couponsService.getCouponsById(...ids);
       this.totalPrice = this.cartList.length > 0 ? this.cartList.map(c => c.params.price).reduceRight((acc, val) => acc + val) : 0;
     });
   }
@@ -58,13 +58,13 @@ export class CartModalComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    this.couponsService.removeFromCart(this.selectedCoupons);
+    this.couponsService.removeFromCart(...this.selectedCoupons);
     this.onCancel();
     this.closeIfEmpty();
   }
 
   onMove() {
-    this.couponsService.moveToWish(this.selectedCoupons);
+    this.couponsService.moveToWish(...this.selectedCoupons);
     this.onCancel();
     this.closeIfEmpty();
   }

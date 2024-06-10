@@ -1,23 +1,24 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, forwardRef, Input, OnInit, Output} from '@angular/core';
 import {NgbDate, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 
 @Component({
   selector: 'sc-date-picker',
   templateUrl: './date-picker.component.html',
   styleUrls: ['./date-picker.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: DatePickerComponent
+      useExisting: forwardRef(() => DatePickerComponent)
     }
   ]
 })
 export class DatePickerComponent implements OnInit, ControlValueAccessor {
 
-  @Input() value?: Date | string;
+  @Input() date?: Date | string;
 
   @Input() minDate?: Date | string;
 
@@ -25,21 +26,32 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
 
   @Output() valueEmitter = new EventEmitter<Date>();
 
+  formControl: FormControl<string | null>;
+
   _displayedDate: string;
 
   _minDate: NgbDateStruct;
 
   _maxDate: NgbDateStruct;
 
+  isDisabled = false;
+
   constructor(private formatter: NgbDateParserFormatter) {}
 
   ngOnInit(): void {
+    // this.formControl.valueChanges
+    //     .pipe(
+    //         debounceTime(200),
+    //         tap(value => this.onChange(value))
+    //     )
+    //     .subscribe();
     // TODO rework this component
     const date = new Date();
+    this.initForm()
 
-    if (this.value) {
-      this._displayedDate = this.formatter.format(this.parseDate(this.value));
-    }
+    // if (this.date) {
+    //   this._displayedDate = this.formatter.format(this.toNgbDate(this.date));
+    // }
 
     if (this.minDate) {
       if (this.minDate instanceof Date) {
@@ -49,7 +61,7 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
           day: this.minDate.getDay()
         }
       } else {
-        this._minDate = this.parseDate(this.minDate);
+        this._minDate = this.toNgbDate(this.minDate);
       }
     } else {
       this._minDate = {
@@ -67,7 +79,7 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
           day: this.maxDate.getDay()
         }
       } else {
-        this._maxDate = this.parseDate(this.maxDate);
+        this._maxDate = this.toNgbDate(this.maxDate);
       }
     } else {
       this._maxDate = {
@@ -80,18 +92,42 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
 
   onDateSelect(ngbDate: NgbDate) {
     const date = new Date(new Date().setFullYear(ngbDate.year, ngbDate.month - 1, ngbDate.day));
-    this.onChange(date);
-    this.valueEmitter.emit(date);
+    // this.onChange(this.parseDate(date));
+    // this.valueEmitter.emit(date);
   }
 
-  private parseDate(date: string | Date): NgbDateStruct {
-    let _date: string;
-    if (date instanceof Date) {
-      _date = date.toISOString().substring(0, 10);
-    } else {
-      _date = date;
-    }
+  onChange: (value: any) => void;
+  onTouched: () => void;
+
+  registerOnChange(fn: (value: any) => void): void {
+    this.onChange = fn
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
+  }
+
+  writeValue(date: string): void {
+    this.date           = date;
+    this._displayedDate = this.formatToDisplayedDate(this.toNgbDate(date));
+  }
+
+  parseDate(date: Date | string): Date | null {
+    if (date == null) return null;
+    const _d = (date instanceof Date ? date.toISOString() : date).substring(0, 10).replace(/[ :]/g, '-').split('-');
+    return new Date(+_d[0], +_d[1], +_d[2], 0, 0, 0);
+  }
+
+  private toNgbDate(date: string | Date): NgbDateStruct | null {
+    if (date == null) return null;
+
+    const _date   = date instanceof Date ? date.toISOString().substring(0, 10) : date;
     const dateArr = _date.replaceAll(/\\/g, '-').split('-');
+
     return {
       year: +dateArr[0],
       month: +dateArr[1],
@@ -99,23 +135,14 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  onChange = (date: Date) => {};
-
-  registerOnChange(fn: (value: Date) => void): void {
-    this.onChange = fn;
+  private formatToDisplayedDate(date: NgbDateStruct | null): string {
+    const _date = this.formatter.format(date);
+    return date ? _date : 'Please select a date';
   }
 
-  registerOnTouched(fn: any): void {}
-
-  writeValue(date: Date): void {
-    this.value          = date;
-    this._displayedDate = date ? this.formatter.format(this.parseDate(this.value)) : 'Please select a date';
-  }
-
-  parseDate2(date: string) {
-    const s      = date.replace(/[ :]/g, '-').split('-');
-    const parsed = new Date(+s[0], +s[1], +s[2], +s[3], +s[4], +s[5]);
-    return parsed;
+  private initForm() {
+    this.formControl = new FormControl<string>(this.date instanceof Date ? this.date.toISOString().substring(0, 10) : this.date);
+    console.log(this.formControl.value)
   }
 
 }

@@ -3,10 +3,12 @@ import {BehaviorSubject} from 'rxjs';
 import {NavigationEnd, Router} from '@angular/router';
 
 
+type Direction = 'up' | 'down' | 'top' | 'bottom';
+
 export type Scrollbar = {
   x: number,
   y: number,
-  scrollDirection: 'up' | 'down'
+  scrollDirection: Direction
 }
 
 @Injectable({
@@ -23,9 +25,9 @@ export class ScrollbarService {
   }
 
   private scrollPositionSubject = new BehaviorSubject<Scrollbar>({
-    x: 0,
-    y: 0,
-    scrollDirection: 'down'
+    x: window.scrollX,
+    y: window.scrollY,
+    scrollDirection: 'top'
   });
 
   scrollPosition$() {
@@ -41,16 +43,23 @@ export class ScrollbarService {
     const subject     = this.scrollPositionSubject;
     let prevPositionY = 0;
 
+    function calcScrollDirection(): Direction {
+      if (window.scrollY === 0) {
+        return 'top';
+      }
+      return window.scrollY > prevPositionY ? 'down' : 'up'
+    }
+
     return function () {
       if (window.scrollY % 5 === 0) {
         subject.next({
           x: window.scrollX,
           y: window.scrollY,
-          scrollDirection: window.scrollY > prevPositionY ? 'down' : 'up'
+          scrollDirection: calcScrollDirection()
         });
         prevPositionY = window.scrollY;
       }
-
     }
   }
+
 }

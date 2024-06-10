@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {LogoService} from './logo.service';
+import {WindowSizeService} from '../../shared/services/window-size.service';
 
 
 @Component({
@@ -12,21 +13,28 @@ export class LogoComponent implements OnInit, OnDestroy {
 
   isBlinked = false;
 
-  private logoSub: Subscription;
+  isShowTitle: boolean;
 
-  constructor(private logoService: LogoService) {}
+  private logoSub: Subscription;
+  private windowSizeSub: Subscription;
+
+  constructor(private logoService: LogoService, private windowSizeService: WindowSizeService) {}
 
   ngOnInit(): void {
-    this.logoSub = this.logoService.blinked$.subscribe(() => this.logoBlink());
-  }
-
-  ngOnDestroy(): void {
-    this.logoSub.unsubscribe();
+    this.logoSub       = this.logoService.blinked$.subscribe(() => this.logoBlink());
+    this.windowSizeSub = this.windowSizeService.windowSize$.subscribe(size => {
+      this.isShowTitle = size.width > 750;
+    })
   }
 
   private logoBlink() {
     this.isBlinked = true;
     setTimeout(() => this.isBlinked = false, 300);
+  }
+
+  ngOnDestroy(): void {
+    this.logoSub.unsubscribe();
+    this.windowSizeSub.unsubscribe();
   }
 
 }

@@ -18,6 +18,8 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
   selectedCoupons: Coupon[] = [];
 
+  isAnySaleEnded: boolean = false;
+
   private modal: NgbModalRef = null;
 
   private wishSubscription: Subscription;
@@ -25,10 +27,8 @@ export class WishListModalComponent implements OnInit, OnDestroy {
   constructor(private couponsService: CouponsService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
-    this.wishSubscription = this.couponsService.couponsInWish$
-        .subscribe(data => {
-          this.wishList = data.coupons;
-        });
+    this.wishSubscription = this.couponsService.wishIds$
+        .subscribe(ids => this.wishList = this.couponsService.getCouponsById(...ids));
   }
 
   openModal() {
@@ -39,6 +39,7 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
   onCouponsSelected(coupons: Coupon[]) {
     this.selectedCoupons = coupons;
+    this.isAnySaleEnded  = coupons.some(c => c.params.isSaleEnded);
   }
 
   onCancel() {
@@ -46,13 +47,13 @@ export class WishListModalComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    this.couponsService.removeFromWish(this.selectedCoupons);
+    this.couponsService.removeFromWish(...this.selectedCoupons);
     this.onCancel();
     this.closeIfEmpty();
   }
 
   onMove() {
-    this.couponsService.moveToCart(this.selectedCoupons);
+    this.couponsService.moveToCart(...this.selectedCoupons.filter(c => !c.params.isSaleEnded));
     this.onCancel();
     this.closeIfEmpty();
   }
