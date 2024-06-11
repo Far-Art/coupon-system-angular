@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService, SignupData, SignupForm, UserType} from '../auth.service';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -12,17 +14,21 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   form: FormGroup<SignupForm>;
 
+  errorMessage: string;
+
   type: UserType = 'customer';
 
   minLength: number;
 
   maxLength: number;
 
-  constructor(private authService: AuthService) { }
+  private subscription: Subscription;
+
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.minLength = this.authService.minLength;
-    this.maxLength = this.authService.maxLength;
+    this.minLength = this.authService.passwordMinLength;
+    this.maxLength = this.authService.passwordMaxLength;
 
     this.initForm();
     if (this.authService.signupFormData) {
@@ -47,13 +53,21 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.valid) {
-      this.authService.signUp({...this.form.value} as SignupData);
-      this.initForm();
+      this.errorMessage = null;
+      this.subscription = this.authService.signUp({...this.form.value} as SignupData)
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/']);
+            }, error: (error: Error) => {
+              this.errorMessage = error.message;
+            }
+          });
     }
   }
 
   onReset() {
     this.initForm();
+    this.errorMessage               = null;
     this.authService.signupFormData = this.form.value as SignupData;
   }
 
@@ -77,5 +91,6 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.authService.signupFormData = this.form.value as SignupData;
+    if (this.subscription) this.subscription.unsubscribe()
   }
 }

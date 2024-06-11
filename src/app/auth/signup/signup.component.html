@@ -10,7 +10,7 @@
       </svg>
     </span>
     <div class="form-floating">
-      <select formControlName="type" class="form-select" aria-label="Default select example">
+      <select formControlName="type" class="form-select" aria-label="User type select">
         <option value="customer">Customer</option>
         <option value="company">Company</option>
       </select>
@@ -140,7 +140,7 @@
     </div>
   </div>
 
-  <div *ngIf="form.controls.lastName.invalid" class="p-5 pt-0 pb-0">
+  <div *ngIf="form.controls.lastName.invalid" class="p-4 pt-0">
     <div *ngIf="form.controls.lastName.touched && !form.controls.lastName.value" class="text-danger">
       Please enter last name.
     </div>
@@ -149,6 +149,7 @@
       Last name must be at least 3 characters.
     </div>
   </div>
+  <div *ngIf="errorMessage" class="text-danger">{{ errorMessage | titlecase }}</div>
 
   <div class="list-group text-center mt-3">
     <button [disabled]="form.invalid"

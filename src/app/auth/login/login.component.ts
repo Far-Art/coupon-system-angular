@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService, LoginData, LoginForm} from '../auth.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -8,19 +10,23 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   form: FormGroup<LoginForm>;
+
+  errorMessage: string;
 
   minLength: number;
 
   maxLength: number;
 
-  constructor(private authService: AuthService) { }
+  private subscription: Subscription;
+
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.minLength = this.authService.minLength;
-    this.maxLength = this.authService.maxLength;
+    this.minLength = this.authService.passwordMinLength;
+    this.maxLength = this.authService.passwordMaxLength;
 
     this.initForm();
     if (this.authService.loginFormData) {
@@ -32,13 +38,20 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.authService.login({...this.form.value as LoginData});
-      this.initForm();
+      this.errorMessage = null;
+      this.subscription = this.authService.login(this.form.value as LoginData).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        }, error: (error: Error) => {
+          this.errorMessage = error.message;
+        }
+      });
     }
   }
 
   onReset() {
     this.initForm();
+    this.errorMessage              = null;
     this.authService.loginFormData = this.form.value as LoginData;
   }
 
@@ -55,6 +68,10 @@ export class LoginComponent implements OnInit {
     } else {
       this.form = newForm;
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
   }
 
 }

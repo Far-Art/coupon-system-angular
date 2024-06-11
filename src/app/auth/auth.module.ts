@@ -4,10 +4,12 @@ import {AuthComponent} from './auth.component';
 import {LoginComponent} from './login/login.component';
 import {CoreModule} from '../core/core.module';
 import {AuthService} from './auth.service';
-import { SignupComponent } from './signup/signup.component';
+import {SignupComponent} from './signup/signup.component';
 import {AuthRoutingModule} from './auth-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {HeaderModule} from '../header/header.module';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {AuthInterceptorService} from './auth-interceptor.service';
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import {HeaderModule} from '../header/header.module';
     HeaderModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
   ]
 })
 export class AuthModule {}
