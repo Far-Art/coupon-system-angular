@@ -11,14 +11,14 @@
           Home
         </a>
         <a *ngIf="user == null"
-           routerLink='/auth'
+           routerLink='/auth/login'
            routerLinkActive="active"
            [routerLinkActiveOptions]="{ exact: false }"
            class="list-group-item list-group-item-action pt-3 pb-3">
           Authentication
         </a>
         <a *ngIf="user != null"
-           routerLink='/account'
+           routerLink='/account/info'
            routerLinkActive="active"
            class="list-group-item list-group-item-action pt-3 pb-3">
           My Account
