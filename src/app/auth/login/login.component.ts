@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService, LoginData, LoginForm} from '../auth.service';
+import {AuthService, LoginData, LoginForm, UserType} from '../auth.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {Subscription, take} from 'rxjs';
 
 
 @Component({
@@ -65,6 +65,35 @@ export class LoginComponent implements OnInit, OnDestroy {
     } else {
       this.form = newForm;
     }
+  }
+
+  onQuickLogin(type: UserType) {
+    const credentials = {
+      email: '',
+      password: '123456'
+    }
+
+    switch (type) {
+      case 'admin': {
+        credentials.email = 'admin@admin.com';
+        break;
+      }
+      case 'company': {
+        credentials.email = 'company@company.com';
+        break
+      }
+      default: {
+        credentials.email = 'customer@customer.com';
+      }
+    }
+
+    this.authService.login(credentials).pipe(take(1)).subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+      }, error: (error: Error) => {
+        this.errorMessage = error.message;
+      }
+    });
   }
 
   ngOnDestroy(): void {

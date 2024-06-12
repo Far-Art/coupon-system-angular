@@ -6,7 +6,8 @@
 
     <sc-offcanvas [title]="('hello ' + userName) | titlecase">
       <div class="list-group list-group-flush">
-        <a *ngIf="isShowHome" routerLink='/' routerLinkActive="active" class="list-group-item list-group-item-action pt-3 pb-3">
+        <a *ngIf="isShowHome" routerLink='/home' routerLinkActive="active"
+           class="list-group-item list-group-item-action pt-3 pb-3">
           Home
         </a>
         <a *ngIf="user == null"

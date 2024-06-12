@@ -18,7 +18,8 @@ export interface SignupData {
   password: string,
   name: string,
   lastName: string | null,
-  type: UserType
+  type: UserType,
+  image?: string
 }
 
 export interface SignupForm {

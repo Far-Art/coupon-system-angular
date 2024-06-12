@@ -50,7 +50,7 @@
       Please enter a password.
     </div>
   </div>
-  <div *ngIf="errorMessage" class="text-danger">{{ errorMessage | titlecase}}</div>
+  <div *ngIf="errorMessage" class="text-danger">{{ errorMessage | titlecase }}</div>
 
   <div class="list-group text-center mt-3">
     <button [disabled]="form.invalid"
@@ -60,8 +60,27 @@
 
     <button [disabled]="form.pristine"
             (click)="onReset()"
-            class="fw-light list-group-item list-group-item-action list-group-item-danger"
+            [ngClass]="{'text-danger': !form.pristine, 'text-bg-light': !form.pristine}"
+            class="fw-light list-group-item list-group-item-action"
             type="button">Clear Form
+    </button>
+  </div>
+  <br>
+  <div class="list-group text-center mt-3 fw-light">
+    Quick Login
+    <button class="list-group-item list-group-item-action text-bg-light"
+            type="button"
+            (click)="onQuickLogin('customer')">Customer
+    </button>
+
+    <button class="list-group-item list-group-item-action text-bg-light"
+            type="button"
+            (click)="onQuickLogin('company')">Company
+    </button>
+
+    <button class="list-group-item list-group-item-action text-bg-light"
+            type="button"
+            (click)="onQuickLogin('admin')">Admin
     </button>
   </div>
 </form>

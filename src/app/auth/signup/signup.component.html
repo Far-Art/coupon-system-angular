@@ -157,7 +157,8 @@
             type="submit">Signup
     </button>
     <button [disabled]="form.pristine"
-            class="list-group-item list-group-item-danger list-group-item-action"
+            [ngClass]="{'text-danger': !form.pristine, 'text-bg-light': !form.pristine}"
+            class="fw-light list-group-item list-group-item-action"
             (click)="onReset()"
             type="button">Clear Form
     </button>
