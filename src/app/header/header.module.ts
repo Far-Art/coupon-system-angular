@@ -8,6 +8,7 @@ import {SharedModule} from '../shared/shared.module';
 import {CoreModule} from '../core/core.module';
 import {HeaderComponent} from './header.component';
 import { LogoComponent } from './logo/logo.component';
+import {CartService} from './quick-actions/cart/cart.service';
 
 
 @NgModule({
@@ -17,7 +18,7 @@ import { LogoComponent } from './logo/logo.component';
     FilterModalComponent,
     WishListModalComponent,
     HeaderComponent,
-    LogoComponent
+    LogoComponent,
   ],
   exports: [
     HeaderComponent,
@@ -27,6 +28,7 @@ import { LogoComponent } from './logo/logo.component';
     CommonModule,
     CoreModule,
     SharedModule
-  ]
+  ],
+  providers:[CartService]
 })
 export class HeaderModule {}

@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
-import {ActivatedRoute} from '@angular/router';
 import {ScrollbarService} from '../shared/services/scrollbar.service';
 import {UserData} from '../shared/models/user-data.model';
 
@@ -15,13 +14,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
       private authService: AuthService,
-      private route: ActivatedRoute,
       private scrollService: ScrollbarService
   ) {}
 
   userName: string;
   user: UserData;
-  isShowHome = false;
   padding: string;
 
   private paddingNarrow = 'pt-1 pb-1';
@@ -30,9 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authSub: Subscription;
 
   ngOnInit(): void {
-    this.padding      = this.paddingWide;
-    const url: string = this.route.snapshot['_routerState'].url;
-    this.isShowHome   = url.length > 1;
+    this.padding = this.paddingWide;
 
     this.authSub = this.authService.user$.subscribe(user => {
       this.user     = user;

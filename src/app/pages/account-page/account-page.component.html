@@ -1,0 +1,13 @@
+<cs-header></cs-header>
+<div *ngIf="!user">No User Present</div>
+<div *ngIf="user">
+  <p>name: {{ user.name }}</p>
+  <p *ngIf="user.lastName">last name :{{ user.lastName }}</p>
+  <p>email: {{ user.email }}</p>
+  <p>user type: {{ user.type }}</p>
+</div>
+<div class="display-6">Coupons bought</div>
+<div *ngIf="user.couponsBought">
+  <div *ngFor="let coupon of user.couponsBought">{{coupon}}</div>
+</div>
+<button class="btn btn-danger" (click)="onLogout()">Logout</button>

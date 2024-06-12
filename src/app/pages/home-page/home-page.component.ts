@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {CouponsService} from '../features/coupons/coupons.service';
-import {ScrollbarService} from '../shared/services/scrollbar.service';
+import {CouponsService} from '../../features/coupons/coupons.service';
+import {ScrollbarService} from '../../shared/services/scrollbar.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 
 
 @Component({
-  selector: 'cs-main-page',
-  templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.scss'],
+  selector: 'cs-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.scss'],
   animations: [
     trigger('offPage', [
       transition(':enter',
@@ -24,7 +24,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
     ])
   ]
 })
-export class MainPageComponent implements OnInit, OnDestroy {
+export class HomePageComponent implements OnInit, OnDestroy {
 
   couponsNum     = 0
   isHideOnScroll = false;

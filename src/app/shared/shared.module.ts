@@ -11,6 +11,7 @@ import {CouponTableComponent} from './components/coupon-table/coupon-table.compo
 import {CouponItemComponent} from './components/coupon-table/coupon-item/coupon-item.component';
 import {OffCanvasComponent} from './components/offcanvas/off-canvas.component';
 import {CoreModule} from '../core/core.module';
+import { HeaderContentDirective } from './directives/header-content.directive';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {CoreModule} from '../core/core.module';
     CouponTableComponent,
     CouponItemComponent,
     ControlValuePipe,
-    OffCanvasComponent
+    OffCanvasComponent,
+    HeaderContentDirective
   ],
   exports: [
     SliceTxtPipe,
@@ -30,7 +32,8 @@ import {CoreModule} from '../core/core.module';
     DatePickerComponent,
     CouponTableComponent,
     CouponItemComponent,
-    OffCanvasComponent
+    OffCanvasComponent,
+    HeaderContentDirective
   ],
   imports: [
     CommonModule,

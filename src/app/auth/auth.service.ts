@@ -5,6 +5,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FirebaseResponseModel} from './models/firebase-response.model';
 import {UserData} from '../shared/models/user-data.model';
 import {DataManagerService} from '../shared/services/data-manager.service';
+import {Router} from '@angular/router';
 
 
 export type UserType = 'company' | 'customer' | 'admin';
@@ -43,12 +44,12 @@ export class AuthService {
 
   private userDataSubject = new BehaviorSubject<UserData>(null);
 
-  private _authData: FirebaseResponseModel;
+  private _authData: FirebaseResponseModel | null;
 
   private _loginFormData: LoginData;
   private _signupFormData: SignupData;
 
-  constructor(private http: HttpClient, private dataManager: DataManagerService) { }
+  constructor(private http: HttpClient, private dataManager: DataManagerService, private router: Router) { }
 
   get authData() {
     return this._authData;
@@ -100,6 +101,12 @@ export class AuthService {
         concatMap(res => this.dataManager.putUserData(res.localId, this.buildUserData(signup))
             .pipe(take(1), tap(userData => this.userDataSubject.next(userData)))),
         catchError(this.handleError));
+  }
+
+  logout() {
+    this._authData = null;
+    this.userDataSubject.next(null);
+    this.router.navigate(['/']);
   }
 
   private handleError(error: HttpErrorResponse) {

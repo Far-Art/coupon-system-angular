@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../auth/auth.service';
-import {UserData} from '../shared/models/user-data.model';
+import {AuthService} from '../../auth/auth.service';
+import {UserData} from '../../shared/models/user-data.model';
 import {Subscription} from 'rxjs';
 
 
@@ -19,6 +19,10 @@ export class AccountPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.authService.user$.subscribe(user => this.user = user);
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 
   ngOnDestroy(): void {

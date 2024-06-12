@@ -3,6 +3,7 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Coupon} from '../../../shared/models/coupon.model';
 import {Subscription} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
+import {CartService} from './cart.service';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
   constructor(
       private modalService: NgbModal,
-      private couponsService: CouponsService
+      private couponsService: CouponsService,
+      private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -70,7 +72,12 @@ export class CartModalComponent implements OnInit, OnDestroy {
   }
 
   onBuy() {
-
+    // TODO buying coupons does not update badge and disabled status of button
+    // TODO consider moving quick actions out of header
+    this.cartService.buyCoupons$(this.cartList).subscribe(bought => {
+      this.cartList = this.cartList.filter(coupon => !bought.includes(coupon.params.id));
+      this.closeIfEmpty();
+    });
   }
 
   private closeIfEmpty(): void {
