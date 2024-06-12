@@ -20,7 +20,7 @@ export interface SignupData {
   name: string,
   lastName: string | null,
   type: UserType,
-  image?: string
+  image: string
 }
 
 export interface SignupForm {
@@ -28,7 +28,8 @@ export interface SignupForm {
   password: FormControl<string>,
   name: FormControl<string>,
   lastName: FormControl<string | null>,
-  type: FormControl<UserType>
+  type: FormControl<UserType>,
+  image: FormControl<string>,
 }
 
 @Injectable({
@@ -42,7 +43,16 @@ export class AuthService {
 
   readonly passwordMaxLength = 30;
 
-  private userDataSubject = new BehaviorSubject<UserData>(null);
+  private userDataSubject = new BehaviorSubject<UserData>({ // TODO change to null after test
+    image: 'assets/images/customer-default.png',
+    type: 'customer',
+    name: 'Artur',
+    lastName: 'Farmanov',
+    email: 'arturfarmanov91@gmail.com',
+    couponsBought: [1, 2, 3, 4, 5, 6],
+    couponsInCart: [],
+    couponsInWish: []
+  });
 
   private _authData: FirebaseResponseModel | null;
 
@@ -122,6 +132,7 @@ export class AuthService {
       name: data.name,
       lastName: data.lastName,
       type: data.type,
+      image: data.image,
       couponsBought: [],
       couponsInWish: [],
       couponsInCart: []

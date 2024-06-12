@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../auth/auth.service';
 import {UserData} from '../../shared/models/user-data.model';
 import {Subscription} from 'rxjs';
+import {AccountService} from './account.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -11,14 +13,20 @@ import {Subscription} from 'rxjs';
 })
 export class AccountPageComponent implements OnInit, OnDestroy {
 
-  constructor(private authService: AuthService) {}
+  constructor(
+      private authService: AuthService,
+      private accountService: AccountService,
+      private router: Router,
+      private route: ActivatedRoute
+  ) {}
 
   user: UserData;
 
   private subscription: Subscription;
 
   ngOnInit(): void {
-    this.subscription = this.authService.user$.subscribe(user => this.user = user);
+    this.subscription = this.authService.user$.subscribe(user => this.accountService.user = user);
+    this.router.navigate(['info'], {relativeTo: this.route});
   }
 
   onLogout() {

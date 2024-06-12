@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {ScrollbarService} from '../shared/services/scrollbar.service';
@@ -11,6 +11,8 @@ import {UserData} from '../shared/models/user-data.model';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+
+  @Input('showLogoTitle') isShowLogoTitle = false;
 
   constructor(
       private authService: AuthService,

@@ -24,6 +24,9 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
+  private defaultCustomerImgPath = 'assets/images/customer-default.png';
+  private defaultCompanyImgPath  = 'assets/images/company-default.png';
+
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
@@ -40,13 +43,22 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     this.form.controls.type.valueChanges.subscribe(type => {
       this.type = type;
+      const img = this.form.controls.image.value;
       if (type === 'company') {
         this.authService.signupFormData = this.form.value as SignupData;
         this.form.controls.lastName.removeValidators(Validators.required);
         this.form.controls.lastName.setValue(null);
+
+        if (img == null || img.localeCompare(this.defaultCustomerImgPath) === 0) {
+          this.form.controls.image.setValue(this.defaultCompanyImgPath);
+        }
       } else {
         this.form.controls.lastName.addValidators(Validators.required);
         this.form.controls.lastName.setValue(this.authService.signupFormData.lastName);
+
+        if (img == null || img.localeCompare(this.defaultCompanyImgPath) === 0) {
+          this.form.controls.image.setValue(this.defaultCustomerImgPath);
+        }
       }
     })
   }
@@ -77,7 +89,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       password: new FormControl<string>(null, [Validators.required, Validators.minLength(this.minLength)]),
       name: new FormControl<string>(null, [Validators.required, Validators.minLength(3)]),
       lastName: new FormControl<string>(null, [Validators.required, Validators.minLength(3)]),
-      type: new FormControl<UserType>('customer', [Validators.required])
+      type: new FormControl<UserType>('customer', [Validators.required]),
+      image: new FormControl<string>('assets/images/customer-default.png')
     })
 
     if (this.form) {

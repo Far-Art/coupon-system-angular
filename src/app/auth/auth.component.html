@@ -1,15 +1,15 @@
-<cs-header></cs-header>
+<cs-header [showLogoTitle]="true"></cs-header>
 <div class="container-sm">
   <div class="card text-center drop-shadow-low">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs user-select-none">
         <li class="nav-item">
-          <a routerLink='login' routerLinkActive='active' class="nav-link text-secondary" aria-current="true">
+          <a routerLink='login' [routerLinkActive]="['active', 'text-danger']" class="nav-link text-secondary">
             Login
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink='signup' routerLinkActive='active' class="nav-link text-secondary">
+          <a routerLink='signup' [routerLinkActive]="['active', 'text-danger']" class="nav-link text-secondary">
             Signup
           </a>
         </li>

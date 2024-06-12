@@ -1,0 +1,10 @@
+.nav-item {
+  min-width: 65px;
+  text-wrap: nowrap;
+}
+
+@media (min-width: 600px) {
+  .nav-item {
+    width: 25%;
+  }
+}
