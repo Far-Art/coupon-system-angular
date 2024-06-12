@@ -1,4 +1,4 @@
-export type FirebaseResponseModel = {
+export interface FirebaseResponseModel {
   kind: string,
   idToken: string,
   email: string,

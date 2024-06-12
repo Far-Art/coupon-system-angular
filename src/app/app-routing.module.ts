@@ -5,8 +5,10 @@ import {EmptyPageComponent} from './empty-page/empty-page.component';
 
 
 const routes: Routes = [
-  {path: '', component: MainPageComponent, pathMatch: 'full'},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: 'home', component: MainPageComponent, pathMatch: 'full'},
   {path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
+  {path: 'account', loadChildren: () => import('./account-page/account-page.module').then(m => m.AccountPageModule)},
   {path: '**', component: EmptyPageComponent}
 ];
 

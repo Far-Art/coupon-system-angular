@@ -39,7 +39,6 @@
              [ngClass]="{'is-valid': form.controls.password.valid, 'is-invalid': form.controls.password.touched
              && form.controls.password.invalid}"
              id="login-password"
-             [minlength]="minLength"
              [maxlength]="maxLength"
              placeholder="Password">
       <label for="login-password">Password</label>
@@ -49,11 +48,6 @@
     <div *ngIf="form.controls.password.touched && !form.controls.password.value"
          class="text-danger">
       Please enter a password.
-    </div>
-    <div *ngIf="form.controls.password.touched && form.controls.password.value &&
-      form.controls.password.invalid"
-         class="text-danger">
-      Password must be between {{ minLength }} and {{ maxLength }} characters.
     </div>
   </div>
   <div *ngIf="errorMessage" class="text-danger">{{ errorMessage | titlecase}}</div>

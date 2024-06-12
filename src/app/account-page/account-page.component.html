@@ -1,0 +1,8 @@
+<cs-header></cs-header>
+<div *ngIf="!user">No User Present</div>
+<div *ngIf="user">
+  <p>name: {{ user.name }}</p>
+  <p>last name :{{ user.lastName }}</p>
+  <p>email: {{ user.email }}</p>
+  <p>user type: {{ user.type }}</p>
+</div>

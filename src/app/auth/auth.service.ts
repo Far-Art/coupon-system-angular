@@ -13,7 +13,7 @@ export type LoginData = { email: string, password: string }
 
 export type LoginForm = { email: FormControl<string>, password: FormControl<string> }
 
-export type SignupData = {
+export interface SignupData {
   email: string,
   password: string,
   name: string,
@@ -21,7 +21,7 @@ export type SignupData = {
   type: UserType
 }
 
-export type SignupForm = {
+export interface SignupForm {
   email: FormControl<string>,
   password: FormControl<string>,
   name: FormControl<string>,
@@ -29,7 +29,9 @@ export type SignupForm = {
   type: FormControl<UserType>
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
   private readonly FIREBASE_KEY = 'AIzaSyAS-z6cFLmZCdekAOJ2hTsFqcJD1D5WYV8';
@@ -38,16 +40,20 @@ export class AuthService {
 
   readonly passwordMaxLength = 30;
 
-  private userDataSubject = new BehaviorSubject<UserData | null>(null);
+  private userDataSubject = new BehaviorSubject<UserData>(null);
 
-  private authData: FirebaseResponseModel;
+  private _authData: FirebaseResponseModel;
 
   private _loginFormData: LoginData;
   private _signupFormData: SignupData;
 
   constructor(private http: HttpClient, private dataManager: DataManagerService) { }
 
-  get user$() {
+  get authData() {
+    return this._authData;
+  }
+
+  get user$(): Observable<UserData> {
     return this.userDataSubject.asObservable();
   }
 
@@ -68,20 +74,20 @@ export class AuthService {
   }
 
   login(login: LoginData): Observable<UserData> {
-    return this.http.post<UserData>(
+    return this.http.post<FirebaseResponseModel>(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.FIREBASE_KEY}`,
         {
           email: login.email,
           password: login.password,
           returnSecureToken: true
         }).pipe(
-        tap((res: FirebaseResponseModel) => this.authData = res),
+        tap(res => this._authData = res),
         concatMap(res => this.dataManager.fetchUserData(res.localId)
-            .pipe(take(1), tap((res: UserData) => this.userDataSubject.next(res)))),
+            .pipe(take(1), tap(userData => this.userDataSubject.next(userData)))),
         catchError(this.handleError));
   }
 
-  signUp(signup: SignupData): Observable<FirebaseResponseModel> {
+  signUp(signup: SignupData): Observable<UserData> {
     return this.http.post<FirebaseResponseModel>(
         `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${this.FIREBASE_KEY}`,
         {
@@ -89,9 +95,9 @@ export class AuthService {
           password: signup.password,
           returnSecureToken: true
         }).pipe(
-        tap(res => this.authData = res),
+        tap(res => this._authData = res),
         concatMap(res => this.dataManager.putUserData(res.localId, this.buildUserData(signup))
-            .pipe(take(1), tap((res: UserData) => this.userDataSubject.next(res)))),
+            .pipe(take(1), tap(userData => this.userDataSubject.next(userData)))),
         catchError(this.handleError));
   }
 
@@ -102,16 +108,16 @@ export class AuthService {
     return throwError(() => new Error(error.error.error.message.replaceAll('_', ' ')));
   }
 
-  private buildUserData(data: SignupData | UserData): UserData {
+  private buildUserData(data: SignupData): UserData {
     return {
       email: data.email,
       name: data.name,
       lastName: data.lastName,
       type: data.type,
-      couponsBought: data['couponsBought'] != null ? data['couponsBought'] : [],
-      couponsInWish: data['couponsInWish'] != null ? data['couponsInWish'] : [],
-      couponsInCart: data['couponsInCart'] != null ? data['couponsInCart'] : []
-    } as UserData;
+      couponsBought: [],
+      couponsInWish: [],
+      couponsInCart: []
+    };
   }
 
 }

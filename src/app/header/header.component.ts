@@ -14,12 +14,13 @@ import {UserData} from '../shared/models/user-data.model';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
-      private auth: AuthService,
+      private authService: AuthService,
       private route: ActivatedRoute,
       private scrollService: ScrollbarService
   ) {}
 
   userName: string;
+  user: UserData;
   isShowHome = false;
   padding: string;
 
@@ -32,7 +33,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.padding      = this.paddingWide;
     const url: string = this.route.snapshot['_routerState'].url;
     this.isShowHome   = url.length > 1;
-    this.authSub      = this.auth.user$.subscribe((user: UserData) => this.userName = user != null && user['name'] != null ? user['name'] : 'Guest');
+
+    this.authSub = this.authService.user$.subscribe(user => {
+      this.user     = user;
+      this.userName = this.userName = user != null && user.name != null ? user.name : 'Guest';
+    });
 
     this.scrollService.scrollPosition$().subscribe(s => {
       if (s.y > 120 && s.scrollDirection === 'down') {

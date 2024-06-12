@@ -1,10 +1,8 @@
 import {SignupData} from '../../auth/auth.service';
 
 
-export type UserData = {
+export interface UserData extends Omit<SignupData, 'password'> {
   couponsInWish: number[];
   couponsInCart: number[];
   couponsBought: number[];
-} & Exclude<SignupData, {
-  password: string
-}>
+}

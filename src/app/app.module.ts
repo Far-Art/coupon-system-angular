@@ -7,7 +7,6 @@ import {CouponsModule} from './features/coupons/coupons.module';
 import {FooterComponent} from './footer/footer/footer.component';
 import {HeaderModule} from './header/header.module';
 import {CoreModule} from './core/core.module';
-import {AuthModule} from './auth/auth.module';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EmptyPageComponent} from './empty-page/empty-page.component';
@@ -23,12 +22,11 @@ import {EmptyPageComponent} from './empty-page/empty-page.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     CoreModule,
     SharedModule,
-    AppRoutingModule,
     HeaderModule,
-    CouponsModule,
-    AuthModule
+    CouponsModule
   ],
   providers: [],
   exports: [],

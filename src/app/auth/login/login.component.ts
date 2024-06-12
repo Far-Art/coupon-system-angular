@@ -16,8 +16,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   errorMessage: string;
 
-  minLength: number;
-
   maxLength: number;
 
   private subscription: Subscription;
@@ -25,7 +23,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.minLength = this.authService.passwordMinLength;
     this.maxLength = this.authService.passwordMaxLength;
 
     this.initForm();
@@ -58,7 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private initForm(): void {
     const newForm = new FormGroup({
       email: new FormControl<string>(null, [Validators.required, Validators.email]),
-      password: new FormControl<string>(null, [Validators.required, Validators.minLength(this.minLength)])
+      password: new FormControl<string>(null, [Validators.required])
     });
 
     if (this.form) {

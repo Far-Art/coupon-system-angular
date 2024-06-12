@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {AuthComponent} from './auth.component';
 import {LoginComponent} from './login/login.component';
 import {CoreModule} from '../core/core.module';
-import {AuthService} from './auth.service';
 import {SignupComponent} from './signup/signup.component';
 import {AuthRoutingModule} from './auth-routing.module';
 import {SharedModule} from '../shared/shared.module';
@@ -18,10 +17,6 @@ import {AuthInterceptorService} from './auth-interceptor.service';
     LoginComponent,
     SignupComponent
   ],
-  exports: [
-    AuthComponent,
-    AuthRoutingModule
-  ],
   imports: [
     CommonModule,
     CoreModule,
@@ -29,8 +24,8 @@ import {AuthInterceptorService} from './auth-interceptor.service';
     SharedModule,
     HeaderModule
   ],
+  exports: [],
   providers: [
-    AuthService,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
   ]
 })

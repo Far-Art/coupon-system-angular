@@ -1,4 +1,5 @@
-<div #card class="d-flex justify-content-between card rounded-2 overflow-hidden mt-3" xmlns="http://www.w3.org/1999/html">
+<div #card class="d-flex justify-content-between card rounded-2 overflow-hidden mt-3"
+     xmlns="http://www.w3.org/1999/html">
   <img src="{{coupon.params.image}}"
        alt="{{coupon.params.title}} coupon"
        class="object-fit-cover user-select-none">
@@ -198,21 +199,22 @@
   <ng-container *ngIf="isDescriptionShown">
     <div
         class="description p-0 ps-2 pe-2 m-0 w-100 fs-6 bg-light-semi-transparent text-primary position-absolute mt-5 overflow-y-auto text-wrap">
-      <p class="text-decoration-underline mb-0">Title:</p>
+      <p class="text-decoration-underline mb-0 user-select-none">Title:</p>
       <p class="fw-semibold">{{ coupon.params.title }}</p>
       <hr>
 
-      <p class="text-decoration-underline mb-0">Company:</p>
+      <p class="text-decoration-underline mb-0 user-select-none">Description:</p>
+      <p>{{ coupon.params.description }}</p>
+      <hr>
+
+      <p class="text-decoration-underline mb-0 user-select-none">Company:</p>
       <p class="mb-0 fw-lighter">name: <span class="fw-semibold mb-0">{{ coupon.params.companyName }}</span></p>
       <p class="fw-lighter">email: <span class="fw-semibold">{{ coupon.params.companyEmail }}</span></p>
       <hr>
 
-      <p class="text-decoration-underline mb-0">Ends on:</p>
+      <p class="text-decoration-underline mb-0 user-select-none">Ends on:</p>
       <p class="fw-semibold">{{ coupon.params.endDate | date: 'd/M/yy, hh:mm' }}</p>
-      <hr>
 
-      <p class="text-decoration-underline mb-0">Description:</p>
-      <p>{{ coupon.params.description }}</p>
     </div>
   </ng-container>
 </div>
