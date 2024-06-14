@@ -25,7 +25,10 @@ export class AccountPageComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   ngOnInit(): void {
-    this.subscription = this.authService.user$.subscribe(user => this.accountService.user = user);
+    this.subscription = this.authService.user$.subscribe(user => {
+      this.accountService.user   = user;
+      this.accountService.userId = this.authService.authData.localId;
+    });
     this.router.navigate(['info'], {relativeTo: this.route});
   }
 

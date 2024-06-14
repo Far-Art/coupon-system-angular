@@ -7,5 +7,7 @@ export class AccountService {
 
   constructor() { }
 
-  user: UserData | null
+  user: UserData | null;
+
+  userId: string | null;
 }
