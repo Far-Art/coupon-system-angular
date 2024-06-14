@@ -92,10 +92,12 @@ export class CartModalComponent implements OnInit, OnDestroy {
   onBuy() {
     // TODO buying coupons does not update badge and disabled status of button
     // TODO consider moving quick actions out of header
-    this.cartService.buyCoupons$(this.cartList).subscribe(bought => {
-      this.cartList = this.cartList.filter(coupon => !bought.includes(coupon.params.id));
-      this.closeIfEmpty();
-    });
+    if (this._selectedCoupons.length > 0) {
+      this.cartService.buyCoupons$(this.cartList).subscribe(bought => {
+        this.cartList = this.cartList.filter(coupon => !bought.includes(coupon.params.id));
+        this.closeIfEmpty();
+      });
+    }
   }
 
   private closeIfEmpty(): void {
