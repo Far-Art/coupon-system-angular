@@ -45,8 +45,10 @@ export class CouponItemComponent implements OnInit, OnDestroy {
   }
 
   onCheck() {
-    this.options.isChecked = !this.options.isChecked;
-    this.onSelected.emit({index: this.index, id: this.coupon.params.id});
+    if (!this.options?.noCheckbox) {
+      this.options.isChecked = !this.options.isChecked;
+      this.onSelected.emit({index: this.index, id: this.coupon.params.id});
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 <div class="accordion-header transition-duration"
      [ngClass]="{'bg-primary-light': this.options.isChecked, 'bg-light': !this.options.isChecked}">
-  <div class="d-flex">
+  <div class="d-flex align-content-center">
     <div *ngIf="!options.noCheckbox" class="flex-shrink-1 align-self-center transition-duration"
          [ngClass]="{'bg-primary': this.options.isChecked, 'bg-light': !this.options.isChecked}"
          type="button"
@@ -11,13 +11,18 @@
              [checked]="this.options.isChecked"
              unfocus>
     </div>
-    <p class="position-relative flex-grow-1 text-start text-nowrap align-self-center m-0 ps-3 user-select-none"
-       [ngClass]="{'text-primary': this.options.isChecked}">
-      {{ coupon.params.title | sliceTxt:sliceVal }}
-      <span *ngIf="!options.noCheckbox && coupon.params.isSaleEnded"
-            [ngClass]="{'text-dark': this.options.isChecked}"
-            class="position-absolute text-nowrap text-primary fs-7 opacity-50"><em>*sale ended</em></span>
-    </p>
+    <div
+        class="position-relative flex-grow-1 text-start text-nowrap align-self-stretch m-0 ps-3 user-select-none"
+        [ngClass]="{'text-primary': this.options.isChecked}"
+        [style]="options.noCheckbox ? 'cursor: default' : 'cursor: pointer'"
+        (click)="onCheck()">
+      <div class="d-flex align-items-center h-100">
+        <span>{{ coupon.params.title | sliceTxt:sliceVal }}</span>
+        <span *ngIf="!options.noCheckbox && coupon.params.isSaleEnded"
+              [ngClass]="{'text-dark': this.options.isChecked}"
+              class="position-absolute text-nowrap text-primary fs-7 opacity-50"><em>*sale ended</em></span>
+      </div>
+    </div>
 
     <button class="accordion-button bg-light collapsed"
             type="button"
