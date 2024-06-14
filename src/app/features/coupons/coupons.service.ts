@@ -23,7 +23,7 @@ export class CouponsService {
   private wishSubject             = new BehaviorSubject<number[]>([]);
 
   getCouponsById(...ids: number[]): Coupon[] {
-    return this.originCouponsSubject.value.filter(c => ids.includes(c.params.id));
+    return ids ? this.originCouponsSubject.value.filter(c => ids.includes(c.params.id)) : [];
   }
 
   get originCoupons$() {

@@ -1,3 +1,9 @@
 <div class="container-fluid">
-  <sc-coupon-table [coupons]="coupons" [options]="{noCheckbox: true}"></sc-coupon-table>
+  <div *ngIf="coupons?.length === 0" class="mt-5">
+    <h2>No Purchased Coupons</h2>
+    <img class="rounded-5 drop-shadow-low mt-4 mb-4" src="assets/gifs/tom-and-jerry-depressed.gif"
+         alt="empty coupons image">
+  </div>
+
+  <sc-coupon-table *ngIf="coupons?.length > 0" [coupons]="coupons" [options]="{noCheckbox: true}"></sc-coupon-table>
 </div>

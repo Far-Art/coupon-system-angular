@@ -16,7 +16,7 @@ export class PurchasedComponent implements OnInit {
   constructor(private accountService: AccountService, private couponsService: CouponsService) {}
 
   ngOnInit(): void {
-    this.coupons = this.couponsService.getCouponsById(...this.accountService.user.couponsBought);
+    this.coupons = this.couponsService.getCouponsById(...this.accountService.user?.couponsBought || []);
   }
 
 }

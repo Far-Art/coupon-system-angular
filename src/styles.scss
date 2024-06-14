@@ -56,6 +56,10 @@ button:disabled {
   opacity: 0.5 !important;
 }
 
+img {
+  max-width: 100%;
+}
+
 .transition-duration {
   transition-duration: 300ms;
 }
