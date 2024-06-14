@@ -1,12 +1,14 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  Output
+  Output,
+  ViewChild
 } from '@angular/core';
 import {Coupon} from '../../models/coupon.model';
 import {Subscription} from 'rxjs';
@@ -19,39 +21,100 @@ import {CouponsService} from '../../../features/coupons/coupons.service';
   styleUrls: ['./coupon-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CouponTableComponent implements OnInit, OnDestroy {
+export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
+
+  @ViewChild('indeterminateCheckBox') indeterminateCheckBoxRef: ElementRef;
 
   @Input() coupons: Coupon[] = [];
 
   @Output('selectedCoupons') selectedCouponsEmitter = new EventEmitter<Coupon[]>();
 
-  readonly selectedCoupons = new Set<Coupon>();
+  @Input() options: {
+    selectAll?: boolean,
+    noCheckbox?: boolean
+  } = {}
+
+  _indeterminateCheckBox = false
+
+  readonly selectedCoupons = new Set<number>();
 
   private couponsSub: Subscription;
 
-  constructor(private couponsService: CouponsService, private changeDetector: ChangeDetectorRef) {}
+  constructor(private couponsService: CouponsService) {}
 
   ngOnInit(): void {
-    this.couponsSub = this.couponsService.displayedCoupons$.subscribe(() => {
-      this.changeDetector.detectChanges();
-    });
-  }
-
-  onClick(coupon: Coupon) {
-    if (this.selectedCoupons.has(coupon)) {
-      this.selectedCoupons.delete(coupon);
-    } else {
-      this.selectedCoupons.add(coupon);
+    if (this.options?.selectAll) {
+      this._indeterminateCheckBox = true;
+      this.selectAll();
+      this.updateIndeterminateStatus();
     }
-    this.selectedCouponsEmitter.emit([...this.selectedCoupons]);
+    this.emitSelected();
   }
 
-  isPresent(coupon: Coupon): boolean {
-    return this.selectedCoupons.has(coupon);
+  onCheckHandle(event: { index: number, id: number }) {
+    this.selectedCoupons.has(event.id) ? this.selectedCoupons.delete(event.id) : this.selectedCoupons.add(event.id);
+    this.updateIndeterminateStatus();
+    this.emitSelected();
+  }
+
+  onIndeterminateClick() {
+    if (this.selectedCoupons.size === this.coupons.length) {
+      this.unselectAll();
+    } else {
+      this.selectAll();
+    }
+    this.updateIndeterminateStatus();
+  }
+
+  has(id: number): boolean {
+    return this.selectedCoupons.has(id);
+  }
+
+  private updateIndeterminateStatus() {
+    const button = this.indeterminateCheckBoxRef?.nativeElement;
+
+    if (button) {
+      const total    = this.coupons.length;
+      const selected = this.selectedCoupons.size;
+
+      if (selected === total) {
+        this._indeterminateCheckBox = true;
+        button.indeterminate        = false;
+      } else if (selected > 0) {
+        this._indeterminateCheckBox = false;
+        button.indeterminate        = true;
+      } else {
+        this._indeterminateCheckBox = false;
+        button.indeterminate        = false;
+      }
+    }
+  }
+
+  private selectAll() {
+    this.coupons.forEach(c => this.selectedCoupons.add(c.params.id));
+    this.emitSelected();
+  }
+
+  private unselectAll() {
+    this.selectedCoupons.clear();
+    this.emitSelected();
+  }
+
+  private emitSelected() {
+    this.selectedCouponsEmitter.emit(this.couponsService.getCouponsById(...this.selectedCoupons));
+  }
+
+  ngOnChanges(): void {
+    this.selectedCoupons.clear();
+    if (this.options?.selectAll) {
+      this.coupons.map((coupon: Coupon) => coupon.params.id).forEach(id => this.selectedCoupons.add(id));
+      this.emitSelected();
+    }
+    this.updateIndeterminateStatus();
   }
 
   ngOnDestroy(): void {
-    this.couponsSub.unsubscribe();
+    if (this.couponsSub) this.couponsSub.unsubscribe();
   }
 
 }

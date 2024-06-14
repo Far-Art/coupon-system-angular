@@ -56,6 +56,10 @@ button:disabled {
   opacity: 0.5 !important;
 }
 
+.transition-duration {
+  transition-duration: 300ms;
+}
+
 .color-white {
   color: $color-white !important;
 }
@@ -76,6 +80,10 @@ button:disabled {
   background-image: url('/assets/images/main-bg.png');
   background-size: 17rem;
   background-attachment: fixed;
+}
+
+.bg-primary-light {
+  background-color: $color-red-100;
 }
 
 .bg-light-transparent {
@@ -120,6 +128,10 @@ button:disabled {
 
 .pb-10 {
   padding-bottom: 10rem;
+}
+
+.fs-7 {
+  font-size: 0.7rem !important;
 }
 
 //  sm: 576px

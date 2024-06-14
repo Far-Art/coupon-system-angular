@@ -1,5 +1,10 @@
 @import "../../../../styles";
 
-.active-item {
-  background-color: $color-red-100;
+*[type="button"] {
+  width: 50px;
+  margin: 1rem;
+}
+
+label {
+  cursor: pointer;
 }

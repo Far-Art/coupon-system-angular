@@ -1,12 +1,54 @@
-<div class="d-flex text-center">
-  <div class="w-50 m-0 align-self-center text-start">{{ coupon.params.title | titlecase }}</div>
-  <div class="vr"></div>
-  <div class="w-50 m-0 align-self-center">{{ coupon.params.category | titlecase }}</div>
-  <div class="vr"></div>
-  <div class="w-50 m-0 align-self-center">{{ coupon.params.price | currency:"ILS" }}</div>
-  <div class="vr"></div>
-  <div class="w-25 m-0 align-self-center">
-    <img src="{{coupon.params.image}}"
-         alt="{{'Title of ' + coupon.params.title}}">
+<div class="accordion-header transition-duration"
+     [ngClass]="{'bg-primary-light': this.options.isChecked, 'bg-light': !this.options.isChecked}">
+  <div class="d-flex">
+    <div *ngIf="!options.noCheckbox" class="flex-shrink-1 align-self-center transition-duration"
+         [ngClass]="{'bg-primary': this.options.isChecked, 'bg-light': !this.options.isChecked}"
+         type="button"
+         (click)="onCheck()">
+      <input class="form-check-input"
+             type="checkbox"
+             style="cursor: pointer"
+             [checked]="this.options.isChecked"
+             unfocus>
+    </div>
+    <p class="position-relative flex-grow-1 text-start text-nowrap align-self-center m-0 ps-3 user-select-none"
+       [ngClass]="{'text-primary': this.options.isChecked}">
+      {{ coupon.params.title | sliceTxt:sliceVal }}
+      <span *ngIf="!options.noCheckbox && coupon.params.isSaleEnded"
+            [ngClass]="{'text-dark': this.options.isChecked}"
+            class="position-absolute text-nowrap text-primary fs-7 opacity-50"><em>*sale ended</em></span>
+    </p>
+
+    <button class="accordion-button bg-light collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            unfocus
+            aria-expanded="false"
+            [attr.data-bs-target]="'#collapse' + index"
+            [attr.aria-controls]="'collapse' + index">
+    </button>
+  </div>
+</div>
+<div id="collapse{{index}}" class="accordion-collapse collapse" data-bs-parent="#accordionTable">
+  <div class="accordion-body">
+    <div class="row">
+      <div class="col text-start text-nowrap">
+        <p class="opacity-50 m-0 fs-7 user-select-none"><em>Category</em></p>
+        <p class="m-0 mb-2">{{ coupon.params.category | titlecase }}</p>
+        <p class="opacity-50 m-0 fs-7 user-select-none"><em>Price</em></p>
+        <p class="m-0 mb-2">{{ coupon.params.price | currency:"ILS" }}</p>
+        <p class="opacity-50 m-0 fs-7 user-select-none"><em>Company</em></p>
+        <p class="m-0 mb-2">{{ coupon.params.companyName | titlecase }}</p>
+        <p class="opacity-50 m-0 fs-7 user-select-none"><em>Company Email</em></p>
+        <p class="m-0 mb-2">{{ coupon.params.companyEmail | lowercase }}</p>
+      </div>
+      <div class="col position-relative">
+        <img class="opacity-0 user-select-none" src="{{coupon.params.image}}"
+             alt="coupon image">
+        <img class="position-absolute translate-middle start-50 top-50 rounded-5 drop-shadow-low user-select-none"
+             src="{{coupon.params.image}}"
+             alt="coupon image">
+      </div>
+    </div>
   </div>
 </div>

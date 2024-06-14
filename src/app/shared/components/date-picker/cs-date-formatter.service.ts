@@ -13,12 +13,12 @@ export class CsDateFormatterService extends NgbDateParserFormatter {
   parse(value: string | Date): NgbDateStruct | null {
     if (value == null) return null;
     const date           = (value instanceof Date ? value.toISOString().substring(0, 10) : value).replaceAll(/\//g, '-').split('-');
-    const yearAtLeftSide = date[0].length === 4;
+    const isYearAtLeftSide = date[0].length === 4;
 
     return {
-      day: parseInt(yearAtLeftSide ? date[2] : date[0], 10),
+      day: parseInt(isYearAtLeftSide ? date[2] : date[0], 10),
       month: parseInt(date[1], 10),
-      year: parseInt(yearAtLeftSide ? date[0] : date[2], 10)
+      year: parseInt(isYearAtLeftSide ? date[0] : date[2], 10)
     };
   }
 

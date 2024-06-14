@@ -16,7 +16,6 @@ $primary: $color-red-500;
 }
 
 .btn-primary {
-  background-color: $color-white;
 
   svg {
     color: $primary;
@@ -28,7 +27,6 @@ $primary: $color-red-500;
 
   &:hover {
     transition: all ease 500ms;
-    background-color: $color-white;
 
     > * {
       transform: translateY(-0.3rem);

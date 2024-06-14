@@ -3,6 +3,7 @@ import {Coupon} from '../../../shared/models/coupon.model';
 import {Subscription} from 'rxjs';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {CouponsService} from '../../../features/coupons/coupons.service';
+import {WindowSizeService} from '../../../shared/services/window-size.service';
 
 
 @Component({
@@ -20,13 +21,26 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
   isAnySaleEnded: boolean = false;
 
+  _windowWidth: number;
+
+  _switchWidth = 576;
+
   private modal: NgbModalRef = null;
 
   private wishSubscription: Subscription;
+  private windowSubscription: Subscription;
 
-  constructor(private couponsService: CouponsService, private modalService: NgbModal) {}
+  constructor(
+      private couponsService: CouponsService,
+      private modalService: NgbModal,
+      private windowSize: WindowSizeService
+  ) {}
 
   ngOnInit(): void {
+    this.windowSubscription = this.windowSize.windowSize$.subscribe(size => {
+      this._windowWidth = size.width;
+    })
+
     this.wishSubscription = this.couponsService.wishIds$
         .subscribe(ids => this.wishList = this.couponsService.getCouponsById(...ids));
   }
@@ -66,6 +80,7 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.wishSubscription.unsubscribe();
+    this.windowSubscription.unsubscribe();
   }
 
 }

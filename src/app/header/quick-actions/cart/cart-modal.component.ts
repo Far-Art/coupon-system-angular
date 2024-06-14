@@ -4,6 +4,7 @@ import {Coupon} from '../../../shared/models/coupon.model';
 import {Subscription} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 import {CartService} from './cart.service';
+import {WindowSizeService} from '../../../shared/services/window-size.service';
 
 
 @Component({
@@ -17,28 +18,43 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
   cartList: Coupon[] = [];
 
-  selectedCoupons: Coupon[] = [];
+  readonly _selectedCoupons: Coupon[] = [];
 
   totalPrice: number;
 
+  _windowWidth: number;
+
+  _switchWidth = 576;
+
+  isUserPresent: boolean;
+
   private modal: NgbModalRef = null;
 
-  private cartSubscription!: Subscription;
+  private cartSubscription: Subscription;
+  private windowSubscription: Subscription;
+  private userSubscription: Subscription;
 
   constructor(
       private modalService: NgbModal,
       private couponsService: CouponsService,
-      private cartService: CartService
+      private cartService: CartService,
+      private windowSize: WindowSizeService
   ) {}
 
   ngOnInit(): void {
+    this.windowSubscription = this.windowSize.windowSize$.subscribe(size => {
+      this._windowWidth = size.width;
+    })
+
     this.cartSubscription = this.couponsService.cartIds$.subscribe(ids => {
-      this.cartList   = this.couponsService.getCouponsById(...ids);
-      this.totalPrice = this.cartList.length > 0 ? this.cartList.map(c => c.params.price).reduceRight((acc, val) => acc + val) : 0;
+      this.cartList = this.couponsService.getCouponsById(...ids);
     });
+
+    this.userSubscription = this.cartService.isUserPresent$().subscribe(isPresent => this.isUserPresent = isPresent);
   }
 
   openModal() {
+    this.updatePrice();
     this.modal = this.modalService
         .open(this.cartModal,
             {
@@ -52,21 +68,23 @@ export class CartModalComponent implements OnInit, OnDestroy {
   }
 
   onCouponsSelected(coupons: Coupon[]) {
-    this.selectedCoupons = coupons;
+    this._selectedCoupons.length = 0
+    this._selectedCoupons.push(...coupons);
+    this.updatePrice();
   }
 
   onCancel() {
-    this.selectedCoupons = [];
+    this._selectedCoupons.length = 0;
   }
 
   onDelete() {
-    this.couponsService.removeFromCart(...this.selectedCoupons);
+    this.couponsService.removeFromCart(...this._selectedCoupons);
     this.onCancel();
     this.closeIfEmpty();
   }
 
   onMove() {
-    this.couponsService.moveToWish(...this.selectedCoupons);
+    this.couponsService.moveToWish(...this._selectedCoupons);
     this.onCancel();
     this.closeIfEmpty();
   }
@@ -86,8 +104,14 @@ export class CartModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  private updatePrice() {
+    this.totalPrice = this._selectedCoupons.length > 0 ? this._selectedCoupons.map(c => c.params.price).reduceRight((acc, val) => acc + val) : 0;
+  }
+
   ngOnDestroy(): void {
     this.cartSubscription.unsubscribe();
+    this.windowSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
 }

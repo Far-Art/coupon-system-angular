@@ -7,6 +7,7 @@ import {AccountInfoComponent} from './account-info/account-info.component';
 import {AccountService} from './account.service';
 import { AccountEditComponent } from './account-edit/account-edit.component';
 import { PurchasedComponent } from './purchased/purchased.component';
+import {SharedModule} from '../../shared/shared.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { PurchasedComponent } from './purchased/purchased.component';
   imports: [
     CommonModule,
     HeaderModule,
-    AccountRoutingModule
+    AccountRoutingModule,
+    SharedModule
   ],
   exports: [],
   providers: [AccountService]

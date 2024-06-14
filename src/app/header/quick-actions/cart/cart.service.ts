@@ -20,6 +20,10 @@ export class CartService {
         map(user => user.couponsBought));
   }
 
+  isUserPresent$(): Observable<boolean> {
+    return this.authService.user$.pipe(map(user => !!user));
+  }
+
   private addCouponsToBought(user: UserData, coupons: Coupon[]) {
     if (user.couponsBought == null) {
       user.couponsBought = [];

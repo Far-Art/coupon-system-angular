@@ -5,13 +5,33 @@
   <div class="modal-body">
     <sc-coupon-table [coupons]="wishList" (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
   </div>
-  <div class="modal-footer">
-    <ng-container *ngIf="selectedCoupons.length > 0">
-      <button unfocus type="button" class="btn btn-outline-danger" (click)="onDelete()">Delete</button>
-      <button [disabled]="isAnySaleEnded" unfocus type="button" class="btn btn-outline-success" (click)="onMove()">Move To Cart</button>
-    </ng-container>
+  <div class="modal-footer justify-content-between flex-column flex-sm-row">
+    <button type="button"
+            class="btn"
+            [ngClass]="{
+              'w-100': _windowWidth < _switchWidth,
+              'btn-outline-secondary': selectedCoupons.length === 0,
+              'btn-outline-danger': selectedCoupons.length > 0
+            }"
+            unfocus
+            [disabled]="selectedCoupons.length === 0"
+            (click)="onDelete()">Delete
+    </button>
+    <button [disabled]="isAnySaleEnded || selectedCoupons.length === 0"
+            type="button"
+            class="btn"
+            [ngClass]="{
+              'w-100': _windowWidth < _switchWidth,
+              'btn-outline-secondary': isAnySaleEnded || selectedCoupons.length === 0,
+              'btn-outline-success': !isAnySaleEnded && selectedCoupons.length > 0
+            }"
+            unfocus
+            (click)="onMove()">Move
+      To Cart
+    </button>
     <button type="button"
             class="btn btn-outline-secondary"
+            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
             unfocus
             (click)="modal.dismiss('Close click')">Close
     </button>

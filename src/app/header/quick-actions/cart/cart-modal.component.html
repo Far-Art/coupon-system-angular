@@ -3,34 +3,45 @@
     <h4 class="modal-title text-primary user-select-none">{{ 'cart' | titlecase }}</h4>
   </div>
   <div class="modal-body">
-    <sc-coupon-table [coupons]="cartList" (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
+    <sc-coupon-table [coupons]="cartList" [options]="{selectAll: true}"
+                     (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer justify-content-between flex-column flex-sm-row">
+    <div class="btn-group dropup"
+         [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+         role="group">
+      <button unfocus
+              type="button"
+              [disabled]="_selectedCoupons.length === 0"
+              [ngClass]="{
+                'btn-outline-primary': _selectedCoupons.length > 0,
+                'btn-outline-secondary': _selectedCoupons.length === 0,
+              }"
+              class="btn dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        Manage
+      </button>
+      <ul class="dropdown-menu">
+        <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
+        <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
+      </ul>
+    </div>
 
-    <ng-container *ngIf="selectedCoupons.length > 0">
-      <div class="btn-group dropup" role="group">
-        <button unfocus
-                type="button"
-                class="btn btn-outline-primary btn-sm dropdown-toggle"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
-          Manage
-        </button>
-        <ul class="dropdown-menu">
-          <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
-          <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
-        </ul>
-      </div>
-    </ng-container>
-
-    <button type="button" class="btn btn-sm btn-outline-success"
+    <button *ngIf="isUserPresent"
+            type="button"
+            class="btn btn-outline-success"
+            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
             (click)="onBuy()">
-      {{ 'buy for ' | titlecase }}
-      {{ totalPrice | currency: "ILS" }}
+      <span *ngIf="_selectedCoupons.length > 0">
+        {{ 'buy for ' | titlecase }}
+        {{ totalPrice | currency:"ILS" }}</span>
+      <span *ngIf="_selectedCoupons.length === 0">{{ 'select coupons for purchase' | titlecase }}</span>
     </button>
     <button unfocus
+            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+            class="btn btn-outline-secondary"
             type="button"
-            class="btn btn-sm btn-outline-secondary"
             (click)="modal.dismiss('Close click')">Close
     </button>
   </div>

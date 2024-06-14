@@ -1,27 +1,23 @@
-<ul class="list-group list-group-flush">
-  <li class="list-group-item list-group-item-secondary mb-3 p-0 pt-1 pb-1">
-    <div class="d-flex fw-semibold text-center">
-      <h6 class="flex-fill m-0 w-50 align-self-center">Title</h6>
-      <div class="vr"></div>
-      <h6 class="flex-fill m-0 w-50 align-self-center">Category</h6>
-      <div class="vr"></div>
-      <h6 class="flex-fill m-0 w-50 align-self-center">Price</h6>
-      <div class="vr"></div>
-      <h6 class="flex-fill m-0 w-25 align-self-center">Image</h6>
-    </div>
-  </li>
+<div *ngIf="!options?.noCheckbox" class="form-check transition-duration user-select-none" type="button">
+  <input #indeterminateCheckBox
+         id="indeterminateCheckBox"
+         (click)="onIndeterminateClick()"
+         class="form-check-input"
+         type="checkbox"
+         style="cursor: pointer"
+         [checked]="_indeterminateCheckBox"
+         unfocus>
+  <label class="h-6 opacity-75 form-check-label text-nowrap ps-4" for="indeterminateCheckBox">
+    {{ (_indeterminateCheckBox ? 'unselect all' : 'select all') | titlecase }}
+  </label>
+</div>
 
-  <li class="list-group-item list-group-item-action p-0"
-      [ngClass]="{'active-item': isPresent(c)}"
-      *ngFor="let c of coupons; let i = index;"
-      (click)="onClick(c)">
-    <div class="row position-relative">
-      <div class="col position-absolute top-50 start-0 translate-middle-y">
-        <input unfocus type="checkbox" class="form-check-input" [checked]="isPresent(c)">
-      </div>
-      <div class="col" style="margin-left: 1.5rem">
-        <sc-coupon-item [coupon]="c"></sc-coupon-item>
-      </div>
-    </div>
-  </li>
-</ul>
+<div class="accordion mt-3" id="accordionTable">
+  <div class="accordion-item" *ngFor="let coupon of coupons; let i = index">
+    <cs-coupon-item [index]="i"
+                    [coupon]="coupon"
+                    [options]="{isChecked: has(coupon.params.id), noCheckbox: options.noCheckbox}"
+                    (onSelected)="onCheckHandle($event)">
+    </cs-coupon-item>
+  </div>
+</div>

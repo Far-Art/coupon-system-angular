@@ -1,0 +1,38 @@
+<div class="modal fade"
+     id="modalToggle{{current.id}}"
+     aria-hidden="true"
+     [attr.aria-labelledby]="'modalToggleLabel' + current.id"
+     tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 user-select-none"
+            id="modalToggleLabel{{current.id}}">{{ (current?.headerTitle || 'modal') | titlecase }}</h1>
+        <button type="button" class="btn-close" unfocus data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary"
+                [attr.data-bs-target]="'#modalToggle' + current.id"
+                data-bs-toggle="modal">
+          close
+        </button>
+        <button *ngIf="next"
+                class="btn btn-primary"
+                [attr.data-bs-target]="'#modalToggle' + next.id"
+                data-bs-toggle="modal">
+          {{ next.buttonTitle | titlecase }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button *ngIf="!(current?.hideButton)"
+        class="btn btn-outline-primary"
+        [attr.data-bs-target]="'#modalToggle' +current.id"
+        data-bs-toggle="modal">
+  {{ current.buttonTitle | titlecase }}
+</button>

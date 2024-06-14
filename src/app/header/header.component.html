@@ -20,6 +20,7 @@
         <a *ngIf="user != null"
            routerLink='/account/info'
            routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: false }"
            class="list-group-item list-group-item-action pt-3 pb-3">
           My Account
         </a>
