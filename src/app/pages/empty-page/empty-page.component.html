@@ -1,10 +1,16 @@
-<cs-header></cs-header>
-<div class="bg-primary w-100 h-100">
-  <div>
-    <div class="position-absolute translate-middle top-50 start-50 w-100 text-center text-primary user-select-none">
-      <h1 class="position-absolute translate-middle start-50 top-50 w-100">{{ 'page not found' | titlecase }}</h1>
-      <h1 class="position-relative pb-1" style="scale: 8; opacity: 10%">404</h1>
-      <h5 class="pt-5 fw-normal"><a class="position-relative z-1" routerLink="/">return home</a></h5>
+<div class="container w-100 h-100">
+  <cs-header></cs-header>
+  <div class="bg-white w-100 h-100">
+    <div>
+      <div
+          class="z-1 position-absolute translate-middle top-50 start-50 w-100 text-center text-primary user-select-none">
+        <h1 class="position-absolute translate-middle start-50 top-50 w-100">{{ 'page not found' | titlecase }}</h1>
+        <h1 class="position-relative pb-1" style="scale: 8; opacity: 10%">404</h1>
+        <h5 class="pt-5 fw-normal"><a class="position-relative z-1" routerLink="/">return home</a></h5>
+      </div>
+      <img class="z-0 position-absolute top-50 start-50 translate-middle"
+           src="assets/gifs/pulp-fiction-john-travolta.gif"
+           alt="page not found image">
     </div>
   </div>
 </div>
