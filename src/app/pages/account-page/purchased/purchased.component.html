@@ -8,7 +8,7 @@
 
   <sc-coupon-table *ngIf="coupons?.length > 0" [coupons]="coupons" [options]="{noCheckbox: true}"></sc-coupon-table>
   <button *ngIf="coupons?.length > 0" unfocus type="button" class="btn btn-sm btn-danger mt-5"
-          (click)="onPurchaseClear()">clear purchase
-    history
+          (click)="onPurchaseClear()">
+    clear purchase history
   </button>
 </div>

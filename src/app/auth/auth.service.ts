@@ -44,7 +44,7 @@ export class AuthService {
   readonly passwordMaxLength = 30;
 
   private userDataSubject = new BehaviorSubject<UserData>({ // TODO change to null after test
-    image: 'assets/images/customer-default.png',
+    image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
     type: 'customer',
     name: 'Artur',
     lastName: 'Farmanov',

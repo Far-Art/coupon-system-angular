@@ -8,6 +8,8 @@ import {AccountService} from './account.service';
 import { AccountEditComponent } from './account-edit/account-edit.component';
 import { PurchasedComponent } from './purchased/purchased.component';
 import {SharedModule} from '../../shared/shared.module';
+import {CoreModule} from '../../core/core.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import {SharedModule} from '../../shared/shared.module';
     CommonModule,
     HeaderModule,
     AccountRoutingModule,
-    SharedModule
+    SharedModule,
+    CoreModule,
+    ReactiveFormsModule
   ],
   exports: [],
   providers: [AccountService]

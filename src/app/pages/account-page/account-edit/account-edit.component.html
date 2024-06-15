@@ -1,1 +1,122 @@
-<p>account-edit works!</p>
+<div class="container">
+  <form class="user-select-none w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <img class="object-fit-cover border rounded-2 mt-3" height="180" src="{{form.controls.image.value}}"
+         alt="user image">
+
+    <div class="input-group has-validation mt-3">
+    <span class="input-group-text">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image"
+           viewBox="0 0 16 16">
+        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+        <path
+            d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+      </svg>
+    </span>
+      <div class="form-floating">
+        <input type="text"
+               formControlName="image"
+               class="form-control"
+               id="image"
+               placeholder="image">
+        <label for="image">Image</label>
+      </div>
+    </div>
+
+    <div class="input-group has-validation mt-3">
+    <span class="input-group-text ">
+      <svg *ngIf="type === 'customer'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+           class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+          <path
+              d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/>
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+        </svg>
+      <svg *ngIf="type === 'company'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+           class="bi bi-building"
+           viewBox="0 0 16 16">
+        <path
+            d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+        <path
+            d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z"/>
+      </svg>
+      <svg *ngIf="type === 'admin'" xmlns="http://www.w3.org/2000/svg" height="25px" viewBox="0 -960 960 960"
+           width="25px"
+           fill="currentColor"><path
+          d="M480.05-447.08q-57.1 0-96.09-38.93t-38.99-96.04q0-57.1 38.94-96.09 38.93-38.99 96.04-38.99 57.1 0 96.09 38.94 38.99 38.93 38.99 96.03 0 57.11-38.94 96.1-38.93 38.98-96.04 38.98Zm-.05-51.18q35.13 0 59.49-24.36 24.36-24.35 24.36-59.48 0-35.13-24.36-59.49T480-665.95q-35.13 0-59.49 24.36t-24.36 59.49q0 35.13 24.36 59.48 24.36 24.36 59.49 24.36Zm.02 399.23q-129.05-36.28-214.53-154.49Q180-371.73 180-518.06v-228.79l300-112.89 300 112.89v228.36q0 146.87-85.47 265.03-85.46 118.15-214.51 154.43ZM480-478.9Zm0-326.31-248.82 93.4v194.03q0 59.82 17.12 116.35 17.13 56.54 49.65 103.79 42.9-22.03 87.59-33.42 44.69-11.4 94.46-11.4 49.77 0 94.46 11.4 44.69 11.39 87.59 33.42 32.52-47.25 49.65-103.79 17.12-56.53 17.12-116.35v-194.03L480-805.21Zm.05 513.93q-41.08 0-78.91 8.75-37.83 8.76-72.14 25.84 30.17 37.25 68.23 63.54 38.06 26.28 82.49 40.79 44.43-14.51 82.31-40.79 37.88-26.29 68.2-63.54-34.31-17.08-71.71-25.84-37.4-8.75-78.47-8.75Z"/></svg>
+    </span>
+      <div class="form-floating">
+        <input type="text"
+               formControlName="name"
+               required
+               class="form-control"
+               [ngClass]="{'is-valid': form.controls.name.valid, 'is-invalid': form.controls.name.touched
+             && form.controls.name.invalid}"
+               id="name"
+               [minLength]="3"
+               placeholder="Name">
+        <label for="name">{{ type === 'customer' || 'admin' ? 'First' : 'Company' }} Name</label>
+      </div>
+    </div>
+    <div class="p-5 pt-0 pb-0">
+      <div *ngIf="form.controls.name.touched && !form.controls.name.value" class="text-danger">
+        Please enter {{ type === 'customer' || 'admin' ? 'first' : 'company' }} name.
+      </div>
+      <div *ngIf="form.controls.name.touched && form.controls.name.value && form.controls.name.invalid"
+           class="text-danger">
+        {{ type === 'customer' || 'admin' ? 'First' : 'Company' }} name must be at least 3 characters.
+      </div>
+    </div>
+
+    <div *ngIf="type === 'customer' || 'admin'">
+      <div class="input-group has-validation mt-3">
+      <span class="input-group-text">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+          <path
+              d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/>
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+        </svg>
+      </span>
+        <div class="form-floating">
+          <input type="text"
+                 formControlName="lastName"
+                 class="form-control"
+                 [ngClass]="{'is-valid': form.controls.lastName.valid, 'is-invalid': form.controls.lastName.touched
+             && form.controls.lastName.invalid}"
+                 id="lastname"
+                 [minLength]="3"
+                 placeholder="Last Name">
+          <label for="lastname">Last Name</label>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="form.controls.lastName.invalid" class="p-4 pt-0">
+      <div *ngIf="form.controls.lastName.touched && !form.controls.lastName.value" class="text-danger">
+        Please enter last name.
+      </div>
+      <div *ngIf="form.controls.lastName.touched && form.controls.lastName.value && form.controls.lastName.invalid"
+           class="text-danger">
+        Last name must be at least 3 characters.
+      </div>
+    </div>
+    <div *ngIf="errorMessage" class="text-danger">{{ errorMessage | titlecase }}</div>
+
+    <div class="list-group text-center mt-3">
+      <button [disabled]="form.invalid"
+              class="fw-bolder list-group-item list-group-item-success list-group-item-action"
+              type="submit">Save
+      </button>
+      <button [disabled]="form.pristine"
+              [ngClass]="{'text-danger': !form.pristine, 'text-bg-light': !form.pristine}"
+              class="fw-light list-group-item list-group-item-action"
+              (click)="onReset()"
+              type="button">Reset Form
+      </button>
+      <button [ngClass]="{'text-danger': !form.pristine, 'text-bg-light': !form.pristine}"
+              class="fw-light list-group-item list-group-item-action"
+              (click)="onCancel()"
+              type="button">Cancel
+      </button>
+    </div>
+  </form>
+</div>

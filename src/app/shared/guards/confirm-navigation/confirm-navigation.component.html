@@ -1,0 +1,22 @@
+<div class="modal fade"
+     id="navigationConfirmBackdrop"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="staticBackdropLabel"
+     aria-hidden="true">
+  <div class="modal-dialog user-select-none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ params.title }}</h1>
+      </div>
+      <div class="modal-body">
+        {{ params.message }}
+      </div>
+      <div class="modal-footer">
+        <button (click)="onConfirm()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+        <button (click)="onDecline()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stay</button>
+      </div>
+    </div>
+  </div>
+</div>

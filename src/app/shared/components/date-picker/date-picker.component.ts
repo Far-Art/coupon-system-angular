@@ -142,7 +142,6 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
 
   private initForm() {
     this.formControl = new FormControl<string>(this.date instanceof Date ? this.date.toISOString().substring(0, 10) : this.date);
-    console.log(this.formControl.value)
   }
 
 }

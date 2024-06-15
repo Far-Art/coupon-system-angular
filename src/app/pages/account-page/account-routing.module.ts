@@ -5,6 +5,7 @@ import {accountGuard} from './account.guard';
 import {AccountInfoComponent} from './account-info/account-info.component';
 import {PurchasedComponent} from './purchased/purchased.component';
 import {AccountEditComponent} from './account-edit/account-edit.component';
+import {confirmNavigationGuard} from '../../shared/guards/confirm-navigation/confirm-navigation.guard';
 
 
 const routes: Routes = [
@@ -12,7 +13,7 @@ const routes: Routes = [
     path: '', canActivate: [accountGuard], component: AccountPageComponent, children: [
       {path: 'info', component: AccountInfoComponent},
       {path: 'purchased', component: PurchasedComponent},
-      {path: 'edit', component: AccountEditComponent}
+      {path: 'edit', component: AccountEditComponent, canDeactivate: [confirmNavigationGuard()]}
     ]
   }
 ];

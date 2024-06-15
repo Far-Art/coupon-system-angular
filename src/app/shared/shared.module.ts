@@ -13,6 +13,7 @@ import {OffCanvasComponent} from './components/offcanvas/off-canvas.component';
 import {CoreModule} from '../core/core.module';
 import { HeaderContentDirective } from './directives/header-content.directive';
 import { ModalComponent } from './components/modal/modal.component';
+import { ConfirmNavigationComponent } from './guards/confirm-navigation/confirm-navigation.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ModalComponent } from './components/modal/modal.component';
     ControlValuePipe,
     OffCanvasComponent,
     HeaderContentDirective,
-    ModalComponent
+    ModalComponent,
+    ConfirmNavigationComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -36,7 +38,8 @@ import { ModalComponent } from './components/modal/modal.component';
     CouponItemComponent,
     OffCanvasComponent,
     HeaderContentDirective,
-    ModalComponent
+    ModalComponent,
+    ConfirmNavigationComponent
   ],
   imports: [
     CommonModule,
