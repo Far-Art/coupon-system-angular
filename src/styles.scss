@@ -51,15 +51,9 @@ html, body {
   cursor: not-allowed !important;
 }
 
-button {
-  transition-duration: 300ms !important;
-  transition-property: all !important;
-}
-
 button:disabled {
   pointer-events: visible !important;
   opacity: 0.5 !important;
-
 }
 
 img {
