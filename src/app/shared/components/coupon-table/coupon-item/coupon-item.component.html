@@ -11,11 +11,26 @@
              [checked]="this.options.isChecked"
              unfocus>
     </div>
-    <div
-        class="position-relative flex-grow-1 text-start text-nowrap align-self-stretch m-0 ps-3 user-select-none"
-        [ngClass]="{'text-primary': this.options.isChecked}"
-        [style]="options.noCheckbox ? 'cursor: default' : 'cursor: pointer'"
-        (click)="onCheck()">
+    <div *ngIf="!options.noCheckbox"
+         class="position-relative flex-grow-1 text-start text-nowrap align-self-stretch m-0 ps-3 user-select-none"
+         [ngClass]="{'text-primary': this.options.isChecked}"
+         style="cursor: pointer"
+         (click)="onCheck()">
+      <div class="d-flex align-items-center h-100">
+        <span>{{ coupon.params.title | sliceTxt:sliceVal }}</span>
+        <span *ngIf="!options.noCheckbox && coupon.params.isSaleEnded"
+              [ngClass]="{'text-dark': this.options.isChecked}"
+              class="position-absolute text-nowrap text-primary fs-7 opacity-50"><em>*sale ended</em></span>
+      </div>
+    </div>
+
+    <div *ngIf="options.noCheckbox"
+         class="position-relative flex-grow-1 text-start text-nowrap align-self-stretch m-0 ps-3 user-select-none"
+         style=" cursor: pointer"
+         (click)="onCheck()"
+         data-bs-toggle="collapse"
+         [attr.data-bs-target]="'#collapse' + index"
+         [attr.aria-controls]="'collapse' + index">
       <div class="d-flex align-items-center h-100">
         <span>{{ coupon.params.title | sliceTxt:sliceVal }}</span>
         <span *ngIf="!options.noCheckbox && coupon.params.isSaleEnded"
