@@ -9,6 +9,7 @@ import {confirmNavigationGuard} from '../../shared/guards/confirm-navigation/con
 
 
 const routes: Routes = [
+  {path: '', redirectTo: '/account/info', pathMatch: 'full'},
   {
     path: '', canActivate: [accountGuard], component: AccountPageComponent, children: [
       {path: 'info', component: AccountInfoComponent},

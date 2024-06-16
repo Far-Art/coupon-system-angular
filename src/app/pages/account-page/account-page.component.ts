@@ -3,7 +3,6 @@ import {AuthService} from '../../auth/auth.service';
 import {UserData} from '../../shared/models/user-data.model';
 import {Subscription} from 'rxjs';
 import {AccountService} from './account.service';
-import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -15,9 +14,7 @@ export class AccountPageComponent implements OnInit, OnDestroy {
 
   constructor(
       private authService: AuthService,
-      private accountService: AccountService,
-      private router: Router,
-      private route: ActivatedRoute
+      private accountService: AccountService
   ) {}
 
   user: UserData;
@@ -29,7 +26,6 @@ export class AccountPageComponent implements OnInit, OnDestroy {
       this.accountService.user   = user;
       this.accountService.userId = this.authService.authData.localId;
     });
-    this.router.navigate(['info'], {relativeTo: this.route});
   }
 
   onLogout() {

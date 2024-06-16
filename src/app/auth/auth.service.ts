@@ -44,18 +44,18 @@ export class AuthService {
   readonly passwordMaxLength = 30;
 
   private userDataSubject = new BehaviorSubject<UserData>({ // TODO change to null after test
-    image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-    type: 'customer',
-    name: 'Artur',
-    lastName: 'Farmanov',
-    email: 'arturfarmanov91@gmail.com',
-    couponsBought: [1, 2, 3, 4, 5, 6],
-    couponsInCart: [],
-    couponsInWish: []
-  });
+        image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
+        type: 'customer',
+        name: 'Artur',
+        lastName: 'Farmanov',
+        email: 'arturfarmanov91@gmail.com',
+        couponsBought: [1, 2, 3, 4, 5, 6],
+        couponsInCart: [],
+        couponsInWish: []
+      }
+  );
 
   private _authData: FirebaseResponseModel | null;
-
   private _loginFormData: LoginData;
   private _signupFormData: SignupData;
 
@@ -117,6 +117,7 @@ export class AuthService {
     this._authData = null;
     this.userDataSubject.next(null);
     this.router.navigate(['/']);
+    console.log(this.userDataSubject.value);
   }
 
   private handleError(error: HttpErrorResponse) {
