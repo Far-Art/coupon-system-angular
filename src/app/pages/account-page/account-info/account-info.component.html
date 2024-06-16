@@ -1,12 +1,14 @@
 <div class="card-body">
-  <h4 class="card-title">{{ accountService.user.name }} {{ accountService.user.lastName || '' }}</h4>
-  <p class="card-text">{{ accountService.user.email }}</p>
+  <h4 class="card-title">{{ user.name }} {{ user.lastName || '' }}</h4>
+  <p class="card-text">{{ user.email }}</p>
   <div class="card bg-main drop-shadow-high start-50 translate-middle-x" style="width: 18rem;">
-    <img src="{{accountService.user.image}}"
-         class="card-img-top object-fit-cover"
+    <img src="{{user.image}}"
+         class="card-img-top object-fit-cover user-select-none"
+         height="290px"
+         width="280px"
          alt="user image">
     <div class="card-body">
-      <figure *ngIf="type === 'customer'" class="text-center">
+      <figure *ngIf="user.type === 'customer'" class="text-center">
         <blockquote class="blockquote">
           <p>{{ "If you can't stop thinking about it... buy it" | titlecase }}</p>
         </blockquote>
@@ -14,7 +16,7 @@
           <cite title="Source Title">Some Smart Shopper</cite>
         </figcaption>
       </figure>
-      <figure *ngIf="type === 'company'" class="text-center">
+      <figure *ngIf="user.type === 'company'" class="text-center">
         <blockquote class="blockquote">
           <p>{{ "Strive not to be a success, but rather to be of value" | titlecase }}</p>
         </blockquote>
@@ -22,7 +24,7 @@
           <cite title="Source Title">Albert Einstein</cite>
         </figcaption>
       </figure>
-      <figure *ngIf="type === 'admin'" class="text-center">
+      <figure *ngIf="user.type === 'admin'" class="text-center">
         <blockquote class="blockquote">
           <p class="m-0">{{ "My code doesn't work, i don't know why..." | titlecase }}</p>
           <p>{{ "My code works, i don't know why..." | titlecase }}</p>
@@ -34,7 +36,7 @@
     </div>
   </div>
   <div class="d-flex justify-content-center mt-1">
-    <button routerLink="../edit" class="btn btn-sm btn-outline-secondary d-flex align-items-center pt-0 pb-0">
+    <button routerLink="../manage/edit" class="btn btn-sm btn-outline-secondary d-flex align-items-center pt-0 pb-0">
       <span class="me-2">Edit</span>
       <svg xmlns="http://www.w3.org/2000/svg"
            width="10"

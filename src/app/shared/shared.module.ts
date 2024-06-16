@@ -14,6 +14,7 @@ import {CoreModule} from '../core/core.module';
 import { HeaderContentDirective } from './directives/header-content.directive';
 import { ModalComponent } from './components/modal/modal.component';
 import { ConfirmNavigationComponent } from './guards/confirm-navigation/confirm-navigation.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ConfirmNavigationComponent } from './guards/confirm-navigation/confirm-
     OffCanvasComponent,
     HeaderContentDirective,
     ModalComponent,
-    ConfirmNavigationComponent
+    ConfirmNavigationComponent,
+    SpinnerComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -39,7 +41,8 @@ import { ConfirmNavigationComponent } from './guards/confirm-navigation/confirm-
     OffCanvasComponent,
     HeaderContentDirective,
     ModalComponent,
-    ConfirmNavigationComponent
+    ConfirmNavigationComponent,
+    SpinnerComponent
   ],
   imports: [
     CommonModule,

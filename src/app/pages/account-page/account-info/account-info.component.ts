@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AccountService} from '../account.service';
-import {UserType} from '../../../auth/auth.service';
+import {Subscription} from 'rxjs';
+import {UserData} from '../../../shared/models/user-data.model';
 
 
 @Component({
@@ -8,14 +9,20 @@ import {UserType} from '../../../auth/auth.service';
   templateUrl: './account-info.component.html',
   styleUrls: ['./account-info.component.scss']
 })
-export class AccountInfoComponent implements OnInit {
+export class AccountInfoComponent implements OnInit, OnDestroy {
 
-  type: UserType;
+  user: UserData;
 
-  constructor(public accountService: AccountService) {}
+  private subscription: Subscription;
+
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.type = this.accountService.user.type;
+    this.subscription = this.accountService.user$.subscribe(user => this.user = user);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

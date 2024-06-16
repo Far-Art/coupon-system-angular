@@ -35,7 +35,9 @@
             (click)="onBuy()">
       <span *ngIf="_selectedCoupons.length > 0">
         {{ 'buy for ' | titlecase }}
-        {{ totalPrice | currency:"ILS" }}</span>
+        {{ totalPrice | currency:"ILS" }}
+        <cs-spinner class="ms-1" *ngIf="isLoading"></cs-spinner>
+      </span>
       <span *ngIf="_selectedCoupons.length === 0">{{ 'select coupons for purchase' | titlecase }}</span>
     </button>
     <button unfocus

@@ -176,6 +176,7 @@
     <button [disabled]="form.invalid"
             class="fw-bolder list-group-item list-group-item-success list-group-item-action"
             type="submit">Signup
+      <cs-spinner class="ms-1" *ngIf="isLoading"></cs-spinner>
     </button>
     <button [disabled]="form.pristine"
             [ngClass]="{'text-danger': !form.pristine, 'text-bg-light': !form.pristine}"

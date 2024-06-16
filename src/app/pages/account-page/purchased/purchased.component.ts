@@ -3,7 +3,7 @@ import {AccountService} from '../account.service';
 import {Coupon} from '../../../shared/models/coupon.model';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 import {DataManagerService} from '../../../shared/services/data-manager.service';
-import {take} from 'rxjs';
+import {concatMap, take} from 'rxjs';
 
 
 @Component({
@@ -22,16 +22,20 @@ export class PurchasedComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.coupons = this.couponsService.getCouponsById(...this.accountService.user?.couponsBought || []);
+    this.accountService.user$.pipe(take(1)).subscribe(user => {
+      this.coupons = this.couponsService.getCouponsById(...user.couponsBought || []);
+    });
   }
 
   onPurchaseClear() {
-    const user                = this.accountService.user;
-    user.couponsBought.length = 0
-    this.dataManager.putUserData(this.accountService.userId, user).pipe(take(1))
-        .subscribe(() => {
-          this.coupons.length = 0;
-        });
+    this.accountService.user$.pipe(
+        take(1),
+        concatMap(user => this.dataManager.putUserData(user.userId, user).pipe(take(1)))
+    ).subscribe({
+      next: () => this.coupons.length = 0,
+      error: err => {},
+      complete: () => this.coupons.length = 0
+    });
   }
 
 }

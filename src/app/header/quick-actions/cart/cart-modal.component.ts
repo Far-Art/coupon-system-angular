@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {Subscription} from 'rxjs';
+import {delay, Subscription, tap} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 import {CartService} from './cart.service';
 import {WindowSizeService} from '../../../shared/services/window-size.service';
@@ -27,6 +27,8 @@ export class CartModalComponent implements OnInit, OnDestroy {
   _switchWidth = 576;
 
   isUserPresent: boolean;
+
+  isLoading = false;
 
   private modal: NgbModalRef = null;
 
@@ -91,9 +93,9 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
   onBuy() {
     // TODO buying coupons does not update badge and disabled status of button
-    // TODO consider moving quick actions out of header
     if (this._selectedCoupons.length > 0) {
-      this.cartService.buyCoupons$(this.cartList).subscribe(bought => {
+      this.isLoading = true;
+      this.cartService.buyCoupons$(this.cartList).pipe(delay(1000), tap(() => this.isLoading = false)).subscribe(bought => {
         this.cartList = this.cartList.filter(coupon => !bought.includes(coupon.params.id));
         this.closeIfEmpty();
       });

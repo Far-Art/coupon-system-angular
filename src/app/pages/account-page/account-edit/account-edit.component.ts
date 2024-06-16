@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {SignupData, UserType} from '../../../auth/auth.service';
+import {SignupData} from '../../../auth/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AccountService} from '../account.service';
 import {UserData} from '../../../shared/models/user-data.model';
 import {DataManagerService} from '../../../shared/services/data-manager.service';
+import {Subscription} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
 
 
@@ -13,19 +14,19 @@ import {HttpErrorResponse} from '@angular/common/http';
   templateUrl: './account-edit.component.html',
   styleUrls: ['./account-edit.component.scss']
 })
-export class AccountEditComponent implements OnInit {
+export class AccountEditComponent implements OnInit, OnDestroy {
 
   form: FormGroup<{
     name: FormControl<string>,
     lastName: FormControl<string>,
-    image: FormControl<string>,
+    image: FormControl<string>
   }>;
 
   errorMessage: string;
 
-  type: UserType;
+  user: UserData & { userId: string };
 
-  private user: UserData;
+  private subscription: Subscription;
 
   constructor(
       private accountService: AccountService,
@@ -35,9 +36,10 @@ export class AccountEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.user = this.accountService.user;
-    this.type = this.user.type;
-    this.initForm();
+    this.subscription = this.accountService.user$.subscribe(user => {
+      this.user = user;
+      this.initForm();
+    });
   }
 
   onReset() {
@@ -46,15 +48,18 @@ export class AccountEditComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['../info'], {relativeTo: this.route, state: {bypass: true}});
+    this.router.navigate(['../../info'], {relativeTo: this.route, state: {bypass: true}});
   }
 
   onSubmit() {
     if (this.form.valid) {
       this.errorMessage = null;
-      this.dataManager.putUserData(this.accountService.userId, this.form.value as UserData).subscribe({
+      this.dataManager.putUserData(this.user.userId, {
+        ...this.user, ...this.form.value,
+        userId: null
+      } as UserData).subscribe({
         next: () => {
-          this.router.navigate(['../info'], {relativeTo: this.route, state: {bypass: true}});
+          this.router.navigate(['../../info'], {relativeTo: this.route, state: {bypass: true}});
         }, error: (err: HttpErrorResponse) => {
           this.errorMessage = err.message;
         }
@@ -76,6 +81,10 @@ export class AccountEditComponent implements OnInit {
     } else {
       this.form = newForm;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

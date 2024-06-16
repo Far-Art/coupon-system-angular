@@ -22,6 +22,8 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   maxLength: number;
 
+  isLoading = false;
+
   private subscription: Subscription;
 
   private defaultCustomerImgPath = 'assets/images/customer-default.png';
@@ -66,12 +68,15 @@ export class SignupComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.valid) {
       this.errorMessage = null;
+      this.isLoading    = true;
       this.subscription = this.authService.signUp({...this.form.value} as SignupData)
           .subscribe({
             next: () => {
+              this.isLoading = false;
               this.router.navigate(['/']);
             }, error: (error: Error) => {
               this.errorMessage = error.message;
+              this.isLoading    = false;
             }
           });
     }

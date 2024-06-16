@@ -18,6 +18,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   maxLength: number;
 
+  isLoading = false;
+
+  quickLoginType: UserType;
+
   private subscription: Subscription;
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -35,13 +39,16 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.valid) {
+      this.isLoading    = true;
       this.errorMessage = null;
       this.subscription = this.authService.login(this.form.value as LoginData).subscribe({
         next: () => {
+          this.isLoading = false;
           this.router.navigate(['/']);
         }, error: (error: Error) => {
+          this.isLoading    = false;
           this.errorMessage = error.message;
-        }
+        }, complete: () => this.isLoading = false
       });
     }
   }
@@ -75,24 +82,30 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     switch (type) {
       case 'admin': {
-        credentials.email = 'admin@admin.com';
+        credentials.email   = 'admin@admin.com';
+        this.quickLoginType = 'admin';
         break;
       }
       case 'company': {
-        credentials.email = 'company@company.com';
+        credentials.email   = 'company@company.com';
+        this.quickLoginType = 'company';
         break
       }
       default: {
-        credentials.email = 'customer@customer.com';
+        credentials.email   = 'customer@customer.com';
+        this.quickLoginType = 'customer';
       }
     }
 
+    this.isLoading = true;
     this.authService.login(credentials).pipe(take(1)).subscribe({
       next: () => {
+        this.isLoading = false;
         this.router.navigate(['/']);
       }, error: (error: Error) => {
+        this.isLoading    = false;
         this.errorMessage = error.message;
-      }
+      }, complete: () => this.isLoading = false
     });
   }
 

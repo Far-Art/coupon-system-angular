@@ -15,16 +15,13 @@
              class="nav-link text-secondary">Purchased Coupons</a>
         </li>
         <li class="nav-item">
-          <a routerLink="edit"
+          <a routerLink="manage"
              [routerLinkActive]="['active', 'text-danger']"
-             class="nav-link text-secondary">Edit</a>
+             class="nav-link text-secondary">Manage</a>
         </li>
       </ul>
     </div>
     <router-outlet></router-outlet>
     <br>
   </div>
-  <br>
-  <br>
-  <button class="btn btn-danger position-relative translate-middle-x start-50" (click)="onLogout()">Logout</button>
 </div>

@@ -10,6 +10,7 @@ import {CoreModule} from './core/core.module';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EmptyPageComponent} from './pages/empty-page/empty-page.component';
+import {ManageAccountComponent} from './pages/account-page/manage-account/manage-account.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {EmptyPageComponent} from './pages/empty-page/empty-page.component';
     AppComponent,
     HomePageComponent,
     FooterComponent,
-    EmptyPageComponent
+    EmptyPageComponent,
+    ManageAccountComponent
   ],
   imports: [
     BrowserModule,
