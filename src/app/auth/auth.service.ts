@@ -37,6 +37,8 @@ export interface SignupForm {
 })
 export class AuthService {
 
+  private readonly localStorageKey = 'casUserDataLocal';
+
   private readonly FIREBASE_KEY = 'AIzaSyAS-z6cFLmZCdekAOJ2hTsFqcJD1D5WYV8';
 
   readonly passwordMinLength = 6;
@@ -75,6 +77,14 @@ export class AuthService {
     return this._signupFormData;
   }
 
+  autoLogin() {
+    const user = localStorage.getItem(this.localStorageKey);
+    if (user) {
+      this.userDataSubject.next(JSON.parse(user));
+      this._authData = JSON.parse(localStorage.getItem(this.localStorageKey + 'Auth'));
+    }
+  }
+
   login(login: LoginData): Observable<UserData> {
     return this.http.post<FirebaseResponseModel>(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.FIREBASE_KEY}`,
@@ -87,6 +97,7 @@ export class AuthService {
         concatMap(res => this.dataManager.fetchUserData(res.localId)
             .pipe(take(1), tap(userData => {
               this.userDataSubject.next(userData);
+              this.storeUserDataLocally();
             }))),
         catchError(this.handleError));
   }
@@ -101,7 +112,10 @@ export class AuthService {
         }).pipe(
         tap(res => this._authData = res),
         concatMap(res => this.dataManager.putUserData(res.localId, this.buildUserData(signup))
-            .pipe(take(1), tap(userData => this.userDataSubject.next(userData)))),
+            .pipe(take(1), tap(userData => {
+              this.userDataSubject.next(userData);
+              this.storeUserDataLocally();
+            }))),
         catchError(this.handleError));
   }
 
@@ -109,6 +123,19 @@ export class AuthService {
     this._authData = null;
     this.userDataSubject.next(null);
     this.router.navigate(['/']);
+    this.removeLocalUserData();
+  }
+
+  private storeUserDataLocally() {
+    if (this.userDataSubject.value != null) {
+      localStorage.setItem(this.localStorageKey, JSON.stringify(this.userDataSubject.value));
+      localStorage.setItem(this.localStorageKey + 'Auth', JSON.stringify(this._authData))
+    }
+  }
+
+  private removeLocalUserData() {
+    localStorage.removeItem(this.localStorageKey);
+    localStorage.removeItem(this.localStorageKey + 'Auth');
   }
 
   private handleError(error: HttpErrorResponse) {
