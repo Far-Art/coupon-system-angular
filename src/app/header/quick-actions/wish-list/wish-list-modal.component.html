@@ -17,7 +17,7 @@
             [disabled]="selectedCoupons.length === 0"
             (click)="onDelete()">Delete
     </button>
-    <button [disabled]="isAnySaleEnded || selectedCoupons.length === 0"
+    <button [disabled]="isAnySaleEnded || isAnyPurchased || selectedCoupons.length === 0"
             type="button"
             class="btn"
             [ngClass]="{
@@ -27,7 +27,7 @@
             }"
             unfocus
             (click)="onMove()">Move
-      To Cart
+                               To Cart
     </button>
     <button type="button"
             class="btn btn-outline-secondary"

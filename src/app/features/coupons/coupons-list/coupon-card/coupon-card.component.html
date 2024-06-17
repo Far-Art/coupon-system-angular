@@ -1,19 +1,25 @@
 <div #card class="d-flex justify-content-between card rounded-2 overflow-hidden mt-3"
-     xmlns="http://www.w3.org/1999/html">
+     [ngClass]="{'border-success': isPurchased}">
   <img src="{{coupon.params.image}}"
        alt="{{coupon.params.title}} coupon"
+       [style.filter]=" isPurchased ? 'grayscale(0.7) sepia(0.7) hue-rotate(90deg)' : 'none'"
        class="object-fit-cover user-select-none">
+  <div *ngIf="isPurchased" class="position-absolute start-0 top-0 w-100 h-100 bg-dark opacity-25"></div>
 
   <div class="position-relative">
-    <div class="d-flex flex-row bg-light-semi-transparent justify-content-between p-1">
+    <div class="d-flex flex-row bg-light-semi-transparent justify-content-between p-1"
+         [ngClass]="{'bg-success': isPurchased}">
       <!-- TITLE -->
       <div class="ps-1 pe-0 pt-2 pb-2 flex-grow-1 fs-6 fw-semibold text-primary user-select-none"
+           [ngClass]="{'text-white': isPurchased}"
            (click)="onTitleClick()">
         <span #title>{{ coupon.params.title | titlecase | sliceTxt: titleMaxLen }}</span>
       </div>
 
       <!-- INFO BUTTON -->
-      <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative" (click)="switchInfoDescription()"
+      <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative"
+           [ngClass]="{'text-white': isPurchased}"
+           (click)="switchInfoDescription()"
            role="button">
         <div *ngIf="isDescriptionShown" class="position-absolute top-25 left-25">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -34,7 +40,9 @@
       </div>
 
       <!-- DESCRIPTION BUTTON -->
-      <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative" (click)="switchInfoDescription()"
+      <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative"
+           (click)="switchInfoDescription()"
+           [ngClass]="{'text-white': isPurchased}"
            role="button">
         <div *ngIf="!isDescriptionShown" class="position-absolute top-25 left-25">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -55,7 +63,9 @@
       </div>
 
       <!-- WISH LIST BUTTON -->
-      <div class="p-3 pt-2 pb-2 text-primary position-relative m-1 mt-0 mb-0" (click)="onWishListClick()"
+      <div class="p-3 pt-2 pb-2 text-primary position-relative m-1 mt-0 mb-0"
+           [ngClass]="{'text-white': isPurchased}"
+           (click)="onWishListClick()"
            role="button">
 
         <!-- NOT ADDED -->
@@ -102,11 +112,13 @@
       <!-- CART -->
       <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative"
            (click)="onCartClick()"
-           [ngClass]="{'disabled': _isSaleEnded}"
+           [style.cursor]="isSaleEnded || isPurchased ? 'default': 'pointer'"
+           [ngClass]="{'disabled': isSaleEnded}"
            role="button">
 
         <!-- ADD ICON -->
-        <div *ngIf="!isAddedToCart && !_isSaleEnded" class="position-absolute top-25 left-25 text-primary">
+        <div *ngIf="!isPurchased && !isAddedToCart && !isSaleEnded"
+             class="position-absolute top-25 left-25 text-primary">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                fill="currentColor"
                class="bi bi-bag-plus" viewBox="0 0 16 16">
@@ -129,8 +141,19 @@
           </svg>
         </div>
 
+        <!-- PURCHASED ICON -->
+        <div *ngIf="isPurchased"
+             style="transform: translateY(-10%)"
+             class="position-absolute top-25 left-25 text-white z-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+               class="bi bi-bag-check-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0m-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+          </svg>
+        </div>
+
         <!-- REMOVE FROM CART ICON -->
-        <div *ngIf="isAddedToCart" class="position-absolute top-25 left-25 text-success">
+        <div *ngIf="!isPurchased && isAddedToCart" class="position-absolute top-25 left-25 text-success">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                class="bi bi-bag-dash-fill"
                viewBox="0 0 16 16">
@@ -152,7 +175,7 @@
         </div>
 
         <!-- ADDING DISABLED ICON -->
-        <div *ngIf="_isSaleEnded" class="position-absolute top-25 left-25" style="cursor: not-allowed">
+        <div *ngIf="isSaleEnded" class="position-absolute top-25 left-25" style="cursor: not-allowed">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                class="bi bi-bag-x text-dark" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -169,24 +192,31 @@
   <!-- INFO CONTENT -->
   <ng-container *ngIf="!isDescriptionShown">
     <div class="d-flex flex-row"
-         [ngClass]="{'justify-content-between' : !_isSaleEnded && isShowTimer, 'justify-content-start' : _isSaleEnded, 'justify-content-end': !_isSaleEnded && !isShowTimer}">
+         [ngClass]="{'justify-content-between' : !isSaleEnded && isShowTimer, 'justify-content-start' : isSaleEnded, 'justify-content-end': !isSaleEnded && !isShowTimer}">
 
       <!-- TIMER -->
       <div *ngIf="isShowTimer"
            class="p-2 mb-2 fs-6 fw-semibold bg-light-semi-transparent rounded-end text-primary position-relative user-select-none">
-        <ng-container *ngIf="_isSaleEnded">
+        <ng-container *ngIf="isSaleEnded">
           {{ 'sale ended' | titlecase }}
         </ng-container>
-        <ng-container *ngIf="!_isSaleEnded">
+        <ng-container *ngIf="!isSaleEnded">
           <span class="fs-7 position-absolute top-0 user-select-none">{{ 'ends in:' | titlecase }}</span>
           {{ timerValue | date: 'HH:mm:ss' }}
         </ng-container>
       </div>
 
       <!-- PRICE -->
-      <div *ngIf="!_isSaleEnded"
+      <div *ngIf="!isSaleEnded && !isPurchased"
            class="p-2 mb-2 fs-6 fw-semibold bg-light-semi-transparent rounded-start text-primary user-select-none">
         {{ coupon.params.price | currency: 'ILS' }}
+      </div>
+
+      <!-- PURCHASED -->
+      <div *ngIf="isPurchased"
+           class="position-relative p-2 mb-2 fs-6 fw-bold rounded-3 bg-success drop-shadow-low z-1 text-white text-center user-select-none"
+           style="transform: rotate(-12deg);">
+        Purchased
       </div>
     </div>
   </ng-container>
@@ -194,7 +224,8 @@
   <!-- DESCRIPTION CONTENT -->
   <ng-container *ngIf="isDescriptionShown">
     <div
-        class="description p-0 ps-2 pe-2 m-0 w-100 fs-6 bg-light-semi-transparent text-primary position-absolute mt-5 overflow-y-auto text-wrap">
+        class="description p-0 ps-2 pe-2 m-0 w-100 fs-6 bg-light-semi-transparent text-primary position-absolute mt-5 overflow-y-auto text-wrap"
+        [ngClass]="{'text-success-emphasis': isPurchased}">
       <p class="text-decoration-underline mb-0 user-select-none">Title:</p>
       <p class="fw-semibold">{{ coupon.params.title }}</p>
       <hr>

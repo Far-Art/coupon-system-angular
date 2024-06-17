@@ -40,12 +40,16 @@ export class CouponCardComponent implements OnInit, OnDestroy {
 
   @Input() coupon: Coupon;
 
+  @Output() onCartClickEmitter = new EventEmitter<{ isChecked: boolean, coupon: Coupon }>();
+  @Output() onWishClickEmitter = new EventEmitter<{ isChecked: boolean, coupon: Coupon }>();
+
   isAddedToCart      = false;
   isAddedToWish      = false;
+  isPurchased        = false;
   isDescriptionShown = false;
   isShowTimer        = true;
   timerValue: Date | undefined;
-  _isSaleEnded       = false;
+  isSaleEnded        = false;
   titleMaxLen: number;
 
   cartOnAddAnimationTrigger    = false;
@@ -53,12 +57,10 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   cartOnRemoveAnimationTrigger = false;
   wishOnRemoveAnimationTrigger = false;
 
-  @Output() onCartClickEmitter = new EventEmitter<{ isChecked: boolean, coupon: Coupon }>();
-  @Output() onWishClickEmitter = new EventEmitter<{ isChecked: boolean, coupon: Coupon }>();
-
   private wishSub: Subscription;
   private cartSub: Subscription;
   private windowSizeSub: Subscription;
+  private purchasedSub: Subscription;
 
   constructor(
       private couponsService: CouponsService,
@@ -76,6 +78,10 @@ export class CouponCardComponent implements OnInit, OnDestroy {
     this.cartSub = this.couponsService.cartIds$.subscribe(ids => {
       this.isAddedToCart = ids.includes(this.coupon.params.id);
     });
+
+    this.purchasedSub = this.couponsService.purchasedCoupons$.subscribe(ids => {
+      this.isPurchased = ids.includes(this.coupon.params.id);
+    })
 
     this.windowSizeSub = this.windowSize.windowSize$.subscribe(size => {
       if (size.width > 1200) {
@@ -98,7 +104,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   }
 
   onCartClick() {
-    if (!this._isSaleEnded) {
+    if (!this.isSaleEnded && !this.isPurchased) {
       this.isAddedToCart ? this.couponsService.removeFromCart(this.coupon) : this.couponsService.addToCart(this.coupon);
       this.cartOnRemoveAnimationTrigger = this.isAddedToCart === false;
 
@@ -145,22 +151,16 @@ export class CouponCardComponent implements OnInit, OnDestroy {
     this.isDescriptionShown = !this.isDescriptionShown;
   }
 
-  ngOnDestroy(): void {
-    this.wishSub.unsubscribe();
-    this.cartSub.unsubscribe();
-    this.windowSizeSub.unsubscribe();
-  }
-
   private showSaleEndTimout() {
-    this._isSaleEnded = this.coupon.params.isSaleEnded;
-    this.isShowTimer  = this.coupon.params.endDate.getTime() - new Date().getTime() < this.activateTimer;
-    if (this._isSaleEnded) return;
+    this.isSaleEnded = this.coupon.params.isSaleEnded;
+    this.isShowTimer = this.coupon.params.endDate.getTime() - new Date().getTime() < this.activateTimer;
+    if (this.isSaleEnded) return;
 
     if (this.isShowTimer) {
       this.timerValue       = new Date(this.coupon.params.endDate.getTime() - new Date().getTime());
       const timeoutInterval = setInterval(() => {
         if (new Date() <= this.timerValue) {
-          this._isSaleEnded = true
+          this.isSaleEnded = true
           clearInterval(timeoutInterval);
           return;
         }
@@ -169,4 +169,10 @@ export class CouponCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnDestroy(): void {
+    this.wishSub.unsubscribe();
+    this.cartSub.unsubscribe();
+    this.windowSizeSub.unsubscribe();
+    this.purchasedSub.unsubscribe();
+  }
 }

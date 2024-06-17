@@ -72,19 +72,19 @@
     <button class="list-group-item list-group-item-action text-bg-light"
             type="button"
             (click)="onQuickLogin('customer')">Customer
-      <cs-spinner class="ms-1 border-secondary" *ngIf="isLoading && quickLoginType === 'customer'"></cs-spinner>
+      <cs-spinner class="ms-1 text-secondary" *ngIf="isLoading && quickLoginType === 'customer'"></cs-spinner>
     </button>
 
     <button class="list-group-item list-group-item-action text-bg-light"
             type="button"
             (click)="onQuickLogin('company')">Company
-      <cs-spinner class="ms-1 border-secondary" *ngIf="isLoading && quickLoginType === 'company'"></cs-spinner>
+      <cs-spinner class="ms-1 text-secondary" *ngIf="isLoading && quickLoginType === 'company'"></cs-spinner>
     </button>
 
     <button class="list-group-item list-group-item-action text-bg-light"
             type="button"
             (click)="onQuickLogin('admin')">Admin
-      <cs-spinner class="ms-1 border-secondary" *ngIf="isLoading && quickLoginType === 'admin'"></cs-spinner>
+      <cs-spinner class="ms-1 text-secondary" *ngIf="isLoading && quickLoginType === 'admin'"></cs-spinner>
     </button>
   </div>
 </form>

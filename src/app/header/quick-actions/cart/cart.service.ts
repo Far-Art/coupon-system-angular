@@ -16,13 +16,13 @@ export class CartService {
       private couponsService: CouponsService
   ) { }
 
-  buyCoupons$(coupons: Coupon[]): Observable<number[]> {
+  buyCoupons$(purchased: Coupon[]): Observable<UserData> {
     return this.authService.user$.pipe(
         take(1),
         map(user => this.setUser(user)),
-        tap(user => this.addCouponsToBought(user, coupons)),
+        concatMap(user => this.updateUserCoupons(user, purchased)),
         concatMap(user => this.dataManager.putUserData(this.authService.authData.localId, user)),
-        map(user => user.couponsBought)
+        tap(user => this.couponsService.removeFromCart(...user.couponsBought))
     );
   }
 
@@ -30,17 +30,15 @@ export class CartService {
     return this.authService.user$.pipe(map(user => !!user));
   }
 
-  private addCouponsToBought(user: UserData, purchased: Coupon[]) {
-    if (user.couponsBought == null) {
-      user.couponsBought = [];
-    }
-
-    // TODO do not add duplicates
-    user.couponsBought.push(...purchased.map(c => c.params.id));
-
-    user.couponsInCart = user.couponsInCart.filter(id => purchased.some(c => c.params.id === id));
-    console.log(user.couponsInCart);
-
+  private updateUserCoupons(user: UserData, purchased: Coupon[]): Observable<UserData> {
+    // TODO rework this
+    return this.couponsService.cartIds$.pipe(
+        take(1),
+        tap(() => user.couponsBought = user.couponsBought != null ? user.couponsBought : []),
+        tap(ids => user.couponsInCart = ids.filter(id => !purchased.map(c => c.params.id).includes(id))),
+        tap(ids => user.couponsBought.push(...ids)),
+        map(() => user)
+    );
   }
 
   private setUser(user: UserData) {

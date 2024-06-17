@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {Coupon} from '../../models/coupon.model';
-import {Subscription} from 'rxjs';
+import {map, Subscription, take} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
@@ -64,6 +64,14 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
       this.selectAll();
     }
     this.updateIndeterminateStatus();
+  }
+
+  isPurchased(coupon: Coupon) {
+    return this.couponsService.purchasedCoupons$.pipe(take(1), map(ids => ids.includes(coupon.params.id)));
+  }
+
+  isSaleEnded(coupon: Coupon) {
+    return coupon.params.isSaleEnded;
   }
 
   has(id: number): boolean {

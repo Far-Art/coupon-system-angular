@@ -96,12 +96,12 @@ export class CartModalComponent implements OnInit, OnDestroy {
     if (this._selectedCoupons.length > 0) {
       this.isLoading = true;
       // TODO update coupons in cart for user
-      this.cartService.buyCoupons$(this.cartList).pipe(
+      this.cartService.buyCoupons$(this._selectedCoupons).pipe(
           delay(1000),
           tap(() => this.isLoading = false)
-      ).subscribe(bought => {
-        const filtered = this.cartList.filter(coupon => bought.includes(coupon.params.id));
-        this.couponsService.removeFromCart(...filtered);
+      ).subscribe(user => {
+        // this.couponsService.removeFromCart(...filtered);
+        this.cartList = this.cartList.filter(c => user.couponsInCart.includes(c.params.id));
         this.closeIfEmpty();
       });
     }

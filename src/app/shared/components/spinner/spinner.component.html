@@ -1,6 +1,8 @@
-<div *ngIf="id" [id]="id" class="spinner-size d-inline-block m-0 p-0 position-relative {{clazz}}">
-  <div class="spinner spinner-size position-absolute"></div>
-</div>
-<div *ngIf="!id" class="spinner-size d-inline-block m-0 p-0 position-relative {{clazz}}">
-  <div class="spinner spinner-size position-absolute"></div>
-</div>
+<!-- WITH ID -->
+<svg *ngIf="id" [id]="id" @popAnimation viewBox="25 25 50 50" class="{{clazz}}">
+  <circle r="20" cy="50" cx="50"></circle>
+</svg>
+<!-- WITHOUT ID -->
+<svg *ngIf="!id" @popAnimation viewBox="25 25 50 50" class="{{clazz}}">
+  <circle r="20" cy="50" cx="50"></circle>
+</svg>

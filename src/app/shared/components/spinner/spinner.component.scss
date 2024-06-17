@@ -1,36 +1,73 @@
-@import "src/styles";
+@import "bootstrap/scss/bootstrap";
+@import "src/bootstrap_overrides";
 
-:host {
-  overflow: hidden;
+.text-primary circle {
+  stroke: $primary;
 }
 
-.spinner {
-  border-radius: 50%;
-  border-width: 4px;
-  border-style: solid;
-  border-color: inherit;
-  animation: keyframes-1 0.8s infinite linear alternate,
-  keyframes-2 1.6s infinite linear;
+.text-secondary circle {
+  stroke: $secondary;
 }
 
-.spinner-size {
-  height: 19px;
-  aspect-ratio: 1;
+.text-light circle {
+  stroke: $light;
 }
 
-@keyframes keyframes-1 {
-  0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
-  12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
-  25%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 100% 100%, 100% 100% )}
-  50%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
-  62.5% {clip-path: polygon(50% 50%,100%    0, 100%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
-  75%   {clip-path: polygon(50% 50%,100% 100%, 100% 100%,  100% 100%, 100% 100%, 50%  100%, 0%   100% )}
-  100%  {clip-path: polygon(50% 50%,50%  100%,  50% 100%,   50% 100%,  50% 100%, 50%  100%, 0%   100% )}
+.text-white circle {
+  stroke: $color-white;
 }
 
-@keyframes keyframes-2 {
-  0%    {transform:scaleY(1) translateY(1px)  rotate(0deg)}
-  49.99%{transform:scaleY(1)  translateY(1px) rotate(135deg)}
-  50%   {transform:scaleY(-1) translateY(-1px) rotate(0deg)}
-  100%  {transform:scaleY(-1) translateY(-1px) rotate(-135deg)}
+.text-success circle {
+  stroke: $success;
+}
+
+.text-danger circle {
+  stroke: $danger;
+}
+
+.text-info circle {
+  stroke: $info;
+}
+
+.text-dark circle {
+  stroke: $dark;
+}
+
+svg {
+  width: 1.2em;
+  transform-origin: center;
+  animation: rotate 1.5s linear infinite;
+}
+
+circle {
+  fill: none;
+  stroke: $color-white;
+  stroke-width: 7;
+  stroke-dasharray: 0, 250;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+  transition-duration: 250ms;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 0, 250;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 100, 250;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dashoffset: -120px;
+  }
 }

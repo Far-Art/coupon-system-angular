@@ -1,6 +1,7 @@
 <div class="accordion-header transition-duration"
      [ngClass]="{'bg-primary-light': this.options.isChecked, 'bg-light': !this.options.isChecked}">
   <div class="d-flex align-content-center">
+    <!-- CHECKBOX -->
     <div *ngIf="!options.noCheckbox" class="flex-shrink-1 align-self-center transition-duration"
          [ngClass]="{'bg-primary': this.options.isChecked, 'bg-light': !this.options.isChecked}"
          type="button"
@@ -11,6 +12,8 @@
              [checked]="this.options.isChecked"
              unfocus>
     </div>
+
+    <!-- TITLE WITH CHECKBOX -->
     <div *ngIf="!options.noCheckbox"
          class="position-relative flex-grow-1 text-start text-nowrap align-self-stretch m-0 ps-3 user-select-none"
          [ngClass]="{'text-primary': this.options.isChecked}"
@@ -18,12 +21,16 @@
          (click)="onCheck()">
       <div class="d-flex align-items-center h-100">
         <span>{{ coupon.params.title | sliceTxt:sliceVal }}</span>
-        <span *ngIf="!options.noCheckbox && coupon.params.isSaleEnded"
+        <span *ngIf="!options.noCheckbox && isSaleEnded && !isPurchased"
               [ngClass]="{'text-dark': this.options.isChecked}"
               class="position-absolute text-nowrap text-primary fs-7 opacity-50"><em>*sale ended</em></span>
+        <span *ngIf="!options.noCheckbox && isPurchased"
+              [ngClass]="{'text-dark': this.options.isChecked}"
+              class="position-absolute text-nowrap text-success fs-7 opacity-50"><em>*purchased</em></span>
       </div>
     </div>
 
+    <!-- TITLE WITH NO CHECKBOX -->
     <div *ngIf="options.noCheckbox"
          class="position-relative flex-grow-1 text-start text-nowrap align-self-stretch m-0 ps-3 user-select-none"
          style=" cursor: pointer"
@@ -33,12 +40,12 @@
          [attr.aria-controls]="'collapse' + index">
       <div class="d-flex align-items-center h-100">
         <span>{{ coupon.params.title | sliceTxt:sliceVal }}</span>
-        <span *ngIf="!options.noCheckbox && coupon.params.isSaleEnded"
-              [ngClass]="{'text-dark': this.options.isChecked}"
+        <span *ngIf="coupon.params.isSaleEnded"
               class="position-absolute text-nowrap text-primary fs-7 opacity-50"><em>*sale ended</em></span>
       </div>
     </div>
 
+    <!-- ARROW BUTTON -->
     <button class="accordion-button bg-light collapsed"
             type="button"
             data-bs-toggle="collapse"
@@ -49,6 +56,8 @@
     </button>
   </div>
 </div>
+
+<!-- BODY -->
 <div id="collapse{{index}}" class="accordion-collapse collapse" data-bs-parent="#accordionTable">
   <div class="accordion-body">
     <div class="row">
@@ -63,8 +72,7 @@
         <p class="m-0 mb-2">{{ coupon.params.companyEmail | lowercase }}</p>
       </div>
       <div class="col position-relative">
-        <img class="opacity-0 user-select-none" src="{{coupon.params.image}}"
-             alt="coupon image">
+        <img class="opacity-0 user-select-none" src="{{coupon.params.image}}" alt="coupon image">
         <img class="position-absolute translate-middle start-50 top-50 rounded-5 drop-shadow-low user-select-none"
              src="{{coupon.params.image}}"
              alt="coupon image">

@@ -1,4 +1,4 @@
-import {Component, HostBinding, Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 
 
@@ -6,7 +6,6 @@ import {animate, style, transition, trigger} from '@angular/animations';
   selector: 'cs-spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
-  // TODO make smooth appear animation
   animations: [
     trigger('popAnimation', [
       transition(':enter', [
@@ -21,8 +20,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
   ]
 })
 export class SpinnerComponent {
-  @HostBinding('@popAnimation') popAnimation = true;
-
   @Input('class') clazz                   = '';
   @Input('id') id: number | string | null = null;
+
 }

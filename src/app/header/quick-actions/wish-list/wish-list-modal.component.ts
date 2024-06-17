@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {Subscription} from 'rxjs';
+import {Subscription, take} from 'rxjs';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 import {WindowSizeService} from '../../../shared/services/window-size.service';
@@ -20,6 +20,8 @@ export class WishListModalComponent implements OnInit, OnDestroy {
   selectedCoupons: Coupon[] = [];
 
   isAnySaleEnded: boolean = false;
+
+  isAnyPurchased: boolean = false;
 
   _windowWidth: number;
 
@@ -43,6 +45,7 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
     this.wishSubscription = this.couponsService.wishIds$
         .subscribe(ids => this.wishList = this.couponsService.getCouponsById(...ids));
+
   }
 
   openModal() {
@@ -52,8 +55,11 @@ export class WishListModalComponent implements OnInit, OnDestroy {
   }
 
   onCouponsSelected(coupons: Coupon[]) {
-    this.selectedCoupons = coupons;
-    this.isAnySaleEnded  = coupons.some(c => c.params.isSaleEnded);
+    this.couponsService.purchasedCoupons$.pipe(take(1)).subscribe(purchased => {
+      this.selectedCoupons = coupons;
+      this.isAnySaleEnded  = coupons.some(c => c.params.isSaleEnded);
+      this.isAnyPurchased  = coupons.some(c => purchased.some(id => id === c.params.id));
+    })
   }
 
   onCancel() {

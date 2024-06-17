@@ -17,6 +17,10 @@ export class CouponItemComponent implements OnInit, OnDestroy {
 
   @Input() options: { isChecked?: boolean, noCheckbox?: boolean } = {isChecked: false};
 
+  @Input() isPurchased = false;
+
+  @Input() isSaleEnded = false;
+
   @Output() onSelected = new EventEmitter<{ index: number, id: number }>();
 
   sliceVal: number;

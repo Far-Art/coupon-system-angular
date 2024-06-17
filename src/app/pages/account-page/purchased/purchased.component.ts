@@ -3,7 +3,7 @@ import {AccountService} from '../account.service';
 import {Coupon} from '../../../shared/models/coupon.model';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 import {DataManagerService} from '../../../shared/services/data-manager.service';
-import {concatMap, take} from 'rxjs';
+import {concatMap, take, tap} from 'rxjs';
 
 
 @Component({
@@ -30,11 +30,17 @@ export class PurchasedComponent implements OnInit {
   onPurchaseClear() {
     this.accountService.user$.pipe(
         take(1),
-        concatMap(user => this.dataManager.putUserData(user.userId, user).pipe(take(1)))
+        tap(user => user.couponsBought.length = 0),
+        concatMap(user => this.dataManager.putUserData(user.userId, user).pipe(take(1))),
+        tap(user => this.accountService.updateUser(user))
     ).subscribe({
-      next: () => this.coupons.length = 0,
+      next: () => {
+        this.coupons.length = 0;
+      },
       error: err => {},
-      complete: () => this.coupons.length = 0
+      complete: () => {
+        this.coupons.length = 0;
+      }
     });
   }
 

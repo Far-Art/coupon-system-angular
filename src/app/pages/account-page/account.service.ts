@@ -14,4 +14,8 @@ export class AccountService {
       return {...user, userId: this.authService.authData.localId};
     }));
   }
+
+  updateUser(user: UserData) {
+    this.authService.updateUser(user);
+  }
 }

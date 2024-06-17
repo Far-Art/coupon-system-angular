@@ -61,6 +61,11 @@ export class AuthService {
     return this.userDataSubject.asObservable();
   }
 
+  updateUser(user: UserData) {
+    const updated = Object.assign( this.userDataSubject.value, user);
+    this.userDataSubject.next(updated);
+  }
+
   set loginFormData(data: LoginData) {
     this._loginFormData = data;
   }
