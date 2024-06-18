@@ -1,4 +1,5 @@
-<div *ngIf="!options?.noCheckbox" class="form-check transition-duration user-select-none" type="button">
+<div *ngIf="!options?.noCheckbox && coupons?.length > 0" class="form-check transition-duration user-select-none"
+     type="button">
   <input #indeterminateCheckBox
          id="indeterminateCheckBox"
          (click)="onIndeterminateClick()"

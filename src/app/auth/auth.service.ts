@@ -61,9 +61,12 @@ export class AuthService {
     return this.userDataSubject.asObservable();
   }
 
-  updateUser(user: UserData) {
-    const updated = Object.assign( this.userDataSubject.value, user);
-    this.userDataSubject.next(updated);
+  updateUser(user: UserData, emitEvent: boolean = true) {
+    const updated = Object.assign(this.userDataSubject.value, user);
+    this.storeUserDataLocally();
+    if (emitEvent) {
+      this.userDataSubject.next(updated);
+    }
   }
 
   set loginFormData(data: LoginData) {

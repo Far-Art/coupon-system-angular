@@ -186,7 +186,7 @@
       </div>
       <br>
 
-      <div class="input-group mb-3 drop-shadow-low position-relative" formGroupName="freeText">
+      <div class="input-group mb-3 mt-3 drop-shadow-low position-relative" formGroupName="freeText">
         <button [disabled]="!form.controls.freeText.value.key || form.controls.freeText.invalid"
                 (click)="modal.dismiss('Close click')"
                 unfocus
@@ -217,6 +217,19 @@
                 d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
           </svg>
         </h3>
+      </div>
+
+      <div class="form-check user-select-none m-1 mt-4"
+           formGroupName="hidePurchased">
+        <input class="form-check-input drop-shadow-low"
+               type="checkbox"
+               unfocus
+               id="hidePurchased"
+               formControlName="isChecked">
+        <label class="form-check-label text-hover"
+               [ngClass]="{'text-primary': form.controls.hidePurchased.value.isChecked}"
+               for="hidePurchased">Hide Purchased Coupons
+        </label>
       </div>
     </div>
 

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {BehaviorSubject, concatMap, map, Observable, take, tap} from 'rxjs';
+import {BehaviorSubject, concatMap, firstValueFrom, map, Observable, take, tap} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
@@ -29,6 +29,7 @@ export interface FilterKeys {
   companyNames: Key[],
   priceRange: PriceKey,
   dateRange: DateKey,
+  hidePurchased: Controls,
   freeText: Key
 }
 
@@ -96,15 +97,20 @@ export class FilterService {
         return this.hasFreeText(coupon, filters);
       }
 
-      const hasCategory = this.hasCategory(coupon, filters.categories);
+      const hasCategory    = this.hasCategory(coupon, filters.categories);
       const hasCompanyName = this.hasCompanyName(coupon, filters.companyNames);
-      const hasPrice = this.hasPriceOrDateRange(coupon, filters.priceRange);
-      const hasDate = this.hasPriceOrDateRange(coupon, filters.dateRange);
+      const hasPrice       = this.hasPriceOrDateRange(coupon, filters.priceRange);
+      const hasDate        = this.hasPriceOrDateRange(coupon, filters.dateRange);
 
-      return this.hasCategory(coupon, filters.categories) &&
-          this.hasCompanyName(coupon, filters.companyNames) &&
-          this.hasPriceOrDateRange(coupon, filters.priceRange) &&
-          this.hasPriceOrDateRange(coupon, filters.dateRange);
+      // TODO continue here
+      let show: boolean;
+      filters.hidePurchased.isChecked ? !this.isPurchased(coupon).then(val => show = val) : show = true;
+
+      return hasCategory &&
+          hasCompanyName &&
+          hasPrice &&
+          hasDate &&
+          show;
     });
   }
 
@@ -127,6 +133,10 @@ export class FilterService {
     return filter.freeText && (prm.title.toLowerCase().includes(filter.freeText.key.toLowerCase())
         || prm.description.toLowerCase().includes(filter.freeText.key.toLowerCase())
         || prm.companyName.toLowerCase().includes(filter.freeText.key.toLowerCase()));
+  }
+
+  private async isPurchased(coupon: Coupon): Promise<boolean> {
+    return await firstValueFrom(this.couponsService.purchasedCoupons$.pipe(take(1), map(ids => ids.includes(coupon.params.id))));
   }
 
   private updateFilterKeys(displayedCoupons: Coupon[]): Observable<FilterKeys | null> {
@@ -172,6 +182,7 @@ export class FilterService {
                   companyNames: [...names.values()],
                   priceRange: {start: minPrice, end: maxPrice},
                   dateRange: {start: starDate, end: endDate},
+                  hidePurchased: {isChecked: true},
                   freeText: null
                 }
               }

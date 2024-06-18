@@ -24,6 +24,10 @@ interface MainFormType {
     start: FormControl<number>,
     end: FormControl<number>,
   }>,
+  hidePurchased: FormGroup<{
+    isChecked: FormControl<boolean>,
+    isDisabled: FormControl<boolean>
+  }>,
   freeText: FormGroup<{
     key: FormControl<string>
   }>;
@@ -81,8 +85,8 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubmit() {
-    console.log('start',this.form.value.dateRange.start)
-    console.log('end',this.form.value.dateRange.end)
+    console.log('start', this.form.value.dateRange.start)
+    console.log('end', this.form.value.dateRange.end)
     const filterKeys: FilterKeys = this.form.value as FilterKeys;
     this.prevForm.patchValue(this.form.value);
 
@@ -92,7 +96,7 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
       // remove value if user did not change value or is bad value
       filterKeys.priceRange.isApplied = !(!this.form.controls.priceRange.dirty || this.form.controls.priceRange.invalid);
       // remove value if user did not change value or is bad value
-      filterKeys.dateRange.isApplied = !(!this.form.controls.dateRange.dirty || this.form.controls.dateRange.invalid);
+      filterKeys.dateRange.isApplied  = !(!this.form.controls.dateRange.dirty || this.form.controls.dateRange.invalid);
     }
 
     this.filterService.updateDisplayedCoupons(this.form.pristine ? null : filterKeys);
@@ -155,6 +159,10 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
       companyNames: new FormArray([]),
       priceRange: this.initPriceRange(initial),
       dateRange: this.initDateRange(initial),
+      hidePurchased: new FormGroup({
+        isChecked: new FormControl(true),
+        isDisabled: new FormControl(false)
+      }),
       freeText: new FormGroup({
         key: new FormControl<string>(null, Validators.minLength(3))
       })

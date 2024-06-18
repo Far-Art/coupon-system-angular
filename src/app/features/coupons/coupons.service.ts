@@ -30,7 +30,7 @@ export class CouponsService {
   }
 
   get purchasedCoupons$(): Observable<number[]> {
-    return this.auth.user$.pipe(map(user => user.couponsBought));
+    return this.auth.user$.pipe(map(user => user?.couponsBought != null ? user.couponsBought : []));
   }
 
   get originCoupons$() {
@@ -53,17 +53,17 @@ export class CouponsService {
     this.displayedCouponsSubject.next(coupons);
   }
 
-  addToCart(...coupons: Coupon[]) {
+  addToCart(...coupons: Coupon[] | number[]) {
     const ids = new Set<number>(this.cartSubject.value);
-    coupons.forEach(c => ids.add(c.params.id));
+    coupons.forEach((c: Coupon | number) => ids.add(c instanceof Coupon ? c.params.id : c));
 
     this.logo.blink();
     this.cartSubject.next([...ids]);
   }
 
-  addToWish(...coupons: Coupon[]) {
+  addToWish(...coupons: Coupon[] | number[]) {
     const ids = new Set<number>(this.wishSubject.value);
-    coupons.forEach(c => ids.add(c.params.id));
+    coupons.forEach((c: Coupon | number) => ids.add(c instanceof Coupon ? c.params.id : c));
 
     this.logo.blink();
     this.wishSubject.next([...ids]);
@@ -76,19 +76,11 @@ export class CouponsService {
     this.cartSubject.next(this.cartSubject.value);
   }
 
-  removeFromWish(...coupons: Coupon[]) {
-    coupons.forEach(c => {
+  removeFromWish(...coupons: Coupon[] | number[]) {
+    coupons.forEach((c: Coupon | number) => {
       this.removeCoupon(c, this.wishSubject.value);
     });
     this.wishSubject.next(this.wishSubject.value);
-  }
-
-  isPresentInCart(coupon: Coupon): boolean {
-    return this.cartSubject.value.find(id => id === coupon.params.id) !== undefined;
-  }
-
-  isPresentInWish(coupon: Coupon): boolean {
-    return this.wishSubject.value.find(id => id === coupon.params.id) !== undefined;
   }
 
   get couponsInCart(): number {
@@ -99,14 +91,14 @@ export class CouponsService {
     return this.wishSubject.value.length;
   }
 
-  moveToWish(...coupons: Coupon[]) {
+  moveToWish(...coupons: Coupon[] | number[]) {
     this.removeFromCart(...coupons);
     this.addToWish(...coupons);
     this.cartSubject.next(this.cartSubject.value);
     this.notify();
   }
 
-  moveToCart(...coupons: Coupon[]) {
+  moveToCart(...coupons: Coupon[] | number[]) {
     this.removeFromWish(...coupons);
     this.addToCart(...coupons);
     this.wishSubject.next(this.wishSubject.value);

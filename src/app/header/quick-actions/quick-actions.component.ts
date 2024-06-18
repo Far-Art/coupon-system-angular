@@ -22,9 +22,9 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   @ViewChild('filterModal', {static: true}) filterModal = ElementRef<FilterModalComponent>;
   @ViewChild('cartModal', {static: true}) cartModal     = ElementRef<CartModalComponent>;
 
-  private wishSubscription!: Subscription;
-  private filterSubscription!: Subscription;
-  private cartSubscription!: Subscription;
+  private wishSubscription: Subscription;
+  private filterSubscription: Subscription;
+  private cartSubscription: Subscription;
 
   constructor(
       private filterService: FilterService,
@@ -32,9 +32,12 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.wishSubscription   = this.couponsService.wishIds$.subscribe(() => this.wishBadgeVal = this.couponsService.couponsInWish);
-    this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.getFiltersBadgeValue);
-    this.cartSubscription   = this.couponsService.cartIds$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
+    // set timeout to avoid error of value changed after view checked
+    setTimeout(() => {
+      this.wishSubscription   = this.couponsService.wishIds$.subscribe(() => this.wishBadgeVal = this.couponsService.couponsInWish);
+      this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.getFiltersBadgeValue);
+      this.cartSubscription   = this.couponsService.cartIds$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
+    }, 0);
   }
 
   onCartClick(): void {
@@ -54,4 +57,5 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
     this.wishSubscription.unsubscribe();
     this.filterSubscription.unsubscribe();
   }
+
 }

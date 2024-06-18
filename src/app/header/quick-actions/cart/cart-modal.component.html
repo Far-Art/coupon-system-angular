@@ -6,6 +6,9 @@
     <sc-coupon-table [coupons]="cartList" [options]="{selectAll: true}"
                      (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
   </div>
+  <div *ngIf="errorMessage" class="p-2 text-center text-danger bg-danger-subtle text-wrap">
+    {{ errorMessage }}
+  </div>
   <div class="modal-footer justify-content-between flex-column flex-sm-row">
     <div class="btn-group dropup"
          [ngClass]="{'w-100': _windowWidth < _switchWidth}"

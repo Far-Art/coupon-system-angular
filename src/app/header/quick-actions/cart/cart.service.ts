@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {AuthService} from '../../../auth/auth.service';
 import {DataManagerService} from '../../../shared/services/data-manager.service';
-import {concatMap, map, Observable, take, tap} from 'rxjs';
+import {catchError, concatMap, map, Observable, take, tap, throwError} from 'rxjs';
 import {UserData} from '../../../shared/models/user-data.model';
 import {Coupon} from '../../../shared/models/coupon.model';
 import {CouponsService} from '../../../features/coupons/coupons.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 
 @Injectable()
@@ -16,14 +17,23 @@ export class CartService {
       private couponsService: CouponsService
   ) { }
 
+  private userDataBackup: UserData;
+
   buyCoupons$(purchased: Coupon[]): Observable<UserData> {
     return this.authService.user$.pipe(
         take(1),
-        map(user => this.setUser(user)),
+        tap(user => this.backupUserData(user)),
         concatMap(user => this.updateUserCoupons(user, purchased)),
         concatMap(user => this.dataManager.putUserData(this.authService.authData.localId, user)),
-        tap(user => this.couponsService.removeFromCart(...user.couponsBought))
-    );
+        tap(user => this.couponsService.removeFromCart(...user.couponsBought)),
+        tap(() => this.couponsService.notify()),
+        tap(user => this.authService.updateUser(user)),
+        catchError(this.handleError)
+    ) as Observable<UserData>;
+  }
+
+  updateUserCart(coupons: Coupon[]): void {
+    this.authService.updateUser({couponsInCart: coupons.map(c => c.params.id)} as UserData, false);
   }
 
   isUserPresent$(): Observable<boolean> {
@@ -31,25 +41,25 @@ export class CartService {
   }
 
   private updateUserCoupons(user: UserData, purchased: Coupon[]): Observable<UserData> {
-    // TODO rework this
     return this.couponsService.cartIds$.pipe(
         take(1),
         tap(() => user.couponsBought = user.couponsBought != null ? user.couponsBought : []),
-        tap(ids => user.couponsInCart = ids.filter(id => !purchased.map(c => c.params.id).includes(id))),
-        tap(ids => user.couponsBought.push(...ids)),
+        map(() => purchased.map(v => v.params.id)),
+        tap(purchased => user.couponsBought.push(...purchased)),
+        tap(purchased => user.couponsInCart = user.couponsInCart.filter(cartId => !purchased.includes(cartId))),
         map(() => user)
     );
   }
 
-  private setUser(user: UserData) {
-    if (user == null) {
-      user = {
-        name: 'Guest',
-        couponsInCart: [],
-        couponsInWish: [],
-        couponsBought: []
-      } as UserData;
+  private backupUserData(user: UserData): void {
+    this.userDataBackup = JSON.parse(JSON.stringify(user));
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    this.authService.updateUser(this.userDataBackup);
+    if (!error?.error || !error?.error?.error) {
+      return throwError(() => new Error('Unknown error occurred'));
     }
-    return user;
+    return throwError(() => new Error(error.error.error.message.replaceAll('_', ' ')));
   }
 }

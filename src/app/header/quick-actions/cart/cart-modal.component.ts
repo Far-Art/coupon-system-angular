@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {delay, Subscription, tap} from 'rxjs';
+import {delay, Subscription} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 import {CartService} from './cart.service';
 import {WindowSizeService} from '../../../shared/services/window-size.service';
@@ -30,11 +30,14 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
   isLoading = false;
 
+  errorMessage: string;
+
   private modal: NgbModalRef = null;
 
   private cartSubscription: Subscription;
   private windowSubscription: Subscription;
   private userSubscription: Subscription;
+  private purchasedSubscription: Subscription;
 
   constructor(
       private modalService: NgbModal,
@@ -52,7 +55,8 @@ export class CartModalComponent implements OnInit, OnDestroy {
       this.cartList = this.couponsService.getCouponsById(...ids);
     });
 
-    this.userSubscription = this.cartService.isUserPresent$().subscribe(isPresent => this.isUserPresent = isPresent);
+    this.purchasedSubscription = this.couponsService.purchasedCoupons$.subscribe(ids => this.couponsService.moveToWish(...ids))
+    this.userSubscription      = this.cartService.isUserPresent$().subscribe(isPresent => this.isUserPresent = isPresent);
   }
 
   openModal() {
@@ -63,7 +67,9 @@ export class CartModalComponent implements OnInit, OnDestroy {
               scrollable: true,
               modalDialogClass: '',
               beforeDismiss: () => {
-                this.onCancel();
+                this._selectedCoupons.length = 0;
+                this.errorMessage            = null;
+                this.cartService.updateUserCart(this._selectedCoupons);
                 return true;
               }
             });
@@ -72,6 +78,7 @@ export class CartModalComponent implements OnInit, OnDestroy {
   onCouponsSelected(coupons: Coupon[]) {
     this._selectedCoupons.length = 0
     this._selectedCoupons.push(...coupons);
+    this.cartService.updateUserCart(this._selectedCoupons);
     this.updatePrice();
   }
 
@@ -92,17 +99,19 @@ export class CartModalComponent implements OnInit, OnDestroy {
   }
 
   onBuy() {
-    // TODO buying coupons does not update badge and disabled status of button
+    this.errorMessage = null;
     if (this._selectedCoupons.length > 0) {
       this.isLoading = true;
-      // TODO update coupons in cart for user
       this.cartService.buyCoupons$(this._selectedCoupons).pipe(
-          delay(1000),
-          tap(() => this.isLoading = false)
-      ).subscribe(user => {
-        // this.couponsService.removeFromCart(...filtered);
-        this.cartList = this.cartList.filter(c => user.couponsInCart.includes(c.params.id));
-        this.closeIfEmpty();
+          delay(1000)
+      ).subscribe({
+        next: () => {
+          this.closeIfEmpty();
+          this.isLoading = false;
+        }, error: (err: Error) => {
+          this.isLoading    = false;
+          this.errorMessage = err.message;
+        }
       });
     }
   }
@@ -121,6 +130,7 @@ export class CartModalComponent implements OnInit, OnDestroy {
     this.cartSubscription.unsubscribe();
     this.windowSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
+    this.purchasedSubscription.unsubscribe();
   }
 
 }
