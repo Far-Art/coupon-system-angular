@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {BehaviorSubject, concatMap, filter, from, map, mergeMap, Observable, of, take, tap, toArray} from 'rxjs';
+import {BehaviorSubject, concatMap, filter, from, map, mergeMap, Observable, of, take, toArray} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
@@ -103,17 +103,17 @@ export class FilterService {
           hasPrice &&
           hasDate;
     }))
-    .pipe(
-        mergeMap(coupons => from(coupons).pipe(
-            mergeMap(coupons => this.isPurchased(coupons).pipe(map(isPurchased => ({
-              isPurchased: isPurchased,
-              coupon: coupons
-            })))),
-            filter(res => filters.hidePurchased.isChecked ? !res.isPurchased : true),
-            map(res => res.coupon),
-            toArray()
-        ))
-    );
+        .pipe(
+            mergeMap(coupons => from(coupons).pipe(
+                mergeMap(coupons => this.isPurchased(coupons).pipe(map(isPurchased => ({
+                  isPurchased: isPurchased,
+                  coupon: coupons
+                })))),
+                filter(res => filters.hidePurchased.isChecked ? !res.isPurchased : true),
+                map(res => res.coupon),
+                toArray()
+            ))
+        );
   }
 
   private hasCategory(coupon: Coupon, categories: Key[]): boolean {
