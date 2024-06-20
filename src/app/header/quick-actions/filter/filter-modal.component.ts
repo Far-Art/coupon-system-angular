@@ -85,8 +85,6 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubmit() {
-    console.log('start', this.form.value.dateRange.start)
-    console.log('end', this.form.value.dateRange.end)
     const filterKeys: FilterKeys = this.form.value as FilterKeys;
     this.prevForm.patchValue(this.form.value);
 
@@ -160,7 +158,7 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
       priceRange: this.initPriceRange(initial),
       dateRange: this.initDateRange(initial),
       hidePurchased: new FormGroup({
-        isChecked: new FormControl(true),
+        isChecked: new FormControl(false),
         isDisabled: new FormControl(false)
       }),
       freeText: new FormGroup({

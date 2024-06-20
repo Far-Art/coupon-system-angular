@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Coupon} from '../../../shared/models/coupon.model';
-import {BehaviorSubject, concatMap, map, mergeMap, Observable, of, take} from 'rxjs';
+import {BehaviorSubject, concatMap, filter, from, map, mergeMap, Observable, of, take, tap, toArray} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 
 
@@ -77,9 +77,7 @@ export class FilterService {
     } else {
       this.couponsService.originCoupons$.pipe(take(1),
           mergeMap(coupons => this.filter(coupons, filters)))
-          .subscribe(coupons => {
-            this.notify(coupons);
-          });
+          .subscribe(coupons => this.notify(coupons));
     }
   }
 
@@ -105,16 +103,17 @@ export class FilterService {
           hasPrice &&
           hasDate;
     }))
-    // .pipe(
-    //     concatMap(coupons => of(coupons).pipe(
-    //         concatMap(coupons => this.isPurchased(coupons).pipe(map(isPurchased => ({
-    //           isPurchased: isPurchased,
-    //           coupon: coupons
-    //         })))),
-    //         filter(res => filters.hidePurchased.isApplied ? !res.isPurchased : true),
-    //         map(res => res.coupon)
-    //     ))
-    // );
+    .pipe(
+        mergeMap(coupons => from(coupons).pipe(
+            mergeMap(coupons => this.isPurchased(coupons).pipe(map(isPurchased => ({
+              isPurchased: isPurchased,
+              coupon: coupons
+            })))),
+            filter(res => filters.hidePurchased.isChecked ? !res.isPurchased : true),
+            map(res => res.coupon),
+            toArray()
+        ))
+    );
   }
 
   private hasCategory(coupon: Coupon, categories: Key[]): boolean {
@@ -188,7 +187,7 @@ export class FilterService {
                   companyNames: [...names.values()],
                   priceRange: {start: minPrice, end: maxPrice},
                   dateRange: {start: starDate, end: endDate},
-                  hidePurchased: {isChecked: true},
+                  hidePurchased: {isChecked: false},
                   freeText: null
                 }
               }
