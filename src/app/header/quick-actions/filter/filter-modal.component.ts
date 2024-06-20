@@ -7,12 +7,12 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 
 interface MainFormType {
   categories: FormArray<FormGroup<{
-    key: FormControl<string>,
+    value: FormControl<string>,
     isChecked: FormControl<boolean>,
     isDisabled: FormControl<boolean>
   }>>,
   companyNames: FormArray<FormGroup<{
-    key: FormControl<string>,
+    value: FormControl<string>,
     isChecked: FormControl<boolean>,
     isDisabled: FormControl<boolean>
   }>>,
@@ -29,7 +29,7 @@ interface MainFormType {
     isDisabled: FormControl<boolean>
   }>,
   freeText: FormGroup<{
-    key: FormControl<string>
+    value: FormControl<string>
   }>;
 }
 
@@ -90,7 +90,7 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
     const filterKeys: FilterKeys = this.form.value as FilterKeys;
     this.prevForm.patchValue(this.form.value);
 
-    filterKeys.freeText.isApplied = filterKeys.freeText.key?.length >= 3;
+    filterKeys.freeText.isApplied = filterKeys.freeText.value?.length >= 3;
 
     if (!filterKeys.freeText.isApplied) {
       // remove value if user did not change value or is bad value
@@ -164,13 +164,13 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
         isDisabled: new FormControl(false)
       }),
       freeText: new FormGroup({
-        key: new FormControl<string>(null, Validators.minLength(3))
+        value: new FormControl<string>(null, Validators.minLength(3))
       })
     });
 
     initial?.categories.forEach(key => {
       (form.controls.categories as FormArray).push(new FormGroup({
-        key: new FormControl(key.key),
+        value: new FormControl(key.value),
         isChecked: new FormControl(false),
         isDisabled: new FormControl(false)
       }));
@@ -178,7 +178,7 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
     initial?.companyNames.forEach(key => {
       (form.controls.companyNames as FormArray).push(new FormGroup({
-        key: new FormControl(key.key),
+        value: new FormControl(key.value),
         isChecked: new FormControl(false),
         isDisabled: new FormControl(false)
       }));
