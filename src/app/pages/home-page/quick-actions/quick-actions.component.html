@@ -1,10 +1,6 @@
 <div class="btn-group" role="toolbar">
   <!-- WISH-LIST -->
-  <button type="button"
-          unfocus
-          [disabled]="wishBadgeVal === 0"
-          class="btn btn-outline-primary position-relative"
-          (click)="onWishListClick()">
+  <cs-modal-button modal-id="wishModal" class="btn btn-outline-primary">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
          viewBox="0 0 16 16">
       <path
@@ -17,7 +13,7 @@
         {{ wishBadgeVal }}
       </span>
     </div>
-  </button>
+  </cs-modal-button>
 
   <!-- FILTERS -->
   <button type="button"
@@ -57,6 +53,3 @@
   </button>
 </div>
 
-<sc-wish-list-modal #wishModal></sc-wish-list-modal>
-<sc-filter-modal #filterModal></sc-filter-modal>
-<sc-cart-modal #cartModal></sc-cart-modal>

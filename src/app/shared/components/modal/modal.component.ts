@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, HostBinding, Input, OnInit} from '@angular/core';
 
 
 @Component({
@@ -8,22 +8,29 @@ import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 })
 export class ModalComponent implements OnInit, AfterViewInit {
 
-  @Input() id: string | number;
+  @Input() id: string;
 
-  @Input('class') clazz: string;
+  @HostBinding('id') protected selfId: string;
+  @HostBinding('tabindex') protected tabIndex: string      = '-1';
+  @HostBinding('aria-hidden') protected ariaHidden: string = 'true';
+  @HostBinding('attr.aria-labelledby') protected labeledBy: string;
+  @HostBinding('class') protected clazz: string;
+  @HostBinding('style.height') protected height: string    = '100svh';
+  @HostBinding('style.width') protected width: string      = '100svw';
 
-  constructor() {
-    this.id = this.id == null ? this.getRandomId() : this.id;
-  }
+  constructor() {}
 
   private getRandomId() {
     return Math.random().toString(36).substring(0, 4);
   }
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-
+  ngOnInit(): void {
+    this.id        = this.id == null ? 'cs_modal_' + this.getRandomId() : this.id;
+    this.selfId    = this.id;
+    this.labeledBy = this.id + '-label';
+    this.clazz     = 'modal fade' + (this.clazz ? ' ' + this.clazz : '');
   }
+
+  ngAfterViewInit(): void {}
 
 }

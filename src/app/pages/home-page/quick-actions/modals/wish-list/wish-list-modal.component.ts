@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Coupon} from '../../../shared/models/coupon.model';
 import {Subscription, take} from 'rxjs';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {CouponsService} from '../../../features/coupons/coupons.service';
-import {WindowSizeService} from '../../../shared/services/window-size.service';
+import {CouponsService} from '../../../../../features/coupons/coupons.service';
+import {WindowSizeService} from '../../../../../shared/services/window-size.service';
+import {Coupon} from '../../../../../shared/models/coupon.model';
 
 
 @Component({

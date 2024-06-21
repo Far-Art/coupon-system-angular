@@ -6,7 +6,6 @@ import {CoreModule} from '../core/core.module';
 import {SignupComponent} from './signup/signup.component';
 import {AuthRoutingModule} from './auth-routing.module';
 import {SharedModule} from '../shared/shared.module';
-import {HeaderModule} from '../header/header.module';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptorService} from './auth-interceptor.service';
 
@@ -21,8 +20,7 @@ import {AuthInterceptorService} from './auth-interceptor.service';
     CommonModule,
     CoreModule,
     AuthRoutingModule,
-    SharedModule,
-    HeaderModule
+    SharedModule
   ],
   exports: [],
   providers: [

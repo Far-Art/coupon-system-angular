@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
-import {HomePageComponent} from './pages/home-page/home-page.component';
 import {SharedModule} from './shared/shared.module';
 import {CouponsModule} from './features/coupons/coupons.module';
 import {FooterComponent} from './footer/footer/footer.component';
@@ -16,7 +15,6 @@ import {ManageAccountComponent} from './pages/account-page/manage-account/manage
 @NgModule({
   declarations: [
     AppComponent,
-    HomePageComponent,
     FooterComponent,
     EmptyPageComponent,
     ManageAccountComponent

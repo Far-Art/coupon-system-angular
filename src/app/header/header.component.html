@@ -1,8 +1,8 @@
-<nav class="navbar fixed-top bg-light-semi-transparent p-4 {{padding}}">
+<nav class="navbar fixed-top bg-light-semi-transparent p-4 position-fixed {{padding}}">
   <div class="d-flex flex-row justify-content-between w-100">
     <sc-logo [showTitle]="isShowLogoTitle"></sc-logo>
 
-    <ng-content></ng-content>
+    <div #mainHeaderContentRef></div>
 
     <sc-offcanvas [title]="('hello ' + userName) | titlecase">
       <div class="list-group list-group-flush">
@@ -28,5 +28,6 @@
         </a>
       </div>
     </sc-offcanvas>
+
   </div>
 </nav>

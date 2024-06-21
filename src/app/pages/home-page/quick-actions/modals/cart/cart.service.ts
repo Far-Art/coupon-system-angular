@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {AuthService} from '../../../auth/auth.service';
-import {DataManagerService} from '../../../shared/services/data-manager.service';
+import {AuthService} from '../../../../../auth/auth.service';
 import {catchError, concatMap, map, Observable, take, tap, throwError} from 'rxjs';
-import {UserData} from '../../../shared/models/user-data.model';
-import {Coupon} from '../../../shared/models/coupon.model';
-import {CouponsService} from '../../../features/coupons/coupons.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {DataManagerService} from '../../../../../shared/services/data-manager.service';
+import {CouponsService} from '../../../../../features/coupons/coupons.service';
+import {UserData} from '../../../../../shared/models/user-data.model';
+import {Coupon} from '../../../../../shared/models/coupon.model';
 
 
 @Injectable()

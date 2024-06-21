@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 
 
 @Component({
@@ -6,6 +6,11 @@ import {Component} from '@angular/core';
   templateUrl: './modal-header.component.html',
   styleUrls: ['./modal-header.component.scss']
 })
-export class ModalHeaderComponent {
+export class ModalHeaderComponent implements OnInit {
 
+  @HostBinding('class') clazz: string;
+
+  ngOnInit(): void {
+    this.clazz = 'modal-header';
+  }
 }

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {Component, HostBinding, Input, OnInit, Optional} from '@angular/core';
 import {ModalComponent} from '../modal.component';
 
 
@@ -7,32 +7,25 @@ import {ModalComponent} from '../modal.component';
   templateUrl: './modal-button.component.html',
   styleUrls: ['./modal-button.component.scss']
 })
-export class ModalButtonComponent implements OnInit, AfterViewInit {
-
-  @Input() id: string | number;
+export class ModalButtonComponent implements OnInit {
 
   @Input('modal-id') modalId: string | number;
-
   @Input('class') clazz: string;
 
-  @Input() disabled: boolean;
+  @HostBinding('id') protected id: string;
+  @HostBinding('class') protected hostClazz: string;
+  @HostBinding('attr.data-bs-target') protected dataBsTarget: string;
+  @HostBinding('attr.data-bs-toggle') protected dataBsToggle: string = 'modal';
+  @HostBinding('attr.disabled') protected disabled: boolean          = false;
+  @HostBinding('attr.role') protected role: string;
 
-  constructor(
-      @Optional() private hostModal: ModalComponent,
-      @Self() private self: ElementRef,
-      private renderer: Renderer2
-  ) { }
+  constructor(@Optional() private hostModal: ModalComponent) { }
 
   ngOnInit(): void {
-    this.modalId = this.hostModal?.id || this.modalId;
-  }
-
-  ngAfterViewInit(): void {
-    if (this.clazz) {
-      this.clazz.split(' ').forEach(clazz => {
-        this.renderer.removeClass(this.self.nativeElement, clazz);
-      })
-    }
+    this.modalId      = this.hostModal?.id || this.modalId;
+    this.dataBsTarget = '#' + this.modalId;
+    this.role         = 'button';
+    this.hostClazz    = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
   }
 
 }

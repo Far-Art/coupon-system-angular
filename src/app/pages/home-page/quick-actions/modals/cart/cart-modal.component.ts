@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {Coupon} from '../../../shared/models/coupon.model';
 import {delay, Subscription} from 'rxjs';
-import {CouponsService} from '../../../features/coupons/coupons.service';
 import {CartService} from './cart.service';
-import {WindowSizeService} from '../../../shared/services/window-size.service';
+import {Coupon} from '../../../../../shared/models/coupon.model';
+import {CouponsService} from '../../../../../features/coupons/coupons.service';
+import {WindowSizeService} from '../../../../../shared/services/window-size.service';
 
 
 @Component({

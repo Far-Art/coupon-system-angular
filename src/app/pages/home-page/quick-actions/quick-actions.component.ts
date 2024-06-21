@@ -1,10 +1,10 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FilterService} from './filter/filter.service';
-import {WishListModalComponent} from './wish-list/wish-list-modal.component';
-import {CartModalComponent} from './cart/cart-modal.component';
-import {FilterModalComponent} from './filter/filter-modal.component';
-import {CouponsService} from '../../features/coupons/coupons.service';
+import {CouponsService} from '../../../features/coupons/coupons.service';
+import {FilterService} from './modals/filter/filter.service';
+import {WishListModalComponent} from './modals/wish-list/wish-list-modal.component';
+import {FilterModalComponent} from './modals/filter/filter-modal.component';
+import {CartModalComponent} from './modals/cart/cart-modal.component';
 
 
 @Component({

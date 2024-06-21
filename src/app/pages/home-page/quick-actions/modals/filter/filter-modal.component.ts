@@ -77,8 +77,8 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
           const button = elements[i].children[0].children[0];
           const div    = elements[i].children[1];
 
-          button.classList.add('collapsed');
-          div.classList.remove('show');
+          button?.classList.add('collapsed');
+          div?.classList.remove('show');
         }
       }
     });

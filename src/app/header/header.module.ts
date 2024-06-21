@@ -1,34 +1,26 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {QuickActionsComponent} from './quick-actions/quick-actions.component';
-import {CartModalComponent} from './quick-actions/cart/cart-modal.component';
-import {FilterModalComponent} from './quick-actions/filter/filter-modal.component';
-import {WishListModalComponent} from './quick-actions/wish-list/wish-list-modal.component';
 import {SharedModule} from '../shared/shared.module';
 import {CoreModule} from '../core/core.module';
 import {HeaderComponent} from './header.component';
-import { LogoComponent } from './logo/logo.component';
-import {CartService} from './quick-actions/cart/cart.service';
+import {LogoComponent} from './logo/logo.component';
+import {MainHeaderContentComponent} from './main-header-content/main-header-content.component';
 
 
 @NgModule({
   declarations: [
-    QuickActionsComponent,
-    CartModalComponent,
-    FilterModalComponent,
-    WishListModalComponent,
     HeaderComponent,
     LogoComponent,
+    MainHeaderContentComponent
   ],
   exports: [
     HeaderComponent,
-    QuickActionsComponent
+    MainHeaderContentComponent
   ],
   imports: [
     CommonModule,
     CoreModule,
     SharedModule
-  ],
-  providers:[CartService]
+  ]
 })
 export class HeaderModule {}

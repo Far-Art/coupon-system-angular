@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Coupon} from '../../../shared/models/coupon.model';
 import {BehaviorSubject, concatMap, filter, from, map, mergeMap, Observable, of, take, toArray} from 'rxjs';
-import {CouponsService} from '../../../features/coupons/coupons.service';
+import {Coupon} from '../../../../../shared/models/coupon.model';
+import {CouponsService} from '../../../../../features/coupons/coupons.service';
 
 
 interface Controls {
