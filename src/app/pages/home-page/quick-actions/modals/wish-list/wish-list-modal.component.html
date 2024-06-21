@@ -1,5 +1,3 @@
-<!--<ng-template #wishModal let-modal>-->
-
 <cs-modal id="wishModal">
   <cs-modal-header>
     <h4 class="modal-title text-primary user-select-none">{{ 'wish list' | titlecase }}</h4>
@@ -7,74 +5,34 @@
   <cs-modal-body>
     <sc-coupon-table [coupons]="wishList" (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
   </cs-modal-body>
-  <cs-modal-footer>
-    <div class="justify-content-between flex-column flex-sm-row">
-      <button type="button"
-              class="btn"
-              [ngClass]="{
+  <cs-modal-footer class="justify-content-between flex-column flex-sm-row">
+    <button type="button"
+            class="btn"
+            [ngClass]="{
               'w-100': _windowWidth < _switchWidth,
               'btn-outline-secondary': selectedCoupons.length === 0,
               'btn-outline-danger': selectedCoupons.length > 0
             }"
-              unfocus
-              [disabled]="selectedCoupons.length === 0"
-              (click)="onDelete()">Delete
-      </button>
-      <button [disabled]="isAnySaleEnded || isAnyPurchased || selectedCoupons.length === 0"
-              type="button"
-              class="btn"
-              [ngClass]="{
+            unfocus
+            [disabled]="selectedCoupons.length === 0"
+            (click)="onDelete()">Delete
+    </button>
+    <button [disabled]="isAnySaleEnded || isAnyPurchased || selectedCoupons.length === 0"
+            type="button"
+            class="btn"
+            [ngClass]="{
                   'w-100': _windowWidth < _switchWidth,
                   'btn-outline-secondary': isAnySaleEnded || selectedCoupons.length === 0,
                   'btn-outline-success': !isAnySaleEnded && selectedCoupons.length > 0
                 }"
-              unfocus
-              (click)="onMove()">Move To Cart
-      </button>
-      <button type="button"
-              class="btn btn-outline-secondary"
-              [ngClass]="{'w-100': _windowWidth < _switchWidth}"
-              unfocus>Close
-      </button>
-    </div>
+            unfocus
+            (click)="onMove()">Move To Cart
+    </button>
+    <button type="button"
+            class="btn btn-outline-secondary"
+            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+            data-bs-dismiss="modal"
+            unfocus>Close
+    </button>
   </cs-modal-footer>
 </cs-modal>
-
-<!--  <div class="modal-header">-->
-<!--    <h4 class="modal-title text-primary user-select-none">{{ 'wish list' | titlecase }}</h4>-->
-<!--  </div>-->
-<!--  <div class="modal-body">-->
-<!--    <sc-coupon-table [coupons]="wishList" (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>-->
-<!--  </div>-->
-<!--  <div class="modal-footer justify-content-between flex-column flex-sm-row">-->
-<!--    <button type="button"-->
-<!--            class="btn"-->
-<!--            [ngClass]="{-->
-<!--              'w-100': _windowWidth < _switchWidth,-->
-<!--              'btn-outline-secondary': selectedCoupons.length === 0,-->
-<!--              'btn-outline-danger': selectedCoupons.length > 0-->
-<!--            }"-->
-<!--            unfocus-->
-<!--            [disabled]="selectedCoupons.length === 0"-->
-<!--            (click)="onDelete()">Delete-->
-<!--    </button>-->
-<!--    <button [disabled]="isAnySaleEnded || isAnyPurchased || selectedCoupons.length === 0"-->
-<!--            type="button"-->
-<!--            class="btn"-->
-<!--            [ngClass]="{-->
-<!--              'w-100': _windowWidth < _switchWidth,-->
-<!--              'btn-outline-secondary': isAnySaleEnded || selectedCoupons.length === 0,-->
-<!--              'btn-outline-success': !isAnySaleEnded && selectedCoupons.length > 0-->
-<!--            }"-->
-<!--            unfocus-->
-<!--            (click)="onMove()">Move-->
-<!--                               To Cart-->
-<!--    </button>-->
-<!--    <button type="button"-->
-<!--            class="btn btn-outline-secondary"-->
-<!--            [ngClass]="{'w-100': _windowWidth < _switchWidth}"-->
-<!--            unfocus-->
-<!--            (click)="modal.dismiss('Close click')">Close-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</ng-template>-->

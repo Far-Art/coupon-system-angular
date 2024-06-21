@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -25,9 +25,13 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('indeterminateCheckBox') indeterminateCheckBoxRef: ElementRef;
 
+  @HostBinding()
+
   @Input() coupons: Coupon[] = [];
 
   @Output('selectedCoupons') selectedCouponsEmitter = new EventEmitter<Coupon[]>();
+
+  randomId: string;
 
   @Input() options: {
     selectAll?: boolean,
@@ -43,6 +47,7 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private couponsService: CouponsService) {}
 
   ngOnInit(): void {
+    this.randomId = this.getRandomId();
     if (this.options?.selectAll) {
       this._indeterminateCheckBox = true;
       this.selectAll();
@@ -110,6 +115,10 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
 
   private emitSelected() {
     this.selectedCouponsEmitter.emit(this.couponsService.getCouponsById(...this.selectedCoupons));
+  }
+
+  private getRandomId() {
+    return Math.random().toString(36).substring(0, 4);
   }
 
   ngOnChanges(): void {

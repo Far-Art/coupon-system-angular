@@ -1,10 +1,7 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
 import {FilterService} from './modals/filter/filter.service';
-import {WishListModalComponent} from './modals/wish-list/wish-list-modal.component';
-import {FilterModalComponent} from './modals/filter/filter-modal.component';
-import {CartModalComponent} from './modals/cart/cart-modal.component';
 
 
 @Component({
@@ -17,10 +14,6 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   cartBadgeVal: number   = 0;
   filterBadgeVal: string = '';
   wishBadgeVal: number   = 0;
-
-  @ViewChild('wishModal', {static: true}) wishModal     = ElementRef<WishListModalComponent>;
-  @ViewChild('filterModal', {static: true}) filterModal = ElementRef<FilterModalComponent>;
-  @ViewChild('cartModal', {static: true}) cartModal     = ElementRef<CartModalComponent>;
 
   private wishSubscription: Subscription;
   private filterSubscription: Subscription;
@@ -38,18 +31,6 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
       this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.getFiltersBadgeValue);
       this.cartSubscription   = this.couponsService.cartIds$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
     }, 0);
-  }
-
-  onCartClick(): void {
-    (this.cartModal as any as CartModalComponent).openModal();
-  }
-
-  onFilterClick(): void {
-    (this.filterModal as any as FilterModalComponent).openModal();
-  }
-
-  onWishListClick(): void {
-    (this.wishModal as any as WishListModalComponent).openModal();
   }
 
   ngOnDestroy(): void {

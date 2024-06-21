@@ -1,6 +1,7 @@
 <div class="btn-group" role="toolbar">
+
   <!-- WISH-LIST -->
-  <cs-modal-button modal-id="wishModal" class="btn btn-outline-primary">
+  <cs-modal-button modal-id="wishModal" class="btn btn-outline-primary border-end-0" [disabled]="wishBadgeVal === 0">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
          viewBox="0 0 16 16">
       <path
@@ -8,7 +9,6 @@
     </svg>
     <div class="position-relative">
       <span *ngIf="wishBadgeVal > 0"
-            data-mdb-animation="fade-out"
             class="position-absolute translate-middle-x top-100 end-50 badge rounded-pill bg-danger fade show">
         {{ wishBadgeVal }}
       </span>
@@ -16,12 +16,8 @@
   </cs-modal-button>
 
   <!-- FILTERS -->
-  <button type="button"
-          unfocus
-          class="btn btn-outline-primary position-relative"
-          style="border-left-color: transparent; border-right-color: transparent;"
-          (click)="onFilterClick()">
-    <svg xmlns="http://www.w3.org/2000/svg" height="20px" width="20px" viewBox="0 -960 960 960" fill="#e8eaed">
+  <cs-modal-button modal-id="filterModal" class="btn btn-outline-primary">
+    <svg xmlns="http://www.w3.org/2000/svg" height="20px" width="20px" fill="currentColor" viewBox="0 -960 960 960">
       <path
           d="M453.28-126.33v-214.31h51.18v81.97H833v51.18H504.46v81.16h-51.18Zm-326.61-81.16v-51.18h226.1v51.18h-226.1Zm174.92-165.43v-81.82H126.67v-51.18h174.92v-81.46h51.18v214.46h-51.18Zm151.69-81.82v-51.18H833v51.18H453.28Zm153.62-165.8v-213.79h51.18v81.82H833v51.18H658.08v80.79H606.9Zm-480.23-80.79v-51.18h379.71v51.18H126.67Z"/>
     </svg>
@@ -31,14 +27,10 @@
         {{ filterBadgeVal }}
       </span>
     </div>
-  </button>
+  </cs-modal-button>
 
   <!-- CART -->
-  <button type="button"
-          unfocus
-          [disabled]="cartBadgeVal === 0"
-          class="btn btn-outline-primary position-relative"
-          (click)="onCartClick()">
+  <cs-modal-button modal-id="cartModal" class="btn btn-outline-primary border-start-0" [disabled]="cartBadgeVal === 0">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"
          viewBox="0 0 16 16">
       <path
@@ -50,6 +42,6 @@
         {{ cartBadgeVal }}
       </span>
     </div>
-  </button>
+  </cs-modal-button>
 </div>
 

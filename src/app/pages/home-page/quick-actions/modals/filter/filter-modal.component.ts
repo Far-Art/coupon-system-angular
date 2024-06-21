@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {FilterKeys, FilterService} from './filter.service';
 import {Subscription, take} from 'rxjs';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -48,12 +47,9 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private filtersSub: Subscription;
 
-  private modal: NgbModalRef = null;
-
   private prevForm: FormGroup<MainFormType>;
 
   constructor(
-      private modalService: NgbModal,
       private filterService: FilterService
   ) {}
 
@@ -132,13 +128,6 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onCancel() {
     this.form.patchValue(this.prevForm.value);
-    this.modal.close('Close click');
-  }
-
-  openModal() {
-    this.modal = this.modalService.open(this.filterContent, {
-      scrollable: true, modalDialogClass: ''
-    });
   }
 
   recalculateFilters() {

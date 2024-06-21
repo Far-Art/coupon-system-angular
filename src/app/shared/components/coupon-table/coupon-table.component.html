@@ -1,21 +1,22 @@
 <div *ngIf="!options?.noCheckbox && coupons?.length > 0" class="form-check transition-duration user-select-none"
      type="button">
   <input #indeterminateCheckBox
-         id="indeterminateCheckBox"
+         id="indeterminateCheckBox{{randomId}}"
          (click)="onIndeterminateClick()"
          class="form-check-input"
          type="checkbox"
          style="cursor: pointer"
          [checked]="_indeterminateCheckBox"
          unfocus>
-  <label class="h-6 opacity-75 form-check-label text-nowrap ps-4 text-end" for="indeterminateCheckBox">
+  <label class="h-6 opacity-75 form-check-label text-nowrap ps-4 text-end" for="indeterminateCheckBox{{randomId}}">
     {{ (_indeterminateCheckBox ? 'unselect all' : 'select all') | titlecase }}
   </label>
 </div>
 
-<div class="accordion mt-3" id="accordionTable">
+<div class="accordion mt-3" id="accordionTable{{randomId}}">
   <div class="accordion-item" *ngFor="let coupon of coupons; let i = index">
     <cs-coupon-item [index]="i"
+                    parentId="accordionTable{{randomId}}"
                     [coupon]="coupon"
                     [isPurchased]="isPurchased(coupon) | async"
                     [isSaleEnded]="isSaleEnded(coupon)"

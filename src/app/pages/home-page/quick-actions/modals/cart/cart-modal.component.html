@@ -1,15 +1,16 @@
-<ng-template #cartModal let-modal>
-  <div class="modal-header">
+<cs-modal id="cartModal">
+  <cs-modal-header>
     <h4 class="modal-title text-primary user-select-none">{{ 'cart' | titlecase }}</h4>
-  </div>
-  <div class="modal-body">
+  </cs-modal-header>
+  <cs-modal-body>
     <sc-coupon-table [coupons]="cartList" [options]="{selectAll: true}"
-                     (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
-  </div>
-  <div *ngIf="errorMessage" class="p-2 text-center text-danger bg-danger-subtle text-wrap">
-    {{ errorMessage }}
-  </div>
-  <div class="modal-footer justify-content-between flex-column flex-sm-row">
+                     (selectedCoupons)="onCouponsSelected($event)">
+    </sc-coupon-table>
+  </cs-modal-body>
+  <cs-modal-footer class="justify-content-between flex-column flex-sm-row">
+    <div *ngIf="errorMessage" class="p-2 text-center text-danger bg-danger-subtle text-wrap">
+      {{ errorMessage }}
+    </div>
     <div class="btn-group dropup"
          [ngClass]="{'w-100': _windowWidth < _switchWidth}"
          role="group">
@@ -47,7 +48,7 @@
             [ngClass]="{'w-100': _windowWidth < _switchWidth}"
             class="btn btn-outline-secondary"
             type="button"
-            (click)="modal.dismiss('Close click')">Close
+            data-bs-dismiss="modal">Close
     </button>
-  </div>
-</ng-template>
+  </cs-modal-footer>
+</cs-modal>

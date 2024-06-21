@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostBinding, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnInit} from '@angular/core';
 
 
 @Component({
@@ -6,7 +6,7 @@ import {AfterViewInit, Component, HostBinding, Input, OnInit} from '@angular/cor
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent implements OnInit, AfterViewInit {
+export class ModalComponent implements OnInit {
 
   @Input() id: string;
 
@@ -30,7 +30,5 @@ export class ModalComponent implements OnInit, AfterViewInit {
     this.labeledBy = this.id + '-label';
     this.clazz     = 'modal fade' + (this.clazz ? ' ' + this.clazz : '');
   }
-
-  ngAfterViewInit(): void {}
 
 }

@@ -58,7 +58,7 @@
 </div>
 
 <!-- BODY -->
-<div id="collapse{{index}}" class="accordion-collapse collapse" data-bs-parent="#accordionTable">
+<div id="collapse{{index}}" class="accordion-collapse collapse" [attr.data-bs-parent]="'#' + parentId">
   <div class="accordion-body">
     <div class="row">
       <div class="col text-start text-nowrap">

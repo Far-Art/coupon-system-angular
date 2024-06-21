@@ -32,15 +32,12 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
   errorMessage: string;
 
-  private modal: NgbModalRef = null;
-
   private cartSubscription: Subscription;
   private windowSubscription: Subscription;
   private userSubscription: Subscription;
   private purchasedSubscription: Subscription;
 
   constructor(
-      private modalService: NgbModal,
       private couponsService: CouponsService,
       private cartService: CartService,
       private windowSize: WindowSizeService
@@ -59,21 +56,21 @@ export class CartModalComponent implements OnInit, OnDestroy {
     this.userSubscription      = this.cartService.isUserPresent$().subscribe(isPresent => this.isUserPresent = isPresent);
   }
 
-  openModal() {
-    this.updatePrice();
-    this.modal = this.modalService
-        .open(this.cartModal,
-            {
-              scrollable: true,
-              modalDialogClass: '',
-              beforeDismiss: () => {
-                this._selectedCoupons.length = 0;
-                this.errorMessage            = null;
-                this.cartService.updateUserCart(this._selectedCoupons);
-                return true;
-              }
-            });
-  }
+  // openModal() {
+  //   this.updatePrice();
+  //   this.modal = this.modalService
+  //       .open(this.cartModal,
+  //           {
+  //             scrollable: true,
+  //             modalDialogClass: '',
+  //             beforeDismiss: () => {
+  //               this._selectedCoupons.length = 0;
+  //               this.errorMessage            = null;
+  //               this.cartService.updateUserCart(this._selectedCoupons);
+  //               return true;
+  //             }
+  //           });
+  // }
 
   onCouponsSelected(coupons: Coupon[]) {
     this._selectedCoupons.length = 0
@@ -118,7 +115,7 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
   private closeIfEmpty(): void {
     if (this.cartList.length === 0) {
-      this.modal.close();
+      // this.modal.close();
     }
   }
 
