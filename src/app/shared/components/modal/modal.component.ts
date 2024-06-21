@@ -1,31 +1,29 @@
-import {Component, Input} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 
-
-interface ModalParams {
-  id?: string,
-  hideButton?: boolean,
-  buttonTitle?: string
-}
-
-interface CurrentModalParams extends ModalParams {
-  headerTitle?: string,
-}
 
 @Component({
   selector: 'cs-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent {
+export class ModalComponent implements OnInit, AfterViewInit {
 
-  @Input() current: CurrentModalParams = {id: this.getRandomId(), buttonTitle: 'open modal'};
+  @Input() id: string | number;
 
-  @Input() next: ModalParams;
+  @Input('class') clazz: string;
 
-  @Input() prev: ModalParams;
+  constructor() {
+    this.id = this.id == null ? this.getRandomId() : this.id;
+  }
 
   private getRandomId() {
     return Math.random().toString(36).substring(0, 4);
+  }
+
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+
   }
 
 }

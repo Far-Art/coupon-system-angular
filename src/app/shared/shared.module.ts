@@ -11,10 +11,14 @@ import {CouponTableComponent} from './components/coupon-table/coupon-table.compo
 import {CouponItemComponent} from './components/coupon-table/coupon-item/coupon-item.component';
 import {OffCanvasComponent} from './components/offcanvas/off-canvas.component';
 import {CoreModule} from '../core/core.module';
-import { HeaderContentDirective } from './directives/header-content.directive';
-import { ModalComponent } from './components/modal/modal.component';
-import { ConfirmNavigationComponent } from './guards/confirm-navigation/confirm-navigation.component';
-import { SpinnerComponent } from './components/spinner/spinner.component';
+import {HeaderContentDirective} from './directives/header-content.directive';
+import {ModalComponent} from './components/modal/modal.component';
+import {ConfirmNavigationComponent} from './guards/confirm-navigation/confirm-navigation.component';
+import {SpinnerComponent} from './components/spinner/spinner.component';
+import {ModalHeaderComponent} from './components/modal/modal-header/modal-header.component';
+import {ModalBodyComponent} from './components/modal/modal-body/modal-body.component';
+import {ModalFooterComponent} from './components/modal/modal-footer/modal-footer.component';
+import { ModalButtonComponent } from './components/modal/modal-button/modal-button.component';
 
 
 @NgModule({
@@ -28,8 +32,12 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     OffCanvasComponent,
     HeaderContentDirective,
     ModalComponent,
+    ModalHeaderComponent,
+    ModalBodyComponent,
+    ModalFooterComponent,
     ConfirmNavigationComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    ModalButtonComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -41,8 +49,12 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     OffCanvasComponent,
     HeaderContentDirective,
     ModalComponent,
+    ModalHeaderComponent,
+    ModalBodyComponent,
+    ModalFooterComponent,
     ConfirmNavigationComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    ModalButtonComponent
   ],
   imports: [
     CommonModule,

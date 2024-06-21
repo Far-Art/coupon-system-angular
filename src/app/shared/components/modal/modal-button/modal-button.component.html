@@ -1,0 +1,13 @@
+<button *ngIf="id" [id]="id" [attr.data-bs-target]="'#cs-modal-' + modalId"
+        [ngClass]="clazz ? clazz : 'btn btn-primary'"
+        [disabled]="disabled"
+        data-bs-toggle="modal">
+  <ng-content></ng-content>
+</button>
+
+<button *ngIf="!id" [attr.data-bs-target]="'#cs-modal-' + modalId"
+        [ngClass]="clazz ? clazz : 'btn btn-primary'"
+        [disabled]="disabled"
+        data-bs-toggle="modal">
+  <ng-content></ng-content>
+</button>
