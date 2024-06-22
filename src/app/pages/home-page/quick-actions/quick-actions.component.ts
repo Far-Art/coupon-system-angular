@@ -25,12 +25,9 @@ export class QuickActionsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // set timeout to avoid error of value changed after view checked
-    setTimeout(() => {
-      this.wishSubscription   = this.couponsService.wishIds$.subscribe(() => this.wishBadgeVal = this.couponsService.couponsInWish);
-      this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.getFiltersBadgeValue);
-      this.cartSubscription   = this.couponsService.cartIds$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
-    }, 0);
+    this.wishSubscription   = this.couponsService.wishIds$.subscribe(() => this.wishBadgeVal = this.couponsService.couponsInWish);
+    this.filterSubscription = this.filterService.filteredCoupons$.subscribe(() => this.filterBadgeVal = this.filterService.getFiltersBadgeValue);
+    this.cartSubscription   = this.couponsService.cartIds$.subscribe(() => this.cartBadgeVal = this.couponsService.couponsInCart);
   }
 
   ngOnDestroy(): void {
