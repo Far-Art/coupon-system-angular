@@ -14,7 +14,7 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   @Input('class') clazz: string;
   @Input('disabled') disabled: boolean = false;
 
-  @HostBinding('id') protected id: string;
+  @HostBinding('id') protected id: string = '';
   @HostBinding('class') protected hostClazz: string;
   @HostBinding('attr.data-bs-target') protected dataBsTarget: string;
   @HostBinding('attr.data-bs-toggle') protected dataBsToggle: string;
