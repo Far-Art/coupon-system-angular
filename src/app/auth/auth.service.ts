@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   updateUser(user: UserData, emitEvent: boolean = true) {
-    const updated = Object.assign(this.userDataSubject.value, user);
+    const updated = Object.assign(this.userDataSubject.value || {}, user);
     this.storeUserDataLocally();
     if (emitEvent) {
       this.userDataSubject.next(updated);
