@@ -1,5 +1,4 @@
-import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
-import {ModalComponent} from '../modal.component';
+import {Component, HostBinding, OnInit} from '@angular/core';
 
 
 @Component({
@@ -7,18 +6,14 @@ import {ModalComponent} from '../modal.component';
   templateUrl: './modal-footer.component.html',
   styleUrls: ['./modal-footer.component.scss']
 })
-export class ModalFooterComponent implements OnInit , OnDestroy {
+export class ModalFooterComponent implements OnInit {
 
   @HostBinding('class') clazz: string;
 
-  constructor(public host: ModalComponent) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.clazz = 'modal-footer';
-  }
-
-  ngOnDestroy(): void {
-    console.log('footer destroyed')
   }
 
 }
