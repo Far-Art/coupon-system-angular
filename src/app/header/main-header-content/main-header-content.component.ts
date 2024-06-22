@@ -1,4 +1,5 @@
-import {Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostBinding, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {HeaderService} from '../header.service';
 
 
 @Component({
@@ -11,10 +12,16 @@ export class MainHeaderContentComponent implements OnInit, OnDestroy {
 
   @HostBinding('style.display') style: string = 'none';
 
-  constructor() {}
+  @ViewChild('mainHeaderContentContainer', {static: true, read: ViewContainerRef}) headerContent: ViewContainerRef;
 
-  ngOnInit(): void {}
+  constructor(private service: HeaderService) {}
 
-  ngOnDestroy(): void {}
+  ngOnInit(): void {
+    this.service.headerContent = (this.headerContent.element.nativeElement as HTMLElement).previousSibling;
+  }
+
+  ngOnDestroy(): void {
+    this.service.headerContent = null;
+  }
 
 }

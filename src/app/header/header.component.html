@@ -2,7 +2,9 @@
   <div class="d-flex flex-row justify-content-between w-100">
     <sc-logo [showTitle]="isShowLogoTitle"></sc-logo>
 
-    <div #mainHeaderContentRef></div>
+    <ng-container #headerContentContainer>
+      <div></div>
+    </ng-container>
 
     <sc-offcanvas [title]="('hello ' + userName) | titlecase">
       <div class="list-group list-group-flush">

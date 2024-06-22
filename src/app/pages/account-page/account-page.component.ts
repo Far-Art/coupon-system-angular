@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../../auth/auth.service';
 
 
 @Component({
@@ -6,8 +7,20 @@ import {Component} from '@angular/core';
   templateUrl: './account-page.component.html',
   styleUrls: ['./account-page.component.scss']
 })
-export class AccountPageComponent {
+export class AccountPageComponent implements OnInit {
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
+
+  userName: string;
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.userName = user.name + (user.lastName ? ' ' + user.lastName : '');
+      } else {
+        this.userName = null;
+      }
+    })
+  }
 
 }

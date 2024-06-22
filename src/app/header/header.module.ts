@@ -21,6 +21,7 @@ import {MainHeaderContentComponent} from './main-header-content/main-header-cont
     CommonModule,
     CoreModule,
     SharedModule
-  ]
+  ],
+  providers: []
 })
 export class HeaderModule {}

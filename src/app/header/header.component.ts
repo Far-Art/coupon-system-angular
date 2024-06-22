@@ -1,9 +1,9 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
-import {filter, Subscription} from 'rxjs';
+import {Component, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
+import {Subscription} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {ScrollbarService} from '../shared/services/scrollbar.service';
 import {UserData} from '../shared/models/user-data.model';
-import {NavigationEnd, Router} from '@angular/router';
+import {HeaderService} from './header.service';
 
 
 @Component({
@@ -15,14 +15,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @Input('showLogoTitle') isShowLogoTitle = false;
 
-  @ViewChild('mainHeaderContentRef') headerContentRef: ElementRef;
+  @ViewChild('headerContentContainer', {static: true, read: ViewContainerRef}) headerContent: ViewContainerRef;
 
-  constructor(
-      private authService: AuthService,
-      private scrollService: ScrollbarService,
-      private renderer: Renderer2,
-      private router: Router
-  ) {}
+  private parentNode: Node;
+  private contentNode: Node;
 
   userName: string;
   user: UserData;
@@ -33,8 +29,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private authSub: Subscription;
 
+  constructor(
+      private authService: AuthService,
+      private scrollService: ScrollbarService,
+      private renderer: Renderer2,
+      private headerService: HeaderService
+  ) {}
+
   ngOnInit(): void {
-    this.padding = this.paddingWide;
+    this.parentNode = (this.headerContent.element.nativeElement as HTMLElement).previousSibling;
+    this.padding    = this.paddingWide;
 
     this.authSub = this.authService.user$.subscribe(user => {
       this.user     = user;
@@ -49,31 +53,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
-      this.updateHeaderContent();
-    })
-  }
-
-  private updateHeaderContent() {
-    setTimeout(() => {
-      // const child                      = headerContent.children.item(0);
-      // if (headerContent.children.length > 0) {
-      // this.content = headerContent.removeChild(child);
-      // this.renderer.removeChild(headerContent, child, true)
-      // }
-      const headerContent: HTMLElement = this.headerContentRef.nativeElement;
-      if (headerContent.children.item(0)) {
-        this.renderer.setStyle(headerContent.children.item(0), 'display', 'none');
-        // headerContent.removeChild(headerContent.children.item(0))
+    this.headerService.headerContent$.subscribe(node => {
+      if (node) {
+        this.contentNode = node;
+        this.renderer.appendChild(this.parentNode, this.contentNode);
+      } else if (this.contentNode) {
+        this.renderer.removeChild(this.parentNode, this.contentNode);
+        this.contentNode = null;
       }
-      const el = document.getElementById('MainHeaderContentComponent');
-      if (el) {
-        this.renderer.removeStyle(el, 'display');
-        this.renderer.setAttribute(el, 'cs-main-header-content', '');
-        this.renderer.setStyle(el, 'display', 'block');
-        this.renderer.appendChild(headerContent, el)
-      }
-    }, 0);
+    });
   }
 
   ngOnDestroy(): void {

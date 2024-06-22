@@ -1,7 +1,7 @@
 <div class="container-sm p-0 h-100">
   <div class="card text-center">
     <div class="card-header">
-      <ul class="nav nav-tabs card-header-tabs justify-content-around" >
+      <ul class="nav nav-tabs card-header-tabs justify-content-around">
         <li class="nav-item">
           <a routerLink="info"
              [routerLinkActive]="['active', 'text-danger']"
@@ -23,3 +23,7 @@
     <br>
   </div>
 </div>
+
+<cs-main-header-content>
+  <h5>{{ userName | titlecase }}</h5>
+</cs-main-header-content>
