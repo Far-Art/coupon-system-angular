@@ -1,4 +1,4 @@
-import {Component, HostBinding, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnDestroy, OnInit} from '@angular/core';
 
 
 @Component({
@@ -6,7 +6,7 @@ import {Component, HostBinding, Input, OnInit} from '@angular/core';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent implements OnInit, OnDestroy {
 
   @Input() id: string;
 
@@ -17,6 +17,8 @@ export class ModalComponent implements OnInit {
   @HostBinding('class') protected clazz: string;
   @HostBinding('style.height') protected height: string    = '100svh';
   @HostBinding('style.width') protected width: string      = '100svw';
+
+  // private modal: Modal;
 
   constructor() {}
 
@@ -29,6 +31,11 @@ export class ModalComponent implements OnInit {
     this.selfId    = this.id;
     this.labeledBy = this.id + '-label';
     this.clazz     = 'modal fade' + (this.clazz ? ' ' + this.clazz : '');
+
+    // this.modal     = bootstrap.Modal.getOrCreateInstance(this.elementRef.nativeElement);
+    // this.modal.show()
   }
+
+  ngOnDestroy(): void {}
 
 }

@@ -14,8 +14,6 @@ import {WindowSizeService} from '../../../../../shared/services/window-size.serv
 })
 export class CartModalComponent implements OnInit, OnDestroy {
 
-  @ViewChild('cartModal') private cartModal: TemplateRef<any>;
-
   cartList: Coupon[] = [];
 
   readonly _selectedCoupons: Coupon[] = [];

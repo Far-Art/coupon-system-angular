@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription, take} from 'rxjs';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
 import {WindowSizeService} from '../../../../../shared/services/window-size.service';
 import {Coupon} from '../../../../../shared/models/coupon.model';
@@ -12,8 +11,6 @@ import {Coupon} from '../../../../../shared/models/coupon.model';
   styleUrls: ['./wish-list-modal.component.scss']
 })
 export class WishListModalComponent implements OnInit, OnDestroy {
-
-  @ViewChild('wishModal') private wishModal: TemplateRef<any>;
 
   wishList: Coupon[] = [];
 
@@ -27,14 +24,11 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
   _switchWidth = 576;
 
-  private modal: NgbModalRef = null;
-
   private wishSubscription: Subscription;
   private windowSubscription: Subscription;
 
   constructor(
       private couponsService: CouponsService,
-      private modalService: NgbModal,
       private windowSize: WindowSizeService
   ) {}
 
@@ -46,12 +40,6 @@ export class WishListModalComponent implements OnInit, OnDestroy {
     this.wishSubscription = this.couponsService.wishIds$
         .subscribe(ids => this.wishList = this.couponsService.getCouponsById(...ids));
 
-  }
-
-  openModal() {
-    if (this.wishList.length > 0) {
-      this.modal = this.modalService.open(this.wishModal, {scrollable: true, modalDialogClass: ''});
-    }
   }
 
   onCouponsSelected(coupons: Coupon[]) {
@@ -80,7 +68,8 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
   private closeIfEmpty(): void {
     if (this.wishList.length === 0) {
-      this.modal.close();
+      // TODO implenet auto close on all modals
+      // this.modal.close();
     }
   }
 
