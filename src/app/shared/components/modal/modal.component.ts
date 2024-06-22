@@ -1,4 +1,5 @@
-import {Component, HostBinding, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, HostListener, Input, OnInit} from '@angular/core';
+import {ModalService} from './modal.service';
 
 
 @Component({
@@ -9,6 +10,8 @@ import {Component, HostBinding, Input, OnInit} from '@angular/core';
 export class ModalComponent implements OnInit {
 
   @Input() id: string;
+  @Input() onOpenFn: (...params: any) => any;
+  @Input() onCloseFn: (...params: any) => any;
 
   @HostBinding('id') protected selfId: string;
   @HostBinding('tabindex') protected tabIndex: string      = '-1';
@@ -18,7 +21,23 @@ export class ModalComponent implements OnInit {
   @HostBinding('style.height') protected height: string    = '100svh';
   @HostBinding('style.width') protected width: string      = '100svw';
 
-  constructor() {}
+  @HostListener('show.bs.modal') protected _isShown = () => {
+    this.isShown = true;
+    if (this.onOpenFn) {
+      this.onOpenFn();
+    }
+  }
+
+  @HostListener('hide.bs.modal') protected _isHidden = () => {
+    this.isShown = false;
+    if (this.onCloseFn) {
+      this.onCloseFn();
+    }
+  }
+
+  isShown: boolean = false;
+
+  constructor(private service: ModalService) {}
 
   private getRandomId() {
     return Math.random().toString(36).substring(0, 4);
@@ -29,6 +48,7 @@ export class ModalComponent implements OnInit {
     this.selfId    = this.id;
     this.labeledBy = this.id + '-label';
     this.clazz     = 'modal fade' + (this.clazz ? ' ' + this.clazz : '');
+    this.service.registerModal(this);
   }
 
 }

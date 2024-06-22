@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FilterKeys, FilterService} from './filter.service';
 import {Subscription, take} from 'rxjs';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -39,8 +39,6 @@ interface MainFormType {
 })
 export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('filterModal') private filterContent: TemplateRef<any>;
-
   form: FormGroup<MainFormType>;
 
   filtersKeyValue: FilterKeys | null;
@@ -62,7 +60,6 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.form.patchValue(filters);
     });
-
   }
 
   ngAfterViewInit(): void {

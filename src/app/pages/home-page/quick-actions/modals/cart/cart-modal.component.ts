@@ -1,5 +1,4 @@
-import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {delay, Subscription} from 'rxjs';
 import {CartService} from './cart.service';
 import {Coupon} from '../../../../../shared/models/coupon.model';
@@ -13,8 +12,6 @@ import {WindowSizeService} from '../../../../../shared/services/window-size.serv
   styleUrls: ['./cart-modal.component.scss']
 })
 export class CartModalComponent implements OnInit, OnDestroy {
-
-  @ViewChild('cartModal') private cartModal: TemplateRef<any>;
 
   cartList: Coupon[] = [];
 
@@ -56,22 +53,6 @@ export class CartModalComponent implements OnInit, OnDestroy {
     this.userSubscription      = this.cartService.isUserPresent$().subscribe(isPresent => this.isUserPresent = isPresent);
   }
 
-  // openModal() {
-  //   this.updatePrice();
-  //   this.modal = this.modalService
-  //       .open(this.cartModal,
-  //           {
-  //             scrollable: true,
-  //             modalDialogClass: '',
-  //             beforeDismiss: () => {
-  //               this._selectedCoupons.length = 0;
-  //               this.errorMessage            = null;
-  //               this.cartService.updateUserCart(this._selectedCoupons);
-  //               return true;
-  //             }
-  //           });
-  // }
-
   onCouponsSelected(coupons: Coupon[]) {
     this._selectedCoupons.length = 0
     this._selectedCoupons.push(...coupons);
@@ -86,13 +67,11 @@ export class CartModalComponent implements OnInit, OnDestroy {
   onDelete() {
     this.couponsService.removeFromCart(...this._selectedCoupons);
     this.onCancel();
-    this.closeIfEmpty();
   }
 
   onMove() {
     this.couponsService.moveToWish(...this._selectedCoupons);
     this.onCancel();
-    this.closeIfEmpty();
   }
 
   onBuy() {
@@ -103,19 +82,12 @@ export class CartModalComponent implements OnInit, OnDestroy {
           delay(1000)
       ).subscribe({
         next: () => {
-          this.closeIfEmpty();
           this.isLoading = false;
         }, error: (err: Error) => {
           this.isLoading    = false;
           this.errorMessage = err.message;
         }
       });
-    }
-  }
-
-  private closeIfEmpty(): void {
-    if (this.cartList.length === 0) {
-      // this.modal.close();
     }
   }
 
