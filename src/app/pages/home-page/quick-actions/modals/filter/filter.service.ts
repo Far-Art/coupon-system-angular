@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, filter, from, map, mergeMap, Observable, of, take, tap, toArray} from 'rxjs';
+import {BehaviorSubject, concatMap, filter, from, map, mergeMap, Observable, of, take, tap, toArray} from 'rxjs';
 import {Coupon} from '../../../../../shared/models/coupon.model';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
 
@@ -39,7 +39,7 @@ export class FilterService {
 
   private _filters: Filters | null = null;
 
-  private filtersSubject = new BehaviorSubject<Filters>(null);
+  private filtersSubject = new BehaviorSubject<Filters>(this.createOrUpdateFilters(null));
 
   get filters$() {
     return this.filtersSubject.asObservable();
@@ -56,8 +56,9 @@ export class FilterService {
     } else {
       this.notifyFilters(filters);
       this.couponsService.initialCoupons$.pipe(take(1),
-          mergeMap(coupons => this.filter(coupons)))
-          .subscribe(coupons => this.couponsService.coupons = coupons);
+          mergeMap(coupons => this.filter(coupons)),
+          tap(coupons => this.updateFilters(coupons))
+      ).subscribe(coupons => this.couponsService.coupons = coupons);
     }
   }
 
@@ -84,7 +85,7 @@ export class FilterService {
                   isPurchased: isPurchased,
                   coupon: coupons
                 })))),
-                filter(res => this._filters.hidePurchased.isChecked ? !res.isPurchased : true),
+                filter(res => this._filters.hidePurchased?.isChecked ? !res.isPurchased : true),
                 map(res => res.coupon),
                 toArray()
             ))
@@ -119,64 +120,6 @@ export class FilterService {
     );
   }
 
-  private updateFilterKeys(displayedCoupons: Coupon[]): Observable<Filters | null> {
-    // TODO rework this method
-    return this.couponsService.initialCoupons$
-        .pipe(
-            take(1),
-            map(originCoupons => {
-              let keys: Filters | null = null;
-
-              if (displayedCoupons.length > 0) {
-                const categories: Map<string, Key> = new Map();
-                const names: Map<string, Key>      = new Map();
-
-                for (let i = 0; i < originCoupons.length; i++) {
-                  const c = originCoupons[i];
-
-                  categories.set(c.params.category, {
-                    value: c.params.category,
-                    isDisabled: !displayedCoupons.map(v => v.params.category).includes(c.params.category),
-                    isApplied: false,
-                    isChecked: false
-                  })
-
-                  names.set(c.params.companyName, {
-                    value: c.params.companyName,
-                    isDisabled: !displayedCoupons.map(v => v.params.companyName).includes(c.params.companyName),
-                    isApplied: false,
-                    isChecked: false
-                  });
-                }
-
-                const minMaxValues = this.recalculateMinMaxValues(displayedCoupons);
-                keys               = {
-                  categories: [...categories.values()],
-                  companyNames: [...names.values()],
-                  priceRange: {
-                    start: minMaxValues.price.start, end: minMaxValues.price.end,
-                    isChecked: false,
-                    isApplied: false,
-                    isDisabled: false
-                  },
-                  dateRange: {
-                    start: minMaxValues.date.start, end: minMaxValues.date.end,
-                    isChecked: false,
-                    isApplied: false,
-                    isDisabled: false
-                  },
-                  hidePurchased: {isChecked: false, isDisabled: false, isApplied: false},
-                  freeText: null,
-                  badge: null
-                }
-              }
-
-              this._filters = keys;
-              return keys;
-            }));
-
-  }
-
   private recalculateMinMaxValues(coupons: Coupon[]): { price: PriceKey, date: DateKey } {
     const value: { price: PriceKey, date: DateKey } = {
       date: {
@@ -193,7 +136,7 @@ export class FilterService {
       }
     }
 
-    if (coupons.length > 0) {
+    if (coupons?.length > 0) {
       let minPrice = coupons[0].params.price;
       let maxPrice = coupons[0].params.price;
       let starDate = coupons[0].params.startDate;
@@ -256,29 +199,50 @@ export class FilterService {
   }
 
   private initInitialFilters(): void {
-    const initial: Filters = {
-      hidePurchased: {isChecked: true, isApplied: true, isDisabled: false},
-      categories: null,
-      companyNames: null,
-      priceRange: {start: 0, end: 0, isDisabled: false, isChecked: false, isApplied: false},
-      dateRange: {start: null, end: null, isDisabled: false, isChecked: false, isApplied: false},
-      freeText: {isChecked: false, isApplied: false, value: null, isDisabled: false},
-      badge: null
-    }
+    let initial: Filters;
 
     this.couponsService.initialCoupons$.pipe(
         take(1),
+        tap(coupons => initial = this.createOrUpdateFilters(coupons, initial)),
         tap(coupons => initial.categories = this.updateCategories(coupons)),
         tap(coupons => initial.companyNames = this.updateCompanyNames(coupons)),
-        tap(coupons => {
-          const res                = this.recalculateMinMaxValues(coupons);
-          initial.dateRange.start  = res.date.start;
-          initial.dateRange.end    = res.date.end;
-          initial.priceRange.start = res.price.start;
-          initial.priceRange.end   = res.price.end;
-        }),
         tap(() => initial.badge = this.updateFiltersBadge(initial)),
-        tap(() => this.notifyFilters(initial))
+        tap(() => this.notifyFilters(initial)),
+        concatMap(() => this.couponsService.purchasedCoupons$.pipe(take(1), tap(purchased => {
+          if (purchased.length === 0) {
+            initial.hidePurchased.isDisabled = true;
+            initial.hidePurchased.isChecked  = false;
+            initial.hidePurchased.isApplied  = false;
+          }
+        })))
     ).subscribe(() => this.updateDisplayedCoupons(this._filters));
+  }
+
+  private updateFilters(coupons: Coupon[]) {
+    this.notifyFilters(this.createOrUpdateFilters(coupons, this._filters));
+  }
+
+  private createOrUpdateFilters(coupons: Coupon[], filters?: Filters) {
+    let _filters: Filters;
+    if (filters) {
+      _filters = filters;
+    } else {
+      _filters = {
+        hidePurchased: {isChecked: true, isApplied: true, isDisabled: false},
+        categories: null,
+        companyNames: null,
+        priceRange: {start: 0, end: 0, isDisabled: false, isChecked: false, isApplied: false},
+        dateRange: {start: null, end: null, isDisabled: false, isChecked: false, isApplied: false},
+        freeText: {isChecked: false, isApplied: false, value: null, isDisabled: false},
+        badge: null
+      }
+    }
+
+    const minMax              = this.recalculateMinMaxValues(coupons);
+    _filters.dateRange.start  = minMax.date.start;
+    _filters.dateRange.end    = minMax.date.end;
+    _filters.priceRange.start = minMax.price.start;
+    _filters.priceRange.end   = minMax.price.end;
+    return _filters;
   }
 }

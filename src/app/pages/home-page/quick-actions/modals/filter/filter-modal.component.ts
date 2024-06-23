@@ -33,8 +33,8 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
         this.form     = this.initForm() as FormGroup<MainFormType<Filters>>;
         this.prevForm = this.initForm() as FormGroup<MainFormType<Filters>>;
       } else {
-        this.form.patchValue(this.filters);
-        this.prevForm.patchValue(this.filters);
+        this.updateForm(this.form);
+        this.updateForm(this.prevForm);
       }
     });
 
@@ -155,7 +155,8 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
       isApplied: new FormControl(this.filters.hidePurchased.isApplied),
       isChecked: new FormControl(this.filters.hidePurchased.isChecked),
       isDisabled: new FormControl(this.filters.hidePurchased.isDisabled)
-    })
+    });
+
   }
 
   private initPriceRange() {
@@ -170,6 +171,15 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
       start: new FormControl<Date>(this.filters?.dateRange?.start),
       end: new FormControl<Date>(this.filters?.dateRange?.end)
     });
+  }
+
+  private updateForm(form: FormGroup<MainFormType<Filters>>) {
+    form.patchValue(this.filters);
+    if (this.filters.hidePurchased?.isDisabled) {
+      form.controls.hidePurchased.disable();
+    } else {
+      form.controls.hidePurchased.enable();
+    }
   }
 
   ngOnDestroy(): void {
