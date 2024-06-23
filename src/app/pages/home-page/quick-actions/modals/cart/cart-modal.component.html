@@ -27,38 +27,41 @@
               aria-expanded="false">
         Manage
       </button>
-      <ul class="dropdown-menu ps-2 pe-2 drop-shadow-low">
+      <ul class="dropdown-menu ps-2 pe-2 drop-shadow-high">
         <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
         <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
       </ul>
     </div>
 
-    <div class="btn-group" *ngIf="isUserPresent" [ngClass]="{'w-100': _windowWidth < _switchWidth}">
+    <div class="btn-group dropup" *ngIf="isUserPresent" [ngClass]="{'w-100': _windowWidth < _switchWidth}">
       <button type="button"
               class="btn btn-outline-success"
               [ngClass]="{'w-100': _windowWidth < _switchWidth}"
               (click)="onBuy()">
         <span *ngIf="_selectedCoupons.length > 0">
-        {{ 'buy for ' | titlecase }}
+          {{ 'buy for ' | titlecase }}
           {{ totalPrice | currency:"ILS" }}
           <cs-spinner class="ms-1 text-success" *ngIf="isLoading"></cs-spinner>
         </span>
+        <span *ngIf="_selectedCoupons.length === 0">{{ 'select coupons for purchase' | titlecase }}</span>
       </button>
       <button type="button"
               class="btn btn-outline-success dropdown-toggle dropdown-toggle-split border-start-0"
               data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
               aria-expanded="false">
         <span class="visually-hidden">Toggle Dropdown</span>
       </button>
-      <ul class="dropdown-menu dropdown-menu-end drop-shadow-low text-nowrap align-self-center">
+      <ul class="dropdown-menu dropdown-menu-end drop-shadow-high text-nowrap align-self-center">
         <li class="ps-2 pe-2">
-          <div class="form-check user-select-none m-2" (click)="isMoveToWish = !isMoveToWish">
+          <div class="form-check user-select-none m-2" (click)="onMoveToWishCheckboxClick()">
             <input class="form-check-input drop-shadow-low"
                    type="checkbox"
                    unfocus
                    id="moveToWishCheckbox"
                    [checked]="isMoveToWish">
             <label class="form-check-label text-hover"
+                   (click)="onMoveToWishCheckboxClick()"
                    [ngClass]="{'text-primary': isMoveToWish}"
                    for="moveToWishCheckbox">{{ 'move to wish on purchase' | titlecase }}
             </label>

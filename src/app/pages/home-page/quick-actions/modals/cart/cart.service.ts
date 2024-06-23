@@ -19,7 +19,7 @@ export class CartService {
 
   private userDataBackup: UserData;
 
-  buyCoupons$(purchased: Coupon[]): Observable<UserData> {
+  buyCoupons$(purchased: Coupon[], options?: { moveToWIsh?: boolean }): Observable<UserData> {
     return this.authService.user$.pipe(
         take(1),
         tap(user => this.backupUserData(user)),
@@ -29,7 +29,7 @@ export class CartService {
         tap(() => this.couponsService.notify()),
         tap(user => this.authService.updateUser(user)),
         catchError(this.handleError)
-    ) as Observable<UserData>;
+    );
   }
 
   updateUserCart(coupons: Coupon[]): void {

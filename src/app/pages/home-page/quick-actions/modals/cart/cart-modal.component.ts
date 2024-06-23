@@ -93,6 +93,10 @@ export class CartModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  onMoveToWishCheckboxClick() {
+    this.isMoveToWish = !this.isMoveToWish;
+  }
+
   private updatePrice() {
     this.totalPrice = this._selectedCoupons.length > 0 ? this._selectedCoupons.map(c => c.params.price).reduceRight((acc, val) => acc + val) : 0;
   }
