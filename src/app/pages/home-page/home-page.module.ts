@@ -11,6 +11,7 @@ import {FilterModalComponent} from './quick-actions/modals/filter/filter-modal.c
 import {CartModalComponent} from './quick-actions/modals/cart/cart-modal.component';
 import {CouponsModule} from '../../features/coupons/coupons.module';
 import {HeaderModule} from '../../header/header.module';
+import {FilterService} from './quick-actions/modals/filter/filter.service';
 
 
 @NgModule({
@@ -30,6 +31,6 @@ import {HeaderModule} from '../../header/header.module';
     HeaderModule
   ],
   exports: [],
-  providers: [CartService]
+  providers: [CartService, FilterService]
 })
 export class HomePageModule {}

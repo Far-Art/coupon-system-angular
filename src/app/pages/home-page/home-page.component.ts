@@ -38,7 +38,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.couponSub = this.couponsService.displayedCoupons$.subscribe(coupons => this.couponsNum = coupons.length);
+    this.couponSub = this.couponsService.coupons$.subscribe(coupons => this.couponsNum = coupons.length);
     this.scrollSub = this.scrollbar.scrollPosition$().subscribe(event => {
       if (event.scrollDirection === 'top') {
         this.isHideOnScroll = false;

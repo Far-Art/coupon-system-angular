@@ -13,15 +13,15 @@ export class CouponsListComponent implements OnInit, OnDestroy {
 
   coupons: Coupon[] = [];
 
-  private displayedSub: Subscription;
+  private subscription: Subscription;
 
   constructor(private couponService: CouponsService) {}
 
   ngOnInit(): void {
-    this.displayedSub = this.couponService.displayedCoupons$.subscribe(list => this.coupons = list);
+    this.subscription = this.couponService.coupons$.subscribe(coupons => this.coupons = coupons);
   }
 
   ngOnDestroy(): void {
-    this.displayedSub.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }

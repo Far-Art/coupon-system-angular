@@ -1,4 +1,4 @@
-<cs-modal id="filterModal">
+<cs-modal *ngIf="form" id="filterModal">
   <cs-modal-header>
     <h4 class="modal-title text-primary user-select-none">{{ 'filters' | titlecase }}</h4></cs-modal-header>
   <cs-modal-body>
@@ -6,11 +6,10 @@
       <div class="accordion" id="accordion">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button bg-light-semi-transparent"
+            <button class="accordion-button bg-light-semi-transparent collapsed"
                     type="button"
                     unfocus
                     [disabled]="form.controls.freeText.value.value"
-                    (click)="recalculateFilters()"
                     data-bs-toggle="collapse"
                     data-bs-target="#categoriesCollapse"
                     aria-expanded="true"
@@ -18,8 +17,7 @@
               Categories
             </button>
           </h2>
-          <div id="categoriesCollapse" class="accordion-collapse collapse"
-               data-bs-parent="#accordion">
+          <div id="categoriesCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body" formArrayName="categories">
               <div class="form-check user-select-none m-2"
                    [formGroupName]="i"
@@ -42,11 +40,10 @@
 
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-light-semi-transparent"
+            <button class="accordion-button bg-light-semi-transparent collapsed"
                     type="button"
                     unfocus
                     [disabled]="form.controls.freeText.value.value"
-                    (click)="recalculateFilters()"
                     data-bs-toggle="collapse"
                     data-bs-target="#companiesCollapse"
                     aria-expanded="false"
@@ -80,7 +77,6 @@
             <button class="accordion-button collapsed bg-light-semi-transparent"
                     unfocus
                     [disabled]="form.controls.freeText.value.value"
-                    (click)="recalculateFilters()"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#priceCollapse"
@@ -101,8 +97,8 @@
                              formControlName="start"
                              id="minPrice"
                              placeholder="min price"
-                             [min]="filtersKeyValue.priceRange.start"
-                             [max]="filtersKeyValue.priceRange.end">
+                             [min]="filters.priceRange.start"
+                             [max]="filters.priceRange.end">
                       <label for="minPrice">Min price</label>
                     </div>
                   </div>
@@ -116,8 +112,8 @@
                              id="maxPrice"
                              placeholder="max price"
                              formControlName="end"
-                             [min]="filtersKeyValue.priceRange.start"
-                             [max]="filtersKeyValue.priceRange.end">
+                             [min]="filters.priceRange.start"
+                             [max]="filters.priceRange.end">
                       <label for="minPrice">Max price</label>
                     </div>
                   </div>
@@ -132,7 +128,6 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
-                    (click)="recalculateFilters()"
                     unfocus
                     [disabled]="form.controls.freeText.value.value"
                     type="button"
@@ -153,8 +148,8 @@
                   <div class="col-sm-5 mb-2">
                     <sc-date-picker formControlName="start"
                                     id="startDate"
-                                    [minDate]="filtersKeyValue.dateRange.start"
-                                    [maxDate]="filtersKeyValue.dateRange.end">
+                                    [minDate]="filters.dateRange.start"
+                                    [maxDate]="filters.dateRange.end">
                     </sc-date-picker>
                   </div>
                 </div>
@@ -165,8 +160,8 @@
                   <div class="col-sm-5">
                     <sc-date-picker formControlName="end"
                                     id="endDate"
-                                    [minDate]="filtersKeyValue.dateRange.start"
-                                    [maxDate]="filtersKeyValue.dateRange.end">
+                                    [minDate]="filters.dateRange.start"
+                                    [maxDate]="filters.dateRange.end">
                     </sc-date-picker>
                     <br>
                   </div>
@@ -226,10 +221,13 @@
     </form>
   </cs-modal-body>
   <cs-modal-footer>
-      <button unfocus type="reset" class="btn btn-outline-danger" (click)="onFormReset()" data-bs-dismiss="modal">Reset</button>
-      <button unfocus type="button" class="btn btn-outline-secondary" (click)="onCancel()" data-bs-dismiss="modal">Cancel</button>
-      <button unfocus type="submit" class="btn btn-outline-success" (click)="onSubmit()" data-bs-dismiss="modal"
-              [disabled]="form.controls.freeText.invalid">Apply
-      </button>
+    <button unfocus type="reset" class="btn btn-outline-danger" (click)="onFormReset()" data-bs-dismiss="modal">Reset
+    </button>
+    <button unfocus type="button" class="btn btn-outline-secondary" (click)="onCancel()" data-bs-dismiss="modal">
+      Cancel
+    </button>
+    <button unfocus type="submit" class="btn btn-outline-success" (click)="onSubmit()" data-bs-dismiss="modal"
+            [disabled]="form.controls.freeText.invalid">Apply
+    </button>
   </cs-modal-footer>
 </cs-modal>

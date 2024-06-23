@@ -18,7 +18,7 @@ export class CouponsService {
     return c;
   });
 
-  private displayedCouponsSubject = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
+  private filteredCouponsSubject = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
   private originCouponsSubject    = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
   private cartSubject             = new BehaviorSubject<number[]>([]);
   private wishSubject             = new BehaviorSubject<number[]>([]);
@@ -33,12 +33,12 @@ export class CouponsService {
     return this.auth.user$.pipe(map(user => user?.couponsBought != null ? user.couponsBought : []));
   }
 
-  get originCoupons$() {
+  get initialCoupons$() {
     return this.originCouponsSubject.asObservable();
   }
 
-  get displayedCoupons$(): Observable<Coupon[]> {
-    return this.displayedCouponsSubject.asObservable();
+  get coupons$(): Observable<Coupon[]> {
+    return this.filteredCouponsSubject.asObservable();
   }
 
   get cartIds$(): Observable<number[]> {
@@ -49,8 +49,8 @@ export class CouponsService {
     return this.wishSubject.asObservable();
   }
 
-  set displayedCoupons(coupons: Coupon[]) {
-    this.displayedCouponsSubject.next(coupons);
+  set coupons(coupons: Coupon[]) {
+    this.filteredCouponsSubject.next(coupons);
   }
 
   addToCart(...coupons: Coupon[] | number[]) {
@@ -106,7 +106,7 @@ export class CouponsService {
   }
 
   notify() {
-    this.displayedCouponsSubject.next(this.displayedCouponsSubject.value);
+    this.filteredCouponsSubject.next(this.filteredCouponsSubject.value);
   }
 
   /**
