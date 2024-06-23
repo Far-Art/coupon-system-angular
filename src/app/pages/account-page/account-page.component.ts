@@ -11,15 +11,13 @@ export class AccountPageComponent implements OnInit {
 
   constructor(private authService: AuthService) {}
 
-  userName: string;
+  name: string;
+  lastName: string;
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
-      if (user) {
-        this.userName = user.name + (user.lastName ? ' ' + user.lastName : '');
-      } else {
-        this.userName = null;
-      }
+      this.name     = user?.name;
+      this.lastName = user?.lastName;
     })
   }
 

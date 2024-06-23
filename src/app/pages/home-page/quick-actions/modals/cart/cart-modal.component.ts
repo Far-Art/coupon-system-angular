@@ -27,6 +27,8 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
   isLoading = false;
 
+  isMoveToWish: boolean = true;
+
   errorMessage: string;
 
   private cartSubscription: Subscription;

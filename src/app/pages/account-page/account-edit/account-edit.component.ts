@@ -58,7 +58,8 @@ export class AccountEditComponent implements OnInit, OnDestroy {
         ...this.user, ...this.form.value,
         userId: null
       } as UserData).subscribe({
-        next: () => {
+        next: data => {
+          this.accountService.updateUser(data);
           this.router.navigate(['../../info'], {relativeTo: this.route, state: {bypass: true}});
         }, error: (err: HttpErrorResponse) => {
           this.errorMessage = err.message;

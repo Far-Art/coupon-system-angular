@@ -11,6 +11,7 @@
     <div *ngIf="errorMessage" class="p-2 text-center text-danger bg-danger-subtle text-wrap">
       {{ errorMessage }}
     </div>
+
     <div class="btn-group dropup"
          [ngClass]="{'w-100': _windowWidth < _switchWidth}"
          role="group">
@@ -26,24 +27,46 @@
               aria-expanded="false">
         Manage
       </button>
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu ps-2 pe-2 drop-shadow-low">
         <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
         <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
       </ul>
     </div>
 
-    <button *ngIf="isUserPresent"
-            type="button"
-            class="btn btn-outline-success"
-            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
-            (click)="onBuy()">
-      <span *ngIf="_selectedCoupons.length > 0">
+    <div class="btn-group" *ngIf="isUserPresent" [ngClass]="{'w-100': _windowWidth < _switchWidth}">
+      <button type="button"
+              class="btn btn-outline-success"
+              [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+              (click)="onBuy()">
+        <span *ngIf="_selectedCoupons.length > 0">
         {{ 'buy for ' | titlecase }}
-        {{ totalPrice | currency:"ILS" }}
-        <cs-spinner class="ms-1 text-success" *ngIf="isLoading"></cs-spinner>
-      </span>
-      <span *ngIf="_selectedCoupons.length === 0">{{ 'select coupons for purchase' | titlecase }}</span>
-    </button>
+          {{ totalPrice | currency:"ILS" }}
+          <cs-spinner class="ms-1 text-success" *ngIf="isLoading"></cs-spinner>
+        </span>
+      </button>
+      <button type="button"
+              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split border-start-0"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        <span class="visually-hidden">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end drop-shadow-low text-nowrap align-self-center">
+        <li class="ps-2 pe-2">
+          <div class="form-check user-select-none m-2" (click)="isMoveToWish = !isMoveToWish">
+            <input class="form-check-input drop-shadow-low"
+                   type="checkbox"
+                   unfocus
+                   id="moveToWishCheckbox"
+                   [checked]="isMoveToWish">
+            <label class="form-check-label text-hover"
+                   [ngClass]="{'text-primary': isMoveToWish}"
+                   for="moveToWishCheckbox">{{ 'move to wish on purchase' | titlecase }}
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+
     <button unfocus
             [ngClass]="{'w-100': _windowWidth < _switchWidth}"
             class="btn btn-outline-secondary"
