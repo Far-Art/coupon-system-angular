@@ -1,7 +1,7 @@
 <ng-content select="cs-modal-button"></ng-content>
 
 <div class="modal-dialog modal-dialog-scrollable position-relative">
-  <div class="modal-content">
+  <div *ngIf="isShown" class="modal-content">
     <ng-content select="cs-modal-header"></ng-content>
     <ng-content select="cs-modal-body"></ng-content>
     <ng-content select="cs-modal-footer"></ng-content>

@@ -1,4 +1,15 @@
-import {Component, ElementRef, HostBinding, Input, OnChanges, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Optional,
+  Renderer2,
+  Self
+} from '@angular/core';
 import {ModalComponent} from '../modal.component';
 import {ModalService} from '../modal.service';
 
@@ -20,6 +31,10 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   @HostBinding('attr.data-bs-toggle') protected dataBsToggle: string;
   @HostBinding('attr.data-bs-dismiss') protected dataBsDismiss: string;
   @HostBinding('role') protected role: string;
+
+  @HostListener('click') protected _isShownListener = () => {
+    this.service.getModal(this.modalId).isShown = true;
+  }
 
   constructor(
       @Optional() private hostModal: ModalComponent,

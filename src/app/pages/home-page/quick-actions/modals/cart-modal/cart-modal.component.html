@@ -93,7 +93,7 @@
     <h4 class="modal-title text-primary user-select-none">Checkout As Guest</h4>
   </cs-modal-header>
   <cs-modal-body>
-    <div class="container-sm" [formGroup]="guestForm">
+    <form class="container-sm" [formGroup]="guestForm">
       <div class="text-center">Please fill your email and name</div>
 
       <div class="input-group has-validation mt-3">
@@ -151,7 +151,7 @@
           Name must be at least 3 characters.
         </div>
       </div>
-    </div>
+    </form>
     <br>
     <div *ngIf="errorMessage" class="p-2 text-center text-danger bg-danger-subtle text-wrap">
       {{ errorMessage }}

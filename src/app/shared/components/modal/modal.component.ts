@@ -24,24 +24,22 @@ export class ModalComponent implements OnInit, OnChanges {
   @HostBinding('attr.data-bs-backdrop') protected dataBsBackdrop: boolean | 'static';
 
   @HostListener('show.bs.modal') protected _isShownListener = () => {
-    this._isShown = true;
+    this.isShown = true;
     if (this.onOpenFn) {
       this.onOpenFn();
     }
   }
 
   @HostListener('hide.bs.modal') protected _isHiddenListener = () => {
-    this._isShown = false;
+    setTimeout(() => {
+      this.isShown = false;
+    }, 500)
     if (this.onCloseFn) {
       this.onCloseFn();
     }
   }
 
-  private _isShown: boolean = false;
-
-  get isShown() {
-    return this._isShown;
-  }
+  isShown: boolean = false;
 
   constructor(private service: ModalService) {}
 
