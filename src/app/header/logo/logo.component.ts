@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {LogoService} from './logo.service';
 import {WindowSizeService} from '../../shared/services/window-size.service';
@@ -9,7 +9,7 @@ import {WindowSizeService} from '../../shared/services/window-size.service';
   templateUrl: './logo.component.html',
   styleUrls: ['./logo.component.scss']
 })
-export class LogoComponent implements OnInit, OnDestroy {
+export class LogoComponent implements OnInit, OnChanges, OnDestroy {
 
   isBlinked = false;
 
@@ -24,13 +24,6 @@ export class LogoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.logoSub = this.logoService.blinked$.subscribe(() => this.logoBlink());
-    if (!this.isOverrideShowTitle) {
-      this.windowSizeSub = this.windowSizeService.windowSize$.subscribe(size => {
-        this.isShowTitle = size.width > 750;
-      });
-    } else {
-      this.isShowTitle = true;
-    }
   }
 
   private logoBlink() {
@@ -41,6 +34,16 @@ export class LogoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.logoSub.unsubscribe();
     if (this.windowSizeSub) this.windowSizeSub.unsubscribe();
+  }
+
+  ngOnChanges(): void {
+    if (!this.isOverrideShowTitle) {
+      this.windowSizeSub = this.windowSizeService.windowSize$.subscribe(size => {
+        this.isShowTitle = size.width > 750;
+      });
+    } else {
+      this.isShowTitle = true;
+    }
   }
 
 }

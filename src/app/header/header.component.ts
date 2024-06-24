@@ -13,7 +13,7 @@ import {HeaderService} from './header.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  @Input('showLogoTitle') isShowLogoTitle = false;
+  @Input('showLogoTitle') isShowLogoTitle: boolean = false;
 
   @ViewChild('headerContentContainer', {static: true, read: ViewContainerRef}) headerContent: ViewContainerRef;
 
@@ -54,6 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
 
     this.headerService.headerContent$.subscribe(node => {
+      this.isShowLogoTitle = !node;
       if (node) {
         this.contentNode = node;
         this.renderer.appendChild(this.parentNode, this.contentNode);
