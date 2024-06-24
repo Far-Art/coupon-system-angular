@@ -4,6 +4,7 @@ import {CartService} from './cart.service';
 import {Coupon} from '../../../../../shared/models/coupon.model';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
 import {WindowSizeService} from '../../../../../shared/services/window-size.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -12,6 +13,8 @@ import {WindowSizeService} from '../../../../../shared/services/window-size.serv
   styleUrls: ['./cart-modal.component.scss']
 })
 export class CartModalComponent implements OnInit, OnDestroy {
+
+  guestForm: FormGroup<{ email: FormControl<string>, name: FormControl<string> }>;
 
   cartList: Coupon[] = [];
 
@@ -42,6 +45,8 @@ export class CartModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.guestForm = this.initGuestForm();
+
     this.windowSubscription = this.windowSize.windowSize$.subscribe(size => {
       this._windowWidth = size.width;
     })
@@ -94,8 +99,19 @@ export class CartModalComponent implements OnInit, OnDestroy {
     this.isMoveToWish = !this.isMoveToWish;
   }
 
+  onCloseModal = () => {
+    this.errorMessage = null;
+  }
+
   private updatePrice() {
     this.totalPrice = this._selectedCoupons.length > 0 ? this._selectedCoupons.map(c => c.params.price).reduceRight((acc, val) => acc + val) : 0;
+  }
+
+  private initGuestForm() {
+    return new FormGroup({
+      email: new FormControl<string>(null, [Validators.required, Validators.email]),
+      name: new FormControl<string>(null, [Validators.required, Validators.minLength(3)])
+    })
   }
 
   ngOnDestroy(): void {

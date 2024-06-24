@@ -33,7 +33,7 @@ export class CartService {
   }
 
   isUserPresent$(): Observable<boolean> {
-    return this.authService.user$.pipe(map(user => !!user));
+    return this.authService.user$.pipe(map(user => !!user?.email));
   }
 
   private updateUserCoupons(user: UserData, purchased: Coupon[]): Observable<UserData> {

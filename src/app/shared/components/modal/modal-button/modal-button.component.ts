@@ -12,12 +12,13 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
   @Input('modal-id') modalId: string;
   @Input('class') clazz: string;
-  @Input('disabled') disabled: boolean = false;
+  @Input('disabled') disabled: boolean            = false;
 
   @HostBinding('id') protected id: string = '';
   @HostBinding('class') protected hostClazz: string;
   @HostBinding('attr.data-bs-target') protected dataBsTarget: string;
   @HostBinding('attr.data-bs-toggle') protected dataBsToggle: string;
+  @HostBinding('attr.data-bs-dismiss') protected dataBsDismiss: string;
   @HostBinding('role') protected role: string;
 
   constructor(
@@ -28,10 +29,11 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.modalId      = this.hostModal?.id || this.modalId;
-    this.dataBsTarget = '#' + this.modalId;
-    this.role         = 'button';
-    this.hostClazz    = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
+    this.modalId       = this.modalId || this.hostModal?.id;
+    this.dataBsTarget  = '#' + this.modalId;
+    this.dataBsDismiss = 'modal';
+    this.role          = 'button';
+    this.hostClazz     = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
   }
 
   ngOnChanges(): void {

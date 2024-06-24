@@ -26,8 +26,8 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
-  private defaultCustomerImgPath = 'assets/images/customer-default.png';
-  private defaultCompanyImgPath  = 'assets/images/company-default.png';
+  private defaultCustomerImgPath = './assets/images/customer-default.png';
+  private defaultCompanyImgPath  = './assets/images/company-default.png';
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -95,7 +95,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       name: new FormControl<string>(null, [Validators.required, Validators.minLength(3)]),
       lastName: new FormControl<string>(null, [Validators.required, Validators.minLength(3)]),
       type: new FormControl<UserType>('customer', [Validators.required]),
-      image: new FormControl<string>('assets/images/customer-default.png')
+      image: new FormControl<string>(this.defaultCustomerImgPath)
     })
 
     if (this.form) {

@@ -45,7 +45,7 @@ export class AuthService {
 
   readonly passwordMaxLength = 30;
 
-  private readonly apiCallDelay = 3000;
+  private readonly apiCallDelay: number = 2000;
 
   private setTimeout: any;
 

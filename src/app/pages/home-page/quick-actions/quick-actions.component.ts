@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
-import {FilterService} from './modals/filter/filter.service';
+import {FilterService} from './modals/filter-modal/filter.service';
 
 
 @Component({

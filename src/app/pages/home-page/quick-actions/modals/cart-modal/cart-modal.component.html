@@ -1,0 +1,181 @@
+<cs-modal id="cartModal" [onCloseFn]="onCloseModal">
+  <cs-modal-header>
+    <h4 class="modal-title text-primary user-select-none">{{ 'cart' | titlecase }}</h4>
+  </cs-modal-header>
+  <cs-modal-body>
+    <sc-coupon-table [coupons]="cartList" [options]="{selectAll: true}"
+                     (selectedCoupons)="onCouponsSelected($event)">
+    </sc-coupon-table>
+  </cs-modal-body>
+  <cs-modal-footer class="justify-content-between flex-column flex-sm-row">
+    <div *ngIf="errorMessage" class="p-2 text-center text-danger bg-danger-subtle text-wrap">
+      {{ errorMessage }}
+    </div>
+
+    <div class="btn-group dropup"
+         [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+         role="group">
+      <button unfocus
+              type="button"
+              [disabled]="_selectedCoupons.length === 0"
+              [ngClass]="{
+                'btn-outline-primary': _selectedCoupons.length > 0,
+                'btn-outline-secondary': _selectedCoupons.length === 0,
+              }"
+              class="btn dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        Manage
+      </button>
+      <ul class="dropdown-menu ps-2 pe-2 drop-shadow-high user-select-none">
+        <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
+        <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
+      </ul>
+    </div>
+
+    <cs-modal-button class="btn btn-outline-success"
+                     [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+                     [modal-id]="'guestCheckoutModal'">Checkout As Guest
+    </cs-modal-button>
+
+    <div class="btn-group dropup" *ngIf="isUserPresent" [ngClass]="{'w-100': _windowWidth < _switchWidth}">
+      <button type="button"
+              class="btn btn-outline-success"
+              [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+              (click)="onBuy()">
+        <span *ngIf="_selectedCoupons.length > 0">
+          {{ 'buy for ' | titlecase }}
+          {{ totalPrice | currency:"ILS" }}
+          <cs-spinner class="ms-1 text-success" *ngIf="isLoading"></cs-spinner>
+        </span>
+        <span *ngIf="_selectedCoupons.length === 0">{{ 'select coupons for purchase' | titlecase }}</span>
+      </button>
+      <button type="button"
+              style="min-width: 35px"
+              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split border-start-0"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
+              aria-expanded="false">
+        <span class="visually-hidden">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end drop-shadow-high text-nowrap align-self-center">
+        <li class="ps-2 pe-2">
+          <div class="form-check user-select-none m-2" (click)="onMoveToWishCheckboxClick()">
+            <input class="form-check-input drop-shadow-low"
+                   style="cursor: pointer"
+                   type="checkbox"
+                   unfocus
+                   id="moveToWishCheckbox"
+                   [checked]="isMoveToWish">
+            <label class="form-check-label text-hover"
+                   style="cursor: pointer"
+                   (click)="onMoveToWishCheckboxClick()"
+                   [ngClass]="{'text-primary': isMoveToWish}"
+                   for="moveToWishCheckbox">{{ 'move to wish on purchase' | titlecase }}
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <button unfocus
+            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+            class="btn btn-outline-secondary"
+            type="button"
+            data-bs-dismiss="modal">Close
+    </button>
+  </cs-modal-footer>
+</cs-modal>
+
+<!-- GUEST CHECKOUT MODAL -->
+<cs-modal id="guestCheckoutModal" backdrop="static" [onCloseFn]="onCloseModal">
+  <cs-modal-header>
+    <h4 class="modal-title text-primary user-select-none">Checkout As Guest</h4>
+  </cs-modal-header>
+  <cs-modal-body>
+    <div class="container-sm" [formGroup]="guestForm">
+      <div class="text-center">Please fill your email and name</div>
+
+      <div class="input-group has-validation mt-3">
+        <span class="input-group-text rounded-end-0">@</span>
+        <div class="form-floating">
+          <input type="email"
+                 formControlName="email"
+                 required
+                 class="form-control"
+                 [ngClass]="{'is-valid': guestForm.controls.email.valid, 'is-invalid': guestForm.controls.email.touched
+             && guestForm.controls.email.invalid}"
+                 id="signup-email"
+                 placeholder="Email">
+          <label for="signup-email">Email</label>
+        </div>
+      </div>
+      <div class="p-5 pt-0 pb-0">
+        <div *ngIf="guestForm.controls.email.touched && !guestForm.controls.email.value" class="text-danger">
+          Please enter an email.
+        </div>
+        <div *ngIf="guestForm.controls.email.touched && guestForm.controls.email.value && guestForm.controls.email.invalid"
+             class="text-danger">
+          Please enter a valid email.
+        </div>
+      </div>
+
+      <div class="input-group has-validation mt-3">
+      <span class="input-group-text rounded-end-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+             class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+            <path
+                d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/>
+            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+          </svg>
+      </span>
+        <div class="form-floating">
+          <input type="text"
+                 formControlName="name"
+                 required
+                 class="form-control"
+                 [ngClass]="{'is-valid': guestForm.controls.name.valid, 'is-invalid': guestForm.controls.name.touched
+             && guestForm.controls.name.invalid}"
+                 id="signup-name"
+                 [minLength]="3"
+                 placeholder="Name">
+          <label for="signup-name">Name</label>
+        </div>
+      </div>
+      <div class="p-5 pt-0 pb-0">
+        <div *ngIf="guestForm.controls.name.touched && !guestForm.controls.name.value" class="text-danger">
+          Please enter a name.
+        </div>
+        <div *ngIf="guestForm.controls.name.touched && guestForm.controls.name.value && guestForm.controls.name.invalid"
+             class="text-danger">
+          Name must be at least 3 characters.
+        </div>
+      </div>
+    </div>
+    <br>
+    <div *ngIf="errorMessage" class="p-2 text-center text-danger bg-danger-subtle text-wrap">
+      {{ errorMessage }}
+    </div>
+  </cs-modal-body>
+  <cs-modal-footer class="justify-content-between flex-column flex-sm-row">
+    <button type="button"
+            [disabled]="guestForm.invalid"
+            class="btn btn-outline-success"
+            [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-1' : _windowWidth >= _switchWidth}"
+            (click)="onBuy()">
+        <span *ngIf="_selectedCoupons.length > 0">
+          {{ 'buy for ' | titlecase }}
+          {{ totalPrice | currency:"ILS" }}
+          <cs-spinner class="ms-1 text-success" *ngIf="isLoading"></cs-spinner>
+        </span>
+      <span *ngIf="_selectedCoupons.length === 0">{{ 'select coupons for purchase' | titlecase }}</span>
+    </button>
+    <cs-modal-button class="btn btn-outline-danger"
+                     [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-0' : _windowWidth >= _switchWidth}"
+                     [modal-id]="'cartModal'">Go Back
+    </cs-modal-button>
+    <cs-modal-button class="btn btn-outline-secondary" [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-2' :
+    _windowWidth >= _switchWidth}">Close
+    </cs-modal-button>
+  </cs-modal-footer>
+</cs-modal>
