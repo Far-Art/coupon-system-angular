@@ -40,7 +40,7 @@ export class WishListModalComponent implements OnInit, OnDestroy {
         .subscribe(ids => this.wishList = this.couponsService.getCouponsById(...ids));
   }
 
-  onCouponsSelected(coupons: Coupon[]) {
+  onCouponsSelected(coupons: Coupon[]): void {
     this.couponsService.purchasedCoupons$.pipe(take(1)).subscribe(purchased => {
       this.selectedCoupons = coupons;
       this.isAnySaleEnded  = coupons.some(c => c.params.isSaleEnded);

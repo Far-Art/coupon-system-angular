@@ -25,15 +25,11 @@ export class CartService {
         tap(user => this.backupUserData(user)),
         concatMap(user => this.updateUserCoupons(user, purchased)),
         concatMap(user => this.dataManager.putUserData(this.authService.authData.localId, user)),
-        tap(user => this.couponsService.removeFromCart(...user.couponsBought)),
-        tap(() => this.couponsService.notify()),
-        tap(user => this.authService.updateUser(user)),
+        tap(() => this.couponsService.removeFromCart(...purchased)),
+        tap(() => options?.moveToWIsh ? this.couponsService.addToWish(...purchased) : null),
+        tap(user => this.authService.updateUser(user, true)),
         catchError(this.handleError)
     );
-  }
-
-  updateUserCart(coupons: Coupon[]): void {
-    this.authService.updateUser({couponsInCart: coupons.map(c => c.params.id)} as UserData, false);
   }
 
   isUserPresent$(): Observable<boolean> {

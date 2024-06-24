@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, map, Observable} from 'rxjs';
+import {BehaviorSubject, map, Observable, tap} from 'rxjs';
 import {Coupon} from '../../shared/models/coupon.model';
 import {LogoService} from '../../header/logo/logo.service';
 import tempCoupons from './temp-coupons.json';
 import {AuthService} from '../../auth/auth.service';
+import {UserData} from '../../shared/models/user-data.model';
 
 
 @Injectable({
@@ -19,11 +20,14 @@ export class CouponsService {
   });
 
   private filteredCouponsSubject = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
-  private originCouponsSubject    = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
-  private cartSubject             = new BehaviorSubject<number[]>([]);
-  private wishSubject             = new BehaviorSubject<number[]>([]);
+  private originCouponsSubject   = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
+  private cartSubject            = new BehaviorSubject<number[]>([]);
+  private wishSubject            = new BehaviorSubject<number[]>([]);
 
-  constructor(private logo: LogoService, private auth: AuthService) {}
+  constructor(
+      private logo: LogoService,
+      private auth: AuthService
+  ) {}
 
   getCouponsById(...ids: number[]): Coupon[] {
     return ids ? this.originCouponsSubject.value.filter(c => ids.includes(c.params.id)) : [];
@@ -42,11 +46,19 @@ export class CouponsService {
   }
 
   get cartIds$(): Observable<number[]> {
-    return this.cartSubject.asObservable();
+    return this.auth.user$.pipe(
+        map(user => user != null ? user.couponsInCart || [] : null),
+        map(coupons => coupons != null ? coupons : this.cartSubject.value),
+        tap(coupons => this.cartSubject.next(coupons))
+    );
   }
 
   get wishIds$(): Observable<number[]> {
-    return this.wishSubject.asObservable();
+    return this.auth.user$.pipe(
+        map(user => user != null ? user.couponsInWish || [] : null),
+        map(coupons => coupons != null ? coupons : this.wishSubject.value),
+        tap(coupons => this.wishSubject.next(coupons))
+    );
   }
 
   set coupons(coupons: Coupon[]) {
@@ -56,7 +68,7 @@ export class CouponsService {
   addToCart(...coupons: Coupon[] | number[]) {
     const ids = new Set<number>(this.cartSubject.value);
     coupons.forEach((c: Coupon | number) => ids.add(c instanceof Coupon ? c.params.id : c));
-
+    this.auth.updateUser({couponsInCart: [...ids]} as UserData);
     this.logo.blink();
     this.cartSubject.next([...ids]);
   }
@@ -64,7 +76,7 @@ export class CouponsService {
   addToWish(...coupons: Coupon[] | number[]) {
     const ids = new Set<number>(this.wishSubject.value);
     coupons.forEach((c: Coupon | number) => ids.add(c instanceof Coupon ? c.params.id : c));
-
+    this.auth.updateUser({couponsInWish: [...ids]} as UserData);
     this.logo.blink();
     this.wishSubject.next([...ids]);
   }
@@ -73,6 +85,7 @@ export class CouponsService {
     coupons.forEach((c: Coupon | number) => {
       this.removeCoupon(c, this.cartSubject.value);
     });
+    this.auth.updateUser({couponsInCart: this.cartSubject.value.map((c: Coupon | number) => c instanceof Coupon ? c.params.id : c)} as UserData);
     this.cartSubject.next(this.cartSubject.value);
   }
 
@@ -80,33 +93,18 @@ export class CouponsService {
     coupons.forEach((c: Coupon | number) => {
       this.removeCoupon(c, this.wishSubject.value);
     });
+    this.auth.updateUser({couponsInWish: this.wishSubject.value.map((c: Coupon | number) => c instanceof Coupon ? c.params.id : c)} as UserData);
     this.wishSubject.next(this.wishSubject.value);
-  }
-
-  get couponsInCart(): number {
-    return this.cartSubject.value.length;
-  }
-
-  get couponsInWish(): number {
-    return this.wishSubject.value.length;
   }
 
   moveToWish(...coupons: Coupon[] | number[]) {
     this.removeFromCart(...coupons);
     this.addToWish(...coupons);
-    this.cartSubject.next(this.cartSubject.value);
-    this.notify();
   }
 
   moveToCart(...coupons: Coupon[] | number[]) {
     this.removeFromWish(...coupons);
     this.addToCart(...coupons);
-    this.wishSubject.next(this.wishSubject.value);
-    this.notify();
-  }
-
-  notify() {
-    this.filteredCouponsSubject.next(this.filteredCouponsSubject.value);
   }
 
   /**

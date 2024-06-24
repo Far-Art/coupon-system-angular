@@ -45,6 +45,10 @@ export class AuthService {
 
   readonly passwordMaxLength = 30;
 
+  private readonly apiCallDelay = 3000;
+
+  private setTimeout: any;
+
   private userDataSubject = new BehaviorSubject<UserData>(null);
 
   private _authData: FirebaseResponseModel | null;
@@ -61,14 +65,6 @@ export class AuthService {
     return this.userDataSubject.asObservable();
   }
 
-  updateUser(user: UserData, emitEvent: boolean = true) {
-    const updated = Object.assign(this.userDataSubject.value || {}, user);
-    this.storeUserDataLocally();
-    if (emitEvent) {
-      this.userDataSubject.next(updated);
-    }
-  }
-
   set loginFormData(data: LoginData) {
     this._loginFormData = data;
   }
@@ -83,6 +79,26 @@ export class AuthService {
 
   get signupFormData() {
     return this._signupFormData;
+  }
+
+  /**
+   * update user and return timeout after the user will be updated
+   * @param user
+   * @param immediate
+   */
+  updateUser(user: UserData, immediate: boolean = false): number {
+    clearTimeout(this.setTimeout);
+
+    const updated = Object.assign(this.userDataSubject.value || {}, user);
+
+    this.userDataSubject.next(updated);
+
+    // prevent large subsequent clicks
+    this.setTimeout = setTimeout(() => {
+      this.storeUserDataLocally(updated);
+      this.dataManager.putUserData(this._authData.localId, updated).subscribe(() => {});
+    }, immediate ? 0 : this.apiCallDelay);
+    return immediate ? 0 : this.apiCallDelay;
   }
 
   autoLogin() {
@@ -134,9 +150,9 @@ export class AuthService {
     this.removeLocalUserData();
   }
 
-  private storeUserDataLocally() {
-    if (this.userDataSubject.value != null) {
-      localStorage.setItem(this.localStorageKey, JSON.stringify(this.userDataSubject.value));
+  private storeUserDataLocally(userData?: UserData) {
+    if (this.userDataSubject.value != null || userData != null) {
+      localStorage.setItem(this.localStorageKey, JSON.stringify(userData || this.userDataSubject.value));
       localStorage.setItem(this.localStorageKey + 'Auth', JSON.stringify(this._authData))
     }
   }

@@ -16,6 +16,6 @@ export class AccountService {
   }
 
   updateUser(user: UserData) {
-    this.authService.updateUser(user);
+    this.authService.updateUser(user, true);
   }
 }

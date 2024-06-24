@@ -27,7 +27,7 @@
               aria-expanded="false">
         Manage
       </button>
-      <ul class="dropdown-menu ps-2 pe-2 drop-shadow-high">
+      <ul class="dropdown-menu ps-2 pe-2 drop-shadow-high user-select-none">
         <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
         <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
       </ul>
@@ -56,11 +56,13 @@
         <li class="ps-2 pe-2">
           <div class="form-check user-select-none m-2" (click)="onMoveToWishCheckboxClick()">
             <input class="form-check-input drop-shadow-low"
+                   style="cursor: pointer"
                    type="checkbox"
                    unfocus
                    id="moveToWishCheckbox"
                    [checked]="isMoveToWish">
             <label class="form-check-label text-hover"
+                   style="cursor: pointer"
                    (click)="onMoveToWishCheckboxClick()"
                    [ngClass]="{'text-primary': isMoveToWish}"
                    for="moveToWishCheckbox">{{ 'move to wish on purchase' | titlecase }}

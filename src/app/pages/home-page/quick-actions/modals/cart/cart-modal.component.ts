@@ -34,7 +34,6 @@ export class CartModalComponent implements OnInit, OnDestroy {
   private cartSubscription: Subscription;
   private windowSubscription: Subscription;
   private userSubscription: Subscription;
-  private purchasedSubscription: Subscription;
 
   constructor(
       private couponsService: CouponsService,
@@ -51,14 +50,12 @@ export class CartModalComponent implements OnInit, OnDestroy {
       this.cartList = this.couponsService.getCouponsById(...ids);
     });
 
-    this.purchasedSubscription = this.couponsService.purchasedCoupons$.subscribe(ids => this.couponsService.moveToWish(...ids))
-    this.userSubscription      = this.cartService.isUserPresent$().subscribe(isPresent => this.isUserPresent = isPresent);
+    this.userSubscription = this.cartService.isUserPresent$().subscribe(isPresent => this.isUserPresent = isPresent);
   }
 
   onCouponsSelected(coupons: Coupon[]) {
     this._selectedCoupons.length = 0
     this._selectedCoupons.push(...coupons);
-    this.cartService.updateUserCart(this._selectedCoupons);
     this.updatePrice();
   }
 
@@ -80,7 +77,7 @@ export class CartModalComponent implements OnInit, OnDestroy {
     this.errorMessage = null;
     if (this._selectedCoupons.length > 0) {
       this.isLoading = true;
-      this.cartService.buyCoupons$(this._selectedCoupons).pipe(
+      this.cartService.buyCoupons$(this._selectedCoupons, {moveToWIsh: this.isMoveToWish}).pipe(
           delay(1000)
       ).subscribe({
         next: () => {
@@ -105,7 +102,6 @@ export class CartModalComponent implements OnInit, OnDestroy {
     this.cartSubscription.unsubscribe();
     this.windowSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
-    this.purchasedSubscription.unsubscribe();
   }
 
 }

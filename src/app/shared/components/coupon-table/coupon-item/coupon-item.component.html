@@ -7,6 +7,7 @@
          type="button"
          (click)="onCheck()">
       <input class="form-check-input"
+             [ngClass]="{'drop-shadow-low': !this.options.isChecked}"
              type="checkbox"
              style="cursor: pointer"
              [checked]="this.options.isChecked"
