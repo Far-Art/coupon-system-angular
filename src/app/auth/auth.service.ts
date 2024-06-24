@@ -96,7 +96,10 @@ export class AuthService {
     // prevent large subsequent clicks
     this.setTimeout = setTimeout(() => {
       this.storeUserDataLocally(updated);
-      this.dataManager.putUserData(this._authData.localId, updated).subscribe(() => {});
+      // if user present, store its data in database
+      if (this._authData?.localId) {
+        this.dataManager.putUserData(this._authData.localId, updated).subscribe(() => {});
+      }
     }, immediate ? 0 : this.apiCallDelay);
     return immediate ? 0 : this.apiCallDelay;
   }
@@ -104,8 +107,9 @@ export class AuthService {
   autoLogin() {
     const user = localStorage.getItem(this.localStorageKey);
     if (user) {
-      this.userDataSubject.next(JSON.parse(user));
-      this._authData = JSON.parse(localStorage.getItem(this.localStorageKey + 'Auth'));
+      this.userDataSubject.next(JSON.parse(user) as UserData);
+      const auth = localStorage.getItem(this.localStorageKey + 'Auth');
+      if (auth) this._authData = JSON.parse(auth);
     }
   }
 
@@ -119,10 +123,12 @@ export class AuthService {
         }).pipe(
         tap(res => this._authData = res),
         concatMap(res => this.dataManager.fetchUserData(res.localId)
-            .pipe(take(1), tap(userData => {
-              this.userDataSubject.next(userData);
-              this.storeUserDataLocally();
-            }))),
+            .pipe(
+                take(1),
+                tap(userData => {
+                  this.userDataSubject.next(userData);
+                  this.storeUserDataLocally();
+                }))),
         catchError(this.handleError));
   }
 
@@ -146,14 +152,14 @@ export class AuthService {
   logout() {
     this._authData = null;
     this.userDataSubject.next(null);
-    this.router.navigate(['/']);
     this.removeLocalUserData();
+    this.router.navigate(['/']);
   }
 
   private storeUserDataLocally(userData?: UserData) {
     if (this.userDataSubject.value != null || userData != null) {
-      localStorage.setItem(this.localStorageKey, JSON.stringify(userData || this.userDataSubject.value));
-      localStorage.setItem(this.localStorageKey + 'Auth', JSON.stringify(this._authData))
+      localStorage.setItem(this.localStorageKey, JSON.stringify(userData != null ? userData : this.userDataSubject.value));
+      if (this._authData?.localId) localStorage.setItem(this.localStorageKey + 'Auth', JSON.stringify(this._authData));
     }
   }
 

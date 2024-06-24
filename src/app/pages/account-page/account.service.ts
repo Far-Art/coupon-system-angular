@@ -11,7 +11,7 @@ export class AccountService {
 
   get user$(): Observable<UserData & { userId: string }> {
     return this.authService.user$.pipe(map(user => {
-      return {...user, userId: this.authService.authData.localId};
+      return {...user, userId: this.authService.authData?.localId};
     }));
   }
 
