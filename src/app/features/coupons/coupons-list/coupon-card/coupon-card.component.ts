@@ -103,7 +103,6 @@ export class CouponCardComponent implements OnInit, OnDestroy {
     })
   }
 
-  // TODO on cart or wish click show purchased coupons filters resets
   onCartClick() {
     if (!this.isSaleEnded && !this.isPurchased) {
       this.isAddedToCart ? this.couponsService.removeFromCart(this.coupon) : this.couponsService.addToCart(this.coupon);

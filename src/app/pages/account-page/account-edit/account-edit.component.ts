@@ -24,7 +24,7 @@ export class AccountEditComponent implements OnInit, OnDestroy {
 
   errorMessage: string;
 
-  user: UserData & { userId: string };
+  user: UserData;
 
   private subscription: Subscription;
 
@@ -36,7 +36,7 @@ export class AccountEditComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscription = this.accountService.user$.subscribe(user => {
+    this.subscription = this.accountService.user$.subscribe((user: UserData) => {
       this.user = user;
       this.initForm();
     });
@@ -54,10 +54,9 @@ export class AccountEditComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.valid) {
       this.errorMessage = null;
-      this.dataManager.putUserData(this.user.userId, {
-        ...this.user, ...this.form.value,
-        userId: null
-      } as UserData).subscribe({
+      this.dataManager.putUserData(this.user.authData.localId, {
+        ...this.user, ...this.form.value
+      }).subscribe({
         next: data => {
           this.accountService.updateUser(data);
           this.router.navigate(['../../info'], {relativeTo: this.route, state: {bypass: true}});

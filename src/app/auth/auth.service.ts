@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {BehaviorSubject, catchError, concatMap, Observable, take, tap, throwError} from 'rxjs';
+import {BehaviorSubject, catchError, concatMap, map, Observable, take, tap, throwError} from 'rxjs';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FirebaseResponseModel} from './models/firebase-response.model';
 import {UserData} from '../shared/models/user-data.model';
@@ -8,7 +8,7 @@ import {DataManagerService} from '../shared/services/data-manager.service';
 import {Router} from '@angular/router';
 
 
-export type UserType = 'company' | 'customer' | 'admin';
+export type UserType = 'company' | 'customer' | 'admin' | 'guest';
 
 export type LoginData = { email: string, password: string }
 
@@ -38,31 +38,27 @@ export interface SignupForm {
 export class AuthService {
 
   private readonly localStorageKey = 'casUserDataLocal';
-
-  private readonly FIREBASE_KEY = 'AIzaSyAS-z6cFLmZCdekAOJ2hTsFqcJD1D5WYV8';
+  private readonly FIREBASE_KEY    = 'AIzaSyAS-z6cFLmZCdekAOJ2hTsFqcJD1D5WYV8';
 
   readonly passwordMinLength = 6;
-
   readonly passwordMaxLength = 30;
 
-  private readonly apiCallDelay: number = 2000;
-
+  private readonly apiCallDelay: number = 1500;
   private setTimeout: any;
 
-  private userDataSubject = new BehaviorSubject<UserData>(null);
-
-  private _authData: FirebaseResponseModel | null;
   private _loginFormData: LoginData;
   private _signupFormData: SignupData;
 
-  constructor(private http: HttpClient, private dataManager: DataManagerService, private router: Router) { }
+  private userDataSubject = new BehaviorSubject<Partial<UserData>>(this.guestUser());
 
-  get authData() {
-    return this._authData;
+  constructor(private http: HttpClient, private dataManager: DataManagerService, private router: Router) {}
+
+  get user$(): Observable<Partial<UserData>> {
+    return this.userDataSubject.asObservable();
   }
 
-  get user$(): Observable<UserData> {
-    return this.userDataSubject.asObservable();
+  get user(): Partial<UserData> {
+    return this.userDataSubject.value;
   }
 
   set loginFormData(data: LoginData) {
@@ -82,35 +78,29 @@ export class AuthService {
   }
 
   /**
-   * update user and return timeout after the user will be updated
-   * @param user
-   * @param immediate
+   * update user and return timeout after which the user will be updated
+   * @param params
    */
-  updateUser(user: UserData, immediate: boolean = false): number {
+  updateUser(params?: { user: Partial<UserData>, immediate?: boolean }): number {
     clearTimeout(this.setTimeout);
-
-    const updated = Object.assign(this.userDataSubject.value || {}, user);
+    const updated = Object.assign(this.userDataSubject.value || {}, params?.user);
 
     this.userDataSubject.next(updated);
+    this.storeUserDataLocally();
 
     // prevent large subsequent clicks
     this.setTimeout = setTimeout(() => {
-      this.storeUserDataLocally(updated);
       // if user present, store its data in database
-      if (this._authData?.localId) {
-        this.dataManager.putUserData(this._authData.localId, updated).subscribe(() => {});
+      if (updated.authData) {
+        this.dataManager.putUserData(updated.authData.localId, updated).subscribe(() => {});
       }
-    }, immediate ? 0 : this.apiCallDelay);
-    return immediate ? 0 : this.apiCallDelay;
+    }, params?.immediate ? 0 : this.apiCallDelay);
+    return params?.immediate ? 0 : this.apiCallDelay;
   }
 
   autoLogin() {
     const user = localStorage.getItem(this.localStorageKey);
-    if (user) {
-      this.userDataSubject.next(JSON.parse(user) as UserData);
-      const auth = localStorage.getItem(this.localStorageKey + 'Auth');
-      if (auth) this._authData = JSON.parse(auth);
-    }
+    if (user) this.userDataSubject.next(JSON.parse(user) as Partial<UserData>);
   }
 
   login(login: LoginData): Observable<UserData> {
@@ -121,15 +111,19 @@ export class AuthService {
           password: login.password,
           returnSecureToken: true
         }).pipe(
-        tap(res => this._authData = res),
-        concatMap(res => this.dataManager.fetchUserData(res.localId)
+        map(response => ({authData: response} as Partial<UserData>)),
+        concatMap(user => this.dataManager.fetchUserData(user.authData.localId)
             .pipe(
                 take(1),
                 tap(userData => {
-                  this.userDataSubject.next(userData);
+                  this.userDataSubject.next({
+                    ...user,
+                    ...userData
+                  });
                   this.storeUserDataLocally();
                 }))),
-        catchError(this.handleError));
+        catchError(this.handleError)
+    );
   }
 
   signUp(signup: SignupData): Observable<UserData> {
@@ -140,32 +134,39 @@ export class AuthService {
           password: signup.password,
           returnSecureToken: true
         }).pipe(
-        tap(res => this._authData = res),
-        concatMap(res => this.dataManager.putUserData(res.localId, this.buildUserData(signup))
-            .pipe(take(1), tap(userData => {
-              this.userDataSubject.next(userData);
-              this.storeUserDataLocally();
-            }))),
-        catchError(this.handleError));
+        concatMap(res => this.dataManager.putUserData(res.localId, this.createUserData({signup: signup}))
+            .pipe(
+                take(1),
+                tap(user => {
+                  this.storeUserDataLocally();
+                  this.userDataSubject.next(user);
+                }))),
+        catchError(this.handleError)
+    );
   }
 
   logout() {
-    this._authData = null;
-    this.userDataSubject.next(null);
     this.removeLocalUserData();
+    this.userDataSubject.next({
+      ...this.guestUser(),
+      couponsInWish: this.userDataSubject.value.couponsInWish || [],
+      couponsInCart: this.userDataSubject.value.couponsInCart || []
+    });
     this.router.navigate(['/']);
   }
 
-  private storeUserDataLocally(userData?: UserData) {
-    if (this.userDataSubject.value != null || userData != null) {
-      localStorage.setItem(this.localStorageKey, JSON.stringify(userData != null ? userData : this.userDataSubject.value));
-      if (this._authData?.localId) localStorage.setItem(this.localStorageKey + 'Auth', JSON.stringify(this._authData));
+  private storeUserDataLocally() {
+    const user = this.userDataSubject.value;
+    if (user) {
+      if (user.type === 'guest') {
+        delete user.couponsPurchased;
+      }
+      localStorage.setItem(this.localStorageKey, JSON.stringify(this.userDataSubject.value));
     }
   }
 
   private removeLocalUserData() {
     localStorage.removeItem(this.localStorageKey);
-    localStorage.removeItem(this.localStorageKey + 'Auth');
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -175,17 +176,25 @@ export class AuthService {
     return throwError(() => new Error(error.error.error.message.replaceAll('_', ' ')));
   }
 
-  private buildUserData(data: SignupData): UserData {
+  private createUserData(params: { signup?: SignupData, response?: FirebaseResponseModel }): UserData {
     return {
-      email: data.email,
-      name: data.name,
-      lastName: data.lastName,
-      type: data.type,
-      image: data.image,
-      couponsBought: [],
+      authData: params?.response,
+      email: params?.signup?.email || null,
+      name: params?.signup?.name || null,
+      lastName: params?.signup?.lastName || null,
+      type: params?.signup?.type || null,
+      image: params?.signup?.image || null,
+      couponsPurchased: [],
       couponsInWish: [],
       couponsInCart: []
     };
+
+  }
+
+  private guestUser(): Partial<UserData> {
+    return {
+      type: 'guest'
+    }
   }
 
 }

@@ -1,9 +1,10 @@
-<cs-modal id="cartModal" [onCloseFn]="onCloseModal">
+<cs-modal [id]="cartModalId" [onCloseFn]="onCloseModal">
   <cs-modal-header>
     <h4 class="modal-title text-primary user-select-none">{{ 'cart' | titlecase }}</h4>
   </cs-modal-header>
   <cs-modal-body>
-    <sc-coupon-table [coupons]="cartList" [options]="{selectAll: true}"
+    <sc-coupon-table [coupons]="cartList"
+                     [options]="{selectAll: true}"
                      (selectedCoupons)="onCouponsSelected($event)">
     </sc-coupon-table>
   </cs-modal-body>
@@ -32,51 +33,15 @@
         <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
       </ul>
     </div>
-
-    <cs-modal-button class="btn btn-outline-success"
+    <cs-modal-button *ngIf="!isUserPresent"
+                     class="btn btn-outline-success"
                      [ngClass]="{'w-100': _windowWidth < _switchWidth}"
-                     [modal-id]="'guestCheckoutModal'">Checkout As Guest
+                     [modal-id]="guestModalId">Checkout As Guest
     </cs-modal-button>
 
-    <div class="btn-group dropup" *ngIf="isUserPresent" [ngClass]="{'w-100': _windowWidth < _switchWidth}">
-      <button type="button"
-              class="btn btn-outline-success"
-              [ngClass]="{'w-100': _windowWidth < _switchWidth}"
-              (click)="onBuy()">
-        <span *ngIf="_selectedCoupons.length > 0">
-          {{ 'buy for ' | titlecase }}
-          {{ totalPrice | currency:"ILS" }}
-          <cs-spinner class="ms-1 text-success" *ngIf="isLoading"></cs-spinner>
-        </span>
-        <span *ngIf="_selectedCoupons.length === 0">{{ 'select coupons for purchase' | titlecase }}</span>
-      </button>
-      <button type="button"
-              style="min-width: 35px"
-              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split border-start-0"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="outside"
-              aria-expanded="false">
-        <span class="visually-hidden">Toggle Dropdown</span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end drop-shadow-high text-nowrap align-self-center">
-        <li class="ps-2 pe-2">
-          <div class="form-check user-select-none m-2" (click)="onMoveToWishCheckboxClick()">
-            <input class="form-check-input drop-shadow-low"
-                   style="cursor: pointer"
-                   type="checkbox"
-                   unfocus
-                   id="moveToWishCheckbox"
-                   [checked]="isMoveToWish">
-            <label class="form-check-label text-hover"
-                   style="cursor: pointer"
-                   (click)="onMoveToWishCheckboxClick()"
-                   [ngClass]="{'text-primary': isMoveToWish}"
-                   for="moveToWishCheckbox">{{ 'move to wish on purchase' | titlecase }}
-            </label>
-          </div>
-        </li>
-      </ul>
-    </div>
+    <ng-container *ngIf="isUserPresent">
+      <ng-container *ngTemplateOutlet="modalPurchaseButton"></ng-container>
+    </ng-container>
 
     <button unfocus
             [ngClass]="{'w-100': _windowWidth < _switchWidth}"
@@ -88,13 +53,13 @@
 </cs-modal>
 
 <!-- GUEST CHECKOUT MODAL -->
-<cs-modal id="guestCheckoutModal" backdrop="static" [onCloseFn]="onCloseModal">
+<cs-modal [id]="guestModalId" backdrop="static" [onCloseFn]="onCloseModal">
   <cs-modal-header>
     <h4 class="modal-title text-primary user-select-none">Checkout As Guest</h4>
   </cs-modal-header>
   <cs-modal-body>
     <form class="container-sm" [formGroup]="guestForm">
-      <div class="text-center">Please fill your email and name</div>
+      <div class="text-center fs-5 user-select-none">Please fill your email and name</div>
 
       <div class="input-group has-validation mt-3">
         <span class="input-group-text rounded-end-0">@</span>
@@ -158,10 +123,25 @@
     </div>
   </cs-modal-body>
   <cs-modal-footer class="justify-content-between flex-column flex-sm-row">
+    <ng-container *ngTemplateOutlet="modalPurchaseButton"></ng-container>
+    <cs-modal-button class="btn btn-outline-danger"
+                     [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-0': _windowWidth >= _switchWidth}"
+                     [modal-id]="cartModalId">Go Back
+    </cs-modal-button>
+    <cs-modal-button class="btn btn-outline-secondary"
+                     [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-2': _windowWidth >= _switchWidth}">Close
+    </cs-modal-button>
+  </cs-modal-footer>
+</cs-modal>
+
+<!--PURCHASE BUTTON TEMPLATE-->
+<ng-template #modalPurchaseButton>
+  <div class="btn-group dropup"
+       [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-1': !isUserPresent && _windowWidth >= _switchWidth}">
     <button type="button"
             [disabled]="guestForm.invalid"
             class="btn btn-outline-success"
-            [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-1' : _windowWidth >= _switchWidth}"
+            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
             (click)="onBuy()">
         <span *ngIf="_selectedCoupons.length > 0">
           {{ 'buy for ' | titlecase }}
@@ -170,12 +150,31 @@
         </span>
       <span *ngIf="_selectedCoupons.length === 0">{{ 'select coupons for purchase' | titlecase }}</span>
     </button>
-    <cs-modal-button class="btn btn-outline-danger"
-                     [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-0' : _windowWidth >= _switchWidth}"
-                     [modal-id]="'cartModal'">Go Back
-    </cs-modal-button>
-    <cs-modal-button class="btn btn-outline-secondary" [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-2' :
-    _windowWidth >= _switchWidth}">Close
-    </cs-modal-button>
-  </cs-modal-footer>
-</cs-modal>
+    <button type="button"
+            style="min-width: 35px"
+            class="btn btn-outline-success dropdown-toggle dropdown-toggle-split border-start-0"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
+            aria-expanded="false">
+      <span class="visually-hidden">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end drop-shadow-high text-nowrap align-self-center">
+      <li class="ps-2 pe-2">
+        <div class="form-check user-select-none m-2" (click)="onMoveToWishCheckboxClick()">
+          <input class="form-check-input drop-shadow-low"
+                 style="cursor: pointer"
+                 type="checkbox"
+                 unfocus
+                 id="moveToWishCheckbox"
+                 [checked]="isMoveToWish">
+          <label class="form-check-label text-hover"
+                 style="cursor: pointer"
+                 (click)="onMoveToWishCheckboxClick()"
+                 [ngClass]="{'text-primary': isMoveToWish}"
+                 for="moveToWishCheckbox">{{ 'move to wish on purchase' | titlecase }}
+          </label>
+        </div>
+      </li>
+    </ul>
+  </div>
+</ng-template>

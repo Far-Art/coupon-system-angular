@@ -9,7 +9,7 @@ export class AuthInterceptorService implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.authData?.idToken;
+    const token = this.authService.user.authData.idToken;
     if (token == null) {
       return next.handle(req);
     }

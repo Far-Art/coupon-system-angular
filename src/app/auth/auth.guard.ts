@@ -10,7 +10,7 @@ export const authGuard: CanActivateFn = async () => {
 
   const user = await firstValueFrom(authService.user$);
 
-  if (user != null) {
+  if (user.type !== 'guest') {
     router.navigate(['/account']);
     return false;
   }

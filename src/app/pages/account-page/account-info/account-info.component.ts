@@ -18,7 +18,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.subscription = this.accountService.user$.subscribe(user => this.user = user);
+    this.subscription = this.accountService.user$.subscribe((user: UserData) => this.user = user);
   }
 
   ngOnDestroy(): void {

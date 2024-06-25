@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, concatMap, filter, from, map, mergeMap, Observable, of, take, tap, toArray} from 'rxjs';
 import {Coupon} from '../../../../../shared/models/coupon.model';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
+import {AuthService} from '../../../../../auth/auth.service';
 
 
 export interface Controls {
@@ -41,12 +42,16 @@ export class FilterService {
 
   private filtersSubject = new BehaviorSubject<Filters>(this.createOrUpdateFilters(null));
 
+  constructor(private couponsService: CouponsService, private authService: AuthService) {
+    this.initInitialFilters();
+  }
+
   get filters$() {
     return this.filtersSubject.asObservable();
   }
 
-  constructor(private couponsService: CouponsService) {
-    this.initInitialFilters();
+  get userType$() {
+    return this.authService.user$.pipe(map(user => user.type));
   }
 
   updateDisplayedCoupons(filters: Filters | null): void {

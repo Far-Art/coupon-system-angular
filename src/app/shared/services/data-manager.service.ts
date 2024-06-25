@@ -15,7 +15,7 @@ export class DataManagerService {
     return this.http.get<UserData>(`https://couponsasartng-default-rtdb.firebaseio.com/users/${id}.json`);
   }
 
-  putUserData(id: string, data: UserData): Observable<UserData> {
+  putUserData(id: string, data: Omit<Partial<UserData>, 'authData'>): Observable<UserData> {
     return this.http.put<UserData>(`https://couponsasartng-default-rtdb.firebaseio.com/users/${id}.json`, data);
   }
 

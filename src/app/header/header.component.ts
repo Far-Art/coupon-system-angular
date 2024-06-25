@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private contentNode: Node;
 
   userName: string;
-  user: UserData;
+  user: Partial<UserData>;
   padding: string;
 
   private paddingNarrow = 'pt-1 pb-1';
@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.authSub = this.authService.user$.subscribe(user => {
       this.user     = user;
-      this.userName = this.userName = user != null && user.name != null ? user.name : 'Guest';
+      this.userName = this.userName = user.name || 'Guest';
     });
 
     this.scrollService.scrollPosition$().subscribe(s => {

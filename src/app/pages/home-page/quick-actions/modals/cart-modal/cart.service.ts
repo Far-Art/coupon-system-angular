@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AuthService} from '../../../../../auth/auth.service';
-import {catchError, concatMap, map, Observable, take, tap, throwError} from 'rxjs';
+import {catchError, concatMap, map, Observable, of, take, tap, throwError} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DataManagerService} from '../../../../../shared/services/data-manager.service';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
@@ -17,42 +17,42 @@ export class CartService {
       private couponsService: CouponsService
   ) { }
 
-  private userDataBackup: UserData;
+  private userDataBackup: Partial<UserData>;
 
-  buyCoupons$(purchased: Coupon[], options?: { moveToWIsh?: boolean }): Observable<UserData> {
+  buyCoupons$(purchased: Coupon[], options?: { moveToWIsh?: boolean }): Observable<Partial<UserData>> {
     return this.authService.user$.pipe(
         take(1),
         tap(user => this.backupUserData(user)),
         concatMap(user => this.updateUserCoupons(user, purchased)),
-        concatMap(user => this.dataManager.putUserData(this.authService.authData.localId, user)),
+        concatMap(user => user.type !== 'guest' ? this.dataManager.putUserData(user.authData.localId, user) : of(user)),
         tap(() => this.couponsService.removeFromCart(...purchased)),
         tap(() => options?.moveToWIsh ? this.couponsService.addToWish(...purchased) : null),
-        tap(user => this.authService.updateUser(user, true)),
+        tap(user => this.authService.updateUser({user: user, immediate: true})),
         catchError(this.handleError)
     );
   }
 
   isUserPresent$(): Observable<boolean> {
-    return this.authService.user$.pipe(map(user => !!user?.email));
+    return this.authService.user$.pipe(map(user => user.type !== 'guest'));
   }
 
-  private updateUserCoupons(user: UserData, purchased: Coupon[]): Observable<UserData> {
+  private updateUserCoupons(user: Partial<UserData>, purchased: Coupon[]): Observable<Partial<UserData>> {
     return this.couponsService.cartIds$.pipe(
         take(1),
-        tap(() => user.couponsBought = user.couponsBought != null ? user.couponsBought : []),
+        tap(() => user.couponsPurchased = user.couponsPurchased || []),
         map(() => purchased.map(v => v.params.id)),
-        tap(purchased => user.couponsBought.push(...purchased)),
+        tap(purchased => user.couponsPurchased.push(...purchased)),
         tap(purchased => user.couponsInCart = user.couponsInCart.filter(cartId => !purchased.includes(cartId))),
         map(() => user)
     );
   }
 
-  private backupUserData(user: UserData): void {
+  private backupUserData(user: Partial<UserData>): void {
     this.userDataBackup = JSON.parse(JSON.stringify(user));
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    this.authService.updateUser(this.userDataBackup);
+    this.authService.updateUser({user: this.userDataBackup});
     if (!error?.error || !error?.error?.error) {
       return throwError(() => new Error('Unknown error occurred'));
     }

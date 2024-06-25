@@ -53,7 +53,7 @@ export class ModalComponent implements OnInit, OnChanges {
     this.selfId    = this.id;
     this.labeledBy = this.id + '-label';
     this.clazz     = 'modal fade' + (this.clazz ? ' ' + this.clazz : '');
-    this.service.registerModal(this);
+    (this.service as any).registerModal(this);
   }
 
   ngOnChanges(): void {

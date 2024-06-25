@@ -5,6 +5,7 @@ import {Coupon} from '../../../../../shared/models/coupon.model';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
 import {WindowSizeService} from '../../../../../shared/services/window-size.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ModalService} from '../../../../../shared/components/modal/modal.service';
 
 
 @Component({
@@ -13,6 +14,9 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./cart-modal.component.scss']
 })
 export class CartModalComponent implements OnInit, OnDestroy {
+
+  readonly cartModalId  = 'cartModal';
+  readonly guestModalId = 'guestCheckoutModal';
 
   guestForm: FormGroup<{ email: FormControl<string>, name: FormControl<string> }>;
 
@@ -41,7 +45,8 @@ export class CartModalComponent implements OnInit, OnDestroy {
   constructor(
       private couponsService: CouponsService,
       private cartService: CartService,
-      private windowSize: WindowSizeService
+      private windowSize: WindowSizeService,
+      private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -83,9 +88,14 @@ export class CartModalComponent implements OnInit, OnDestroy {
     if (this._selectedCoupons.length > 0) {
       this.isLoading = true;
       this.cartService.buyCoupons$(this._selectedCoupons, {moveToWIsh: this.isMoveToWish}).pipe(
-          delay(1000)
+          delay(1500)
       ).subscribe({
         next: () => {
+          if (this.cartList.length === 0) {
+            this.modalService.close(this.guestModalId);
+          } else if (!this.isUserPresent) {
+            this.modalService.open(this.cartModalId);
+          }
           this.isLoading = false;
         }, error: (err: Error) => {
           this.isLoading    = false;

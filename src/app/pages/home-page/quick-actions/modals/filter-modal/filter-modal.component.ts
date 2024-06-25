@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {Filters, FilterService} from './filter.service';
-import {Subscription} from 'rxjs';
+import {concatMap, Subscription, tap} from 'rxjs';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../../../../auth/auth.service';
 
 
 type MainFormType<T> = {
@@ -22,13 +21,23 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
   filters: Filters | null;
 
   private filtersSub: Subscription;
-  private authSub: Subscription;
 
-  constructor(private filterService: FilterService, private authService: AuthService) {}
+  constructor(private filterService: FilterService) {}
 
   ngOnInit(): void {
-    this.filtersSub = this.filterService.filters$.subscribe(filters => {
-      this.filters = filters;
+    this.filtersSub = this.filterService.filters$.pipe(
+        tap(filters => this.filters = filters),
+        concatMap(() => this.filterService.userType$),
+        tap(type => {
+          const isGuest              = type === 'guest';
+          this.filters.hidePurchased = {
+            isDisabled: isGuest,
+            isChecked: !isGuest,
+            isApplied: !isGuest
+          };
+        }),
+        tap(() => this.filterService.updateDisplayedCoupons(this.filters))
+    ).subscribe(() => {
       if (!this.form) {
         this.form     = this.initForm() as FormGroup<MainFormType<Filters>>;
         this.prevForm = this.initForm() as FormGroup<MainFormType<Filters>>;
@@ -36,10 +45,6 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
         this.updateForm(this.form);
         this.updateForm(this.prevForm);
       }
-    });
-
-    this.authSub = this.authService.user$.subscribe(() => {
-      this.filterService.updateDisplayedCoupons(null);
     });
   }
 
@@ -151,12 +156,15 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private initHidePurchased() {
-    return new FormGroup({
+    const group = new FormGroup({
       isApplied: new FormControl(this.filters.hidePurchased.isApplied),
       isChecked: new FormControl(this.filters.hidePurchased.isChecked),
       isDisabled: new FormControl(this.filters.hidePurchased.isDisabled)
     });
-
+    if (this.filters.hidePurchased.isDisabled) {
+      group.disable();
+    }
+    return group;
   }
 
   private initPriceRange() {
@@ -184,7 +192,6 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.filtersSub.unsubscribe();
-    this.authSub.unsubscribe();
   }
 
 }

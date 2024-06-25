@@ -23,15 +23,15 @@ export class PurchasedComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.user$.pipe(take(1)).subscribe(user => {
-      this.coupons = this.couponsService.getCouponsById(...user.couponsBought || []);
+      this.coupons = this.couponsService.getCouponsById(...user.couponsPurchased || []);
     });
   }
 
   onPurchaseClear() {
     this.accountService.user$.pipe(
         take(1),
-        tap(user => user.couponsBought.length = 0),
-        concatMap(user => this.dataManager.putUserData(user.userId, user).pipe(take(1))),
+        tap(user => user.couponsPurchased.length = 0),
+        concatMap(user => this.dataManager.putUserData(user.authData.localId, user).pipe(take(1))),
         tap(user => this.accountService.updateUser(user))
     ).subscribe({
       next: () => {
