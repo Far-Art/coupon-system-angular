@@ -30,11 +30,8 @@ export class ModalComponent implements OnInit, OnChanges {
     }
   }
 
-  @HostListener('hide.bs.modal') protected _isHiddenListener = () => {
-    // timeout allows close animation to play correctly
-    setTimeout(() => {
-      this.isShown = false;
-    }, 400)
+  @HostListener('hidden.bs.modal') protected _isHiddenListener = () => {
+    this.isShown = false;
     if (this.onCloseFn) {
       this.onCloseFn();
     }
