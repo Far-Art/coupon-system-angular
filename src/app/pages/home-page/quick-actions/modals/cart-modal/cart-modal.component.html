@@ -139,7 +139,7 @@
   <div class="btn-group dropup"
        [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-1': !isUserPresent && _windowWidth >= _switchWidth}">
     <button type="button"
-            [disabled]="guestForm.invalid"
+            [disabled]="!isUserPresent && guestForm.invalid"
             class="btn btn-outline-success"
             [ngClass]="{'w-100': _windowWidth < _switchWidth}"
             (click)="onBuy()">

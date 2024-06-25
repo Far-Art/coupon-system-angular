@@ -37,7 +37,7 @@ export class PurchasedComponent implements OnInit {
       next: () => {
         this.coupons.length = 0;
       },
-      error: err => {},
+      error: () => {},
       complete: () => {
         this.coupons.length = 0;
       }
