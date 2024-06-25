@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService, LoginData, LoginForm, UserType} from '../auth.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {delay, Subscription, take} from 'rxjs';
+import {Subscription, take} from 'rxjs';
 
 
 @Component({
@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     this.isLoading = true;
-    this.authService.login(credentials).pipe(take(1),delay(1500)).subscribe({
+    this.authService.login(credentials).pipe(take(1)).subscribe({
       next: () => {
         this.isLoading = false;
         this.router.navigate(['/']);

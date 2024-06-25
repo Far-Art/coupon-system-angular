@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {BehaviorSubject, catchError, concatMap, map, Observable, take, tap, throwError} from 'rxjs';
+import {BehaviorSubject, catchError, concatMap, delay, map, Observable, take, tap, throwError} from 'rxjs';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FirebaseResponseModel} from './models/firebase-response.model';
 import {UserData} from '../shared/models/user-data.model';
@@ -111,6 +111,7 @@ export class AuthService {
           password: login.password,
           returnSecureToken: true
         }).pipe(
+        delay(1500),
         map(response => ({authData: response} as Partial<UserData>)),
         concatMap(user => this.dataManager.fetchUserData(user.authData.localId)
             .pipe(
