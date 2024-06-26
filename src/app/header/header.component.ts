@@ -4,6 +4,7 @@ import {AuthService} from '../auth/auth.service';
 import {ScrollbarService} from '../shared/services/scrollbar.service';
 import {UserData} from '../shared/models/user-data.model';
 import {HeaderService} from './header.service';
+import {Themes, ThemeService} from '../shared/services/theme.service';
 
 
 @Component({
@@ -24,6 +25,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: Partial<UserData>;
   padding: string;
 
+  theme: Themes
+
   private paddingNarrow = 'pt-1 pb-1';
   private paddingWide   = 'pt-4 pb-4';
 
@@ -33,10 +36,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       private authService: AuthService,
       private scrollService: ScrollbarService,
       private renderer: Renderer2,
-      private headerService: HeaderService
+      private headerService: HeaderService,
+      private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
+    this.theme      = this.themeService.currentTheme;
     this.parentNode = (this.headerContent.element.nativeElement as HTMLElement).previousSibling;
     this.padding    = this.paddingWide;
 
@@ -67,6 +72,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.authSub.unsubscribe();
+  }
+
+  onThemeCycle(theme?: Themes) {
+    if (theme) {
+      this.theme = this.themeService.setTheme(theme);
+    } else {
+      this.theme = this.themeService.cycle();
+    }
   }
 
 }

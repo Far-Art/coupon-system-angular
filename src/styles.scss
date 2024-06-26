@@ -1,15 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 
-// Main Palette
+// Light Palette
 $color-red-100: #faebed;
 $color-red-300: #d74747;
+$color-red-400: #c21639;
 $color-red-500: #e7103d;
 $color-red-600: #A0153E;
-$color-red-700: #5D0E41;
-$color-blue-700: #00224D;
+$color-red-700: rgb(120, 0, 10);
 $color-white: rgb(255, 255, 255);
 $color-white-transparent: rgba(255, 255, 255, 0.65);
 $color-white-semi-transparent: rgba(255, 255, 255, 0.85);
+
+// Dark Palette
+$color-blue-200: rgb(160, 160, 220);
+$color-blue-300: rgb(70, 70, 120);
+$color-blue-400: rgb(50, 50, 80);
+$color-blue-500: rgb(40, 40, 70);
+$color-blue-600: rgba(25, 25, 50, 0.96);
+$color-dark-semi-transparent: rgba(25, 25, 50, 0.85);
+
 
 $shadow-elevation-low: 0 1px 1px rgba(0, 0, 0, 0.035),
 0 2px 2px rgba(0, 0, 0, 0.035),
@@ -58,6 +67,12 @@ button:disabled {
 
 img {
   max-width: 100%;
+}
+
+.form-floating {
+  > label {
+    border-width: 0 !important;
+  }
 }
 
 .transition-duration {
@@ -196,5 +211,198 @@ img {
 @media (hover: none) {
   *:hover {
     text-decoration: inherit !important;
+  }
+}
+
+// DARK THEME
+body[theme="dark"] {
+
+  * {
+    border-color: $color-blue-500 !important;
+  }
+
+  button {
+    &.list-group-item {
+
+      &-action {
+        background-color: $color-blue-200 !important;
+      }
+    }
+  }
+
+  input {
+    &:not(:checked) {
+      background-color: $color-blue-400;
+    }
+
+    &.form-control {
+      color: $color-white !important;
+
+      &::placeholder {
+        color: $color-blue-200 !important;
+      }
+    }
+  }
+
+  img {
+    filter: brightness(85%) !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $color-blue-200 !important;
+  }
+
+  p {
+    color: $color-blue-200;
+  }
+
+  .bg {
+
+    &-light {
+      background-color: $color-blue-500 !important;
+    }
+
+    &-primary {
+
+      .form-check-input {
+        border-color: transparent !important;
+      }
+    }
+  }
+
+  .text {
+    &-danger {
+      color: $color-red-600 !important;
+    }
+
+    &-light {
+      color: $color-blue-600 !important;
+    }
+
+    &-dark, &-secondary {
+      color: $color-blue-200 !important;
+    }
+
+  }
+
+  .offcanvas {
+    background-color: $color-blue-400 !important;
+
+    .list-group-item-action {
+      background-color: $color-blue-400 !important;
+      color: $color-blue-200 !important;
+
+      &.active {
+        background-color: $color-red-400 !important;
+        color: $color-white !important;
+      }
+    }
+  }
+
+  .form-floating {
+    select {
+      color: $color-white !important;
+      background-color: $color-blue-400 !important;
+    }
+
+    label {
+      color: $color-blue-200 !important;
+
+      &::after {
+        background-color: $color-blue-400 !important;
+      }
+    }
+
+    .form-control {
+      color: $color-white !important;
+
+      &::placeholder {
+        color: transparent !important;
+      }
+    }
+  }
+
+  .input-group-text {
+    color: $color-blue-200 !important;
+    background-color: $color-blue-300 !important;
+  }
+
+  .dropdown {
+    &-menu, &-item {
+      color: $color-blue-200 !important;
+      background-color: $color-blue-400 !important;
+    }
+
+    &-item {
+      &:hover {
+        color: $color-blue-200 !important;
+        background-color: $color-blue-300 !important;
+      }
+    }
+  }
+
+  .btn-close {
+    filter: invert(1);
+  }
+
+  .card {
+    border-color: $color-dark-semi-transparent !important;
+    background-color: $color-blue-500 !important;
+
+    &-title {
+      color: $color-blue-200 !important;
+    }
+
+    &-header {
+      background-color: $color-blue-400 !important;
+
+      .active {
+        background-color: $color-blue-500 !important;
+        color: $color-white !important;
+      }
+    }
+  }
+
+  .modal-content {
+    background-color: $color-blue-600 !important;
+  }
+
+  .modal-body, .accordion-body {
+    background-color: $color-blue-600 !important;
+    color: $color-blue-200 !important;
+
+    > * {
+      color: $color-blue-200 !important;
+    }
+  }
+
+  .modal-header, .modal-footer {
+    background-color: $color-blue-500 !important;
+  }
+
+  .accordion-header {
+    background-color: $color-blue-500 !important;
+
+    > * {
+      color: $color-white-transparent !important;
+    }
+  }
+
+  .accordion-button {
+    &:not(.collapsed) {
+      color: $color-red-500 !important;
+    }
+
+    &::after {
+      filter: invert(1);
+    }
+  }
+
+  .bg-light-semi-transparent {
+    background-color: $color-dark-semi-transparent !important;
+  }
+
+  .bg-main {
+    background-image: url('./assets/images/dark/main-bg-dark.png');
   }
 }

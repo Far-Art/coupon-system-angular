@@ -28,6 +28,29 @@
            class="list-group-item list-group-item-action pt-3 pb-3">
           My Account
         </a>
+
+        <a
+            class="d-flex flex-column text-center justify-content-center list-group-item list-group-item-action pt-3 pb-3 position-absolute bottom-0 end-0">
+          <div class="mb-2">Theme</div>
+          <div class="btn-group w-100 mb-5" role="group" aria-label="theme select buttons">
+            <input type="radio" class="btn-check" name="theme-select" id="light-theme" autocomplete="off"
+                   [checked]="theme==='light'" (click)="onThemeCycle('light')">
+            <label class="btn border-end-0"
+                   [ngClass]="{'btn-outline-primary': theme ==='light', 'btn-outline-secondary': theme !== 'light'}"
+                   for="light-theme">Light</label>
+            <input type="radio" class="btn-check" name="theme-select" id="auto-theme" autocomplete="off"
+                   [checked]="theme==='system'" (click)="onThemeCycle('system')">
+            <label class="btn"
+                   [ngClass]="{'btn-outline-primary': theme ==='system', 'btn-outline-secondary': theme !== 'system'}"
+                   for="auto-theme">System</label>
+            <input type="radio" class="btn-check" name="theme-select" id="dark-theme" autocomplete="off"
+                   [checked]="theme==='dark'" (click)="onThemeCycle('dark')">
+            <label class="btn border-start-0"
+                   [ngClass]="{'btn-outline-primary': theme ==='dark', 'btn-outline-secondary': theme !== 'dark'}"
+                   for="dark-theme">Dark</label>
+          </div>
+        </a>
+
       </div>
     </sc-offcanvas>
   </div>
