@@ -26,14 +26,12 @@ export class ModalButtonComponent implements OnInit, OnChanges {
       @Self() private selfRef: ElementRef,
       private renderer: Renderer2,
       private service: ModalService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.modalId      = this.modalId || this.hostModal?.id;
     this.dataBsTarget = '#' + this.modalId;
-    // this.dataBsDismiss = 'modal';
-    // this.role          = 'button';
-    this.hostClazz = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
+    this.hostClazz    = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
     (this.service as any).registerButton(this.modalId, this);
   }
 
