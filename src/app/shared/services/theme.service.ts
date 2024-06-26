@@ -1,26 +1,26 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 
-export type Themes = 'dark' | 'light' | 'system';
+export type Themes = 'dark' | 'light' | 'device';
 
 @Injectable()
 export class ThemeService {
 
   private renderer: Renderer2;
 
-  private currentThemeValue: Themes = 'system';
+  private currentThemeValue: Themes = 'device';
 
   private prefersDarkTheme: boolean;
 
   constructor(rendererFactory: RendererFactory2) {
     this.renderer         = rendererFactory.createRenderer(null, null);
     this.prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    this.setTheme('system');
+    this.setTheme('device');
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ({matches}) => {
-      if (this.currentThemeValue === 'system') {
+      if (this.currentThemeValue === 'device') {
         this.prefersDarkTheme = matches;
-        this.setTheme('system');
+        this.setTheme('device');
       }
     });
   }
@@ -30,7 +30,7 @@ export class ThemeService {
   }
 
   setTheme(theme: Themes) {
-    if (theme === 'dark' || (theme === 'system' && this.prefersDarkTheme)) {
+    if (theme === 'dark' || (theme === 'device' && this.prefersDarkTheme)) {
       this.setThemeOnBody('dark')
     } else {
       this.setThemeOnBody('light');
@@ -44,8 +44,8 @@ export class ThemeService {
       case 'light':
         return this.setTheme('dark');
       case 'dark':
-        return this.setTheme('system');
-      case 'system':
+        return this.setTheme('device');
+      case 'device':
         return this.setTheme('light');
     }
   }

@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: Partial<UserData>;
   padding: string;
 
-  theme: Themes
+  theme: Themes;
 
   private paddingNarrow = 'pt-1 pb-1';
   private paddingWide   = 'pt-4 pb-4';

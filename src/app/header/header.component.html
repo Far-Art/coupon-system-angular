@@ -39,10 +39,10 @@
                    [ngClass]="{'btn-outline-primary': theme ==='light', 'btn-outline-secondary': theme !== 'light'}"
                    for="light-theme">Light</label>
             <input type="radio" class="btn-check" name="theme-select" id="auto-theme" autocomplete="off"
-                   [checked]="theme==='system'" (click)="onThemeCycle('system')">
+                   [checked]="theme==='device'" (click)="onThemeCycle('device')">
             <label class="btn"
-                   [ngClass]="{'btn-outline-primary': theme ==='system', 'btn-outline-secondary': theme !== 'system'}"
-                   for="auto-theme">System</label>
+                   [ngClass]="{'btn-outline-primary': theme ==='device', 'btn-outline-secondary': theme !== 'device'}"
+                   for="auto-theme">Device</label>
             <input type="radio" class="btn-check" name="theme-select" id="dark-theme" autocomplete="off"
                    [checked]="theme==='dark'" (click)="onThemeCycle('dark')">
             <label class="btn border-start-0"
