@@ -1,6 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 // Light Palette
+$color-success: #198754;
+$color-success-light: #26d780;
+$color-success-dark: #0f5435;
+$color-secondary: #6c757d;
+$color-danger: #dc3545;
+
 $color-red-100: #faebed;
 $color-red-300: #d74747;
 $color-red-400: #c21639;
@@ -227,6 +233,10 @@ body[theme="dark"] {
       &-action {
         background-color: $color-blue-200 !important;
       }
+
+      &-success {
+        background-color: $color-success-light !important;
+      }
     }
   }
 
@@ -249,11 +259,19 @@ body[theme="dark"] {
   }
 
   h1, h2, h3, h4, h5, h6 {
-    color: $color-blue-200 !important;
+    color: $color-blue-200;
+
+    &.text-primary {
+      color: $color-red-500 !important;
+    }
   }
 
   p {
     color: $color-blue-200;
+  }
+
+  .nav-link {
+    border-color: transparent !important;
   }
 
   .bg {
@@ -270,17 +288,50 @@ body[theme="dark"] {
     }
   }
 
+
   .text {
     &-danger {
       color: $color-red-600 !important;
+
+      circle {
+        stroke: $color-red-600 !important;
+      }
     }
 
     &-light {
       color: $color-blue-600 !important;
+
+      circle {
+        stroke: $color-blue-600 !important;
+      }
     }
 
-    &-dark, &-secondary {
+    &-secondary {
       color: $color-blue-200 !important;
+
+      circle {
+        stroke: $color-blue-600 !important;
+      }
+    }
+
+    &-dark {
+      color: $color-blue-300 !important;
+
+      circle {
+        stroke: $color-blue-600 !important;
+      }
+    }
+
+    &-primary circle {
+      stroke: $color-red-500 !important;
+    }
+
+    &-white circle {
+      stroke: $color-white !important;
+    }
+
+    &-success circle {
+      stroke: $color-success !important;
     }
 
   }
@@ -341,8 +392,28 @@ body[theme="dark"] {
     }
   }
 
-  .btn-close {
-    filter: invert(1);
+  .btn {
+    &-close {
+      filter: invert(1);
+    }
+
+    &-outline {
+      &-success {
+        border-color: $color-success !important;
+      }
+
+      &-primary {
+        border-color: $color-red-500 !important;
+      }
+
+      &-secondary {
+        border-color: $color-secondary !important;
+      }
+
+      &-danger {
+        border-color: $color-danger !important;
+      }
+    }
   }
 
   .card {

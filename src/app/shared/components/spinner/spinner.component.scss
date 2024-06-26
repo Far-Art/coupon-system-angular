@@ -72,38 +72,3 @@ circle {
     stroke-dashoffset: -120px;
   }
 }
-
-// DARK THEME
-body[theme="dark"] {
-  .text-primary circle {
-    stroke: $primary !important;
-  }
-
-  .text-secondary circle {
-    stroke: $color-blue-500 !important;
-  }
-
-  .text-light circle {
-    stroke: $color-blue-200 !important;
-  }
-
-  .text-white circle {
-    stroke: $color-white !important;
-  }
-
-  .text-success circle {
-    stroke: $success !important;
-  }
-
-  .text-danger circle {
-    stroke: $color-red-700 !important;
-  }
-
-  .text-info circle {
-    stroke: $info !important;
-  }
-
-  .text-dark circle {
-    stroke: $color-blue-600 !important;
-  }
-}
