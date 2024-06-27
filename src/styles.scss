@@ -227,6 +227,7 @@ body[theme="dark"] {
     &.list-group-item {
 
       &-action {
+        color: $color-blue-500 !important;
         background-color: $color-blue-200 !important;
       }
 
