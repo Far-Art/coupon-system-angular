@@ -88,10 +88,6 @@ img {
   transition-duration: 300ms;
 }
 
-.color-white {
-  color: $color-white !important;
-}
-
 .drop-shadow-low {
   box-shadow: $shadow-elevation-low;
 }
@@ -114,20 +110,10 @@ img {
   background-color: $color-red-100;
 }
 
-.bg-light-transparent {
-  background-color: $color-white-transparent;
-  box-shadow: $shadow-elevation-low;
-  backdrop-filter: blur(5px);
-}
-
 .bg-light-semi-transparent {
   background-color: $color-white-semi-transparent;
   box-shadow: $shadow-elevation-low;
   backdrop-filter: blur(6px);
-}
-
-.top-5rem {
-  top: 5rem;
 }
 
 .pt-6 {

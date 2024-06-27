@@ -86,7 +86,7 @@ export class CouponsService {
     this.cartSubject.next(this.cartSubject.value);
   }
 
-  removeFromWish(...coupons: Coupon[] | number[]) {
+  removeFromWish(...coupons: (Coupon | number)[]) {
     coupons.forEach((c: Coupon | number) => this.removeCoupon(c, this.wishSubject.value));
     this.auth.updateUser({user: {couponsInWish: this.wishSubject.value.map((c: Coupon | number) => c instanceof Coupon ? c.params.id : c)}});
     this.wishSubject.next(this.wishSubject.value);

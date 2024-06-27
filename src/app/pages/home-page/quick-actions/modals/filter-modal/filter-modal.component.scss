@@ -1,19 +1,11 @@
 @import "/src/styles";
 
-.modal-body {
-  max-height: 70vh;
-}
-
 .form-check-label, .form-check-input, .text-hover {
   cursor: pointer;
 
   &:hover {
     text-decoration: underline;
   }
-}
-
-.form-control.ng-invalid {
-  border-color: $color-red-500;
 }
 
 .left-90 {
