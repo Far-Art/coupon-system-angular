@@ -9,7 +9,7 @@ import {AuthService} from './auth/auth.service';
 })
 export class AppComponent implements OnInit {
 
-  title = 'coupon-system-angular';
+  static title = 'coupon system angular';
 
   constructor(private authService: AuthService) {}
 

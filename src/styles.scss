@@ -216,6 +216,13 @@ body[theme="dark"] {
     border-color: $color-blue-500 !important;
   }
 
+  table {
+    td, th {
+      background-color: $color-blue-400 !important;
+      color: $color-blue-200;
+    }
+  }
+
   button {
     &.list-group-item {
 
@@ -255,8 +262,12 @@ body[theme="dark"] {
     }
   }
 
-  p {
+  p, .list-group-item {
     color: $color-blue-200;
+  }
+
+  .list-group-item {
+    background-color: $color-blue-400 !important;
   }
 
   .nav-link {
