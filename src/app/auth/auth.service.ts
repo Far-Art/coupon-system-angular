@@ -84,7 +84,6 @@ export class AuthService {
   updateUser(params?: { user: Partial<UserData>, immediate?: boolean }): number {
     clearTimeout(this.setTimeout);
     const updated = Object.assign(this.userDataSubject.value || {}, params?.user);
-
     this.userDataSubject.next(updated);
     this.storeUserDataLocally();
 
@@ -187,7 +186,8 @@ export class AuthService {
       image: params?.signup?.image || null,
       couponsPurchased: [],
       couponsInWish: [],
-      couponsInCart: []
+      couponsInCart: [],
+      preferredTheme: 'device'
     };
 
   }
