@@ -85,8 +85,8 @@ export class CouponCardComponent implements OnInit, OnDestroy {
 
     this.windowSizeSub = this.windowSize.windowSize$.subscribe(size => {
       if (size.width > 1200) {
-        this.renderer.setStyle(this.cardElement.nativeElement, 'width', '550px');
-        this.renderer.setStyle(this.cardElement.nativeElement, 'height', '320px');
+        this.renderer.setStyle(this.cardElement.nativeElement, 'width', '450px');
+        this.renderer.setStyle(this.cardElement.nativeElement, 'height', '260px');
         this.renderer.setStyle(this.cardTitle.nativeElement, 'font-size', '1rem');
         this.titleMaxLen = 40;
       } else if (size.width > 810) {
