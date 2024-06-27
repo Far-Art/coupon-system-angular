@@ -53,11 +53,14 @@ body {
 html, body {
   min-height: 100vh;
   height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
 }
 
 @supports (height: 100svh) {
   html, body {
     height: 100svh;
+    width: 100svw;
   }
 }
 

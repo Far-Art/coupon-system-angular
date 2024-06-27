@@ -9,7 +9,6 @@ import {CoreModule} from './core/core.module';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EmptyPageComponent} from './pages/empty-page/empty-page.component';
-import {ManageAccountComponent} from './pages/account-page/manage-account/manage-account.component';
 import {ThemeService} from './shared/services/theme.service';
 
 
@@ -17,8 +16,7 @@ import {ThemeService} from './shared/services/theme.service';
   declarations: [
     AppComponent,
     FooterComponent,
-    EmptyPageComponent,
-    ManageAccountComponent
+    EmptyPageComponent
   ],
   imports: [
     BrowserModule,

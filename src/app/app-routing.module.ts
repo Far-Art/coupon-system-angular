@@ -8,6 +8,7 @@ const routes: Routes = [
   {path: 'home', loadChildren: () => import('./pages/home-page/home-page.module').then(m => m.HomePageModule)},
   {path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
   {path: 'account', loadChildren: () => import('./pages/account-page/account-page.module').then(m => m.AccountPageModule)},
+  {path: 'docs', loadChildren: () => import('./pages/documentation-page/documentation.module').then(m => m.DocumentationModule)},
   {path: '**', component: EmptyPageComponent}
 ];
 

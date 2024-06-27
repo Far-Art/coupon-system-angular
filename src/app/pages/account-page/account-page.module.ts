@@ -5,11 +5,12 @@ import {AccountRoutingModule} from './account-routing.module';
 import {HeaderModule} from '../../header/header.module';
 import {AccountInfoComponent} from './account-info/account-info.component';
 import {AccountService} from './account.service';
-import { AccountEditComponent } from './account-edit/account-edit.component';
-import { PurchasedComponent } from './purchased/purchased.component';
+import {AccountEditComponent} from './account-edit/account-edit.component';
+import {PurchasedComponent} from './purchased/purchased.component';
 import {SharedModule} from '../../shared/shared.module';
 import {CoreModule} from '../../core/core.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {ManageAccountComponent} from './manage-account/manage-account.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     AccountPageComponent,
     AccountInfoComponent,
     AccountEditComponent,
-    PurchasedComponent
+    PurchasedComponent,
+    ManageAccountComponent
   ],
   imports: [
     CommonModule,
