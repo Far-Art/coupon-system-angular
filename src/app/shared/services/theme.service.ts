@@ -18,16 +18,14 @@ export class ThemeService {
     this.renderer = rendererFactory.createRenderer(null, null);
 
     // subscribe to user theme changes
-    this.authService.user$.pipe(
-        filter(user => user.preferredTheme !== this.currentThemeValue)
-    ).subscribe(user => {
-      this.prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-      // prevent user from overriding
-      setTimeout(() => {
+    setTimeout(() => {
+      this.authService.user$.pipe(
+          filter(user => user.preferredTheme !== this.currentThemeValue)
+      ).subscribe(user => {
+        this.prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
         this.setTheme(user.preferredTheme);
-      })
-    });
+      });
+    })
 
     // listen to device mode changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ({matches}) => {

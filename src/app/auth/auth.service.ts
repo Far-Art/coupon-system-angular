@@ -84,8 +84,11 @@ export class AuthService {
   updateUser(params?: { user: Partial<UserData>, immediate?: boolean }): number {
     clearTimeout(this.setTimeout);
     const updated = Object.assign(this.userDataSubject.value || {}, params?.user);
-    this.userDataSubject.next(updated);
-    this.storeUserDataLocally();
+
+    setTimeout(() => {
+      this.userDataSubject.next(updated);
+      this.storeUserDataLocally();
+    });
 
     // prevent large subsequent clicks
     this.setTimeout = setTimeout(() => {
