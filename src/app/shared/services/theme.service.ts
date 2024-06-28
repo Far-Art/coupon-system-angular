@@ -1,6 +1,6 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {AuthService} from '../../auth/auth.service';
-import {filter, take} from 'rxjs';
+import {filter} from 'rxjs';
 
 
 export type Themes = 'dark' | 'light' | 'device';
@@ -15,14 +15,13 @@ export class ThemeService {
   private prefersDarkTheme: boolean;
 
   constructor(rendererFactory: RendererFactory2, private authService: AuthService) {
-    this.renderer         = rendererFactory.createRenderer(null, null);
-    this.prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    this.renderer = rendererFactory.createRenderer(null, null);
 
     // subscribe to user theme changes
     this.authService.user$.pipe(
-        filter(user => !!user.preferredTheme),
-        take(1)
+        filter(user => user.preferredTheme !== this.currentThemeValue)
     ).subscribe(user => {
+      this.prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
       this.setTheme(user.preferredTheme);
     });
 
