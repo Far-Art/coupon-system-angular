@@ -22,7 +22,7 @@ interface DateAsStringCouponParams {
   'endDate': string,
 }
 
-interface ICouponParams extends CommonCouponParams, DateCouponParams {}
+export interface ICouponParams extends CommonCouponParams, DateCouponParams {}
 
 interface ICouponConstructorParams extends CommonCouponParams, DateAsStringCouponParams {}
 

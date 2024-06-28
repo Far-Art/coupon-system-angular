@@ -12,14 +12,15 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
   @Input('modal-id') modalId: string;
   @Input('class') clazz: string;
-  @Input('disabled') disabled: boolean = false;
+  @Input('disabled') disabled: boolean                 = false;
+  @Input() type: 'close' | 'open' | 'submit' | 'reset' = 'close';
 
-  @HostBinding('id') protected id: string                              = '';
+  @HostBinding('id') protected id: string = '';
   @HostBinding('class') protected hostClazz: string;
   @HostBinding('attr.data-bs-target') protected dataBsTarget: string;
-  @HostBinding('attr.data-bs-toggle') protected dataBsToggle: string   = 'modal';
-  @HostBinding('attr.data-bs-dismiss') protected dataBsDismiss: string = 'modal';
-  @HostBinding('role') protected role: string                          = 'button';
+  @HostBinding('attr.data-bs-toggle') protected dataBsToggle: string;
+  @HostBinding('attr.data-bs-dismiss') protected dataBsDismiss: string;
+  @HostBinding('role') protected role: string;
 
   constructor(
       @Optional() private hostModal: ModalComponent,
@@ -36,6 +37,16 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    if (this.type === 'submit') {
+      this.role          = 'submit';
+      this.dataBsToggle  = null;
+      this.dataBsDismiss = null;
+    } else {
+      this.role          = 'button';
+      this.dataBsToggle  = 'modal';
+      this.dataBsDismiss = 'modal';
+    }
+
     if (this.disabled) {
       // ensure that service has registered the modal
       setTimeout(() => {

@@ -1,3 +1,7 @@
+<div *ngIf="userType === 'admin' || userType === 'company'" class="container mt-3">
+  <ng-container *ngTemplateOutlet="userType === 'company' ? createCoupon : manageUsers"></ng-container>
+</div>
+
 <div class="container mt-5">
   <router-outlet></router-outlet>
   <br>
@@ -5,3 +9,17 @@
     <cs-spinner class="ms-1" *ngIf="isLoading"></cs-spinner>
   </button>
 </div>
+
+<ng-template #createCoupon>
+  <cs-modal-button [modal-id]="'create-coupon-modal'" class="btn btn-outline-success no-outline">
+    Create Coupon
+  </cs-modal-button>
+  <cs-create-coupon-modal></cs-create-coupon-modal>
+</ng-template>
+
+<ng-template #manageUsers>
+  <cs-modal-button [modal-id]="'users-manage-modal'" class="btn btn-outline-success no-outline">
+    Manage Users
+  </cs-modal-button>
+  <cs-users-manage-modal></cs-users-manage-modal>
+</ng-template>

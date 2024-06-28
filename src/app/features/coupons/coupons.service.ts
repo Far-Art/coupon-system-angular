@@ -11,10 +11,10 @@ import {AuthService} from '../../auth/auth.service';
 })
 export class CouponsService {
 
-  private readonly defaultCouponImage = 'assets/images/empty_coupon_img.png';
+  public static readonly defaultCouponImage = 'assets/images/empty_coupon_img.png';
 
   private tempArr: Coupon[] = tempCoupons.map(val => Coupon.create(val)).map(c => {
-    if (c.params.image == null) c.params.image = this.defaultCouponImage;
+    if (c.params.image == null) c.params.image = CouponsService.defaultCouponImage;
     return c;
   });
 

@@ -1,5 +1,6 @@
 import {Component, HostBinding, HostListener, Input, OnChanges, OnInit} from '@angular/core';
 import {ModalService} from './modal.service';
+import {IdGeneratorService} from '../../services/id-generator.service';
 
 
 @Component({
@@ -12,7 +13,8 @@ export class ModalComponent implements OnInit, OnChanges {
   @Input() id: string;
   @Input() onOpenFn: (...params: any) => any;
   @Input() onCloseFn: (...params: any) => any;
-  @Input('backdrop') backdrop: boolean | 'static' = true;
+  @Input() backdrop: boolean | 'static'         = true;
+  @Input() size: 'sm' | 'default' | 'lg' | 'xl' = 'default';
 
   @HostBinding('id') protected selfId: string;
   @HostBinding('tabindex') protected tabIndex: string      = '-1';
@@ -39,14 +41,10 @@ export class ModalComponent implements OnInit, OnChanges {
 
   isShown: boolean = false;
 
-  constructor(private service: ModalService) {}
-
-  private getRandomId() {
-    return Math.random().toString(36).substring(0, 4);
-  }
+  constructor(private service: ModalService, private idGenerator: IdGeneratorService) {}
 
   ngOnInit(): void {
-    this.id        = this.id == null ? 'cs_modal_' + this.getRandomId() : this.id;
+    this.id        = this.id == null ? 'cs_modal_' + this.idGenerator.generate() : this.id;
     this.selfId    = this.id;
     this.labeledBy = this.id + '-label';
     this.clazz     = 'modal fade' + (this.clazz ? ' ' + this.clazz : '');

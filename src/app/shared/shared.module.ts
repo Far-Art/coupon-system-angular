@@ -18,7 +18,8 @@ import {SpinnerComponent} from './components/spinner/spinner.component';
 import {ModalHeaderComponent} from './components/modal/modal-header/modal-header.component';
 import {ModalBodyComponent} from './components/modal/modal-body/modal-body.component';
 import {ModalFooterComponent} from './components/modal/modal-footer/modal-footer.component';
-import { ModalButtonComponent } from './components/modal/modal-button/modal-button.component';
+import {ModalButtonComponent} from './components/modal/modal-button/modal-button.component';
+import {IdGeneratorService} from './services/id-generator.service';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { ModalButtonComponent } from './components/modal/modal-button/modal-butt
     CoreModule
   ],
   providers: [
+    IdGeneratorService,
     {provide: NgbDateParserFormatter, useClass: CsDateFormatterService},
     {provide: NgbDateAdapter, useClass: CsDateAdapterService}
   ]

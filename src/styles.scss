@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
+// TODO use :host { display: contents; } to remove host element
+
 // Light Palette
 $color-success: #198754;
 $color-success-light: #26d780;
@@ -76,6 +78,10 @@ button:disabled {
 
 img {
   max-width: 100%;
+}
+
+.no-outline {
+  border-color: transparent !important;
 }
 
 .form-floating {

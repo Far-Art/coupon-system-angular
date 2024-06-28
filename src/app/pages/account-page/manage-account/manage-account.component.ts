@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
-import {AuthService} from '../../../auth/auth.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AuthService, UserType} from '../../../auth/auth.service';
+import {map, Subscription} from 'rxjs';
 
 
 @Component({
@@ -7,11 +8,15 @@ import {AuthService} from '../../../auth/auth.service';
   templateUrl: './manage-account.component.html',
   styleUrls: ['./manage-account.component.scss']
 })
-export class ManageAccountComponent {
+export class ManageAccountComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
 
-  constructor(public authService: AuthService) {}
+  userType: UserType;
+
+  private subscription: Subscription;
+
+  constructor(private authService: AuthService) {}
 
   onLogout() {
     if (!this.isLoading) {
@@ -21,6 +26,14 @@ export class ManageAccountComponent {
         this.isLoading = false
       }, 1100);
     }
+  }
+
+  ngOnInit(): void {
+    this.subscription = this.authService.user$.pipe(map(user => user.type)).subscribe(type => this.userType = type);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

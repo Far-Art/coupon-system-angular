@@ -11,6 +11,8 @@ import {SharedModule} from '../../shared/shared.module';
 import {CoreModule} from '../../core/core.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ManageAccountComponent} from './manage-account/manage-account.component';
+import { CreateCouponModalComponent } from './manage-account/modals/create-coupon-modal/create-coupon-modal.component';
+import { UsersManageModalComponent } from './manage-account/modals/users-manage-modal/users-manage-modal.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import {ManageAccountComponent} from './manage-account/manage-account.component'
     AccountInfoComponent,
     AccountEditComponent,
     PurchasedComponent,
-    ManageAccountComponent
+    ManageAccountComponent,
+    CreateCouponModalComponent,
+    UsersManageModalComponent
   ],
   imports: [
     CommonModule,
