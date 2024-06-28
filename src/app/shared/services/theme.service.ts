@@ -10,7 +10,7 @@ export class ThemeService {
 
   private renderer: Renderer2;
 
-  private currentThemeValue: Themes;
+  private currentThemeValue: Themes = 'device';
 
   private prefersDarkTheme: boolean;
 
@@ -40,14 +40,18 @@ export class ThemeService {
   }
 
   setTheme(theme: Themes) {
+    if (theme == null) {
+      theme = this.currentThemeValue;
+    } else {
+      this.currentThemeValue = theme;
+    }
+
     if (theme === 'dark' || (theme === 'device' && this.prefersDarkTheme)) {
       this.setThemeOnBody('dark')
     } else {
       this.setThemeOnBody('light');
     }
-    this.currentThemeValue = theme;
     this.authService.updateUser({user: {preferredTheme: theme}});
-
     return theme;
   }
 

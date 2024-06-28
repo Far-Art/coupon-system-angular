@@ -41,19 +41,19 @@
           <div class="mb-2">Theme</div>
           <div class="btn-group w-100 mb-5" role="group" aria-label="theme select buttons">
             <input type="radio" class="btn-check" name="theme-select" id="light-theme" autocomplete="off"
-                   [checked]="theme==='light'" (click)="onThemeCycle('light')">
+                   [checked]="theme === 'light'" (click)="onThemeCycle('light')">
             <label class="btn border-end-0"
-                   [ngClass]="{'btn-outline-primary': theme ==='light', 'btn-outline-secondary': theme !== 'light'}"
+                   [ngClass]="{'btn-outline-primary': theme === 'light', 'btn-outline-secondary': theme !== 'light'}"
                    for="light-theme">Light</label>
             <input type="radio" class="btn-check" name="theme-select" id="auto-theme" autocomplete="off"
-                   [checked]="theme==='device'" (click)="onThemeCycle('device')">
+                   [checked]="theme === 'device'" (click)="onThemeCycle('device')">
             <label class="btn"
-                   [ngClass]="{'btn-outline-primary': theme ==='device', 'btn-outline-secondary': theme !== 'device'}"
+                   [ngClass]="{'btn-outline-primary': theme === 'device', 'btn-outline-secondary': theme !== 'device'}"
                    for="auto-theme">Device</label>
             <input type="radio" class="btn-check" name="theme-select" id="dark-theme" autocomplete="off"
-                   [checked]="theme==='dark'" (click)="onThemeCycle('dark')">
+                   [checked]="theme === 'dark'" (click)="onThemeCycle('dark')">
             <label class="btn border-start-0"
-                   [ngClass]="{'btn-outline-primary': theme ==='dark', 'btn-outline-secondary': theme !== 'dark'}"
+                   [ngClass]="{'btn-outline-primary': theme === 'dark', 'btn-outline-secondary': theme !== 'dark'}"
                    for="dark-theme">Dark</label>
           </div>
         </a>

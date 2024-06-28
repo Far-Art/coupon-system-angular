@@ -41,13 +41,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.theme      = this.themeService.currentTheme;
     this.parentNode = (this.headerContent.element.nativeElement as HTMLElement).previousSibling;
     this.padding    = this.paddingWide;
 
     this.authSub = this.authService.user$.subscribe(user => {
       this.user     = user;
       this.userName = this.userName = user.name || 'Guest';
+      this.theme    = this.themeService.currentTheme;
     });
 
     this.scrollService.scrollPosition$().subscribe(s => {
