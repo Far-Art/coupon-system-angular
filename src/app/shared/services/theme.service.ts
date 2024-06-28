@@ -22,7 +22,11 @@ export class ThemeService {
         filter(user => user.preferredTheme !== this.currentThemeValue)
     ).subscribe(user => {
       this.prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      this.setTheme(user.preferredTheme);
+
+      // prevent user from overriding
+      setTimeout(() => {
+        this.setTheme(user.preferredTheme);
+      })
     });
 
     // listen to device mode changes
