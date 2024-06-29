@@ -109,7 +109,6 @@ export class CouponsService {
   addCoupon(couponParams: ICouponParams) {
     const list = this.originCouponsSubject.value;
     list.push(Coupon.create(couponParams));
-    console.log(list)
     this.originCouponsSubject.next(list);
     // this.updateJsonFile();
   }

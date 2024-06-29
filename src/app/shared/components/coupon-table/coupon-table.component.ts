@@ -122,7 +122,6 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    console.log(this.coupons)
     this.selectedCoupons.clear();
     if (this.options?.selectAll) {
       this.coupons.map((coupon: Coupon) => coupon.params.id).forEach(id => this.selectedCoupons.add(id));
