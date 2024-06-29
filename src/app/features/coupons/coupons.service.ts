@@ -110,7 +110,6 @@ export class CouponsService {
     const list = this.originCouponsSubject.value.slice();
     list.push(Coupon.create(couponParams));
     this.originCouponsSubject.next(list);
-    // this.updateJsonFile();
   }
 
   removeCoupon(id: string) {
@@ -120,22 +119,6 @@ export class CouponsService {
       list.splice(idx, 1);
     }
     this.originCouponsSubject.next(list);
-    // this.updateJsonFile();
-  }
-
-  private updateJsonFile() {
-    const JSONToFile = (coupons: Coupon[], filename: string) => {
-      const blob = new Blob([JSON.stringify(coupons, null, 2)], {
-        type: 'application/json'
-      });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
-      a.download = `${filename}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-    };
-    JSONToFile(this.originCouponsSubject.value, 'temp-coupons');
   }
 
   /**
