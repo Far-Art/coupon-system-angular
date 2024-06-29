@@ -16,14 +16,19 @@
 </div>
 
 <div class="accordion mt-3" id="accordionTable{{randomId}}">
-  <div class="accordion-item" *ngFor="let coupon of coupons; let i = index">
-    <cs-coupon-item [index]="i"
-                    parentId="accordionTable{{randomId}}"
-                    [coupon]="coupon"
-                    [isPurchased]="isPurchased(coupon) | async"
-                    [isSaleEnded]="isSaleEnded(coupon)"
-                    [options]="{isChecked: has(coupon.params.id), noCheckbox: options.noCheckbox}"
-                    (onSelected)="onCheckHandle($event)">
-    </cs-coupon-item>
-  </div>
+  <ng-container *ngIf="coupons?.length > 0">
+    <div class="accordion-item" *ngFor="let coupon of coupons; let i = index">
+      <cs-coupon-item [index]="i"
+                      parentId="accordionTable{{randomId}}"
+                      [coupon]="coupon"
+                      [isPurchased]="isPurchased(coupon) | async"
+                      [isSaleEnded]="isSaleEnded(coupon)"
+                      [options]="{isChecked: has(coupon.params.id), noCheckbox: options.noCheckbox}"
+                      (onSelected)="onCheckHandle($event)">
+      </cs-coupon-item>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!(coupons?.length > 0)">
+    <h4 class="text-danger user-select-none">No Coupons</h4>
+  </ng-container>
 </div>
