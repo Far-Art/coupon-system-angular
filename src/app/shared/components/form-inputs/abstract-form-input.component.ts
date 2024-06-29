@@ -1,6 +1,7 @@
-import {AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit} from '@angular/core';
-import {ControlValueAccessor} from '@angular/forms';
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional} from '@angular/core';
+import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../services/id-generator.service';
+import {Subscription} from 'rxjs';
 
 
 export interface FormErrorParams<T> {
@@ -9,10 +10,9 @@ export interface FormErrorParams<T> {
 }
 
 @Component({
-  templateUrl: './abstract-form-input.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './abstract-form-input.component.html'
 })
-export class AbstractFormInputComponent<T> implements OnInit, OnChanges, ControlValueAccessor, AfterContentInit {
+export class AbstractFormInputComponent<T> implements OnInit, OnChanges, ControlValueAccessor, OnDestroy {
 
   @Input() id: string = this.idGenerator.generate();
 
@@ -26,21 +26,58 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, Control
 
   value: T;
 
+  form: FormGroup;
   isTouched: boolean;
   isPristine: boolean;
   isValid: boolean;
+  isRequired: boolean;
 
   nodeName: string;
+  formControlName: string;
+  control: AbstractControl<any, any>;
 
   errorMessages: string[] = [];
+
+  private subscription: Subscription;
 
   onChange: any  = () => {};
   onTouched: any = () => {};
 
   constructor(
       private idGenerator: IdGeneratorService,
-      private elRef: ElementRef<HTMLElement>
+      private elRef: ElementRef<HTMLElement>,
+      @Optional() private rootForm: FormGroupDirective
   ) {}
+
+  ngOnInit(): void {
+    this.form            = this.rootForm.form;
+    this.nodeName        = this.elRef.nativeElement.nodeName;
+    this.formControlName = this.elRef.nativeElement.getAttribute('formcontrolname');
+    this.control         = this.form?.get(this.formControlName) || this.form;
+    if (this.control) {
+      this.handleValueChanges();
+      this.subscription = this.control.valueChanges.subscribe(() => this.handleValueChanges());
+    }
+
+  }
+
+  private handleValueChanges() {
+    this.isValid    = this.control.valid;
+    this.isTouched  = this.control.touched;
+    this.isPristine = this.control.pristine;
+    this.isRequired = this.control.hasValidator(Validators.required);
+  }
+
+  ngOnChanges(): void {
+    // this.handleErrors();
+  }
+
+  onBlur() {
+    this.control.markAsTouched();
+    this.onChange(this.control.value);
+    this.onTouched();
+    this.handleErrors();
+  }
 
   setValue(value: T) {
     this.value = value;
@@ -70,25 +107,6 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, Control
     this.onTouched = fn;
   }
 
-  ngAfterContentInit(): void {
-    const classObserver = new MutationObserver((mutations: MutationRecord[]) => {
-      mutations.forEach(() => {
-        // this is called twice because the old class is removed and the new added
-        this.isValid    = this.elRef.nativeElement.classList.contains('ng-valid');
-        this.isTouched  = this.elRef.nativeElement.classList.contains('ng-touched');
-        this.isPristine = this.elRef.nativeElement.classList.contains('ng-pristine');
-      });
-    });
-
-    classObserver.observe(this.elRef.nativeElement, {
-      attributeFilter: ['class']
-    });
-  }
-
-  ngOnInit(): void {
-    this.nodeName = this.elRef.nativeElement.nodeName;
-  }
-
   private handleErrors() {
     this.errorMessages.length = 0;
     if (this.errors && this.isTouched) {
@@ -106,8 +124,8 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, Control
     }
   }
 
-  ngOnChanges(): void {
-    this.handleErrors();
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
   }
 
 }

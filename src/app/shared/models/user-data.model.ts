@@ -4,9 +4,9 @@ import {Themes} from '../services/theme.service';
 
 
 export interface UserData extends Omit<SignupData, 'password'> {
-  couponsInWish: number[];
-  couponsInCart: number[];
-  couponsPurchased: number[];
+  couponsInWish: string[];
+  couponsInCart: string[];
+  couponsPurchased: string[];
   authData: Omit<FirebaseResponseModel, 'email'>
   preferredTheme: Themes
 }

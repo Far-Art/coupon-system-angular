@@ -1,0 +1,12 @@
+<cs-modal size="lg" backdrop="static" id="manage-coupons-modal">
+  <cs-modal-header>
+    <h4 class="text-primary user-select-none">Manage Coupons</h4>
+  </cs-modal-header>
+  <cs-modal-body>
+    <sc-coupon-table [coupons]="coupons"></sc-coupon-table>
+  </cs-modal-body>
+  <cs-modal-footer>
+    <cs-modal-button class="btn btn-outline-secondary">Close</cs-modal-button>
+    <cs-modal-button class="btn btn-outline-secondary">Save</cs-modal-button>
+  </cs-modal-footer>
+</cs-modal>

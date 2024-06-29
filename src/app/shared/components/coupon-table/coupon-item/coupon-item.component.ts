@@ -23,7 +23,7 @@ export class CouponItemComponent implements OnInit, OnDestroy {
 
   @Input() isSaleEnded = false;
 
-  @Output() onSelected = new EventEmitter<{ index: number, id: number }>();
+  @Output() onSelected = new EventEmitter<{ index: number, id: string }>();
 
   sliceVal: number;
 

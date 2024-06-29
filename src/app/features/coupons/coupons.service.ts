@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, map, Observable, tap} from 'rxjs';
-import {Coupon} from '../../shared/models/coupon.model';
+import {Coupon, ICouponParams} from '../../shared/models/coupon.model';
 import {LogoService} from '../../header/logo/logo.service';
 import tempCoupons from './temp-coupons.json';
 import {AuthService} from '../../auth/auth.service';
@@ -20,19 +20,23 @@ export class CouponsService {
 
   private filteredCouponsSubject = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
   private originCouponsSubject   = new BehaviorSubject<Coupon[]>(this.tempArr.slice());
-  private cartSubject            = new BehaviorSubject<number[]>([]);
-  private wishSubject            = new BehaviorSubject<number[]>([]);
+  private cartSubject            = new BehaviorSubject<string[]>([]);
+  private wishSubject            = new BehaviorSubject<string[]>([]);
 
   constructor(
       private logo: LogoService,
       private auth: AuthService
   ) {}
 
-  getCouponsById(...ids: number[]): Coupon[] {
+  findCoupons(filter: (coupon: Coupon) => boolean): Coupon[] {
+    return this.originCouponsSubject.value.filter(c => filter(c));
+  }
+
+  getCouponsById(...ids: string[]): Coupon[] {
     return ids ? this.originCouponsSubject.value.filter(c => ids.includes(c.params.id)) : [];
   }
 
-  get purchasedCoupons$(): Observable<number[]> {
+  get purchasedCoupons$(): Observable<string[]> {
     return this.auth.user$.pipe(map(user => user.couponsPurchased || []));
   }
 
@@ -44,7 +48,7 @@ export class CouponsService {
     return this.filteredCouponsSubject.asObservable();
   }
 
-  get cartIds$(): Observable<number[]> {
+  get cartIds$(): Observable<string[]> {
     return this.auth.user$.pipe(
         map(user => user != null ? user.couponsInCart || [] : null),
         map(coupons => coupons != null ? coupons : this.cartSubject.value),
@@ -52,7 +56,7 @@ export class CouponsService {
     );
   }
 
-  get wishIds$(): Observable<number[]> {
+  get wishIds$(): Observable<string[]> {
     return this.auth.user$.pipe(
         map(user => user != null ? user.couponsInWish || [] : null),
         map(coupons => coupons != null ? coupons : this.wishSubject.value),
@@ -64,42 +68,75 @@ export class CouponsService {
     this.filteredCouponsSubject.next(coupons);
   }
 
-  addToCart(...coupons: Coupon[] | number[]) {
-    const ids = new Set<number>(this.cartSubject.value);
-    coupons.forEach((c: Coupon | number) => ids.add(c instanceof Coupon ? c.params.id : c));
+  addToCart(...coupons: Coupon[] | string[]) {
+    const ids = new Set<string>(this.cartSubject.value);
+    coupons.forEach((c: Coupon | string) => ids.add(c instanceof Coupon ? c.params.id : c));
     this.auth.updateUser({user: {couponsInCart: [...ids]}});
     this.logo.blink();
     this.cartSubject.next([...ids]);
   }
 
-  addToWish(...coupons: Coupon[] | number[]) {
-    const ids = new Set<number>(this.wishSubject.value);
-    coupons.forEach((c: Coupon | number) => ids.add(c instanceof Coupon ? c.params.id : c));
+  addToWish(...coupons: Coupon[] | string[]) {
+    const ids = new Set<string>(this.wishSubject.value);
+    coupons.forEach((c: Coupon | string) => ids.add(c instanceof Coupon ? c.params.id : c));
     this.auth.updateUser({user: {couponsInWish: [...ids]}});
     this.logo.blink();
     this.wishSubject.next([...ids]);
   }
 
-  removeFromCart(...coupons: Coupon[] | number[]) {
-    coupons.forEach((c: Coupon | number) => this.removeCoupon(c, this.cartSubject.value));
-    this.auth.updateUser({user: {couponsInCart: this.cartSubject.value.map((c: Coupon | number) => c instanceof Coupon ? c.params.id : c)}});
+  removeFromCart(...coupons: Coupon[] | string[]) {
+    coupons.forEach((c: Coupon | string) => this.removeCouponFromList(c, this.cartSubject.value));
+    this.auth.updateUser({user: {couponsInCart: this.cartSubject.value.map((c: Coupon | string) => c instanceof Coupon ? c.params.id : c)}});
     this.cartSubject.next(this.cartSubject.value);
   }
 
-  removeFromWish(...coupons: (Coupon | number)[]) {
-    coupons.forEach((c: Coupon | number) => this.removeCoupon(c, this.wishSubject.value));
-    this.auth.updateUser({user: {couponsInWish: this.wishSubject.value.map((c: Coupon | number) => c instanceof Coupon ? c.params.id : c)}});
+  removeFromWish(...coupons: (Coupon | string)[]) {
+    coupons.forEach((c: Coupon | string) => this.removeCouponFromList(c, this.wishSubject.value));
+    this.auth.updateUser({user: {couponsInWish: this.wishSubject.value.map((c: Coupon | string) => c instanceof Coupon ? c.params.id : c)}});
     this.wishSubject.next(this.wishSubject.value);
   }
 
-  moveToWish(...coupons: Coupon[] | number[]) {
+  moveToWish(...coupons: Coupon[] | string[]) {
     this.removeFromCart(...coupons);
     this.addToWish(...coupons);
   }
 
-  moveToCart(...coupons: Coupon[] | number[]) {
+  moveToCart(...coupons: Coupon[] | string[]) {
     this.removeFromWish(...coupons);
     this.addToCart(...coupons);
+  }
+
+  addCoupon(couponParams: ICouponParams) {
+    const list = this.originCouponsSubject.value;
+    list.push(Coupon.create(couponParams));
+    console.log(list)
+    this.originCouponsSubject.next(list);
+    // this.updateJsonFile();
+  }
+
+  removeCoupon(id: string) {
+    const list = this.originCouponsSubject.value;
+    const idx  = list.findIndex(c => c.params.id === id);
+    if (idx > -1) {
+      list.splice(idx, 1);
+    }
+    this.originCouponsSubject.next(list);
+    // this.updateJsonFile();
+  }
+
+  private updateJsonFile() {
+    const JSONToFile = (coupons: Coupon[], filename: string) => {
+      const blob = new Blob([JSON.stringify(coupons, null, 2)], {
+        type: 'application/json'
+      });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `${filename}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+    JSONToFile(this.originCouponsSubject.value, 'temp-coupons');
   }
 
   /**
@@ -108,7 +145,7 @@ export class CouponsService {
    * @param list
    * @private
    */
-  private removeCoupon(couponOrId: Coupon | number, list: number[]) {
+  private removeCouponFromList(couponOrId: Coupon | string, list: string[]) {
     const i = list.findIndex(id => couponOrId instanceof Coupon ? id === couponOrId.params.id : id === couponOrId);
     if (i >= 0) {
       list.splice(i, 1);

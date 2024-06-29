@@ -17,10 +17,11 @@
 
 <ng-template #selectType>
   <select class="form-select"
-          [ngClass]="{'is-valid': isValid, 'is-invalid': isTouched && !isValid }"
+          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid , 'required': isRequired && isPristine}"
           [attr.aria-label]="placeholder + ' select' | titlecase"
           [id]="id"
           [value]="value"
+          (blur)="onBlur()"
           (input)="handleInput($event)">
     <option selected hidden class="text-secondary pt-1 pb-1" value="">Choose {{ placeholder | titlecase }}...</option>
     <option class="pt-1 pb-1" *ngFor="let option of options">{{ '' + option | titlecase }}</option>
@@ -31,19 +32,21 @@
   <input *ngIf="type !== 'textarea'"
          [type]="type === 'currency' ? 'number' : type"
          class="form-control"
-         [ngClass]="{'is-valid': isValid, 'is-invalid': isTouched && !isValid }"
+         [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid, 'required': isRequired && isPristine}"
          [attr.aria-label]=" placeholder + ' input'"
          [id]="id"
          [value]="type === 'currency' ? value : value"
          (input)="handleInput($event)"
+         (blur)="onBlur()"
          [placeholder]="placeholder | titlecase">
   <textarea *ngIf="type === 'textarea'"
             class="form-control"
-            [ngClass]="{'is-valid': isValid, 'is-invalid': isTouched && !isValid }"
+            [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid, 'required': isRequired && isPristine}"
             [attr.aria-label]="placeholder + ' input'"
             [id]="id"
             [value]="value"
             (input)="handleInput($event)"
+            (blur)="onBlur()"
             [placeholder]="placeholder | titlecase">
     </textarea>
 </ng-template>

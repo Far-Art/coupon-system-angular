@@ -1,5 +1,5 @@
 <div *ngIf="userType === 'admin' || userType === 'company'" class="container mt-3">
-  <ng-container *ngTemplateOutlet="userType === 'company' ? createCoupon : manageUsers"></ng-container>
+  <ng-container *ngTemplateOutlet="userType === 'company' ? manageCoupons : manageUsers"></ng-container>
 </div>
 
 <div class="container mt-5">
@@ -10,11 +10,17 @@
   </button>
 </div>
 
-<ng-template #createCoupon>
-  <cs-modal-button [modal-id]="'create-coupon-modal'" class="btn btn-outline-success no-outline">
-    Create Coupon
-  </cs-modal-button>
+<ng-template #manageCoupons>
+  <div class="d-flex flex-column justify-content-center">
+    <cs-modal-button [modal-id]="'create-coupon-modal'" class="btn btn-outline-success no-outline m-1">
+      Create Coupon
+    </cs-modal-button>
+    <cs-modal-button [modal-id]="'manage-coupons-modal'" class="btn btn-outline-success no-outline m-1">
+      Manage Coupons
+    </cs-modal-button>
+  </div>
   <cs-create-coupon-modal></cs-create-coupon-modal>
+  <cs-manage-coupons-modal></cs-manage-coupons-modal>
 </ng-template>
 
 <ng-template #manageUsers>

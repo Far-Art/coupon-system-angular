@@ -40,7 +40,7 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
 
   _indeterminateCheckBox = false
 
-  readonly selectedCoupons = new Set<number>();
+  readonly selectedCoupons = new Set<string>();
 
   private couponsSub: Subscription;
 
@@ -56,7 +56,7 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
     this.emitSelected();
   }
 
-  onCheckHandle(event: { index: number, id: number }) {
+  onCheckHandle(event: { index: number, id: string }) {
     this.selectedCoupons.has(event.id) ? this.selectedCoupons.delete(event.id) : this.selectedCoupons.add(event.id);
     this.updateIndeterminateStatus();
     this.emitSelected();
@@ -79,7 +79,7 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
     return coupon.params.isSaleEnded;
   }
 
-  has(id: number): boolean {
+  has(id: string): boolean {
     return this.selectedCoupons.has(id);
   }
 
@@ -122,6 +122,7 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
+    console.log(this.coupons)
     this.selectedCoupons.clear();
     if (this.options?.selectAll) {
       this.coupons.map((coupon: Coupon) => coupon.params.id).forEach(id => this.selectedCoupons.add(id));

@@ -37,7 +37,11 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
 
   private user: UserData;
 
-  constructor(private idGenerator: IdGeneratorService, private authService: AuthService) {}
+  constructor(
+      private idGenerator: IdGeneratorService,
+      private authService: AuthService,
+      private couponsService: CouponsService
+  ) {}
 
   ngOnInit(): void {
     this.subscription = this.authService.user$.subscribe(user => {
@@ -47,7 +51,12 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.form.value)
+    if (this.form.valid) {
+      this.couponsService.addCoupon(this.form.value as any);
+      this.form.setValue(this.initForm().value as any);
+      this.form.markAsUntouched();
+      this.form.markAsPristine();
+    }
   }
 
   private initForm() {

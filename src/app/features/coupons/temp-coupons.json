@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "1",
     "companyName": "Viva Grocer",
     "companyId": 1,
     "companyEmail": "vivagrocer@walla.net",
@@ -15,7 +15,7 @@
     "image": "https://fruitgrowers.com/wp-content/uploads/2019/05/assorted-fruits-on-brown-wooden-racks-1.jpg"
   },
   {
-    "id": 2,
+    "id": "2",
     "companyName": "Viva Grocer",
     "companyId": 1,
     "companyEmail": "vivagrocer@walla.net",
@@ -30,7 +30,7 @@
     "image": "https://hips.hearstapps.com/hmg-prod/images/09dce7b7-ea40-406b-a2c0-a3f57c420b17-1657946362.jpeg?crop=0.660xw:1.00xh;0.0794xw,0&resize=640:*"
   },
   {
-    "id": 3,
+    "id": "3",
     "companyName": "Tempest Hotels",
     "companyId": 2,
     "companyEmail": "tempesthotels@mail.isr",
@@ -45,7 +45,7 @@
     "image": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/900/450/75/dam/wdpro-assets/dlr/places-to-stay/disneyland-hotel/resort-overview/disneyland-hotel-06.jpg?1717607880260"
   },
   {
-    "id": 4,
+    "id": "4",
     "companyName": "Tempest Hotels",
     "companyId": 2,
     "companyEmail": "tempesthotels@mail.isr",
@@ -60,7 +60,7 @@
     "image": "https://assets.hrewards.com/assets/SHR_Hamburg_rooms_Standard_King_1_d5356d0cd0.jpg"
   },
   {
-    "id": 5,
+    "id": "5",
     "companyName": "Baby Jar",
     "companyId": 3,
     "companyEmail": "babyjar@commercials.com",
@@ -75,7 +75,7 @@
     "image": "https://media.post.rvohealth.io/wp-content/uploads/2022/05/2197142-The-8-Best-Baby-Lotions-and-Creams-for-2022-732x549-Feature-1.jpg"
   },
   {
-    "id": 6,
+    "id": "6",
     "companyName": "Baby Jar",
     "companyId": 3,
     "companyEmail": "babyjar@commercials.com",
@@ -90,7 +90,7 @@
     "image": "https://tulamama.com/wp-content/uploads/2018/03/what-to-put-on-your-baby-registry-essentials.jpg"
   },
   {
-    "id": 7,
+    "id": "7",
     "companyName": "Restaurant Venue",
     "companyId": 4,
     "companyEmail": "restaurantvenue@coupons.ru",
@@ -105,7 +105,7 @@
     "image": "https://media.istockphoto.com/id/1307190527/photo/happy-waiter-serving-food-to-group-of-friends-in-a-pub.jpg?s=612x612&w=0&k=20&c=EDqQ0oBcpFGV25p61vWUF5N-6lRJdbmZmQMe5kyuxyA="
   },
   {
-    "id": 8,
+    "id": "8",
     "companyName": "Restaurant Venue",
     "companyId": 4,
     "companyEmail": "restaurantvenue@coupons.ru",
@@ -120,7 +120,7 @@
     "image": "https://assets.cntraveller.in/photos/6517a5aa2f98f695fe4e5cdc/16:9/w_1024%2Cc_limit/GIGI%2520001.jpg"
   },
   {
-    "id": 9,
+    "id": "9",
     "companyName": "Care Shop",
     "companyId": 5,
     "companyEmail": "careshop@matrix.com",
@@ -135,7 +135,7 @@
     "image": "https://puremedspamd.com/wp-content/uploads/2021/04/PMS_Skin-Care-color.jpg"
   },
   {
-    "id": 10,
+    "id": "10",
     "companyName": "Care Shop",
     "companyId": 5,
     "companyEmail": "careshop@matrix.com",
@@ -150,7 +150,7 @@
     "image": "https://helibeauty.com/wp-content/uploads/2023/08/Artboard-6-4.jpg"
   },
   {
-    "id": 11,
+    "id": "10",
     "companyName": "Success Household",
     "companyId": 6,
     "companyEmail": "successhousehold@commercials.now",
@@ -165,7 +165,7 @@
     "image": "https://cdn.images.fecom-media.com/FE00050170/images/LOCTITE%20New%20Look%20Packaging%20Beauty%20Packs_SUPER%20GLUE%20LIQUID%203g_CeZQdXTLq0.jpg?width=578&height=578&scale=UpscaleCanvas&anchor=MiddleCenter"
   },
   {
-    "id": 12,
+    "id": "12",
     "companyName": "Success Household",
     "companyId": 6,
     "companyEmail": "successhousehold@commercials.now",
@@ -180,7 +180,7 @@
     "image": "https://d31mdgo9qdoudm.cloudfront.net/Household_Essentials_Banner.jpg"
   },
   {
-    "id": 13,
+    "id": "13",
     "companyName": "Nebula Electronics",
     "companyId": 7,
     "companyEmail": "nebulaelectronics@mail.isr",
@@ -195,7 +195,7 @@
     "image": "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-720w,f_auto,q_auto:best/rockcms/2023-09/DIFFBOT-651a20.jpg"
   },
   {
-    "id": 14,
+    "id": "14",
     "companyName": "Nebula Electronics",
     "companyId": 7,
     "companyEmail": "nebulaelectronics@mail.isr",
@@ -210,7 +210,7 @@
     "image": "https://passkit.com/blog/wp-content/uploads/2017/01/Digital-Coupon.jpg"
   },
   {
-    "id": 15,
+    "id": "15",
     "companyName": "Pioneer Tools",
     "companyId": 8,
     "companyEmail": "pioneertools@coupons.ru",
@@ -225,7 +225,7 @@
     "image": "https://i.shgcdn.com/6ea1f1a7-d6da-4f5c-8ef2-6d814e5fbaeb/-/format/auto/-/preview/3000x3000/-/quality/lighter/"
   },
   {
-    "id": 16,
+    "id": "16",
     "companyName": "Pioneer Tools",
     "companyId": 8,
     "companyEmail": "pioneertools@coupons.ru",
@@ -240,7 +240,7 @@
     "image": "https://www.slashgear.com/img/gallery/every-major-power-tool-brand-ranked-worst-to-best/l-intro-1695230462.jpg"
   },
   {
-    "id": 17,
+    "id": "17",
     "companyName": "Rockstar Vacations",
     "companyId": 9,
     "companyEmail": "rockstarvacations@mail.isr",
@@ -255,7 +255,7 @@
     "image": "https://img.mako.co.il/2022/04/13/shutterstoc_AlenaOzerova_re_autoOrient_i.jpg"
   },
   {
-    "id": 18,
+    "id": "18",
     "companyName": "Rockstar Vacations",
     "companyId": 9,
     "companyEmail": "rockstarvacations@mail.isr",
@@ -270,7 +270,7 @@
     "image": "https://cdn.whatmomslove.com/wp-content/uploads/2016/10/18-2.png"
   },
   {
-    "id": 19,
+    "id": "19",
     "companyName": "Travel Ocity",
     "companyId": 10,
     "companyEmail": "travelocity@coupons.net",
@@ -285,7 +285,7 @@
     "image": "https://nextvacay.com/wp-content/uploads/2022/07/KW-why-travel-is-important.jpg"
   },
   {
-    "id": 20,
+    "id": "20",
     "companyName": "Travel Ocity",
     "companyId": 10,
     "companyEmail": "travelocity@coupons.net",
@@ -300,7 +300,7 @@
     "image": "https://www.imtilakgroup.com/cdn-cgi/image/format=auto,fit=contain/https://imt-assets.fra1.digitaloceanspaces.com/Safaraq/posts/f6e1ff32786faea5463a21081af936d85Io_66367v.jpg"
   },
   {
-    "id": 21,
+    "id": "21",
     "companyName": "Cheetah Automotive",
     "companyId": 11,
     "companyEmail": "cheetahautomotive@discounts.now",
@@ -315,7 +315,7 @@
     "image": "https://149881442.v2.pressablecdn.com/wp-content/uploads/2022/07/car-wax-products.jpeg"
   },
   {
-    "id": 22,
+    "id": "22",
     "companyName": "Cheetah Automotive",
     "companyId": 11,
     "companyEmail": "cheetahautomotive@discounts.now",
@@ -330,7 +330,7 @@
     "image": "https://www.lincolnautobodygarfield.com/wp-content/uploads/2016/09/car-scratch-repair-garfield-new-jersey.jpg"
   },
   {
-    "id": 23,
+    "id": "23",
     "companyName": "Fashion Eagle",
     "companyId": 12,
     "companyEmail": "fashioneagle@discounts.isr",
@@ -345,7 +345,7 @@
     "image": "https://pomandi.com/cdn/shop/products/black-velvet-smoking-zwart-velours-0058-322776.jpg?v=1598631448"
   },
   {
-    "id": 24,
+    "id": "24",
     "companyName": "Fashion Eagle",
     "companyId": 12,
     "companyEmail": "fashioneagle@discounts.isr",
@@ -360,7 +360,7 @@
     "image": "https://www.criteo.com/wp-content/uploads/2020/07/fashion-featured-image.png"
   },
   {
-    "id": 25,
+    "id": "25",
     "companyName": "Soft Dome",
     "companyId": 13,
     "companyEmail": "softdome@walla.now",
@@ -375,7 +375,7 @@
     "image": "https://www.gwivs.com/wp-content/uploads/2022/06/box-pc-cleaning-utility1.png"
   },
   {
-    "id": 26,
+    "id": "26",
     "companyName": "Soft Dome",
     "companyId": 13,
     "companyEmail": "softdome@walla.now",
@@ -390,7 +390,7 @@
     "image": "https://www.pcworld.com/wp-content/uploads/2024/06/4320092_original.jpg?quality=50&strip=all"
   },
   {
-    "id": 27,
+    "id": "27",
     "companyName": "Messi Strike",
     "companyId": 14,
     "companyEmail": "messistrike@coupons.ru",
@@ -405,7 +405,7 @@
     "image": "https://cdn.vanguardngr.com/wp-content/uploads/2023/09/images-2023-09-08T093558.114.jpeg"
   },
   {
-    "id": 28,
+    "id": "28",
     "companyName": "Messi Strike",
     "companyId": 14,
     "companyEmail": "messistrike@coupons.ru",
@@ -420,7 +420,7 @@
     "image": "https://www.fcbarcelona.com/fcbarcelona/photo/2021/06/10/02aeb59a-655b-45cb-8289-e25e0634d721/3200x2000-GOS-.jpeg"
   },
   {
-    "id": 29,
+    "id": "29",
     "companyName": "Success Household",
     "companyId": 6,
     "companyEmail": "successhousehold@coupons.com",
@@ -435,7 +435,7 @@
     "image": "https://cdn.shopify.com/s/files/1/0573/9714/9786/files/0007028.jpg?v=1704349986"
   },
   {
-    "id": 30,
+    "id": "30",
     "companyName": "Success Household",
     "companyId": 6,
     "companyEmail": "successhousehold@coupons.com",
@@ -450,7 +450,7 @@
     "image": "https://www.bobvila.com/wp-content/uploads/2020/01/The-Best-Wood-Glue-Options.jpg?w=1200"
   },
   {
-    "id": 31,
+    "id": "31",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@matrix.com",
@@ -465,7 +465,7 @@
     "image": "https://www.originaltravel.co.uk/travel-blog/ShowPhoto/3962/0"
   },
   {
-    "id": 32,
+    "id": "32",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@matrix.com",
@@ -480,7 +480,7 @@
     "image": "https://images1.ynet.co.il/PicServer4/2016/11/07/7368695/73686670990100980737no.jpg"
   },
   {
-    "id": 33,
+    "id": "33",
     "companyName": "Electronics Supply",
     "companyId": 21,
     "companyEmail": "electronicssupply@matrix.com",
@@ -495,7 +495,7 @@
     "image": "https://static.dezeen.com/uploads/2015/03/Samsung-Galaxy-S6-Edge-smartphone-Mobile-World-Congress-2015_dezeen_784_7.jpg"
   },
   {
-    "id": 34,
+    "id": "34",
     "companyName": "Electronics Supply",
     "companyId": 21,
     "companyEmail": "electronicssupply@matrix.com",
@@ -510,7 +510,7 @@
     "image": "https://miro.medium.com/v2/resize:fit:1400/1*8raUlvF4nsCExmKdy1G-ig.jpeg"
   },
   {
-    "id": 35,
+    "id": "35",
     "companyName": "Fashion Eagle",
     "companyId": 12,
     "companyEmail": "fashioneagle@mail.co.il",
@@ -525,7 +525,7 @@
     "image": "https://www.brides.com/thmb/ZrgvTX5AXw49s5B8QacPsO_QwUY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/BRI-best-places-to-buy-tuxedos-4783193-edit-5c0148951a26476fa6691fe7b647e83f.jpg"
   },
   {
-    "id": 36,
+    "id": "36",
     "companyName": "Fashion Eagle",
     "companyId": 12,
     "companyEmail": "fashioneagle@mail.co.il",
@@ -540,7 +540,7 @@
     "image": "https://petitions.center/images/petitions/fashion-against-antisemitism.jpg"
   },
   {
-    "id": 37,
+    "id": "37",
     "companyName": "Rockstar Vacations",
     "companyId": 9,
     "companyEmail": "rockstarvacations@discounts.isr",
@@ -555,7 +555,7 @@
     "image": "https://www.casadivina.net/wp-content/uploads/2013/12/Holiday-Vacation.png"
   },
   {
-    "id": 38,
+    "id": "38",
     "companyName": "Rockstar Vacations",
     "companyId": 9,
     "companyEmail": "rockstarvacations@discounts.isr",
@@ -570,7 +570,7 @@
     "image": "https://image.cnbcfm.com/api/v1/image/106973900-1636601654017-gettyimages-1271822201-1006950896.jpeg?v=1636601678&w=1600&h=900"
   },
   {
-    "id": 39,
+    "id": "39",
     "companyName": "Rockstar Vacations",
     "companyId": 9,
     "companyEmail": "rockstarvacations@jb.now",
@@ -585,7 +585,7 @@
     "image": "https://images.healthshots.com/healthshots/en/uploads/2022/09/07225829/family-vacation.jpg"
   },
   {
-    "id": 40,
+    "id": "40",
     "companyName": "Rockstar Vacations",
     "companyId": 9,
     "companyEmail": "rockstarvacations@jb.now",
@@ -600,7 +600,7 @@
     "image": "https://images.ctfassets.net/mnc2gcng0j8q/3b7sUraqWwwjQ5xyc3z65y/84fbf94b686309c9e9d3b1f6892ec52e/15_1920x1080_Average_PTO_Days_by_Country__How_the_US_Stacks_up.png?w=1920&h=1080&q=50&fm=png"
   },
   {
-    "id": 41,
+    "id": "41",
     "companyName": "Amigo Households",
     "companyId": 22,
     "companyEmail": "amigohouseholds@coupons.net",
@@ -615,7 +615,7 @@
     "image": "https://www.pbctoday.co.uk/news/wp-content/uploads/2023/10/iStock-1370911387-scaled.jpg"
   },
   {
-    "id": 42,
+    "id": "42",
     "companyName": "Amigo Households",
     "companyId": 22,
     "companyEmail": "amigohouseholds@coupons.net",
@@ -630,7 +630,7 @@
     "image": "https://cdn.britannica.com/35/179035-131-9646BA4D/Oil-paints-consistency-paste-variety-colors-brushes.jpg"
   },
   {
-    "id": 43,
+    "id": "43",
     "companyName": "Goddess Shawarma",
     "companyId": 23,
     "companyEmail": "goddessshawarma@coupons.ru",
@@ -645,7 +645,7 @@
     "image": null
   },
   {
-    "id": 44,
+    "id": "44",
     "companyName": "Goddess Shawarma",
     "companyId": 23,
     "companyEmail": "goddessshawarma@coupons.ru",
@@ -660,7 +660,7 @@
     "image": null
   },
   {
-    "id": 45,
+    "id": "45",
     "companyName": "Baby Jar",
     "companyId": 3,
     "companyEmail": "babyjar@commercials.com",
@@ -675,7 +675,7 @@
     "image": "https://www.elegantcosmed.com/public/assets/img/product-images/16102023ELEGANT%20BABY%20CREAM%20100G%203D.jpg"
   },
   {
-    "id": 46,
+    "id": "46",
     "companyName": "Baby Jar",
     "companyId": 3,
     "companyEmail": "babyjar@commercials.com",
@@ -690,7 +690,7 @@
     "image": "https://www.morningstarstorage.com/wp-content/uploads/2020/12/baby-clothes-and-accessories.jpg"
   },
   {
-    "id": 47,
+    "id": "47",
     "companyName": "Amigo Households",
     "companyId": 22,
     "companyEmail": "amigohouseholds@jb.co.il",
@@ -705,7 +705,7 @@
     "image": "https://hips.hearstapps.com/hmg-prod/images/ghk100120reportfeature-001-1599754853.jpg?crop=0.670xw:1.00xh;0.202xw,0&resize=1200:*"
   },
   {
-    "id": 48,
+    "id": "48",
     "companyName": "Amigo Households",
     "companyId": 22,
     "companyEmail": "amigohouseholds@jb.co.il",
@@ -720,7 +720,7 @@
     "image": "https://www.rakenapp.com/img/asset/YXNzZXRzL2hhbW1lci10b29scy5qcGc=?w=1024&h=682.66666666667&fit=crop&q=85&s=174d6de3497c587bdc76dd2bf7cb1eed"
   },
   {
-    "id": 49,
+    "id": "49",
     "companyName": "Pioneer Tools",
     "companyId": 8,
     "companyEmail": "pioneertools@coupons.co.il",
@@ -735,7 +735,7 @@
     "image": "https://hips.hearstapps.com/hmg-prod/images/pop-tool-organizers-1633010316.jpg?crop=0.502xw:1.00xh;0.250xw,0&resize=640:*"
   },
   {
-    "id": 50,
+    "id": "50",
     "companyName": "Pioneer Tools",
     "companyId": 8,
     "companyEmail": "pioneertools@coupons.co.il",
@@ -750,7 +750,7 @@
     "image": "https://www.panasonic-powertools.eu/storage/website-powertools/common/contruction.jpg"
   },
   {
-    "id": 51,
+    "id": "51",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@coupons.isr",
@@ -765,7 +765,7 @@
     "image": "https://ik.imgkit.net/3vlqs5axxjf/TW/uploadedImages/All_TW_Art/2019/1216/T1216Hydrotheraphy_C_HR.jpg?n=9635&width=168&height=168&mode=crop&Anchor=MiddleCenter&tr=w-1200%2Cfo-auto"
   },
   {
-    "id": 52,
+    "id": "52",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@coupons.isr",
@@ -780,7 +780,7 @@
     "image": "https://images.pexels.com/photos/60217/pexels-photo-60217.jpeg?cs=srgb&dl=pexels-recalmedia-60217.jpg&fm=jpg"
   },
   {
-    "id": 53,
+    "id": "53",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@coupons.ru",
@@ -795,7 +795,7 @@
     "image": "https://media.timeout.com/images/105447604/image.jpg"
   },
   {
-    "id": 54,
+    "id": "54",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@coupons.ru",
@@ -810,7 +810,7 @@
     "image": "https://www.allinahealth.org/-/media/allina-health/content/healthy-set-go/11-march-2015-thrive-682x408.jpg"
   },
   {
-    "id": 55,
+    "id": "55",
     "companyName": "Restaurant Venue",
     "companyId": 4,
     "companyEmail": "restaurantvenue@commercials.now",
@@ -825,7 +825,7 @@
     "image": "https://popmenucloud.com/cdn-cgi/image/width=1920,height=1920,format=auto,fit=scale-down/fgpdaicu/71c778ec-faa1-45e2-9d51-e0f45bd9a5cf.jpg"
   },
   {
-    "id": 56,
+    "id": "56",
     "companyName": "Restaurant Venue",
     "companyId": 4,
     "companyEmail": "restaurantvenue@commercials.now",
@@ -840,7 +840,7 @@
     "image": "https://images.pexels.com/photos/5836779/pexels-photo-5836779.jpeg?auto=compress&cs=tinysrgb&h=627&fit=crop&w=1200"
   },
   {
-    "id": 57,
+    "id": "57",
     "companyName": "Cloud Taste",
     "companyId": 24,
     "companyEmail": "cloudtaste@matrix.ru",
@@ -855,7 +855,7 @@
     "image": "https://www.sainsburysmagazine.co.uk/uploads/media/350x460/03/16413-Sauce-Shop_2800x1172-hero.jpg?v=1-0"
   },
   {
-    "id": 58,
+    "id": "58",
     "companyName": "Cloud Taste",
     "companyId": 24,
     "companyEmail": "cloudtaste@matrix.ru",
@@ -870,7 +870,7 @@
     "image": "https://www.lil-a.com.tr/application/files/3816/9400/6520/slider.webp"
   },
   {
-    "id": 59,
+    "id": "59",
     "companyName": "Nebula Electronics",
     "companyId": 7,
     "companyEmail": "nebulaelectronics@coupons.co.il",
@@ -885,7 +885,7 @@
     "image": "https://i.natgeofe.com/n/24540fe7-cb47-4b81-9c46-04eacc1683e6/MM10052_20221117_399_cropped_3x2.jpg"
   },
   {
-    "id": 60,
+    "id": "60",
     "companyName": "Nebula Electronics",
     "companyId": 7,
     "companyEmail": "nebulaelectronics@coupons.co.il",
@@ -900,7 +900,7 @@
     "image": null
   },
   {
-    "id": 61,
+    "id": "61",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@matrix.now",
@@ -915,7 +915,7 @@
     "image": null
   },
   {
-    "id": 62,
+    "id": "62",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@matrix.now",
@@ -930,7 +930,7 @@
     "image": null
   },
   {
-    "id": 63,
+    "id": "63",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@walla.com",
@@ -945,7 +945,7 @@
     "image": null
   },
   {
-    "id": 64,
+    "id": "64",
     "companyName": "Vacation Boost",
     "companyId": 20,
     "companyEmail": "vacationboost@walla.com",

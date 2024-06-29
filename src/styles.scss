@@ -83,6 +83,10 @@ img {
   max-width: 100%;
 }
 
+.required {
+  border-color: #2400ff;
+}
+
 .no-outline {
   border-color: transparent !important;
 }
@@ -490,5 +494,9 @@ body[theme="dark"] {
 
   .bg-main {
     background-image: url('./assets/images/dark/main-bg-dark.png');
+  }
+
+  .required {
+    border-color: #2400ff !important;
   }
 }

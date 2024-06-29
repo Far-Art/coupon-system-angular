@@ -1,5 +1,5 @@
 interface CommonCouponParams {
-  id: number,
+  id: string,
   companyId: number,
   companyName: string,
   companyEmail: string,
