@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Coupon} from '../../models/coupon.model';
 import {map, Subscription, take} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
@@ -14,8 +14,6 @@ import {IdGeneratorService} from '../../services/id-generator.service';
 export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('indeterminateCheckBox') indeterminateCheckBoxRef: ElementRef;
-
-  @HostBinding()
 
   @Input() coupons: Coupon[] = [];
 
