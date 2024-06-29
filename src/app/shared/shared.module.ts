@@ -20,6 +20,8 @@ import {ModalBodyComponent} from './components/modal/modal-body/modal-body.compo
 import {ModalFooterComponent} from './components/modal/modal-footer/modal-footer.component';
 import {ModalButtonComponent} from './components/modal/modal-button/modal-button.component';
 import {IdGeneratorService} from './services/id-generator.service';
+import { FormInputComponent } from './components/form-input/form-input.component';
+import { FormSelectComponent } from './components/form-select/form-select.component';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import {IdGeneratorService} from './services/id-generator.service';
     ModalFooterComponent,
     ConfirmNavigationComponent,
     SpinnerComponent,
-    ModalButtonComponent
+    ModalButtonComponent,
+    FormInputComponent,
+    FormSelectComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -55,7 +59,9 @@ import {IdGeneratorService} from './services/id-generator.service';
     ModalFooterComponent,
     ConfirmNavigationComponent,
     SpinnerComponent,
-    ModalButtonComponent
+    ModalButtonComponent,
+    FormInputComponent,
+    FormSelectComponent
   ],
   imports: [
     CommonModule,

@@ -1,10 +1,28 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {IdGeneratorService} from '../../../../../shared/services/id-generator.service';
-import {AuthService} from '../../../../../auth/auth.service';
-import {Subscription} from 'rxjs';
-import {UserData} from '../../../../../shared/models/user-data.model';
-import {CouponsService} from '../../../../../features/coupons/coupons.service';
+import {
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms';
+import {
+  IdGeneratorService
+} from '../../../../../shared/services/id-generator.service';
+import {
+  AuthService
+} from '../../../../../auth/auth.service';
+import {
+  Subscription
+} from 'rxjs';
+import {
+  UserData
+} from '../../../../../shared/models/user-data.model';
+import {
+  CouponsService
+} from '../../../../../features/coupons/coupons.service';
 
 
 @Component({
@@ -13,6 +31,8 @@ import {CouponsService} from '../../../../../features/coupons/coupons.service';
   styleUrls: ['./create-coupon-modal.component.scss']
 })
 export class CreateCouponModalComponent implements OnInit, OnDestroy {
+
+  categories = ['GROCERY', 'BABY', 'HOTELS', 'RESTAURANT', 'PERSONAL_CARE', 'HOUSEHOLD', 'ELECTRONICS', 'TOOLS', 'VACATION', 'TRAVEL', 'AUTOMOTIVE', 'FASHION', 'SOFTWARE', 'MISCELLANEOUS'];
 
   form: FormGroup<{
     id: FormControl<string>;
@@ -43,9 +63,13 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
     })
   }
 
+  onSubmit() {
+    console.log(this.form.value)
+  }
+
   private initForm() {
     return new FormGroup({
-      id: new FormControl<string>(this.idGenerator.generate()),
+      id: new FormControl<string>(this.idGenerator.generate(25)),
       companyId: new FormControl<string>(this.user.authData.localId),
       companyName: new FormControl<string>(this.user.name),
       companyEmail: new FormControl<string>(this.user.email),

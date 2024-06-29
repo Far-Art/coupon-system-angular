@@ -1,0 +1,26 @@
+<div class="input-group has-validation mt-3">
+  <span style="min-width: 42px" class="input-group-text rounded-end-0">
+    <span class="fs-5" *ngIf="type === 'currency'">₪</span>
+    <ng-content *ngIf="type !== 'currency'"></ng-content>
+  </span>
+  <div class="form-floating">
+    <input *ngIf="type !== 'textarea'"
+           [type]="type === 'currency' ? 'number' : type"
+           class="form-control"
+           [attr.aria-label]="placeholder + ' input'"
+           [id]="id"
+           [value]="type === 'currency' ? value : value"
+           (input)="handleInput($event)"
+           [placeholder]="placeholder | titlecase">
+    <textarea *ngIf="type === 'textarea'"
+              class="form-control"
+              [attr.aria-label]="placeholder + ' input'"
+              [id]="id"
+              [value]="value"
+              (input)="handleInput($event)"
+              [placeholder]="placeholder | titlecase">
+
+    </textarea>
+    <label [for]="id">{{ placeholder | titlecase }}</label>
+  </div>
+</div>
