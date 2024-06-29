@@ -20,9 +20,9 @@ import {ModalBodyComponent} from './components/modal/modal-body/modal-body.compo
 import {ModalFooterComponent} from './components/modal/modal-footer/modal-footer.component';
 import {ModalButtonComponent} from './components/modal/modal-button/modal-button.component';
 import {IdGeneratorService} from './services/id-generator.service';
-import { FormInputComponent } from './components/form-input/form-input.component';
-import { FormSelectComponent } from './components/form-select/form-select.component';
-import { AbstractFormInputComponent } from './components/abstract-form-input/abstract-form-input.component';
+import {FormInputComponent} from './components/form-inputs/form-input/form-input.component';
+import {FormSelectComponent} from './components/form-inputs/form-select/form-select.component';
+import {AbstractFormInputComponent} from './components/form-inputs/abstract-form-input.component';
 
 
 @NgModule({
@@ -63,7 +63,8 @@ import { AbstractFormInputComponent } from './components/abstract-form-input/abs
     SpinnerComponent,
     ModalButtonComponent,
     FormInputComponent,
-    FormSelectComponent
+    FormSelectComponent,
+    AbstractFormInputComponent
   ],
   imports: [
     CommonModule,
@@ -72,8 +73,14 @@ import { AbstractFormInputComponent } from './components/abstract-form-input/abs
   ],
   providers: [
     IdGeneratorService,
-    {provide: NgbDateParserFormatter, useClass: CsDateFormatterService},
-    {provide: NgbDateAdapter, useClass: CsDateAdapterService}
+    {
+      provide: NgbDateParserFormatter,
+      useClass: CsDateFormatterService
+    },
+    {
+      provide: NgbDateAdapter,
+      useClass: CsDateAdapterService
+    }
   ]
 })
 export class SharedModule {}
