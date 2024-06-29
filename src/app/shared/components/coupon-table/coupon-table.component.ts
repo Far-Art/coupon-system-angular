@@ -1,18 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter, HostBinding,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Coupon} from '../../models/coupon.model';
 import {map, Subscription, take} from 'rxjs';
 import {CouponsService} from '../../../features/coupons/coupons.service';
+import {IdGeneratorService} from '../../services/id-generator.service';
 
 
 @Component({
@@ -44,10 +34,10 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
 
   private couponsSub: Subscription;
 
-  constructor(private couponsService: CouponsService) {}
+  constructor(private couponsService: CouponsService, private idGenerator: IdGeneratorService) {}
 
   ngOnInit(): void {
-    this.randomId = this.getRandomId();
+    this.randomId = this.idGenerator.generate();
     if (this.options?.selectAll) {
       this._indeterminateCheckBox = true;
       this.selectAll();
@@ -83,6 +73,15 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
     return this.selectedCoupons.has(id);
   }
 
+  ngOnChanges(): void {
+    this.selectedCoupons.clear();
+    if (this.options?.selectAll) {
+      this.coupons.map((coupon: Coupon) => coupon.params.id).forEach(id => this.selectedCoupons.add(id));
+      this.emitSelected();
+    }
+    this.updateIndeterminateStatus();
+  }
+
   private updateIndeterminateStatus() {
     const button = this.indeterminateCheckBoxRef?.nativeElement;
 
@@ -115,19 +114,6 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
 
   private emitSelected() {
     this.selectedCouponsEmitter.emit(this.couponsService.getCouponsById(...this.selectedCoupons));
-  }
-
-  private getRandomId() {
-    return Math.random().toString(36).substring(0, 4);
-  }
-
-  ngOnChanges(): void {
-    this.selectedCoupons.clear();
-    if (this.options?.selectAll) {
-      this.coupons.map((coupon: Coupon) => coupon.params.id).forEach(id => this.selectedCoupons.add(id));
-      this.emitSelected();
-    }
-    this.updateIndeterminateStatus();
   }
 
   ngOnDestroy(): void {
