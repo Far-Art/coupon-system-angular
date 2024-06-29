@@ -22,6 +22,7 @@ import {ModalButtonComponent} from './components/modal/modal-button/modal-button
 import {IdGeneratorService} from './services/id-generator.service';
 import { FormInputComponent } from './components/form-input/form-input.component';
 import { FormSelectComponent } from './components/form-select/form-select.component';
+import { AbstractFormInputComponent } from './components/abstract-form-input/abstract-form-input.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { FormSelectComponent } from './components/form-select/form-select.compon
     SpinnerComponent,
     ModalButtonComponent,
     FormInputComponent,
-    FormSelectComponent
+    FormSelectComponent,
+    AbstractFormInputComponent
   ],
   exports: [
     SliceTxtPipe,

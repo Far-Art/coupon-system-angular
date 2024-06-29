@@ -1,6 +1,20 @@
-import {Component, ElementRef, HostBinding, Input, OnChanges, OnInit, Optional, Renderer2, Self} from '@angular/core';
-import {ModalComponent} from '../modal.component';
-import {ModalService} from '../modal.service';
+import {
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnChanges,
+  OnInit,
+  Optional,
+  Renderer2,
+  Self
+} from '@angular/core';
+import {
+  ModalComponent
+} from '../modal.component';
+import {
+  ModalService
+} from '../modal.service';
 
 
 @Component({
@@ -55,10 +69,8 @@ export class ModalButtonComponent implements OnInit, OnChanges {
       });
 
       this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
-      this.renderer.addClass(this.selfRef.nativeElement, 'btn-outline-secondary');
     } else {
       this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
-      this.renderer.removeClass(this.selfRef.nativeElement, 'btn-outline-secondary');
     }
   }
 

@@ -1,28 +1,10 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-import {
-  IdGeneratorService
-} from '../../../../../shared/services/id-generator.service';
-import {
-  AuthService
-} from '../../../../../auth/auth.service';
-import {
-  Subscription
-} from 'rxjs';
-import {
-  UserData
-} from '../../../../../shared/models/user-data.model';
-import {
-  CouponsService
-} from '../../../../../features/coupons/coupons.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {IdGeneratorService} from '../../../../../shared/services/id-generator.service';
+import {AuthService} from '../../../../../auth/auth.service';
+import {Subscription} from 'rxjs';
+import {UserData} from '../../../../../shared/models/user-data.model';
+import {CouponsService} from '../../../../../features/coupons/coupons.service';
 
 
 @Component({

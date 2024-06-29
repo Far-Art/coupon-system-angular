@@ -7,27 +7,24 @@ import {
   OnInit
 } from '@angular/core';
 import {
-  IdGeneratorService
-} from '../../services/id-generator.service';
-import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR
 } from '@angular/forms';
+import {
+  IdGeneratorService
+} from '../../services/id-generator.service';
 
 
 @Component({
-  selector: 'cs-form-input',
-  templateUrl: './form-input.component.html',
-  styleUrls: ['./form-input.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FormInputComponent),
+      useExisting: forwardRef(() => T),
       multi: true
     }
   ]
 })
-export class FormInputComponent implements ControlValueAccessor, OnInit, AfterContentInit {
+export abstract class AbstractFormInputComponent<T> implements ControlValueAccessor, OnInit, AfterContentInit {
 
   @Input() id: string = this.idGenerator.generate();
 
@@ -90,5 +87,4 @@ export class FormInputComponent implements ControlValueAccessor, OnInit, AfterCo
   }
 
   ngOnInit(): void {}
-
 }
