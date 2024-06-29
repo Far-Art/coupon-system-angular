@@ -1,4 +1,4 @@
-import {AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit} from '@angular/core';
 import {ControlValueAccessor} from '@angular/forms';
 import {IdGeneratorService} from '../../services/id-generator.service';
 

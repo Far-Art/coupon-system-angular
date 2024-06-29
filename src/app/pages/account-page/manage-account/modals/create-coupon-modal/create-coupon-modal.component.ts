@@ -118,12 +118,12 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
         }
       case 'startDate':
         return {
-          evaluate: (value: string) => this.minDateValidator()(this.form.controls.startDate) != null,
+          evaluate: () => this.minDateValidator()(this.form.controls.startDate) != null,
           message: this.minDateValidator()(this.form.controls.startDate) != null ? this.minDateValidator()(this.form.controls.startDate) + '' : null
         }
       case 'endDate':
         return {
-          evaluate: (value: string) => this.minDateValidator()(this.form.controls.endDate) != null,
+          evaluate: () => this.minDateValidator()(this.form.controls.endDate) != null,
           message: this.minDateValidator(new Date(new Date().setDate(new Date().getDate() + 1)))(this.form.controls.endDate) != null ? this.minDateValidator()(this.form.controls.endDate) + '' : null
         }
       default: {
