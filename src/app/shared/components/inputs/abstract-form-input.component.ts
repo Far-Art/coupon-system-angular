@@ -21,13 +21,14 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   @Input() placeholder: string = 'input';
 
-  @Input() type: 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' = 'text';
+  @Input() type: 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' = 'text';
 
   @Input() options: T[] = [];
 
   @Input() errors: FormErrorParams<T> | FormErrorParams<T>[];
 
   value: T;
+  _type: string;
 
   form: FormGroup;
   isTouched: boolean;
@@ -55,6 +56,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   ) {}
 
   ngOnInit(): void {
+    this.setType();
     this.form            = this.rootForm.form;
     this.nodeName        = this.elRef.nativeElement.nodeName;
     this.formControlName = this.elRef.nativeElement.getAttribute('formcontrolname');
@@ -126,6 +128,19 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
           this.errorMessages.push(this.errors.message);
         }
       }
+    }
+  }
+
+  private setType() {
+    switch (this.type) {
+      case 'currency':
+        this._type = 'number';
+        break;
+      case 'image':
+        this._type = 'text';
+        break;
+      default:
+        this._type = this.type;
     }
   }
 

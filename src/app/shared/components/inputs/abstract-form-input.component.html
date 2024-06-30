@@ -21,6 +21,12 @@
       <ng-container *ngSwitchCase="'date'">
         <ng-container *ngTemplateOutlet="date_icon"></ng-container>
       </ng-container>
+      <ng-container *ngSwitchCase="'image'">
+        <ng-container *ngTemplateOutlet="image_icon"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="'number'">
+        <ng-container *ngTemplateOutlet="number_icon"></ng-container>
+      </ng-container>
       <ng-container *ngSwitchDefault>
         <ng-container *ngTemplateOutlet="default_icon"></ng-container>
       </ng-container>
@@ -46,19 +52,19 @@
           [value]="value"
           (blur)="onBlur()"
           (input)="handleInput($event)">
-    <option selected hidden class="text-secondary pt-1 pb-1" value="">Choose {{ placeholder | titlecase }}...</option>
-    <option class="pt-1 pb-1" *ngFor="let option of options">{{ '' + option | titlecase }}</option>
+    <option [selected]="value == null" hidden class="text-secondary pt-1 pb-1" value="">Choose {{ placeholder | titlecase }}...</option>
+    <option class="pt-1 pb-1" *ngFor="let option of options" [selected]="value === option" [value]="option">{{ '' + option  | titlecase }}</option>
   </select>
 </ng-template>
 
 <ng-template #inputType>
   <input *ngIf="type !== 'textarea'"
-         [type]="type === 'currency' ? 'number' : type"
+         [type]="_type"
          class="form-control"
          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
          [attr.aria-label]=" placeholder + ' input'"
          [id]="id"
-         [value]="type === 'currency' ? value : value"
+         [value]="value"
          (input)="handleInput($event)"
          (blur)="onBlur()"
          [placeholder]="placeholder | titlecase">
@@ -116,6 +122,19 @@
   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="16" width="16" viewBox="0 0 24 24" id="date">
     <path
         d="M19.5,4h-3V2.5C16.5,2.223877,16.276123,2,16,2s-0.5,0.223877-0.5,0.5V4h-7V2.5C8.5,2.223877,8.276123,2,8,2S7.5,2.223877,7.5,2.5V4H4.4995117c-1.380127,0.0014648-2.4985352,1.119873-2.5,2.5v13c0.0014648,1.380127,1.119873,2.4985352,2.5,2.5H19.5c1.380188-0.0012817,2.4987183-1.119812,2.5-2.5v-13C21.9987183,5.119812,20.880188,4.0012817,19.5,4z M21,19.5c-0.0009155,0.828064-0.671936,1.4990845-1.5,1.5H4.4995117c-0.828064-0.0009155-1.4990845-0.671936-1.5-1.5V11H21V19.5z M21,10H2.9995117V6.5c0.0009155-0.828064,0.671936-1.4990845,1.5-1.5H7.5v1.5c0,0.0001831,0,0.0003662,0,0.0006104C7.5001831,6.7765503,7.723999,7.0001831,8,7c0.0001831,0,0.0003662,0,0.0006104,0C8.2765503,6.9998169,8.5001831,6.776001,8.5,6.5V5h7v1.5c0,0.0001831,0,0.0003662,0,0.0006104C15.5001831,6.7765503,15.723999,7.0001831,16,7c0.0001831,0,0.0003662,0,0.0006104,0C16.2765503,6.9998169,16.5001831,6.776001,16.5,6.5V5h3c0.828064,0.0009155,1.4990845,0.671936,1.5,1.5V10z"></path>
+  </svg>
+</ng-template>
+
+<ng-template #image_icon>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+    <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z" />
+  </svg>
+</ng-template>
+
+<ng-template #number_icon>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-123" viewBox="0 0 16 16">
+    <path d="M2.873 11.297V4.142H1.699L0 5.379v1.137l1.64-1.18h.06v5.961zm3.213-5.09v-.063c0-.618.44-1.169 1.196-1.169.676 0 1.174.44 1.174 1.106 0 .624-.42 1.101-.807 1.526L4.99 10.553v.744h4.78v-.99H6.643v-.069L8.41 8.252c.65-.724 1.237-1.332 1.237-2.27C9.646 4.849 8.723 4 7.308 4c-1.573 0-2.36 1.064-2.36 2.15v.057zm6.559 1.883h.786c.823 0 1.374.481 1.379 1.179.01.707-.55 1.216-1.421 1.21-.77-.005-1.326-.419-1.379-.953h-1.095c.042 1.053.938 1.918 2.464 1.918 1.478 0 2.642-.839 2.62-2.144-.02-1.143-.922-1.651-1.551-1.714v-.063c.535-.09 1.347-.66 1.326-1.678-.026-1.053-.933-1.855-2.359-1.845-1.5.005-2.317.88-2.348 1.898h1.116c.032-.498.498-.944 1.206-.944.703 0 1.206.435 1.206 1.07.005.64-.504 1.106-1.2 1.106h-.75z" />
   </svg>
 </ng-template>
 
