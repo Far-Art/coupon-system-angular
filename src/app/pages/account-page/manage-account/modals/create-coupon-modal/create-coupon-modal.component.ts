@@ -151,11 +151,11 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
       if (control.value == null) {
         return {'error': 'Date must be provided'};
       }
-      const minDate = min ? min.setHours(0, 0, 0, 0) : new Date().setHours(0, 0, 0, 0);
-      const value   = new Date(control.value).getTime();
+      const minDate = min ? new Date(min.setHours(0, 0, 0, 0)) : new Date(new Date().setHours(0, 0, 0, 0));
+      const value   = new Date(control.value);
 
       if (value < minDate) {
-        return {'error': 'Date cannot be less than ' + minDate.toLocaleString()}; // TODO make right locale
+        return {'error': `Date cannot be less than ${minDate.getDate()}/${minDate.getMonth() + 1}/${minDate.getFullYear()}`};
       }
       return null;
     }
