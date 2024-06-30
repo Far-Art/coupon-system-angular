@@ -128,12 +128,12 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
       case 'startDate':
         return {
           evaluate: () => this.minDateValidator()(this.form.controls.startDate) != null,
-          message: this.minDateValidator()(this.form.controls.startDate) != null ? this.minDateValidator()(this.form.controls.startDate) + '' : null
+          message: this.minDateValidator()(this.form.controls.startDate) != null ? this.minDateValidator()(this.form.controls.startDate)?.['error'] : null
         }
       case 'endDate':
         return {
           evaluate: () => this.minDateValidator()(this.form.controls.endDate) != null,
-          message: this.minDateValidator(new Date(new Date().setDate(new Date().getDate() + 1)))(this.form.controls.endDate) != null ? this.minDateValidator()(this.form.controls.endDate) + '' : null
+          message: this.minDateValidator(new Date(new Date().setDate(new Date().getDate() + 1)))(this.form.controls.endDate) != null ? this.minDateValidator()(this.form.controls.endDate)?.['error'] : null
         }
       default: {
         return null;
@@ -149,13 +149,13 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
   private minDateValidator(min?: Date): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.value == null) {
-        return {'error': 'date is null'};
+        return {'error': 'Date must be provided'};
       }
       const minDate = min ? min.setHours(0, 0, 0, 0) : new Date().setHours(0, 0, 0, 0);
       const value   = new Date(control.value).getTime();
 
       if (value < minDate) {
-        return {'error': 'date is less than min'};
+        return {'error': 'Date cannot be less than ' + minDate.toLocaleString()}; // TODO make right locale
       }
       return null;
     }
