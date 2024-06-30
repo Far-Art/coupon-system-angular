@@ -40,6 +40,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   nodeName: string;
   formControlName: string;
   control: AbstractControl<any, any>;
+  dayOfWeek: number;
 
   errorMessages: string[] = [];
 
@@ -61,6 +62,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
     this.nodeName        = this.elRef.nativeElement.nodeName;
     this.formControlName = this.elRef.nativeElement.getAttribute('formcontrolname');
     this.control         = this.form?.get(this.formControlName) || this.form;
+    this.setDayOfWeek();
     if (this.control) {
       this.handleValueChanges();
       this.subscription = this.control.valueChanges.subscribe(() => this.handleValueChanges());
@@ -68,11 +70,27 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   }
 
+  private setDayOfWeek() {
+    if (this.control) {
+      if (this.type === 'date') {
+        const date: Date | string = this.control.value;
+        if (typeof date === 'string') {
+          this.dayOfWeek = new Date(date).getDate();
+        } else {
+          this.dayOfWeek = date.getDate();
+        }
+      }
+    } else {
+      this.dayOfWeek = new Date().getDate();
+    }
+  }
+
   private handleValueChanges() {
     this.isValid    = this.control.valid;
     this.isTouched  = this.control.touched;
     this.isPristine = this.control.pristine;
     this.isRequired = this.control.hasValidator(Validators.required);
+    this.setDayOfWeek();
   }
 
   ngOnChanges(): void {
