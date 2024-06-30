@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {Subscription} from 'rxjs';
@@ -10,15 +10,18 @@ export interface FormErrorParams<T> {
 }
 
 @Component({
-  templateUrl: './abstract-form-input.component.html'
+  templateUrl: './abstract-form-input.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AbstractFormInputComponent<T> implements OnInit, OnChanges, ControlValueAccessor, OnDestroy {
+export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
+
+  @ViewChild('content', {static: true}) content: ElementRef<HTMLDivElement>;
 
   @Input() id: string = this.idGenerator.generate();
 
   @Input() placeholder: string = 'input';
 
-  @Input() type: 'text' | 'textarea' | 'number' | 'currency' | 'date' = 'text';
+  @Input() type: 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' = 'text';
 
   @Input() options: T[] = [];
 
@@ -31,6 +34,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, Control
   isPristine: boolean;
   isValid: boolean;
   isRequired: boolean;
+  hasContent: boolean = true;
 
   nodeName: string;
   formControlName: string;
@@ -45,6 +49,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, Control
 
   constructor(
       private idGenerator: IdGeneratorService,
+      private changeDetection: ChangeDetectorRef,
       private elRef: ElementRef<HTMLElement>,
       @Optional() private rootForm: FormGroupDirective
   ) {}
@@ -126,6 +131,11 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, Control
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
+  }
+
+  ngAfterViewInit(): void {
+    this.hasContent = this.content.nativeElement.classList.contains('has-content');
+    this.changeDetection.detectChanges();
   }
 
 }

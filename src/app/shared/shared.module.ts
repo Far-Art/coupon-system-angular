@@ -20,9 +20,10 @@ import {ModalBodyComponent} from './components/modal/modal-body/modal-body.compo
 import {ModalFooterComponent} from './components/modal/modal-footer/modal-footer.component';
 import {ModalButtonComponent} from './components/modal/modal-button/modal-button.component';
 import {IdGeneratorService} from './services/id-generator.service';
-import {FormInputComponent} from './components/form-inputs/form-input/form-input.component';
-import {FormSelectComponent} from './components/form-inputs/form-select/form-select.component';
-import {AbstractFormInputComponent} from './components/form-inputs/abstract-form-input.component';
+import {FormInputComponent} from './components/inputs/form-input/form-input.component';
+import {FormSelectComponent} from './components/inputs/form-select/form-select.component';
+import {AbstractFormInputComponent} from './components/inputs/abstract-form-input.component';
+import { CheckNgContentDirective } from './directives/check-ng-content.directive';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {AbstractFormInputComponent} from './components/form-inputs/abstract-form
     ModalButtonComponent,
     FormInputComponent,
     FormSelectComponent,
-    AbstractFormInputComponent
+    AbstractFormInputComponent,
+    CheckNgContentDirective
   ],
   exports: [
     SliceTxtPipe,

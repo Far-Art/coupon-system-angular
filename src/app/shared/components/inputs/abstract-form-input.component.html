@@ -1,0 +1,128 @@
+<div class="input-group has-validation mt-3">
+  <span style="min-width: 42px" class="input-group-text rounded-end-0">
+    <!-- PROVIDED ICON -->
+    <div csCheckNgContent #content>
+      <ng-content></ng-content>
+    </div>
+    <!-- DEFAULT ICONS -->
+    <div *ngIf="!hasContent" [ngSwitch]="type">
+      <ng-container *ngSwitchCase="'email'">
+        <ng-container *ngTemplateOutlet="email_icon"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="'password'">
+        <ng-container *ngTemplateOutlet="password_icon"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="'currency'">
+        <ng-container *ngTemplateOutlet="password_icon"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="'textarea'">
+        <ng-container *ngTemplateOutlet="textarea_icon"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="'date'">
+        <ng-container *ngTemplateOutlet="date_icon"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <ng-container *ngTemplateOutlet="default_icon"></ng-container>
+      </ng-container>
+    </div>
+  </span>
+  <div class="form-floating">
+    <ng-container *ngTemplateOutlet="nodeName === 'CS-FORM-SELECT' ? selectType : inputType"></ng-container>
+    <label [for]="id">{{ placeholder | titlecase }}</label>
+  </div>
+</div>
+
+<div *ngIf="errorMessages.length > 0" class="p-5 pt-0 pb-0">
+  <div *ngFor="let error of errorMessages" class="text-start text-danger">
+    {{ error }}
+  </div>
+</div>
+
+<ng-template #selectType>
+  <select class="form-select"
+          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
+          [attr.aria-label]="placeholder + ' select' | titlecase"
+          [id]="id"
+          [value]="value"
+          (blur)="onBlur()"
+          (input)="handleInput($event)">
+    <option selected hidden class="text-secondary pt-1 pb-1" value="">Choose {{ placeholder | titlecase }}...</option>
+    <option class="pt-1 pb-1" *ngFor="let option of options">{{ '' + option | titlecase }}</option>
+  </select>
+</ng-template>
+
+<ng-template #inputType>
+  <input *ngIf="type !== 'textarea'"
+         [type]="type === 'currency' ? 'number' : type"
+         class="form-control"
+         [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
+         [attr.aria-label]=" placeholder + ' input'"
+         [id]="id"
+         [value]="type === 'currency' ? value : value"
+         (input)="handleInput($event)"
+         (blur)="onBlur()"
+         [placeholder]="placeholder | titlecase">
+  <textarea *ngIf="type === 'textarea'"
+            class="form-control"
+            [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
+            [attr.aria-label]="placeholder + ' input'"
+            [id]="id"
+            [value]="value"
+            (input)="handleInput($event)"
+            (blur)="onBlur()"
+            [placeholder]="placeholder | titlecase">
+    </textarea>
+</ng-template>
+
+<!--TODO replace with at symbol-->
+<ng-template #email_icon>
+  <svg xmlns="http://www.w3.org/2000/svg"
+       shape-rendering="geometricPrecision"
+       text-rendering="geometricPrecision"
+       image-rendering="optimizeQuality"
+       height="16"
+       width="16"
+       fill="currentColor"
+       fill-rule="evenodd"
+       clip-rule="evenodd"
+       viewBox="0 0 466 512.14">
+    <path d="M232.2 0c86.89 55.08 165.39 81.13 232.75 74.98 11.77 237.97-76.11 378.5-231.86 437.16C82.7 457.24-6.26 322.75.34 71.36 79.42 75.5 157.01 58.41 232.2 0zm46.25 220.22v-16.84c0-13.26-5.16-25.28-13.48-33.95-8.22-8.57-19.54-13.9-31.98-13.9-12.43 0-23.75 5.33-31.97 13.9-8.32 8.67-13.48 20.69-13.48 33.95v16.84h90.91zm-111.23 0v-16.84c0-18.65 7.35-35.64 19.19-47.99 11.95-12.45 28.43-20.18 46.59-20.18 18.16 0 34.65 7.72 46.58 20.18 11.85 12.35 19.2 29.34 19.2 47.99v16.84h7.27c5.9 0 10.73 4.83 10.73 10.73v113.42c0 5.91-4.83 10.74-10.73 10.74h-146.1c-5.91 0-10.73-4.83-10.73-10.74V230.95c-.01-5.9 4.82-10.73 10.73-10.73h7.27zm56.97 72.44-11.59 30.33h40.79l-10.73-30.75c6.81-3.5 11.46-10.6 11.46-18.78 0-11.68-9.45-21.13-21.13-21.13-11.66 0-21.12 9.45-21.12 21.13 0 8.51 5.05 15.85 12.32 19.2zm8.16-253.02c72.06 45.67 141.22 71.35 197.09 66.24 9.76 197.35-67.19 317.97-196.33 366.61C108.37 426.97 30.53 311.37 36 102.89c72.38 3.79 138.71-18.47 196.35-63.25z" />
+  </svg>
+</ng-template>
+
+<ng-template #password_icon>
+  <svg xmlns="http://www.w3.org/2000/svg"
+       shape-rendering="geometricPrecision"
+       text-rendering="geometricPrecision"
+       image-rendering="optimizeQuality"
+       height="16"
+       width="16"
+       fill="currentColor"
+       fill-rule="evenodd"
+       clip-rule="evenodd"
+       viewBox="0 0 466 512.14">
+    <path d="M232.2 0c86.89 55.08 165.39 81.13 232.75 74.98 11.77 237.97-76.11 378.5-231.86 437.16C82.7 457.24-6.26 322.75.34 71.36 79.42 75.5 157.01 58.41 232.2 0zm46.25 220.22v-16.84c0-13.26-5.16-25.28-13.48-33.95-8.22-8.57-19.54-13.9-31.98-13.9-12.43 0-23.75 5.33-31.97 13.9-8.32 8.67-13.48 20.69-13.48 33.95v16.84h90.91zm-111.23 0v-16.84c0-18.65 7.35-35.64 19.19-47.99 11.95-12.45 28.43-20.18 46.59-20.18 18.16 0 34.65 7.72 46.58 20.18 11.85 12.35 19.2 29.34 19.2 47.99v16.84h7.27c5.9 0 10.73 4.83 10.73 10.73v113.42c0 5.91-4.83 10.74-10.73 10.74h-146.1c-5.91 0-10.73-4.83-10.73-10.74V230.95c-.01-5.9 4.82-10.73 10.73-10.73h7.27zm56.97 72.44-11.59 30.33h40.79l-10.73-30.75c6.81-3.5 11.46-10.6 11.46-18.78 0-11.68-9.45-21.13-21.13-21.13-11.66 0-21.12 9.45-21.12 21.13 0 8.51 5.05 15.85 12.32 19.2zm8.16-253.02c72.06 45.67 141.22 71.35 197.09 66.24 9.76 197.35-67.19 317.97-196.33 366.61C108.37 426.97 30.53 311.37 36 102.89c72.38 3.79 138.71-18.47 196.35-63.25z" />
+  </svg>
+</ng-template>
+
+<ng-template #textarea_icon>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-body-text" viewBox="0 0 16 16">
+    <path fill-rule="evenodd"
+          d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5m0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
+  </svg>
+</ng-template>
+
+<ng-template #date_icon>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="16" width="16" viewBox="0 0 24 24" id="date">
+    <path
+        d="M19.5,4h-3V2.5C16.5,2.223877,16.276123,2,16,2s-0.5,0.223877-0.5,0.5V4h-7V2.5C8.5,2.223877,8.276123,2,8,2S7.5,2.223877,7.5,2.5V4H4.4995117c-1.380127,0.0014648-2.4985352,1.119873-2.5,2.5v13c0.0014648,1.380127,1.119873,2.4985352,2.5,2.5H19.5c1.380188-0.0012817,2.4987183-1.119812,2.5-2.5v-13C21.9987183,5.119812,20.880188,4.0012817,19.5,4z M21,19.5c-0.0009155,0.828064-0.671936,1.4990845-1.5,1.5H4.4995117c-0.828064-0.0009155-1.4990845-0.671936-1.5-1.5V11H21V19.5z M21,10H2.9995117V6.5c0.0009155-0.828064,0.671936-1.4990845,1.5-1.5H7.5v1.5c0,0.0001831,0,0.0003662,0,0.0006104C7.5001831,6.7765503,7.723999,7.0001831,8,7c0.0001831,0,0.0003662,0,0.0006104,0C8.2765503,6.9998169,8.5001831,6.776001,8.5,6.5V5h7v1.5c0,0.0001831,0,0.0003662,0,0.0006104C15.5001831,6.7765503,15.723999,7.0001831,16,7c0.0001831,0,0.0003662,0,0.0006104,0C16.2765503,6.9998169,16.5001831,6.776001,16.5,6.5V5h3c0.828064,0.0009155,1.4990845,0.671936,1.5,1.5V10z"></path>
+  </svg>
+</ng-template>
+
+<ng-template #default_icon>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-input-cursor-text" viewBox="0 0 16 16">
+    <path fill-rule="evenodd"
+          d="M5 2a.5.5 0 0 1 .5-.5c.862 0 1.573.287 2.06.566.174.099.321.198.44.286.119-.088.266-.187.44-.286A4.17 4.17 0 0 1 10.5 1.5a.5.5 0 0 1 0 1c-.638 0-1.177.213-1.564.434a3.5 3.5 0 0 0-.436.294V7.5H9a.5.5 0 0 1 0 1h-.5v4.272c.1.08.248.187.436.294.387.221.926.434 1.564.434a.5.5 0 0 1 0 1 4.17 4.17 0 0 1-2.06-.566A5 5 0 0 1 8 13.65a5 5 0 0 1-.44.285 4.17 4.17 0 0 1-2.06.566.5.5 0 0 1 0-1c.638 0 1.177-.213 1.564-.434.188-.107.335-.214.436-.294V8.5H7a.5.5 0 0 1 0-1h.5V3.228a3.5 3.5 0 0 0-.436-.294A3.17 3.17 0 0 0 5.5 2.5.5.5 0 0 1 5 2" />
+    <path d="M10 5h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4v1h4a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-4zM6 5V4H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v-1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" />
+  </svg>
+</ng-template>

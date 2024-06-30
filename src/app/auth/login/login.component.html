@@ -1,18 +1,5 @@
 <form class="user-select-none w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="input-group has-validation">
-    <span class="input-group-text rounded-end-0">@</span>
-    <div class="form-floating">
-      <input type="email"
-             formControlName="email"
-             required
-             class="form-control"
-             [ngClass]="{'is-valid': form.controls.email.valid, 'is-invalid': form.controls.email.touched
-             && form.controls.email.invalid}"
-             id="login-email"
-             placeholder="Email">
-      <label for="login-email">Email</label>
-    </div>
-  </div>
+  <cs-form-input type="email" placeholder="Email" formControlName="email"></cs-form-input>
   <div class="p-5 pt-0 pb-0">
     <div *ngIf="form.controls.email.touched && !form.controls.email.value" class="text-danger">
       Please enter an email.
@@ -23,27 +10,7 @@
     </div>
   </div>
 
-  <div class="input-group has-validation mt-3">
-    <span class="input-group-text rounded-end-0">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock"
-           viewBox="0 0 16 16">
-        <path
-            d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2M3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1z"/>
-      </svg>
-    </span>
-    <div class="form-floating">
-      <input type="password"
-             formControlName="password"
-             required
-             class="form-control"
-             [ngClass]="{'is-valid': form.controls.password.valid, 'is-invalid': form.controls.password.touched
-             && form.controls.password.invalid}"
-             id="login-password"
-             [maxlength]="maxLength"
-             placeholder="Password">
-      <label for="login-password">Password</label>
-    </div>
-  </div>
+  <cs-form-input type="password" placeholder="Password" formControlName="password"></cs-form-input>
   <div class="p-4 pt-0">
     <div *ngIf="form.controls.password.touched && !form.controls.password.value"
          class="text-danger">
