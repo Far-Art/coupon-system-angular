@@ -106,7 +106,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   onCartClick() {
     if (!this.isSaleEnded && !this.isPurchased) {
       this.isAddedToCart ? this.couponsService.removeFromCart(this.coupon) : this.couponsService.addToCart(this.coupon);
-      this.cartOnRemoveAnimationTrigger = this.isAddedToCart === false;
+      this.cartOnRemoveAnimationTrigger = !this.isAddedToCart;
 
       if (this.isAddedToCart) {
         this.cartOnAddAnimationTrigger = true;
@@ -125,7 +125,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
 
   onWishListClick() {
     this.isAddedToWish ? this.couponsService.removeFromWish(this.coupon) : this.couponsService.addToWish(this.coupon);
-    this.wishOnRemoveAnimationTrigger = this.isAddedToWish === false;
+    this.wishOnRemoveAnimationTrigger = !this.isAddedToWish;
 
     if (this.isAddedToWish) {
       this.wishOnAddAnimationTrigger = true;

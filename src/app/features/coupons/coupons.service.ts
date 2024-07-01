@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, map, Observable, tap} from 'rxjs';
+import {BehaviorSubject, filter, map, Observable, tap} from 'rxjs';
 import {Coupon, ICouponParams} from '../../shared/models/coupon.model';
 import {LogoService} from '../../header/logo/logo.service';
 import tempCoupons from './temp-coupons.json';
@@ -26,7 +26,9 @@ export class CouponsService {
   constructor(
       private logo: LogoService,
       private auth: AuthService
-  ) {}
+  ) {
+    this.moveSaleEndedToWish();
+  }
 
   findCoupons(filter: (coupon: Coupon) => boolean): Coupon[] {
     return this.originCouponsSubject.value.filter(c => filter(c));
@@ -119,6 +121,18 @@ export class CouponsService {
       list.splice(idx, 1);
     }
     this.originCouponsSubject.next(list);
+  }
+
+  private moveSaleEndedToWish(): void {
+    let userId: string;
+    this.auth.user$.pipe(
+        tap(user => userId = user.authData?.localId),
+        filter(user => user.authData?.localId !== userId),
+        map(user => user.couponsInCart),
+        filter(list => list != null && list.length > 0),
+        map(list => this.getCouponsById(...list)),
+        map(list => list.filter(c => c.params.isSaleEnded))
+    ).subscribe(coupons => this.moveToWish(...coupons))
   }
 
   /**
