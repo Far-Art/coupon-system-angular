@@ -24,6 +24,7 @@ import {FormInputComponent} from './components/inputs/form-input/form-input.comp
 import {FormSelectComponent} from './components/inputs/form-select/form-select.component';
 import {AbstractFormInputComponent} from './components/inputs/abstract-form-input.component';
 import { CheckNgContentDirective } from './directives/check-ng-content.directive';
+import { WheelPickerComponent } from './components/inputs/wheel-picker/wheel-picker.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { CheckNgContentDirective } from './directives/check-ng-content.directive
     FormInputComponent,
     FormSelectComponent,
     AbstractFormInputComponent,
-    CheckNgContentDirective
+    CheckNgContentDirective,
+    WheelPickerComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -66,7 +68,8 @@ import { CheckNgContentDirective } from './directives/check-ng-content.directive
     ModalButtonComponent,
     FormInputComponent,
     FormSelectComponent,
-    AbstractFormInputComponent
+    AbstractFormInputComponent,
+    WheelPickerComponent
   ],
   imports: [
     CommonModule,
