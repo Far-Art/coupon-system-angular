@@ -1,66 +1,102 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AbstractFormInputComponent} from '../abstract-form-input.component';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
 
 
 @Component({
   selector: 'cs-wheel-picker',
   templateUrl: './wheel-picker.component.html',
-  styleUrls: ['./wheel-picker.component.scss']
+  styleUrls: ['./wheel-picker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => WheelPickerComponent),
+      multi: true
+    }
+  ]
 })
-export class WheelPickerComponent {
+export class WheelPickerComponent extends AbstractFormInputComponent<number | string | Date> implements OnInit {
 
-  @ViewChild('wheel', {static: true}) wheel: ElementRef<HTMLDivElement>;
+  @ViewChild('wheel', {static: true}) private wheel: ElementRef<HTMLDivElement>;
 
-  private selectFieldHeight = 30 + 10; // height + margin
+  private selectFieldHeight = 25 + 10; // height + margin
 
-  scrollPos;
+  private scrollEnded: boolean = true;
+  private scrollTimeout: any;
+  private scrollEndTimeout: any;
 
-  values        = Array.from({length: 50}, (_, i) => String(i).padStart(2, '0'));
-  selectedIndex = 0;
+  @Input() values: number[] | string[] | Date[] = [];
+  @Input() range: { start: number | Date, end: number | Date };
+  selectedIndex                                 = 0;
 
-  constructor(private renderer: Renderer2) {}
+  override ngOnInit(): void {
+    super.ngOnInit();
+    if (this.values?.length === 0 && this.range?.start != null && this.range?.end != null) {
+      if (typeof this.range.start === 'number' && typeof this.range.end === 'number') {
+        let i       = this.range.start;
+        this.values = Array.from({length: this.range.end + 1 - this.range.start}).map(v => i++);
+      }
+    }
+
+    const idx = this.values.findIndex((v: any) => v === this.control.value);
+    if (idx >= 0) {
+      this.selectedIndex = idx;
+      this.setValue(this.values[this.selectedIndex]);
+      // this.wheel.nativeElement.scroll({top: this.selectedIndex * this.selectFieldHeight, behavior: 'smooth'});
+      // this.renderer.setStyle(this.wheel.nativeElement, 'transform', `translateY(-${this.selectedIndex * this.selectFieldHeight}px)`);
+    }
+  }
 
   onWheel(event: WheelEvent) {
-    event.preventDefault();
-    event.stopPropagation();
+    this.preventDefault(event);
+    this.calcSelectedIndex(event);
     const offset = this.calcOffset(event);
     this.renderer.setStyle(this.wheel.nativeElement, 'transform', `translateY(-${offset}px)`);
   }
 
   onScroll(event: Event) {
-    event.preventDefault();
-    this.selectedIndex = this.calcSelected(event);
-    this.scrollPos = this.selectedIndex;
-
-    window.scrollTo(0,0);
-    // this.renderer.setStyle(this.wheel.nativeElement, 'transform', `translateY(-${13 * this.selectedIndex}px)`);
+    this.preventDefault(event);
+    this.scrollEnded = false;
+    if (this.scrollTimeout) clearTimeout(this.scrollTimeout);
+    this.scrollTimeout = setTimeout(() => {
+      this.scrollEnded = true;
+    }, 150);
+    this.calcSelectedIndex(event);
+    this.onScrollEnd(event);
   }
 
-  onScrollEnd(event: Event) {
-    event.preventDefault();
-    const element: HTMLElement = event.target as HTMLElement;
-    const selected             = this.calcSelected(event);
-    element.scroll({top: selected * this.selectFieldHeight, behavior: 'smooth'});
+  private onScrollEnd(event: Event) {
+    if (this.scrollEndTimeout) clearTimeout(this.scrollEndTimeout);
+    if (!this.scrollEnded) {
+      this.scrollEndTimeout = setTimeout(() => {this.onScrollEnd(event)}, 50);
+      return;
+    }
+
+    this.setValue(this.values[this.selectedIndex]);
+
+    setTimeout(() => {
+      const element: HTMLElement = event.target as HTMLElement;
+      element.scroll({top: this.selectedIndex * this.selectFieldHeight, behavior: 'smooth'});
+    }, 200);
   }
 
-  // TODO 1 index above is rotateX(-50deg) translateY(16px)
-  private calcSelected(event: Event) {
-    const scrollPos = (event.target as HTMLElement).scrollTop;
-    return Math.round(scrollPos / this.selectFieldHeight);
+  private preventDefault(event: Event) {
+    if (event.cancelable) {
+      event.preventDefault();
+    }
   }
 
-  save() {
-    // console.log(`Selected Time: ${this.hours[this.hoursIndex]}:${this.minutes[this.minutesIndex]}`);
-  }
-
-  getTransform(index: number): string {
-    // const angle = (360 / this.values.length) * (index - this.selectedIndex);
-    // const angle = (index - this.selectedIndex) * 33;
-    // return `rotateX(${angle}deg) translateY(${angle / 2}px)`;
-    return null;
+  private calcSelectedIndex(event: Event) {
+    if (event instanceof WheelEvent) {
+      this.selectedIndex = (this.selectedIndex + (event.deltaY > 0 ? 1 : -1) + this.values.length) % this.values.length;
+    } else {
+      const scrollPos    = (event.target as HTMLElement).scrollTop;
+      this.selectedIndex = Math.round(scrollPos / this.selectFieldHeight);
+    }
   }
 
   private calcOffset(event: WheelEvent): number {
-    this.selectedIndex = (this.selectedIndex + (event.deltaY > 0 ? 1 : -1) + this.values.length) % this.values.length;
     if (event.deltaY < 0 && this.selectedIndex === this.values.length - 1) {
       return 0;
     } else if (event.deltaY > 0 && this.selectedIndex === 0) {
@@ -69,4 +105,5 @@ export class WheelPickerComponent {
 
     return this.selectFieldHeight * (this.selectedIndex % this.values.length);
   }
+
 }

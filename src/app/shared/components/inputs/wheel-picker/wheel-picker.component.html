@@ -1,11 +1,15 @@
-<div class="position-relative wheel-container m-2 drop-shadow-high">
-  <div class="position-absolute w-100 bg-primary start-0 top-50 translate-middle-y" style="height: 25px"></div>
-  <div>{{scrollPos}}</div>
-  <div class="wheel-picker overflow-y-scroll user-select-none" (scrollend)="onScrollEnd($event)" (scroll)="onScroll($event)"
-       (wheel)="onWheel($event)">
-    <div #wheel class="wheel position-absolute">
-      <div class="z-1 position-relative" *ngFor="let val of values; let i = index" [class.selected]="i === selectedIndex" [style.transform]="getTransform(i)">{{ val }}</div>
+<div class="input-group drop-shadow-high rounded-4 overflow-hidden m-2">
+  <div class="d-flex justify-content-center align-items-center input-group-text text-center m-0" style="width: 30px">
+    <label class="text-secondary" style="transform: rotateZ(90deg); font-size: 0.8rem">{{ placeholder | titlecase }}</label>
+  </div>
+  <div class="position-relative wheel-container m-0">
+    <div class="wheel-picker-selection position-absolute w-100 start-0 top-50 translate-middle-y"></div>
+    <div class="wheel-picker overflow-y-scroll user-select-none" (scroll)="onScroll($event)"
+         (wheel)="onWheel($event)">
+      <div #wheel class="wheel w-100 position-absolute">
+        <div class="position-relative text-nowrap text-center" *ngFor="let val of $any(values) ; let i = index" [class.selected]="i === selectedIndex">{{ val }}</div>
+      </div>
     </div>
   </div>
 </div>
-<button (click)="save()">Save</button>
+

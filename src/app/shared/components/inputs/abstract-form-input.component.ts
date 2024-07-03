@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, ViewChild} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {Subscription} from 'rxjs';
@@ -50,10 +50,11 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   onTouched: any = () => {};
 
   constructor(
-      private idGenerator: IdGeneratorService,
-      private changeDetection: ChangeDetectorRef,
-      private elRef: ElementRef<HTMLElement>,
-      @Optional() private rootForm: FormGroupDirective
+      protected idGenerator: IdGeneratorService,
+      protected changeDetection: ChangeDetectorRef,
+      protected elRef: ElementRef<HTMLElement>,
+      protected renderer: Renderer2,
+      @Optional() protected rootForm: FormGroupDirective
   ) {}
 
   ngOnInit(): void {
@@ -167,8 +168,11 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.hasContent = this.content.nativeElement.classList.contains('has-content');
-    this.changeDetection.detectChanges();
+    console.log('view')
+    this.hasContent = this.content?.nativeElement.classList.contains('has-content');
+    if (this.hasContent) {
+      this.changeDetection.detectChanges();
+    }
   }
 
 }

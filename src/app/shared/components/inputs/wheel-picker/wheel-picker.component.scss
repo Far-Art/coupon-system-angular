@@ -1,22 +1,24 @@
-.wheel-picker {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  //width: 50px;
-  perspective: 1000px;
-  overscroll-behavior: contain;
-  //gap: 10px;
+@import "src/styles";
+
+$height: 125px;
+
+.input-group {
+  width: calc(20% + 22px);
+  min-width: 80px;
 }
 
 .wheel-container {
-  width: 50px;
-  //height: 125px; /* Adjust the height as needed */
-  //overflow: hidden;
-  //position: relative;
-  //display: flex;
-  //flex-direction: column;
-  //align-items: center;
+  min-width: 50px;
+  width: 20%;
+  max-width: 150px;
+  min-height: $height;
+  background: linear-gradient(
+      0deg,
+      rgba(222, 222, 222, 0.5) 0%,
+      rgba(255, 255, 255, 1) 40%,
+      rgba(255, 255, 255, 1) 60%,
+      rgba(222, 222, 222, 0.5) 100%
+  );
   scrollbar-color: transparent transparent !important;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -26,44 +28,46 @@
   }
 }
 
-.wheel {
-  top: calc(50% - 23px);
-  width: 50px;
-  //height: 125px; /* Adjust the height as needed */
-  //overflow: hidden;
-  //position: relative;
-  //display: flex;
-  //flex-direction: column;
-  //align-items: center;
+.wheel-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: $height;
   perspective: 1000px;
   overscroll-behavior: contain;
-  transition: transform 500ms;
+
+  &-selection {
+    height: 35px;
+    background-color: $color-red-200;
+  }
+}
+
+
+.wheel {
+  top: calc(50% - 23px);
+  perspective: 1000px;
+  overscroll-behavior: contain;
+  transition: transform 150ms;
   transform-style: preserve-3d;
 
 
   div {
     margin: 10px 0;
+    height: 25px;
+    transition: color 500ms;
+    color: #a1a6af;
 
     &:first-child {
-      //margin-top: 0;
+      //margin-top: 10px;
     }
 
     &:last-child {
-      margin-bottom: 32px;
-      //transform: translateY(-40px);
+      margin-bottom: 50px;
     }
-
-    height: 30px; /* Adjust the height as needed */
-    //display: flex;
-    //justify-content: center;
-    //align-items: center;
-    transition: color 500ms;
-    color: #a1a6af;
   }
 }
 
-
 .selected {
   font-weight: bold;
-  color: black !important; /* Adjust the color as needed */
+  color: $color-red-700 !important;
 }
