@@ -88,37 +88,37 @@
           <div id="priceCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
               <div class="row align-content-center" formGroupName="priceRange">
-              <cs-wheel-picker formControlName="start" placeholder="min price" [range]="{start:filters.priceRange.start, end: filters.priceRange.end}"></cs-wheel-picker>
-                <div class="col flex-grow-1">
-                  <div class="input-group drop-shadow-low">
-                    <span class="input-group-text fs-4">₪</span>
-                    <div class="form-floating">
-                      <input type="number"
-                             class="form-control"
-                             id="minPrice"
-                             placeholder="min price"
-                             [min]="filters.priceRange.start"
-                             [max]="filters.priceRange.end">
-                      <label for="minPrice">Min price</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="input-group drop-shadow-low">
-                    <span class="input-group-text fs-4">₪</span>
-                    <div class="form-floating">
-                      <input type="number"
-                             class="form-control"
-                             id="maxPrice"
-                             placeholder="max price"
-                             formControlName="end"
-                             [min]="filters.priceRange.start"
-                             [max]="filters.priceRange.end">
-                      <label for="minPrice">Max price</label>
-                    </div>
-                  </div>
-                  <br>
-                </div>
+              <cs-wheel-picker class="col" formControlName="start" placeholder="min price" [range]="{start:filters.priceRange.start, end: filters.priceRange.end}"></cs-wheel-picker>
+<!--                <div class="col flex-grow-1">-->
+<!--                  <div class="input-group drop-shadow-low">-->
+<!--                    <span class="input-group-text fs-4">₪</span>-->
+<!--                    <div class="form-floating">-->
+<!--                      <input type="number"-->
+<!--                             class="form-control"-->
+<!--                             id="minPrice"-->
+<!--                             placeholder="min price"-->
+<!--                             [min]="filters.priceRange.start"-->
+<!--                             [max]="filters.priceRange.end">-->
+<!--                      <label for="minPrice">Min price</label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+                <cs-wheel-picker class="col" formControlName="end" placeholder="max price" [range]="{start:filters.priceRange.start, end: filters.priceRange.end}"></cs-wheel-picker>
+<!--                <div class="col">-->
+<!--                  <div class="input-group drop-shadow-low">-->
+<!--                    <span class="input-group-text fs-4">₪</span>-->
+<!--                    <div class="form-floating">-->
+<!--                      <input type="number"-->
+<!--                             class="form-control"-->
+<!--                             id="maxPrice"-->
+<!--                             placeholder="max price"-->
+<!--                             [min]="filters.priceRange.start"-->
+<!--                             [max]="filters.priceRange.end">-->
+<!--                      <label for="minPrice">Max price</label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <br>-->
+<!--                </div>-->
               </div>
               <a class="text-hover position-relative left-90" (click)="onPriceReset()">reset</a>
             </div>
