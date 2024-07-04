@@ -24,6 +24,8 @@ import {FormInputComponent} from './components/inputs/form-input/form-input.comp
 import {FormSelectComponent} from './components/inputs/form-select/form-select.component';
 import {AbstractFormInputComponent} from './components/inputs/abstract-form-input.component';
 import { CheckNgContentDirective } from './directives/check-ng-content.directive';
+import { ModalBackdropComponent } from './components/modal/modals-container/modal-backdrop/modal-backdrop.component';
+import { ModalsContainerComponent } from './components/modal/modals-container/modals-container.component';
 
 
 @NgModule({
@@ -46,27 +48,12 @@ import { CheckNgContentDirective } from './directives/check-ng-content.directive
     FormInputComponent,
     FormSelectComponent,
     AbstractFormInputComponent,
-    CheckNgContentDirective
+    CheckNgContentDirective,
+    ModalBackdropComponent,
+    ModalsContainerComponent
   ],
   exports: [
-    SliceTxtPipe,
-    ControlValuePipe,
-    UnfocusDirective,
-    DatePickerComponent,
-    CouponTableComponent,
-    CouponItemComponent,
-    OffCanvasComponent,
-    HeaderContentDirective,
-    ModalComponent,
-    ModalHeaderComponent,
-    ModalBodyComponent,
-    ModalFooterComponent,
-    ConfirmNavigationComponent,
-    SpinnerComponent,
-    ModalButtonComponent,
-    FormInputComponent,
-    FormSelectComponent,
-    AbstractFormInputComponent
+    SliceTxtPipe, ControlValuePipe, UnfocusDirective, DatePickerComponent, CouponTableComponent, CouponItemComponent, OffCanvasComponent, HeaderContentDirective, ModalComponent, ModalHeaderComponent, ModalBodyComponent, ModalFooterComponent, ConfirmNavigationComponent, SpinnerComponent, ModalButtonComponent, FormInputComponent, FormSelectComponent, AbstractFormInputComponent, ModalBackdropComponent, ModalsContainerComponent
   ],
   imports: [
     CommonModule,

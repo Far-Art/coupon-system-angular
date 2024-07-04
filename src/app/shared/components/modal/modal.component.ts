@@ -1,4 +1,4 @@
-import {Component, HostBinding, HostListener, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnInit, Self} from '@angular/core';
 import {ModalService} from './modal.service';
 import {IdGeneratorService} from '../../services/id-generator.service';
 
@@ -41,7 +41,7 @@ export class ModalComponent implements OnInit, OnChanges {
 
   isShown: boolean = false;
 
-  constructor(private service: ModalService, private idGenerator: IdGeneratorService) {}
+  constructor(private service: ModalService, private idGenerator: IdGeneratorService, @Self() public selfRef: ElementRef) {}
 
   ngOnInit(): void {
     this.id        = this.id == null ? 'cs_modal_' + this.idGenerator.generate() : this.id;

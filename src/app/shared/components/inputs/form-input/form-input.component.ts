@@ -7,7 +7,7 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
   selector: 'cs-form-input',
   templateUrl: '../abstract-form-input.component.html',
   styleUrls: ['./form-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
