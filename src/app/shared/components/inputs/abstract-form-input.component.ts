@@ -95,6 +95,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   }
 
   ngOnChanges(): void {
+    this.ngOnInit();
     // this.handleErrors();
   }
 
