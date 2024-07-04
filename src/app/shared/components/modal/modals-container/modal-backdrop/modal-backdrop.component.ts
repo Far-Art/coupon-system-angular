@@ -8,7 +8,7 @@ import {FadeInOut} from '../../../../animations/fade-in-out.animation';
   selector: 'cs-modal-backdrop',
   templateUrl: './modal-backdrop.component.html',
   styleUrls: ['./modal-backdrop.component.scss'],
-  animations: [FadeInOut(150, 150, 0.5)]
+  animations: [FadeInOut(200)]
 })
 export class ModalBackdropComponent implements OnInit, OnDestroy {
 
@@ -30,7 +30,9 @@ export class ModalBackdropComponent implements OnInit, OnDestroy {
   }
 
   onClick() {
-    this.modalService.close(null);
+    if (this.isShown) {
+      this.modalService.close();
+    }
   }
 
   ngOnDestroy(): void {

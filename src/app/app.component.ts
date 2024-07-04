@@ -11,14 +11,14 @@ import {ModalService} from './shared/components/modal/modal.service';
 export class AppComponent implements OnInit {
 
   static title = 'coupon system angular';
-  
+
   constructor(private authService: AuthService, private modalService: ModalService) {}
 
   ngOnInit(): void {
     this.authService.autoLogin();
   }
 
-  onClick(){
-    this.modalService.open(null);
+  onClick() {
+    this.modalService.open('someid');
   }
 }

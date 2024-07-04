@@ -1,9 +1,9 @@
 <ng-content select="cs-modal-button"></ng-content>
-
-<div class="modal-dialog modal-dialog-scrollable position-relative {{size !== 'default' ? 'modal-' + size: ''}}">
-  <div *ngIf="isShown" class="modal-content">
+<div *ngIf="isShown" @translateInOut class="modal-dialog modal-dialog-scrollable position-relative {{size !== 'default' ? 'modal-' + size: ''}}">
+  <div class="modal-content">
     <ng-content select="cs-modal-header"></ng-content>
     <ng-content select="cs-modal-body"></ng-content>
     <ng-content select="cs-modal-footer"></ng-content>
   </div>
 </div>
+
