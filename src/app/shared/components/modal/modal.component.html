@@ -3,7 +3,6 @@
      [attr.aria-labelledby]="title + ' modal'"
      [attr.aria-hidden]="!isShown"
      [attr.aria-modal]="isShown"
-     tabindex="-1"
      role="dialog"
      @translateInOut
      (@translateInOut.done)="onAnimationFinish($event)"

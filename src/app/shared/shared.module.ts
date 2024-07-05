@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SliceTxtPipe} from './pipes/slice-txt.pipe';
-import {UnfocusDirective} from './directives/unfocus.directive';
 import {DatePickerComponent} from './components/date-picker/date-picker.component';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {CsDateFormatterService} from './components/date-picker/cs-date-formatter.service';
@@ -23,50 +22,26 @@ import {IdGeneratorService} from './services/id-generator.service';
 import {FormInputComponent} from './components/inputs/form-input/form-input.component';
 import {FormSelectComponent} from './components/inputs/form-select/form-select.component';
 import {AbstractFormInputComponent} from './components/inputs/abstract-form-input.component';
-import { CheckNgContentDirective } from './directives/check-ng-content.directive';
-import { ModalBackdropComponent } from './components/modal/modals-container/modal-backdrop/modal-backdrop.component';
-import { ModalsContainerComponent } from './components/modal/modals-container/modals-container.component';
+import {CheckNgContentDirective} from './directives/check-ng-content.directive';
+import {ModalBackdropComponent} from './components/modal/modals-container/modal-backdrop/modal-backdrop.component';
+import {ModalsContainerComponent} from './components/modal/modals-container/modals-container.component';
 
 
 @NgModule({
   declarations: [
-    SliceTxtPipe,
-    UnfocusDirective,
-    DatePickerComponent,
-    CouponTableComponent,
-    CouponItemComponent,
-    ControlValuePipe,
-    OffCanvasComponent,
-    HeaderContentDirective,
-    ModalComponent,
-    ModalHeaderComponent,
-    ModalBodyComponent,
-    ModalFooterComponent,
-    ConfirmNavigationComponent,
-    SpinnerComponent,
-    ModalButtonComponent,
-    FormInputComponent,
-    FormSelectComponent,
-    AbstractFormInputComponent,
-    CheckNgContentDirective,
-    ModalBackdropComponent,
-    ModalsContainerComponent
+    SliceTxtPipe, DatePickerComponent, CouponTableComponent, CouponItemComponent, ControlValuePipe, OffCanvasComponent, HeaderContentDirective, ModalComponent, ModalHeaderComponent, ModalBodyComponent, ModalFooterComponent, ConfirmNavigationComponent, SpinnerComponent, ModalButtonComponent, FormInputComponent, FormSelectComponent, AbstractFormInputComponent, CheckNgContentDirective, ModalBackdropComponent, ModalsContainerComponent
   ],
   exports: [
-    SliceTxtPipe, ControlValuePipe, UnfocusDirective, DatePickerComponent, CouponTableComponent, CouponItemComponent, OffCanvasComponent, HeaderContentDirective, ModalComponent, ModalHeaderComponent, ModalBodyComponent, ModalFooterComponent, ConfirmNavigationComponent, SpinnerComponent, ModalButtonComponent, FormInputComponent, FormSelectComponent, AbstractFormInputComponent, ModalBackdropComponent, ModalsContainerComponent
+    SliceTxtPipe, ControlValuePipe, DatePickerComponent, CouponTableComponent, CouponItemComponent, OffCanvasComponent, HeaderContentDirective, ModalComponent, ModalHeaderComponent, ModalBodyComponent, ModalFooterComponent, ConfirmNavigationComponent, SpinnerComponent, ModalButtonComponent, FormInputComponent, FormSelectComponent, AbstractFormInputComponent, ModalBackdropComponent, ModalsContainerComponent
   ],
   imports: [
-    CommonModule,
-    NgbInputDatepicker,
-    CoreModule
+    CommonModule, NgbInputDatepicker, CoreModule
   ],
   providers: [
-    IdGeneratorService,
-    {
+    IdGeneratorService, {
       provide: NgbDateParserFormatter,
       useClass: CsDateFormatterService
-    },
-    {
+    }, {
       provide: NgbDateAdapter,
       useClass: CsDateAdapterService
     }

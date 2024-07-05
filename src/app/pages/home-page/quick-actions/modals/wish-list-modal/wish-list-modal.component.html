@@ -13,7 +13,6 @@
               'btn-outline-secondary': selectedCoupons.length === 0,
               'btn-outline-danger': selectedCoupons.length > 0
             }"
-            unfocus
             [disabled]="selectedCoupons.length === 0"
             (click)="onDelete()">Delete
     </button>
@@ -25,14 +24,12 @@
                   'btn-outline-secondary': isAnySaleEnded || selectedCoupons.length === 0,
                   'btn-outline-success': !isAnySaleEnded && selectedCoupons.length > 0
                 }"
-            unfocus
             (click)="onMove()">Move To Cart
     </button>
     <button type="button"
             class="btn btn-outline-secondary"
             [ngClass]="{'w-100': _windowWidth < _switchWidth}"
-            data-bs-dismiss="modal"
-            unfocus>Close
+            data-bs-dismiss="modal">Close
     </button>
   </cs-modal-footer>
 </cs-modal>

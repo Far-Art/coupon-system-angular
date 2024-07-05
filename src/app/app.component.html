@@ -1,10 +1,10 @@
-<div class="bg-main min-vh-100 min-vw-100 overflow-y-auto overflow-x-hidden position-relative pt-7 pb-10">
+<div #content class="bg-main min-vh-100 min-vw-100 overflow-y-auto overflow-x-hidden position-relative pt-7 pb-10">
   <button style="z-index: 999999; position: relative" (click)="onClick()">open</button>
   <cs-header></cs-header>
-  <router-outlet></router-outlet>
-  <div class="mt-5">
-    <sc-footer></sc-footer>
-  </div>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  <sc-footer></sc-footer>
 </div>
 
 <cs-confirm-navigation></cs-confirm-navigation>

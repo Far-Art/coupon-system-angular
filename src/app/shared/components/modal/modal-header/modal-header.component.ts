@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostBinding, Input, OnChanges, OnInit, Self} from '@angular/core';
+import {Component, HostBinding, Input, OnChanges, OnInit} from '@angular/core';
 import {ModalComponent} from '../modal.component';
 
 
@@ -13,7 +13,7 @@ export class ModalHeaderComponent implements OnInit, OnChanges {
 
   @Input() title: string;
 
-  constructor(private modal: ModalComponent, @Self() private selfRef: ElementRef<HTMLElement>) {}
+  constructor(private modal: ModalComponent) {}
 
   ngOnInit(): void {
     if (!this.title) {

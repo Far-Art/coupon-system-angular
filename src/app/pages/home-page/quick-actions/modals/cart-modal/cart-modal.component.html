@@ -16,8 +16,7 @@
     <div class="btn-group dropup"
          [ngClass]="{'w-100': _windowWidth < _switchWidth}"
          role="group">
-      <button unfocus
-              type="button"
+      <button type="button"
               [disabled]="_selectedCoupons.length === 0"
               [ngClass]="{
                 'btn-outline-primary': _selectedCoupons.length > 0,
@@ -29,8 +28,8 @@
         Manage
       </button>
       <ul class="dropdown-menu ps-2 pe-2 drop-shadow-high user-select-none">
-        <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
-        <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
+        <li class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
+        <li class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
       </ul>
     </div>
     <cs-modal-button *ngIf="!isUserPresent"
@@ -43,8 +42,7 @@
       <ng-container *ngTemplateOutlet="modalPurchaseButton"></ng-container>
     </ng-container>
 
-    <button unfocus
-            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+    <button [ngClass]="{'w-100': _windowWidth < _switchWidth}"
             class="btn btn-outline-secondary"
             type="button"
             data-bs-dismiss="modal">Close
@@ -164,7 +162,6 @@
           <input class="form-check-input drop-shadow-low"
                  style="cursor: pointer"
                  type="checkbox"
-                 unfocus
                  id="moveToWishCheckbox"
                  [checked]="isMoveToWish">
           <label class="form-check-label text-hover"

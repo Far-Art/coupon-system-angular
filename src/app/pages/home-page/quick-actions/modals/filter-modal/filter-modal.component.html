@@ -8,7 +8,6 @@
           <h2 class="accordion-header">
             <button class="accordion-button bg-light-semi-transparent collapsed"
                     type="button"
-                    unfocus
                     [disabled]="form.controls.freeText.value.value"
                     data-bs-toggle="collapse"
                     data-bs-target="#categoriesCollapse"
@@ -24,7 +23,6 @@
                    *ngFor="let c of form.controls.categories.controls; let i = index">
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
-                       unfocus
                        id="{{c.value.value}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
@@ -42,7 +40,6 @@
           <h2 class="accordion-header">
             <button class="accordion-button bg-light-semi-transparent collapsed"
                     type="button"
-                    unfocus
                     [disabled]="form.controls.freeText.value.value"
                     data-bs-toggle="collapse"
                     data-bs-target="#companiesCollapse"
@@ -58,7 +55,6 @@
                    *ngFor="let c of form.controls.companyNames.controls; let i = index">
                 <input class="form-check-input drop-shadow-low"
                        type="checkbox"
-                       unfocus
                        id="{{c.value.value + i}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
@@ -75,7 +71,6 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
-                    unfocus
                     [disabled]="form.controls.freeText.value.value"
                     type="button"
                     data-bs-toggle="collapse"
@@ -128,7 +123,6 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed bg-light-semi-transparent"
-                    unfocus
                     [disabled]="form.controls.freeText.value.value"
                     type="button"
                     data-bs-toggle="collapse"
@@ -176,7 +170,6 @@
 
       <div class="input-group mb-3 mt-3 drop-shadow-low position-relative" formGroupName="freeText">
         <button [disabled]="!form.controls.freeText.value.value || form.controls.freeText.invalid"
-                unfocus
                 class="btn btn-outline-secondary"
                 type="submit"
                 id="freeText">
@@ -210,7 +203,6 @@
            formGroupName="hidePurchased">
         <input class="form-check-input drop-shadow-low"
                type="checkbox"
-               unfocus
                id="hidePurchased"
                formControlName="isChecked">
         <label class="form-check-label text-hover"
@@ -221,12 +213,12 @@
     </form>
   </cs-modal-body>
   <cs-modal-footer>
-    <button unfocus type="reset" class="btn btn-outline-danger" (click)="onFormReset()" data-bs-dismiss="modal">Reset
+    <button type="reset" class="btn btn-outline-danger" (click)="onFormReset()" data-bs-dismiss="modal">Reset
     </button>
-    <button unfocus type="button" class="btn btn-outline-secondary" (click)="onCancel()" data-bs-dismiss="modal">
+    <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" data-bs-dismiss="modal">
       Cancel
     </button>
-    <button unfocus type="submit" class="btn btn-outline-success" (click)="onSubmit()" data-bs-dismiss="modal"
+    <button type="submit" class="btn btn-outline-success" (click)="onSubmit()" data-bs-dismiss="modal"
             [disabled]="form.controls.freeText.invalid">Apply
     </button>
   </cs-modal-footer>
