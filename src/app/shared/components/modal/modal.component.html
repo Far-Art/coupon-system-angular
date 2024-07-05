@@ -6,8 +6,7 @@
      role="dialog"
      @translateInOut
      (@translateInOut.done)="onAnimationFinish($event)"
-     class="modal-dialog modal-dialog-scrollable m-1 mt-2 position-relative {{size !== 'default' ? 'modal-' + size: ''}}"
-     style="margin-left: auto !important; margin-right: auto !important;">
+     class="modal-dialog modal-dialog-scrollable m-1 mt-2 position-relative {{size !== 'default' ? 'modal-' + size: ''}}">
   <div class="modal-content">
     <ng-content select="cs-modal-header"></ng-content>
     <ng-content select="cs-modal-body"></ng-content>

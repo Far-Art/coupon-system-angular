@@ -22,7 +22,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
   @Input() size: 'sm' | 'default' | 'lg' | 'xl' = 'default';
 
   @HostBinding('id') protected selfId: string;
-  @HostBinding('style') protected style: string = 'height: fit-content;';
+  @HostBinding('style') protected style: string;
   @HostBinding('class') protected clazz: string;
 
   protected isShown: boolean          = false;

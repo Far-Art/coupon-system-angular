@@ -21,9 +21,13 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   @HostBinding('role') protected role: string;
   @HostBinding('tabindex') protected tabIndex: string = '0';
 
-  @HostListener('click', ['$event'])
-  @HostListener('keydown.enter', ['$event'])
-  @HostListener('keydown.space', ['$event'])
+  @HostListener('keydown.enter')
+  @HostListener('keydown.space')
+  protected selfClick() {
+    this.selfRef.nativeElement.click();
+  }
+
+  @HostListener('click')
   protected onClick() {
     if (this.action === 'close') {
       this.close();
@@ -53,12 +57,6 @@ export class ModalButtonComponent implements OnInit, OnChanges {
     }
 
     if (this.disabled) {
-      // ensure that service has registered the modal
-      setTimeout(() => {
-        // close the modal if its open
-        this.close();
-      });
-
       this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
     } else {
       this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');

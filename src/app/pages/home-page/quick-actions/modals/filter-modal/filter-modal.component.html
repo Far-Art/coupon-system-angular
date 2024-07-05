@@ -212,13 +212,8 @@
     </form>
   </cs-modal-body>
   <cs-modal-footer>
-    <button type="reset" class="btn btn-outline-danger" (click)="onFormReset()" data-bs-dismiss="modal">Reset
-    </button>
-    <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" data-bs-dismiss="modal">
-      Cancel
-    </button>
-    <button type="submit" class="btn btn-outline-success" (click)="onSubmit()" data-bs-dismiss="modal"
-            [disabled]="form.controls.freeText.invalid">Apply
-    </button>
+    <cs-modal-button class="btn btn-outline-danger" action="close" type="reset" (click)="onFormReset()">Reset</cs-modal-button>
+    <cs-modal-button class="btn btn-outline-secondary" action="close" (click)="onCancel()">Cancel</cs-modal-button>
+    <cs-modal-button class="btn btn-outline-success" action="close" type="submit" (click)="onSubmit()" [disabled]="form.controls.freeText.invalid">Apply</cs-modal-button>
   </cs-modal-footer>
 </cs-modal>
