@@ -10,7 +10,7 @@ import {ModalService} from './shared/components/modal/modal.service';
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild('content') content: ElementRef<HTMLElement>
+  @ViewChild('content', {static: true}) content: ElementRef<HTMLElement>
 
   static title = 'coupon system angular';
 
@@ -25,9 +25,5 @@ export class AppComponent implements OnInit {
         this.renderer.removeAttribute(this.content.nativeElement, 'inert');
       }
     });
-  }
-
-  onClick() {
-    this.modalService.open('someid');
   }
 }

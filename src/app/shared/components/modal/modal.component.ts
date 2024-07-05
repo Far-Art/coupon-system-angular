@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnInit, Self} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnInit, Renderer2, Self} from '@angular/core';
 import {ModalService} from './modal.service';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {TranslateInOut} from '../../animations/translateInOut.animation';
@@ -29,13 +29,18 @@ export class ModalComponent implements OnInit, AfterViewInit {
   protected title: string;
   private leaveTransitionEndedSubject = new Subject<void>();
 
-  constructor(private service: ModalService, private idGenerator: IdGeneratorService, @Self() protected selfRef: ElementRef<HTMLElement>) {}
+  constructor(
+      private service: ModalService,
+      private idGenerator: IdGeneratorService,
+      private renderer: Renderer2,
+      @Self() protected selfRef: ElementRef<HTMLElement>
+  ) {}
 
   ngOnInit(): void {
     this.id     = this.id == null ? 'cs_modal_' + this.idGenerator.generate() : this.id;
     this.selfId = this.id;
     this.clazz  = 'modal position-relative ms-auto me-auto ' + this.size + (this.clazz ? ' ' + this.clazz : '');
-    (this.service as any).registerModal(this);
+    this.service['registerModal'](this);
   }
 
   open() {
@@ -62,6 +67,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
   protected setOpen() {
     this.isShown = true;
+    this.renderer.removeAttribute(this.selfRef.nativeElement, 'inert');
 
     if (this.onOpenFn) {
       this.onOpenFn();
@@ -70,6 +76,8 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
   protected setClose() {
     this.isShown = false;
+    this.renderer.setAttribute(this.selfRef.nativeElement, 'inert', '');
+
     if (this.onCloseFn) {
       this.onCloseFn();
     }

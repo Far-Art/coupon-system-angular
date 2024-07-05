@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostBinding, Input, OnChanges, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnInit, Optional, Renderer2, Self} from '@angular/core';
 import {ModalComponent} from '../modal.component';
 import {ModalService} from '../modal.service';
 
@@ -19,12 +19,22 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   @HostBinding('class') protected hostClazz: string;
   @HostBinding('role') protected role: string;
 
-  constructor(@Optional() private hostModal: ModalComponent, @Self() private selfRef: ElementRef, private renderer: Renderer2, private service: ModalService) {}
+  @HostListener('click', ['$event'])
+  protected onClick() {
+    this.open();
+  }
+
+  constructor(
+      @Optional() private hostModal: ModalComponent,
+      @Self() private selfRef: ElementRef,
+      private renderer: Renderer2,
+      private service: ModalService
+  ) {}
 
   ngOnInit(): void {
     this.modalId   = this.modalId || this.hostModal?.id;
     this.hostClazz = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
-    (this.service as any).registerButton(this.modalId, this);
+    this.service['registerButton'](this.modalId, this);
   }
 
   ngOnChanges(): void {

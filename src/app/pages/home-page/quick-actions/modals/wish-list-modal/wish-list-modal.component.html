@@ -1,7 +1,5 @@
 <cs-modal id="wishModal">
-  <cs-modal-header>
-    <h4 class="modal-title text-primary user-select-none">{{ 'wish list' | titlecase }}</h4>
-  </cs-modal-header>
+  <cs-modal-header [title]="'wish list'"></cs-modal-header>
   <cs-modal-body>
     <sc-coupon-table [coupons]="wishList" (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
   </cs-modal-body>
