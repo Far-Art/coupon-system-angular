@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostBinding, Input, OnInit, Self} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnInit, Self} from '@angular/core';
 import {ModalService} from './modal.service';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {TranslateInOut} from '../../animations/translateInOut.animation';
@@ -13,9 +13,7 @@ import {AnimationEvent} from '@angular/animations';
   animations: [TranslateInOut(300)]
 
 })
-export class ModalComponent implements OnInit {
-
-  private leaveTransitionEndedSubject = new Subject<void>();
+export class ModalComponent implements OnInit, AfterViewInit {
 
   @Input() id: string;
   @Input() onOpenFn: (...params: any) => any;
@@ -24,21 +22,19 @@ export class ModalComponent implements OnInit {
   @Input() size: 'sm' | 'default' | 'lg' | 'xl' = 'default';
 
   @HostBinding('id') protected selfId: string;
-  @HostBinding('tabindex') protected tabIndex: string            = '-1';
-  @HostBinding('style') protected style: string                  = 'height: fit-content;';
-  @HostBinding('attr.aria-hidden') protected ariaHidden: boolean = true;
-  @HostBinding('attr.aria-labelledby') protected labeledBy: string;
+  @HostBinding('style') protected style: string = 'height: fit-content;';
   @HostBinding('class') protected clazz: string;
 
-  protected isShown: boolean = false;
+  protected isShown: boolean          = false;
+  protected title: string;
+  private leaveTransitionEndedSubject = new Subject<void>();
 
-  constructor(private service: ModalService, private idGenerator: IdGeneratorService, @Self() public selfRef: ElementRef) {}
+  constructor(private service: ModalService, private idGenerator: IdGeneratorService, @Self() protected selfRef: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {
-    this.id        = this.id == null ? 'cs_modal_' + this.idGenerator.generate() : this.id;
-    this.selfId    = this.id;
-    this.labeledBy = this.id + '-label';
-    this.clazz     = 'modal position-relative ms-auto me-auto ' + this.size + (this.clazz ? ' ' + this.clazz : '');
+    this.id     = this.id == null ? 'cs_modal_' + this.idGenerator.generate() : this.id;
+    this.selfId = this.id;
+    this.clazz  = 'modal position-relative ms-auto me-auto ' + this.size + (this.clazz ? ' ' + this.clazz : '');
     (this.service as any).registerModal(this);
   }
 
@@ -55,25 +51,30 @@ export class ModalComponent implements OnInit {
   }
 
   protected onAnimationFinish(event: AnimationEvent): void {
+    if (!this.title) {
+      throw new Error('Modal header must be provided with title input, use cs-modal-header');
+    }
+
     if (event.toState === 'void') {
       this.leaveTransitionEndedSubject.next();
     }
   }
 
   protected setOpen() {
-    this.isShown    = true;
-    this.ariaHidden = false;
+    this.isShown = true;
+
     if (this.onOpenFn) {
       this.onOpenFn();
     }
   }
 
   protected setClose() {
-    this.isShown    = false;
-    this.ariaHidden = true;
+    this.isShown = false;
     if (this.onCloseFn) {
       this.onCloseFn();
     }
   }
 
+  ngAfterViewInit(): void {
+  }
 }

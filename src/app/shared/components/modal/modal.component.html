@@ -1,6 +1,14 @@
 <ng-content select="cs-modal-button"></ng-content>
-<div [attr.aria-modal]="isShown" *ngIf="isShown" @translateInOut (@translateInOut.done)="onAnimationFinish($event)"
-     class="modal-dialog modal-dialog-scrollable m-1 mt-2 position-relative {{size !== 'default' ? 'modal-' + size: ''}}">
+<div *ngIf="isShown"
+     [attr.aria-labelledby]="title + ' modal'"
+     [attr.aria-hidden]="!isShown"
+     [attr.aria-modal]="isShown"
+     tabindex="-1"
+     role="dialog"
+     @translateInOut
+     (@translateInOut.done)="onAnimationFinish($event)"
+     class="modal-dialog modal-dialog-scrollable m-1 mt-2 position-relative {{size !== 'default' ? 'modal-' + size: ''}}"
+     style="margin-left: auto !important; margin-right: auto !important;">
   <div class="modal-content">
     <ng-content select="cs-modal-header"></ng-content>
     <ng-content select="cs-modal-body"></ng-content>

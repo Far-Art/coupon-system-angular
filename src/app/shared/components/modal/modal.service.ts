@@ -34,7 +34,7 @@ export class ModalService {
     this.showBackdrop.next(false);
     modal.leaveTransitionEnded$().pipe(take(1))
          .subscribe(() => {
-           this.renderer.removeChild(this.containerElement, modal.selfRef.nativeElement);
+           this.renderer.removeChild(this.containerElement, modal['selfRef'].nativeElement);
            this.renderer.setStyle(this.containerElement, 'z-index', -1);
            this.renderer.removeStyle(document.body, 'overflow-y');
          });
@@ -52,8 +52,7 @@ export class ModalService {
       this.showBackdrop.next(true);
       this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
       this.renderer.setStyle(this.containerElement, 'z-index', 9999);
-      this.renderer.addClass(modal.selfRef.nativeElement, 'shown');
-      this.renderer.appendChild(this.containerElement, modal.selfRef.nativeElement);
+      this.renderer.appendChild(this.containerElement, modal['selfRef'].nativeElement);
     }
 
   }

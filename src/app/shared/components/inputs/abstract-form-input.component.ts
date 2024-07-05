@@ -11,7 +11,7 @@ export interface FormErrorParams<T> {
 
 @Component({
   templateUrl: './abstract-form-input.component.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
 

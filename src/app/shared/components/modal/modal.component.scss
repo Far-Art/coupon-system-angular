@@ -1,20 +1,20 @@
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
-
+// TODO when size changes host element larger that modal itself
 :host {
   display: block;
-  width: $modal-md;
+  max-width: $modal-md;
 
   &.sm {
-    width: $modal-sm;
+    max-width: $modal-sm;
   }
 
   &.lg {
-    width: $modal-lg;
+    max-width: $modal-lg;
   }
 
   &.xl {
-    width: $modal-xl;
+    max-width: $modal-xl;
   }
 }
