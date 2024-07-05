@@ -14,14 +14,22 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   @Input('class') clazz: string;
   @Input('disabled') disabled: boolean         = false;
   @Input() type: 'submit' | 'button' | 'reset' = 'button';
+  @Input() action: 'close' | 'open'            = 'open';
 
-  @HostBinding('id') protected id: string = '';
+  @HostBinding('id') protected id: string             = '';
   @HostBinding('class') protected hostClazz: string;
   @HostBinding('role') protected role: string;
+  @HostBinding('tabindex') protected tabIndex: string = '0';
 
   @HostListener('click', ['$event'])
+  @HostListener('keydown.enter', ['$event'])
+  @HostListener('keydown.space', ['$event'])
   protected onClick() {
-    this.open();
+    if (this.action === 'close') {
+      this.close();
+    } else {
+      this.open();
+    }
   }
 
   constructor(

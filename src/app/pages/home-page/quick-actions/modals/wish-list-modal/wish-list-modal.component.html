@@ -24,10 +24,9 @@
                 }"
             (click)="onMove()">Move To Cart
     </button>
-    <button type="button"
-            class="btn btn-outline-secondary"
-            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
-            data-bs-dismiss="modal">Close
-    </button>
+    <cs-modal-button class="btn btn-outline-secondary"
+                     [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+                     action="close">Close
+    </cs-modal-button>
   </cs-modal-footer>
 </cs-modal>

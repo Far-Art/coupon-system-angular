@@ -1,9 +1,3 @@
-:host {
-  &:focus, &:focus-visible {
-    border: 3px solid gray !important;
-  }
-}
-
 :host(:active).disabled {
   background-color: initial !important;
   color: gray !important;
