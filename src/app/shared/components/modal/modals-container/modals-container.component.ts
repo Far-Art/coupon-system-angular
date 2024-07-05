@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Self} from '@angular/core';
+import {Component, ElementRef, HostBinding, OnInit, Self} from '@angular/core';
 import {ModalService} from '../modal.service';
 
 
@@ -10,6 +10,8 @@ import {ModalService} from '../modal.service';
 export class ModalsContainerComponent implements OnInit {
 
   isShown: boolean;
+
+  @HostBinding('style.z-index') zIndex: number = -1;
 
   constructor(private modalService: ModalService, @Self() private elRef: ElementRef) {}
 

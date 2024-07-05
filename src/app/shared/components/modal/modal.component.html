@@ -1,5 +1,6 @@
 <ng-content select="cs-modal-button"></ng-content>
-<div *ngIf="isShown" @translateInOut class="modal-dialog modal-dialog-scrollable position-relative {{size !== 'default' ? 'modal-' + size: ''}}">
+<div [attr.aria-modal]="isShown" *ngIf="isShown" @translateInOut (@translateInOut.done)="onAnimationFinish($event)"
+     class="modal-dialog modal-dialog-scrollable m-1 mt-2 position-relative {{size !== 'default' ? 'modal-' + size: ''}}">
   <div class="modal-content">
     <ng-content select="cs-modal-header"></ng-content>
     <ng-content select="cs-modal-body"></ng-content>

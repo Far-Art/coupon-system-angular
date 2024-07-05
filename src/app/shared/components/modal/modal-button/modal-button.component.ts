@@ -12,34 +12,26 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
   @Input('modal-id') modalId: string;
   @Input('class') clazz: string;
-  @Input('disabled') disabled: boolean                 = false;
-  @Input() type: 'close' | 'open' | 'submit' | 'reset' = 'close';
+  @Input('disabled') disabled: boolean         = false;
+  @Input() type: 'submit' | 'button' | 'reset' = 'button';
 
   @HostBinding('id') protected id: string = '';
   @HostBinding('class') protected hostClazz: string;
-  @HostBinding('attr.data-bs-target') protected dataBsTarget: string;
-  @HostBinding('attr.data-bs-toggle') protected dataBsToggle: string;
-  @HostBinding('attr.data-bs-dismiss') protected dataBsDismiss: string;
   @HostBinding('role') protected role: string;
 
   constructor(@Optional() private hostModal: ModalComponent, @Self() private selfRef: ElementRef, private renderer: Renderer2, private service: ModalService) {}
 
   ngOnInit(): void {
-    this.modalId      = this.modalId || this.hostModal?.id;
-    this.dataBsTarget = '#' + this.modalId;
-    this.hostClazz    = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
+    this.modalId   = this.modalId || this.hostModal?.id;
+    this.hostClazz = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
     (this.service as any).registerButton(this.modalId, this);
   }
 
   ngOnChanges(): void {
     if (this.type === 'submit') {
-      this.role          = 'submit';
-      this.dataBsToggle  = null;
-      this.dataBsDismiss = null;
+      this.role = 'submit';
     } else {
-      this.role          = 'button';
-      this.dataBsToggle  = 'modal';
-      this.dataBsDismiss = 'modal';
+      this.role = 'button';
     }
 
     if (this.disabled) {
@@ -56,15 +48,11 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   }
 
   close() {
-    if ((this.service as any).getModal(this.modalId).isShown) {
-      (this.selfRef.nativeElement as HTMLButtonElement).click();
-    }
+    this.service.close(this.modalId);
   }
 
   open() {
-    if (!(this.service as any).getModal(this.modalId).isShown) {
-      (this.selfRef.nativeElement as HTMLButtonElement).click();
-    }
+    this.service.open(this.modalId);
   }
 
 }

@@ -1,3 +1,20 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
 :host {
   display: block;
+  width: $modal-md;
+
+  &.sm {
+    width: $modal-sm;
+  }
+
+  &.lg {
+    width: $modal-lg;
+  }
+
+  &.xl {
+    width: $modal-xl;
+  }
 }

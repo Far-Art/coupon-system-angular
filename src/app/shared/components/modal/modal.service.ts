@@ -1,7 +1,7 @@
 import {ElementRef, Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {ModalComponent} from './modal.component';
 import {ModalButtonComponent} from './modal-button/modal-button.component';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, take} from 'rxjs';
 
 
 @Injectable({
@@ -24,42 +24,42 @@ export class ModalService {
   }
 
   close(modalId?: string): void {
-    this.showBackdrop.next(false);
     let modal: ModalComponent = this.currentOpenModal;
 
-    if (!modal) {
+    if (!modal || modalId != null) {
       modal = this.modalsMap.get(modalId);
     }
 
-    modal.close();
-    const listener: () => void = this.renderer.listen(modal.selfRef.nativeElement, 'animationend', event => {
-      this.renderer.removeChild(this.containerElement, modal.selfRef.nativeElement);
-      listener();
-    })
+    modal['setClose']();
+    this.showBackdrop.next(false);
+    modal.leaveTransitionEnded$().pipe(take(1))
+         .subscribe(() => {
+           this.renderer.removeChild(this.containerElement, modal.selfRef.nativeElement);
+           this.renderer.setStyle(this.containerElement, 'z-index', -1);
+           this.renderer.removeStyle(document.body, 'overflow-y');
+         });
 
-    // ensure that listener is called in case no animation end triggered
-    setTimeout(() => {
-      listener();
-    }, 1000);
   }
 
   open(modalId: string): void {
     if (!this.containerElement) {
       throw new Error('No container provided, please use method registerContainer of modal.service');
     }
-    this.showBackdrop.next(true);
     const modal = this.modalsMap.get(modalId);
-    modal.open();
-    this.currentOpenModal = modal;
-    this.renderer.appendChild(this.containerElement, modal.selfRef.nativeElement);
+    if (modal) {
+      this.currentOpenModal = modal;
+      modal['setOpen']();
+      this.showBackdrop.next(true);
+      this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
+      this.renderer.setStyle(this.containerElement, 'z-index', 9999);
+      this.renderer.addClass(modal.selfRef.nativeElement, 'shown');
+      this.renderer.appendChild(this.containerElement, modal.selfRef.nativeElement);
+    }
+
   }
 
   protected registerModal(modal: ModalComponent): void {
     this.modalsMap.set(modal.id, modal);
-  }
-
-  protected getModal(id: string): ModalComponent {
-    return this.modalsMap.get(id);
   }
 
   protected registerButton(modalId: string, button: ModalButtonComponent): void {
@@ -70,7 +70,4 @@ export class ModalService {
     this.containerElement = containerRef.nativeElement;
   }
 
-  protected getButton(id: string): ModalButtonComponent {
-    return this.buttonsMap.get(id);
-  }
 }

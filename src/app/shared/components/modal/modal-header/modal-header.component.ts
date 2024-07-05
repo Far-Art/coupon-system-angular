@@ -1,4 +1,5 @@
-import {Component, HostBinding, OnInit} from '@angular/core';
+import {Component, HostBinding} from '@angular/core';
+import {ModalComponent} from '../modal.component';
 
 
 @Component({
@@ -6,11 +7,13 @@ import {Component, HostBinding, OnInit} from '@angular/core';
   templateUrl: './modal-header.component.html',
   styleUrls: ['./modal-header.component.scss']
 })
-export class ModalHeaderComponent implements OnInit {
+export class ModalHeaderComponent {
 
-  @HostBinding('class') clazz: string;
+  @HostBinding('class') clazz: string = 'modal-header justify-content-between';
 
-  ngOnInit(): void {
-    this.clazz = 'modal-header';
+  constructor(private modal: ModalComponent) {}
+
+  onClose() {
+    this.modal.close();
   }
 }

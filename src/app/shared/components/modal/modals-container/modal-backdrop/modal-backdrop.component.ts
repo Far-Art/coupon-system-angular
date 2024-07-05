@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ModalService} from '../../modal.service';
 import {Subscription} from 'rxjs';
 import {FadeInOut} from '../../../../animations/fade-in-out.animation';
@@ -16,23 +16,16 @@ export class ModalBackdropComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
-  constructor(private modalService: ModalService, private renderer: Renderer2) {}
+  constructor(private modalService: ModalService) {}
 
   ngOnInit(): void {
     this.subscription = this.modalService.backdropVisible$().subscribe(isShown => {
       this.isShown = isShown;
-      if (isShown) {
-        this.renderer.setStyle(document.body, 'overflow', 'hidden');
-      } else {
-        this.renderer.removeStyle(document.body, 'overflow');
-      }
     });
   }
 
   onClick() {
-    if (this.isShown) {
-      this.modalService.close();
-    }
+    this.modalService.close();
   }
 
   ngOnDestroy(): void {

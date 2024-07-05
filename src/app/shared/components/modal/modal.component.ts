@@ -1,7 +1,9 @@
-import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnInit, Self} from '@angular/core';
+import {Component, ElementRef, HostBinding, Input, OnInit, Self} from '@angular/core';
 import {ModalService} from './modal.service';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {TranslateInOut} from '../../animations/translateInOut.animation';
+import {Observable, Subject} from 'rxjs';
+import {AnimationEvent} from '@angular/animations';
 
 
 @Component({
@@ -11,7 +13,9 @@ import {TranslateInOut} from '../../animations/translateInOut.animation';
   animations: [TranslateInOut(300)]
 
 })
-export class ModalComponent implements OnInit, OnChanges {
+export class ModalComponent implements OnInit {
+
+  private leaveTransitionEndedSubject = new Subject<void>();
 
   @Input() id: string;
   @Input() onOpenFn: (...params: any) => any;
@@ -26,37 +30,7 @@ export class ModalComponent implements OnInit, OnChanges {
   @HostBinding('attr.aria-labelledby') protected labeledBy: string;
   @HostBinding('class') protected clazz: string;
 
-  // @HostListener('show.bs.modal') protected _isShownListener = () => {
-  //   this.isShown = true;
-  //   if (this.onOpenFn) {
-  //     this.onOpenFn();
-  //   }
-  // }
-  //
-  // @HostListener('hidden.bs.modal') protected _isHiddenListener = () => {
-  //   this.isShown = false;
-  //   if (this.onCloseFn) {
-  //     this.onCloseFn();
-  //   }
-  // }
-
   protected isShown: boolean = false;
-
-  open() {
-    this.isShown    = true;
-    this.ariaHidden = false;
-    if (this.onOpenFn) {
-      this.onOpenFn();
-    }
-  }
-
-  close() {
-    this.isShown    = false;
-    this.ariaHidden = true;
-    if (this.onCloseFn) {
-      this.onCloseFn();
-    }
-  }
 
   constructor(private service: ModalService, private idGenerator: IdGeneratorService, @Self() public selfRef: ElementRef) {}
 
@@ -64,12 +38,42 @@ export class ModalComponent implements OnInit, OnChanges {
     this.id        = this.id == null ? 'cs_modal_' + this.idGenerator.generate() : this.id;
     this.selfId    = this.id;
     this.labeledBy = this.id + '-label';
-    this.clazz     = 'modal' + (this.clazz ? ' ' + this.clazz : '');
+    this.clazz     = 'modal position-relative ms-auto me-auto ' + this.size + (this.clazz ? ' ' + this.clazz : '');
     (this.service as any).registerModal(this);
   }
 
-  ngOnChanges(): void {
-    // this.dataBsBackdrop = this.backdrop;
+  open() {
+    this.service.open(this.id);
+  }
+
+  close() {
+    this.service.close(this.id);
+  }
+
+  leaveTransitionEnded$(): Observable<void> {
+    return this.leaveTransitionEndedSubject.asObservable();
+  }
+
+  protected onAnimationFinish(event: AnimationEvent): void {
+    if (event.toState === 'void') {
+      this.leaveTransitionEndedSubject.next();
+    }
+  }
+
+  protected setOpen() {
+    this.isShown    = true;
+    this.ariaHidden = false;
+    if (this.onOpenFn) {
+      this.onOpenFn();
+    }
+  }
+
+  protected setClose() {
+    this.isShown    = false;
+    this.ariaHidden = true;
+    if (this.onCloseFn) {
+      this.onCloseFn();
+    }
   }
 
 }
