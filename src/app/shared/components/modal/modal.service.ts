@@ -62,7 +62,18 @@ export class ModalService {
         this.openModalFlow(modal);
       }
     }
+  }
 
+  goBack() {
+    if (this.prevModal) {
+      this.close();
+      this.open(this.prevModal.id);
+      this.prevModal = null;
+    }
+  }
+
+  getModalTitle(modalId: string) {
+    return this.modalsMap.get(modalId)?.title;
   }
 
   protected registerModal(modal: ModalComponent): void {

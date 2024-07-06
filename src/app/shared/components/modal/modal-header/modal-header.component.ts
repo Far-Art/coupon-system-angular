@@ -19,14 +19,11 @@ export class ModalHeaderComponent implements OnInit, OnChanges {
     if (!this.title) {
       throw new Error('Title must be provided');
     }
-  }
-
-  onClose() {
-    this.modal.close();
+    this.modal.title = this.title;
   }
 
   ngOnChanges(): void {
-    this.modal['title'] = this.title;
+    this.modal.title = this.title;
   }
 
 }

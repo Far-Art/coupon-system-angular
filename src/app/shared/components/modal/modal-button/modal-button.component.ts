@@ -12,19 +12,23 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
   @Input('modal-id') modalId: string;
   @Input('class') clazz: string;
-  @Input('disabled') disabled: boolean         = false;
-  @Input() type: 'submit' | 'button' | 'reset' = 'button';
-  @Input() action: 'close' | 'open'            = 'open';
+  @Input('disabled') disabled: boolean          = false;
+  @Input() type: 'submit' | 'button' | 'reset'  = 'button';
+  @Input() action: 'close' | 'open' | 'go-back' = 'open';
 
-  @HostBinding('id') protected id: string             = '';
+  @HostBinding('id') protected id: string                            = '';
   @HostBinding('class') protected hostClazz: string;
   @HostBinding('role') protected role: string;
-  @HostBinding('tabindex') protected tabIndex: string = '0';
+  @HostBinding('tabindex') protected tabIndex: string                = '0';
+  @HostBinding('attr.aria-label') protected ariaLabel: string;
+  @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
 
   @HostListener('keydown.enter')
   @HostListener('keydown.space')
   protected selfClick() {
-    this.selfRef.nativeElement.click();
+    if (!this.disabled) {
+      this.selfRef.nativeElement.click();
+    }
   }
 
   @HostListener('click')
@@ -38,7 +42,7 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
   constructor(
       @Optional() private hostModal: ModalComponent,
-      @Self() private selfRef: ElementRef,
+      @Self() private selfRef: ElementRef<HTMLElement>,
       private renderer: Renderer2,
       private service: ModalService
   ) {}
@@ -50,6 +54,7 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    this.setAriaLabel();
     if (this.type === 'submit') {
       this.role = 'submit';
     } else {
@@ -58,17 +63,46 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
     if (this.disabled) {
       this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
+      this.ariaDisabled = true;
     } else {
       this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
+      this.ariaDisabled = false;
     }
   }
 
   close() {
-    this.service.close(this.modalId);
+    this.service.close();
   }
 
   open() {
     this.service.open(this.modalId);
+  }
+
+  private setAriaLabel() {
+    if (this.selfRef.nativeElement.ariaLabel) {
+      this.ariaLabel = this.selfRef.nativeElement.ariaLabel;
+      return;
+    }
+
+    // timeout to ensure that title was set
+    setTimeout(() => {
+      const title = this.service.getModalTitle(this.modalId);
+      if (this.action === 'close') {
+        switch (this.type) {
+          case 'submit':
+            this.ariaLabel = 'Submit' + (title ? ' ' + title : '');
+            break;
+          case 'reset':
+            this.ariaLabel = 'Reset' + (title ? ' ' + title : '');
+            break;
+          default:
+            this.ariaLabel = 'Close' + (title ? ' ' + title : '');
+        }
+      } else if (this.action === 'open') {
+        this.ariaLabel = 'Open ' + (title ? title + ' ' : '') + 'modal';
+      }
+    });
+
   }
 
 }

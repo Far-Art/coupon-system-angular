@@ -213,7 +213,7 @@
   </cs-modal-body>
   <cs-modal-footer>
     <cs-modal-button class="btn btn-outline-danger" action="close" type="reset" (click)="onFormReset()">Reset</cs-modal-button>
-    <cs-modal-button class="btn btn-outline-secondary" action="close" (click)="onCancel()">Cancel</cs-modal-button>
-    <cs-modal-button class="btn btn-outline-success" action="close" type="submit" (click)="onSubmit()" [disabled]="form.controls.freeText.invalid">Apply</cs-modal-button>
+    <cs-modal-button class="btn btn-outline-secondary" action="close" (click)="onCancel()" aria-label="Cancel">Cancel</cs-modal-button>
+    <cs-modal-button class="btn btn-outline-success" action="close" type="submit" (click)="onSubmit()" [disabled]="form.controls.freeText.invalid" aria-label="Apply filters">Apply</cs-modal-button>
   </cs-modal-footer>
 </cs-modal>

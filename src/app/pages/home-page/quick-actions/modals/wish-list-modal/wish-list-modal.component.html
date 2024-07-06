@@ -4,26 +4,20 @@
     <sc-coupon-table [coupons]="wishList" (selectedCoupons)="onCouponsSelected($event)"></sc-coupon-table>
   </cs-modal-body>
   <cs-modal-footer class="justify-content-between flex-column flex-sm-row">
-    <button type="button"
-            class="btn"
-            [ngClass]="{
-              'w-100': _windowWidth < _switchWidth,
-              'btn-outline-secondary': selectedCoupons.length === 0,
-              'btn-outline-danger': selectedCoupons.length > 0
-            }"
-            [disabled]="selectedCoupons.length === 0"
-            (click)="onDelete()">Delete
-    </button>
-    <button [disabled]="isAnySaleEnded || isAnyPurchased || selectedCoupons.length === 0"
-            type="button"
-            class="btn"
-            [ngClass]="{
-                  'w-100': _windowWidth < _switchWidth,
-                  'btn-outline-secondary': isAnySaleEnded || selectedCoupons.length === 0,
-                  'btn-outline-success': !isAnySaleEnded && selectedCoupons.length > 0
-                }"
-            (click)="onMove()">Move To Cart
-    </button>
+    <cs-modal-button (click)="onDelete()"
+                     class="btn btn-outline-danger"
+                     [disabled]="selectedCoupons.length === 0"
+                     [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+                     aria-label="Delete selected">
+      Delete
+    </cs-modal-button>
+    <cs-modal-button (click)="onMove()"
+                     class="btn btn-outline-secondary"
+                     aria-label="Move to cart"
+                     [disabled]="isAnySaleEnded || isAnyPurchased || selectedCoupons.length === 0"
+                     [ngClass]="{'w-100': _windowWidth < _switchWidth}"
+    >Move To Cart
+    </cs-modal-button>
     <cs-modal-button class="btn btn-outline-secondary"
                      [ngClass]="{'w-100': _windowWidth < _switchWidth}"
                      action="close">Close

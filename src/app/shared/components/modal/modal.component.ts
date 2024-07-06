@@ -25,8 +25,8 @@ export class ModalComponent implements OnInit, AfterViewInit {
   @HostBinding('style') protected style: string;
   @HostBinding('class') protected clazz: string;
 
+  title: string;
   protected isShown: boolean          = false;
-  protected title: string;
   private leaveTransitionEndedSubject = new Subject<void>();
 
   constructor(
@@ -48,7 +48,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
   }
 
   close() {
-    this.service.close(this.id);
+    this.service.close();
   }
 
   leaveTransitionEnded$(): Observable<void> {

@@ -32,6 +32,7 @@
     </div>
     <cs-modal-button *ngIf="!isUserPresent"
                      class="btn btn-outline-success"
+                     aria-label="Checkout As Guest"
                      [ngClass]="{'w-100': _windowWidth < _switchWidth}"
                      [modal-id]="guestModalId">Checkout As Guest
     </cs-modal-button>
@@ -118,6 +119,7 @@
   <cs-modal-footer class="justify-content-between flex-column flex-sm-row">
     <ng-container *ngTemplateOutlet="modalPurchaseButton"></ng-container>
     <cs-modal-button class="btn btn-outline-danger"
+                     aria-label="Go back to previous modal"
                      [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-0': _windowWidth >= _switchWidth}"
                      [modal-id]="cartModalId">Go Back
     </cs-modal-button>
