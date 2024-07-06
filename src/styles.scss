@@ -25,6 +25,7 @@ $color-blue-300: rgb(70, 70, 120);
 $color-blue-400: rgb(50, 50, 80);
 $color-blue-500: rgb(40, 40, 70);
 $color-blue-600: rgba(25, 25, 50, 0.96);
+$color-dark-transparent: rgba(25, 25, 50, 0.4);
 $color-dark-semi-transparent: rgba(25, 25, 50, 0.85);
 
 
@@ -402,7 +403,20 @@ body[theme="dark"] {
   .form-floating {
     select {
       color: $color-white !important;
-      background-color: $color-blue-400 !important;
+      background-color: $color-dark-transparent !important;
+      border-color: $color-blue-600 !important;
+
+      &.is-invalid {
+        border-color: $color-danger !important;
+      }
+
+      &.is-valid {
+        border-color: $color-success !important;
+      }
+
+      option {
+        background: $color-dark-semi-transparent !important;
+      }
     }
 
     label {
@@ -415,6 +429,15 @@ body[theme="dark"] {
 
     .form-control {
       color: $color-white !important;
+      background-color: $color-dark-transparent !important;
+
+      &.is-invalid {
+        border-color: $color-danger !important;
+      }
+
+      &.is-valid {
+        border-color: $color-success !important;
+      }
 
       &::placeholder {
         color: transparent !important;
@@ -424,7 +447,7 @@ body[theme="dark"] {
 
   .input-group-text {
     color: $color-blue-200 !important;
-    background-color: $color-blue-300 !important;
+    background-color: $color-dark-semi-transparent !important;
   }
 
   .dropdown {
@@ -483,22 +506,6 @@ body[theme="dark"] {
     }
   }
 
-  .modal-content {
-    //background-color: $color-blue-600 !important;
-  }
-
-  .modal-body, .accordion-body {
-    //background-color: $color-blue-600 !important;
-    //color: $color-blue-200 !important;
-    //
-    //> * {
-    //  color: $color-blue-200 !important;
-    //}
-  }
-
-  .modal-header, .modal-footer {
-    //background-color: $color-blue-500 !important;
-  }
 
   .accordion {
     box-shadow: $shadow-elevation-high;
@@ -508,6 +515,10 @@ body[theme="dark"] {
     > * {
       color: $color-white-semi-transparent !important;
     }
+  }
+
+  .accordion-header, .accordion-item {
+    background-color: $color-dark-transparent !important;
   }
 
   .accordion-item, .accordion-header, .accordion-body, .modal-header, .modal-footer {
@@ -532,7 +543,4 @@ body[theme="dark"] {
     background-image: url('./assets/images/dark/main-bg-dark.png');
   }
 
-  .required {
-    border-color: #2400ff !important;
-  }
 }
