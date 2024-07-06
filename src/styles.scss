@@ -1,7 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-// TODO use :host { display: contents; } to remove host element
-
 // Light Palette
 $color-success: #198754;
 $color-success-light: #26d780;
@@ -46,6 +44,11 @@ rgba(0, 0, 0, 0.05) 0px 16px 32px,
 rgba(0, 0, 0, 0.05) 0px 32px 64px;
 
 
+html {
+  scrollbar-color: $color-red-500 $color-white;
+  color-scheme: light;
+}
+
 body {
   overflow-x: hidden;
   overflow-y: auto;
@@ -58,8 +61,6 @@ html, body {
   height: 100vh;
   min-width: 100vw;
   width: 100vw;
-  scrollbar-color: $color-red-500 $color-white;
-  color-scheme: light;
 }
 
 @supports (height: 100svh) {

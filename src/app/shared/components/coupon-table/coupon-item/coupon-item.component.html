@@ -10,8 +10,7 @@
              [ngClass]="{'drop-shadow-low': !this.options.isChecked}"
              type="checkbox"
              style="cursor: pointer"
-             [checked]="this.options.isChecked"
-             unfocus>
+             [checked]="this.options.isChecked">
     </div>
 
     <!-- TITLE WITH CHECKBOX -->
@@ -50,7 +49,6 @@
     <button class="accordion-button bg-light collapsed"
             type="button"
             data-bs-toggle="collapse"
-            unfocus
             aria-expanded="false"
             [attr.data-bs-target]="'#collapse' + index"
             [attr.aria-controls]="'collapse' + index">

@@ -1,0 +1,32 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+// TODO when size changes host element larger that modal itself
+:host {
+  display: block;
+  max-width: $modal-md;
+  height: fit-content;
+  max-height: 100%;
+
+  &.sm {
+    max-width: $modal-sm;
+  }
+
+  &.lg {
+    max-width: $modal-lg;
+  }
+
+  &.xl {
+    max-width: $modal-xl;
+  }
+}
+
+.modal-content {
+  max-height: calc(100vh - 9rem) !important;
+}
+
+@supports (height: 100svh) {
+  .modal-content {
+    max-height: 98svh !important;
+  }
+}

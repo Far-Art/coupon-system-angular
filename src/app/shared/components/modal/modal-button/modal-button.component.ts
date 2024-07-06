@@ -1,20 +1,6 @@
-import {
-  Component,
-  ElementRef,
-  HostBinding,
-  Input,
-  OnChanges,
-  OnInit,
-  Optional,
-  Renderer2,
-  Self
-} from '@angular/core';
-import {
-  ModalComponent
-} from '../modal.component';
-import {
-  ModalService
-} from '../modal.service';
+import {Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {ModalComponent} from '../modal.component';
+import {ModalService} from '../modal.service';
 
 
 @Component({
@@ -26,64 +12,97 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
   @Input('modal-id') modalId: string;
   @Input('class') clazz: string;
-  @Input('disabled') disabled: boolean                 = false;
-  @Input() type: 'close' | 'open' | 'submit' | 'reset' = 'close';
+  @Input('disabled') disabled: boolean          = false;
+  @Input() type: 'submit' | 'button' | 'reset'  = 'button';
+  @Input() action: 'close' | 'open' | 'go-back' = 'open';
 
-  @HostBinding('id') protected id: string = '';
+  @HostBinding('id') protected id: string                            = '';
   @HostBinding('class') protected hostClazz: string;
-  @HostBinding('attr.data-bs-target') protected dataBsTarget: string;
-  @HostBinding('attr.data-bs-toggle') protected dataBsToggle: string;
-  @HostBinding('attr.data-bs-dismiss') protected dataBsDismiss: string;
   @HostBinding('role') protected role: string;
+  @HostBinding('tabindex') protected tabIndex: string                = '0';
+  @HostBinding('attr.aria-label') protected ariaLabel: string;
+  @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
+
+  @HostListener('keydown.enter')
+  @HostListener('keydown.space')
+  protected selfClick() {
+    if (!this.disabled) {
+      this.selfRef.nativeElement.click();
+    }
+  }
+
+  @HostListener('click')
+  protected onClick() {
+    if (this.action === 'close') {
+      this.close();
+    } else {
+      this.open();
+    }
+  }
 
   constructor(
       @Optional() private hostModal: ModalComponent,
-      @Self() private selfRef: ElementRef,
+      @Self() private selfRef: ElementRef<HTMLElement>,
       private renderer: Renderer2,
       private service: ModalService
   ) {}
 
   ngOnInit(): void {
-    this.modalId      = this.modalId || this.hostModal?.id;
-    this.dataBsTarget = '#' + this.modalId;
-    this.hostClazz    = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
-    (this.service as any).registerButton(this.modalId, this);
+    this.modalId   = this.modalId || this.hostModal?.id;
+    this.hostClazz = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
+    this.service['registerButton'](this.modalId, this);
   }
 
   ngOnChanges(): void {
+    this.setAriaLabel();
     if (this.type === 'submit') {
-      this.role          = 'submit';
-      this.dataBsToggle  = null;
-      this.dataBsDismiss = null;
+      this.role = 'submit';
     } else {
-      this.role          = 'button';
-      this.dataBsToggle  = 'modal';
-      this.dataBsDismiss = 'modal';
+      this.role = 'button';
     }
 
     if (this.disabled) {
-      // ensure that service has registered the modal
-      setTimeout(() => {
-        // close the modal if its open
-        this.close();
-      });
-
       this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
+      this.ariaDisabled = true;
     } else {
       this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
+      this.ariaDisabled = false;
     }
   }
 
   close() {
-    if ((this.service as any).getModal(this.modalId).isShown) {
-      (this.selfRef.nativeElement as HTMLButtonElement).click();
-    }
+    this.service.close();
   }
 
   open() {
-    if (!(this.service as any).getModal(this.modalId).isShown) {
-      (this.selfRef.nativeElement as HTMLButtonElement).click();
+    this.service.open(this.modalId);
+  }
+
+  private setAriaLabel() {
+    if (this.selfRef.nativeElement.ariaLabel) {
+      this.ariaLabel = this.selfRef.nativeElement.ariaLabel;
+      return;
     }
+
+    // timeout to ensure that title was set
+    setTimeout(() => {
+      const title = this.service.getModalTitle(this.modalId);
+      if (this.action === 'close') {
+        switch (this.type) {
+          case 'submit':
+            this.ariaLabel = 'Submit' + (title ? ' ' + title : '');
+            break;
+          case 'reset':
+            this.ariaLabel = 'Reset' + (title ? ' ' + title : '');
+            break;
+          default:
+            this.ariaLabel = 'Close' + (title ? ' ' + title : '');
+        }
+      } else if (this.action === 'open') {
+        this.ariaLabel = 'Open ' + (title ? title + ' ' : '') + 'modal';
+      }
+    });
+
   }
 
 }

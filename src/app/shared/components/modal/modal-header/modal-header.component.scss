@@ -1,0 +1,15 @@
+button {
+  border: none;
+  background: none;
+
+  svg {
+    scale: 1.4;
+    transition: all ease-out 80ms;
+  }
+
+  &:hover {
+    svg {
+      scale: 1.7;
+    }
+  }
+}
