@@ -25,27 +25,22 @@ export class ModalService {
     return this.showBackdrop.asObservable();
   }
 
-  close(modalId?: string): void {
-    let modal: ModalComponent = this.currentModal;
-    if (!modal || modalId != null) {
-      modal = this.modalsMap.get(modalId);
+  /**
+   * close current open modal
+   */
+  close(): void {
+    this.showBackdrop.next(false);
+    if (this.currentModal) {
+      this.currentModal['setClose']();
+      this.currentModal.leaveTransitionEnded$().pipe(take(1))
+          .subscribe(() => {
+            this.renderer.removeChild(this.containerElement, this.currentModal['selfRef'].nativeElement);
+            this.renderer.setStyle(this.containerElement, 'z-index', -1);
+            this.renderer.removeStyle(document.body, 'overflow-y');
+            this.currentModal = null;
+            this.okToOpen.next();
+          });
     }
-
-    modal['setClose']();
-
-    // TODO fix the inert not being removed, seems like prev modal still exist
-    if (!this.prevModal) {
-      this.showBackdrop.next(false);
-    }
-
-    modal.leaveTransitionEnded$().pipe(take(1))
-         .subscribe(() => {
-           this.renderer.removeChild(this.containerElement, modal['selfRef'].nativeElement);
-           this.renderer.setStyle(this.containerElement, 'z-index', -1);
-           this.renderer.removeStyle(document.body, 'overflow-y');
-           this.currentModal = null;
-           this.okToOpen.next();
-         });
 
   }
 
@@ -57,14 +52,13 @@ export class ModalService {
     const modal = this.modalsMap.get(modalId);
 
     if (modal) {
-      if (this.prevModal) {
+      if (this.currentModal) {
+        this.prevModal = this.currentModal;
         this.okToOpen.pipe(take(1)).subscribe(() => {
           this.openModalFlow(modal);
         });
-        this.close(this.prevModal.id);
-        this.prevModal = null;
+        this.close();
       } else {
-        this.prevModal = modal;
         this.openModalFlow(modal);
       }
     }

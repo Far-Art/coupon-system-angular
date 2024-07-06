@@ -10,7 +10,7 @@ import {AnimationEvent} from '@angular/animations';
   selector: 'cs-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
-  animations: [TranslateInOut(300)]
+  animations: [TranslateInOut(280)]
 
 })
 export class ModalComponent implements OnInit, AfterViewInit {
