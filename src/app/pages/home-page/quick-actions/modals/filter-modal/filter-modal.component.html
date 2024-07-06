@@ -20,7 +20,7 @@
               <div class="form-check user-select-none m-2"
                    [formGroupName]="i"
                    *ngFor="let c of form.controls.categories.controls; let i = index">
-                <input class="form-check-input drop-shadow-low"
+                <input class="form-check-input"
                        type="checkbox"
                        id="{{c.value.value}}"
                        formControlName="isChecked">
@@ -52,7 +52,7 @@
               <div class="form-check user-select-none m-2"
                    [formGroupName]="i"
                    *ngFor="let c of form.controls.companyNames.controls; let i = index">
-                <input class="form-check-input drop-shadow-low"
+                <input class="form-check-input"
                        type="checkbox"
                        id="{{c.value.value + i}}"
                        formControlName="isChecked">
@@ -173,7 +173,7 @@
 
       <div class="form-check user-select-none m-1 mt-4"
            formGroupName="hidePurchased">
-        <input class="form-check-input drop-shadow-low"
+        <input class="form-check-input"
                type="checkbox"
                id="hidePurchased"
                formControlName="isChecked">

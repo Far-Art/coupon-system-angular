@@ -1,11 +1,10 @@
-<div class="drop-shadow-low m-0 rounded-3 overflow-hidden">
+<div class="drop-shadow-low m-0 rounded-3">
   <div *ngIf="!options?.noCheckbox && coupons?.length > 0" class="form-check transition-duration user-select-none"
        type="button">
     <input #indeterminateCheckBox
            id="indeterminateCheckBox{{randomId}}"
            (click)="onIndeterminateClick()"
            class="form-check-input"
-           [ngClass]="{'drop-shadow-low': !_indeterminateCheckBox}"
            type="checkbox"
            style="cursor: pointer"
            [checked]="_indeterminateCheckBox">
