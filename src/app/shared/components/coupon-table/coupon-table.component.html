@@ -1,34 +1,35 @@
-<div *ngIf="!options?.noCheckbox && coupons?.length > 0" class="form-check transition-duration user-select-none"
-     type="button">
-  <input #indeterminateCheckBox
-         id="indeterminateCheckBox{{randomId}}"
-         (click)="onIndeterminateClick()"
-         class="form-check-input"
-         [ngClass]="{'drop-shadow-low': !_indeterminateCheckBox}"
-         type="checkbox"
-         style="cursor: pointer"
-         [checked]="_indeterminateCheckBox"
-         unfocus>
-  <label class="h-6 opacity-75 form-check-label text-nowrap ps-4 text-end fw-bold"
-         for="indeterminateCheckBox{{randomId}}">
-    {{ (_indeterminateCheckBox ? 'unselect all' : 'select all') | titlecase }}
-  </label>
-</div>
+<div class="drop-shadow-low m-0 rounded-3 overflow-hidden">
+  <div *ngIf="!options?.noCheckbox && coupons?.length > 0" class="form-check transition-duration user-select-none"
+       type="button">
+    <input #indeterminateCheckBox
+           id="indeterminateCheckBox{{randomId}}"
+           (click)="onIndeterminateClick()"
+           class="form-check-input"
+           [ngClass]="{'drop-shadow-low': !_indeterminateCheckBox}"
+           type="checkbox"
+           style="cursor: pointer"
+           [checked]="_indeterminateCheckBox">
+    <label class="h-6 opacity-75 form-check-label text-nowrap ps-4 text-end fw-bold"
+           for="indeterminateCheckBox{{randomId}}">
+      {{ (_indeterminateCheckBox ? 'unselect all' : 'select all') | titlecase }}
+    </label>
+  </div>
 
-<div class="accordion mt-3" id="accordionTable{{randomId}}">
-  <ng-container *ngIf="coupons?.length > 0">
-    <div class="accordion-item" *ngFor="let coupon of coupons; let i = index">
-      <cs-coupon-item [index]="i"
-                      parentId="accordionTable{{randomId}}"
-                      [coupon]="coupon"
-                      [isPurchased]="isPurchased(coupon) | async"
-                      [isSaleEnded]="isSaleEnded(coupon)"
-                      [options]="{isChecked: has(coupon.params.id), noCheckbox: options.noCheckbox}"
-                      (onSelected)="onCheckHandle($event)">
-      </cs-coupon-item>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="!(coupons?.length > 0)">
-    <h4 class="text-danger user-select-none">No Coupons</h4>
-  </ng-container>
+  <div class="accordion mt-3" id="accordionTable{{randomId}}">
+    <ng-container *ngIf="coupons?.length > 0">
+      <div class="accordion-item" *ngFor="let coupon of coupons; let i = index">
+        <cs-coupon-item [index]="i"
+                        parentId="accordionTable{{randomId}}"
+                        [coupon]="coupon"
+                        [isPurchased]="isPurchased(coupon) | async"
+                        [isSaleEnded]="isSaleEnded(coupon)"
+                        [options]="{isChecked: has(coupon.params.id), noCheckbox: options.noCheckbox}"
+                        (onSelected)="onCheckHandle($event)">
+        </cs-coupon-item>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!(coupons?.length > 0)">
+      <h4 class="text-danger user-select-none">No Coupons</h4>
+    </ng-container>
+  </div>
 </div>

@@ -1,15 +1,15 @@
-button {
-  border: none;
-  background: none;
+@import "src/styles";
+
+.btn {
 
   svg {
-    scale: 1.4;
     transition: all ease-out 80ms;
   }
 
-  &:hover {
+  &:hover, &:focus-visible {
     svg {
-      scale: 1.7;
+      scale: 1.5;
+      color: $color-red-500;
     }
   }
 }

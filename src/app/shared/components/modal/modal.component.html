@@ -4,10 +4,10 @@
      [attr.aria-hidden]="!isShown"
      [attr.aria-modal]="isShown"
      role="dialog"
-     @translateInOut
-     (@translateInOut.done)="onAnimationFinish($event)"
+     @translateInOutWithBlur
+     (@translateInOutWithBlur.done)="onAnimationFinish($event)"
      class="modal-dialog modal-dialog-scrollable m-1 mt-2 position-relative {{size !== 'default' ? 'modal-' + size: ''}}">
-  <div class="modal-content">
+  <div class="modal-content bg-noisy">
     <ng-content select="cs-modal-header"></ng-content>
     <ng-content select="cs-modal-body"></ng-content>
     <ng-content select="cs-modal-footer"></ng-content>

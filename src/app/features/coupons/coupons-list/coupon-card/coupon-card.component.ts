@@ -1,14 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output, Renderer2, Self, ViewChild} from '@angular/core';
 import {Coupon} from '../../../../shared/models/coupon.model';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {CouponsService} from '../../coupons.service';
@@ -23,16 +13,24 @@ import {WindowSizeService} from '../../../../shared/services/window-size.service
   animations: [
     trigger('popUp', [
       transition(':enter', [
-        style({opacity: 1, scale: 1}),
-        animate('500ms ease-out', style({opacity: 0, scale: 3.5, transform: 'translateY(-5%)'}))
+        style({
+          opacity: 1,
+          scale: 1
+        }),
+        animate('500ms ease-out', style({
+          opacity: 0,
+          scale: 3.5,
+          transform: 'translateY(-5%)'
+        }))
       ])
     ])
   ]
 })
 export class CouponCardComponent implements OnInit, OnDestroy {
 
-  @ViewChild('card', {static: true}) private cardElement: ElementRef;
   @ViewChild('title', {static: true}) private cardTitle: ElementRef;
+
+  @HostBinding('class') clazz: string;
 
   // 86_400_000 millis is equal to 24 hours
   private activateTimer        = 86_400_000;
@@ -65,10 +63,12 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   constructor(
       private couponsService: CouponsService,
       private windowSize: WindowSizeService,
-      private renderer: Renderer2
+      private renderer: Renderer2,
+      @Self() private selfRef: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit(): void {
+    this.clazz = 'card d-flex justify-content-between overflow-hidden rounded-4 drop-shadow-low ms-3 me-3 p-0'
     this.showSaleEndTimout();
 
     this.wishSub = this.couponsService.wishIds$.subscribe(ids => {
@@ -85,18 +85,18 @@ export class CouponCardComponent implements OnInit, OnDestroy {
 
     this.windowSizeSub = this.windowSize.windowSize$.subscribe(size => {
       if (size.width > 1200) {
-        this.renderer.setStyle(this.cardElement.nativeElement, 'width', '450px');
-        this.renderer.setStyle(this.cardElement.nativeElement, 'height', '260px');
+        this.renderer.setStyle(this.selfRef.nativeElement, 'width', '450px');
+        this.renderer.setStyle(this.selfRef.nativeElement, 'height', '260px');
         this.renderer.setStyle(this.cardTitle.nativeElement, 'font-size', '1rem');
-        this.titleMaxLen = 40;
+        this.titleMaxLen = 35;
       } else if (size.width > 810) {
-        this.renderer.setStyle(this.cardElement.nativeElement, 'width', '330px');
-        this.renderer.setStyle(this.cardElement.nativeElement, 'height', '220px');
+        this.renderer.setStyle(this.selfRef.nativeElement, 'width', '330px');
+        this.renderer.setStyle(this.selfRef.nativeElement, 'height', '220px');
         this.renderer.setStyle(this.cardTitle.nativeElement, 'font-size', '0.9rem');
         this.titleMaxLen = 20;
       } else {
-        this.renderer.setStyle(this.cardElement.nativeElement, 'width', '300px');
-        this.renderer.setStyle(this.cardElement.nativeElement, 'height', '180px');
+        this.renderer.setStyle(this.selfRef.nativeElement, 'width', '300px');
+        this.renderer.setStyle(this.selfRef.nativeElement, 'height', '180px');
         this.renderer.setStyle(this.cardTitle.nativeElement, 'font-size', '0.8rem');
         this.titleMaxLen = 17;
       }
@@ -140,7 +140,10 @@ export class CouponCardComponent implements OnInit, OnDestroy {
       }, this.animationDismissTime);
     }
 
-    this.onWishClickEmitter.emit({isChecked: this.isAddedToWish, coupon: this.coupon});
+    this.onWishClickEmitter.emit({
+      isChecked: this.isAddedToWish,
+      coupon: this.coupon
+    });
   }
 
   onTitleClick() {

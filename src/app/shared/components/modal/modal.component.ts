@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnInit, Renderer2, Self} from '@angular/core';
 import {ModalService} from './modal.service';
 import {IdGeneratorService} from '../../services/id-generator.service';
-import {TranslateInOut} from '../../animations/translateInOut.animation';
+import {TranslateInOutWithBlur} from '../../animations/translateInOut.animation';
 import {Observable, Subject} from 'rxjs';
 import {AnimationEvent} from '@angular/animations';
 
@@ -10,8 +10,7 @@ import {AnimationEvent} from '@angular/animations';
   selector: 'cs-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
-  animations: [TranslateInOut(280)]
-
+  animations: [TranslateInOutWithBlur(280)]
 })
 export class ModalComponent implements OnInit, AfterViewInit {
 

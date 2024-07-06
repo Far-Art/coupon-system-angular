@@ -80,7 +80,6 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onFormReset() {
-    console.log('form resrt')
     this.filterService.updateDisplayedCoupons(null);
   }
 
