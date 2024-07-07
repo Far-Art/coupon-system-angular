@@ -31,7 +31,6 @@ export class ModalService {
   close(): void {
     this.showBackdrop.next(false);
     if (this.currentModal) {
-      this.currentModal['setClose']();
       this.currentModal.leaveTransitionEnded$().pipe(take(1))
           .subscribe(() => {
             this.renderer.removeChild(this.containerElement, this.currentModal['selfRef'].nativeElement);
@@ -40,6 +39,7 @@ export class ModalService {
             this.currentModal = null;
             this.okToOpen.next();
           });
+      this.currentModal['setClose']();
     }
 
   }

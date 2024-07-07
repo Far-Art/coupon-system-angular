@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnInit, Renderer2, Self} from '@angular/core';
+import {Component, ElementRef, HostBinding, Input, OnInit, Renderer2, Self} from '@angular/core';
 import {ModalService} from './modal.service';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {TranslateInOutWithBlur} from '../../animations/translateInOut.animation';
@@ -12,7 +12,7 @@ import {AnimationEvent} from '@angular/animations';
   styleUrls: ['./modal.component.scss'],
   animations: [TranslateInOutWithBlur(280)]
 })
-export class ModalComponent implements OnInit, AfterViewInit {
+export class ModalComponent implements OnInit {
 
   @Input() id: string;
   @Input() onOpenFn: (...params: any) => any;
@@ -22,7 +22,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
   @HostBinding('id') protected selfId: string;
   @HostBinding('style') protected style: string;
-  @HostBinding('class') protected clazz: string;
+  @HostBinding('class') protected clazz: string = 'modal position-relative ms-auto me-auto ';
 
   title: string;
   protected isShown: boolean          = false;
@@ -38,8 +38,13 @@ export class ModalComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.id     = this.id == null ? 'cs_modal_' + this.idGenerator.generate() : this.id;
     this.selfId = this.id;
-    this.clazz  = 'modal position-relative ms-auto me-auto ' + this.size + (this.clazz ? ' ' + this.clazz : '');
+    this.clazz += this.size + (this.clazz ? ' ' + this.clazz : '');
     this.service['registerModal'](this);
+    setTimeout(() => {
+      if (!this.title) {
+        throw new Error('Modal header must be provided with title input, use cs-modal-header');
+      }
+    });
   }
 
   open() {
@@ -55,10 +60,6 @@ export class ModalComponent implements OnInit, AfterViewInit {
   }
 
   protected onAnimationFinish(event: AnimationEvent): void {
-    if (!this.title) {
-      throw new Error('Modal header must be provided with title input, use cs-modal-header');
-    }
-
     if (event.toState === 'void') {
       this.leaveTransitionEndedSubject.next();
     }
@@ -67,7 +68,6 @@ export class ModalComponent implements OnInit, AfterViewInit {
   protected setOpen() {
     this.isShown = true;
     this.renderer.removeAttribute(this.selfRef.nativeElement, 'inert');
-
     if (this.onOpenFn) {
       this.onOpenFn();
     }
@@ -82,6 +82,4 @@ export class ModalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-  }
 }

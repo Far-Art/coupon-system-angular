@@ -12,6 +12,10 @@ export function TranslateInOut(timing: number, translateY: number = 15): Animati
         transform: `translateY(${0}%)`
       }))
     ]), transition(':leave', [
+      style({
+        opacity: 1,
+        transform: `translateY(${0}%)`
+      }),
       animate(`${timing}ms ease-in`, style({
         opacity: 0,
         transform: `translateY(-${translateY}%)`
@@ -33,6 +37,11 @@ export function TranslateInOutWithBlur(timing: number, translateY: number = 15):
         transform: `translateY(${0}%)`
       }))
     ]), transition(':leave', [
+      style({
+        backdropFilter: 'blur(40px)',
+        opacity: 1,
+        transform: `translateY(${0}%)`
+      }),
       animate(`${timing}ms ease-in`, style({
         backdropFilter: 'blur(40px)',
         opacity: 0,

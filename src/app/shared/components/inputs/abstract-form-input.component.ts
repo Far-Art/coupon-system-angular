@@ -56,7 +56,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
       private changeDetection: ChangeDetectorRef,
       private elRef: ElementRef<HTMLElement>,
       @Optional() private rootForm: FormGroupDirective,
-      @Optional() private formGroupName: FormGroupName
+      @Optional() private formGroup: FormGroupName
   ) {}
 
   ngOnInit(): void {
@@ -64,9 +64,9 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
     this.form            = this.rootForm.form;
     this.nodeName        = this.elRef.nativeElement.nodeName;
     this.formControlName = this.elRef.nativeElement.getAttribute('formcontrolname');
-    this.control         = this.form?.get(this.formGroupName ? `${this.formGroupName.name}` : this.formControlName);
+    this.control         = this.form?.get(this.formGroup ? `${this.formGroup.name}` : this.formControlName);
 
-    if (this.formGroupName) {
+    if (this.formGroup && this.control) {
       this.control = this.control.get(this.formControlName);
     }
 
