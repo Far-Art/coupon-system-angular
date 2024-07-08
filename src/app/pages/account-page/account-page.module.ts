@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AccountPageComponent} from './account-page.component';
 import {AccountRoutingModule} from './account-routing.module';
-import {HeaderModule} from '../../header/header.module';
 import {AccountInfoComponent} from './account-info/account-info.component';
 import {AccountService} from './account.service';
 import {AccountEditComponent} from './account-edit/account-edit.component';
@@ -29,10 +28,9 @@ import {ManageCouponsModalComponent} from './manage-account/modals/manage-coupon
   ],
   imports: [
     CommonModule,
-    HeaderModule,
     AccountRoutingModule,
-    SharedModule,
     CoreModule,
+    SharedModule,
     ReactiveFormsModule
   ],
   exports: [],

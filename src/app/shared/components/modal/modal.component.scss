@@ -1,0 +1,38 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+// TODO when size changes host element larger that modal itself
+:host {
+  display: block;
+  max-width: $modal-md;
+  height: fit-content;
+  max-height: 100%;
+  overflow-y: visible !important;
+  overflow-x: visible !important;
+
+  &.sm {
+    max-width: $modal-sm;
+  }
+
+  &.lg {
+    max-width: $modal-lg;
+  }
+
+  &.xl {
+    max-width: $modal-xl;
+  }
+}
+
+.modal-content {
+  max-height: calc(100vh - 9rem) !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 8px 16px,
+  rgba(0, 0, 0, 0.1) 0 16px 32px,
+  rgba(0, 0, 0, 0.1) 0 32px 64px,
+  rgba(0, 0, 0, 0.7) 0 0 0 max(100vh, 100vw); // last shadow acts as a backdrop color taking all the screen space
+}
+
+@supports (height: 100svh) {
+  .modal-content {
+    max-height: 98svh !important;
+  }
+}

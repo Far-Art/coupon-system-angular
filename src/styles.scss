@@ -1,23 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 
-// TODO use :host { display: contents; } to remove host element
-
 // Light Palette
 $color-success: #198754;
 $color-success-light: #26d780;
 $color-success-dark: #0f5435;
-$color-secondary: #6c757d;
+$color-secondary: #565151;
 $color-danger: #dc3545;
 
-$color-red-100: #faebed;
-$color-red-300: #d74747;
-$color-red-400: #c21639;
+$color-red-100: #ffe0e5;
+$color-red-200: #e39090;
+$color-red-300: #e67878;
+$color-red-400: #f32f55;
 $color-red-500: #e7103d;
 $color-red-600: #A0153E;
 $color-red-700: rgb(120, 0, 10);
 $color-white: rgb(255, 255, 255);
-$color-white-transparent: rgba(255, 255, 255, 0.65);
-$color-white-semi-transparent: rgba(255, 255, 255, 0.85);
+$color-white-transparent: rgba(255, 255, 255, 0.4);
+$color-white-semi-transparent: rgba(255, 255, 255, 0.7);
+$color-gray-transparent: rgba(240, 240, 240, 0.4);
 
 // Dark Palette
 $color-blue-200: rgb(160, 160, 220);
@@ -25,12 +25,13 @@ $color-blue-300: rgb(70, 70, 120);
 $color-blue-400: rgb(50, 50, 80);
 $color-blue-500: rgb(40, 40, 70);
 $color-blue-600: rgba(25, 25, 50, 0.96);
+$color-dark-transparent: rgba(25, 25, 50, 0.4);
 $color-dark-semi-transparent: rgba(25, 25, 50, 0.85);
 
 
-$shadow-elevation-low: 0 1px 1px rgba(0, 0, 0, 0.035),
-0 2px 2px rgba(0, 0, 0, 0.035),
-0 4px 4px rgba(0, 0, 0, 0.035);
+$shadow-elevation-low: 0 1px 1px rgba(0, 0, 0, 0.02),
+0 2px 2px rgba(0, 0, 0, 0.02),
+0 4px 4px rgba(0, 0, 0, 0.02);
 
 $shadow-elevation-medium: 0 1px 1px rgba(0, 0, 0, 0.25),
 0 2px 2px rgba(0, 0, 0, 0.20),
@@ -38,13 +39,18 @@ $shadow-elevation-medium: 0 1px 1px rgba(0, 0, 0, 0.25),
 0 8px 8px rgba(0, 0, 0, 0.10),
 0 16px 16px rgba(0, 0, 0, 0.05);
 
-$shadow-elevation-high: rgba(0, 0, 0, 0.05) 0px 1px 2px,
-rgba(0, 0, 0, 0.05) 0px 2px 4px,
-rgba(0, 0, 0, 0.05) 0px 4px 8px,
-rgba(0, 0, 0, 0.05) 0px 8px 16px,
-rgba(0, 0, 0, 0.05) 0px 16px 32px,
-rgba(0, 0, 0, 0.05) 0px 32px 64px;
+$shadow-elevation-high: rgba(0, 0, 0, 0.05) 0 1px 2px,
+rgba(0, 0, 0, 0.05) 0 2px 4px,
+rgba(0, 0, 0, 0.05) 0 4px 8px,
+rgba(0, 0, 0, 0.05) 0 8px 16px,
+rgba(0, 0, 0, 0.05) 0 16px 32px,
+rgba(0, 0, 0, 0.05) 0 32px 64px;
 
+
+html {
+  scrollbar-color: $color-red-500 $color-white;
+  color-scheme: light;
+}
 
 body {
   overflow-x: hidden;
@@ -58,8 +64,6 @@ html, body {
   height: 100vh;
   min-width: 100vw;
   width: 100vw;
-  scrollbar-color: $color-red-500 $color-white;
-  color-scheme: light;
 }
 
 @supports (height: 100svh) {
@@ -83,11 +87,16 @@ img {
   max-width: 100%;
 }
 
-.no-outline {
-  border-color: transparent !important;
+.drop-inset-shadow {
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.03) inset;
 }
 
 .form-floating {
+
+  .form-control {
+    background-color: $color-white-transparent;
+  }
+
   > label {
     border-width: 0 !important;
   }
@@ -115,14 +124,35 @@ img {
   background-attachment: fixed;
 }
 
+.bg-noisy {
+  background-color: transparent !important;
+  backdrop-filter: blur(40px);
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    background: url("/assets/images/noise-pattern.png");
+    background-size: 40px !important;
+    opacity: 0.9;
+    z-index: -1;
+  }
+}
+
 .bg-primary-light {
   background-color: $color-red-100;
 }
 
 .bg-light-semi-transparent {
   background-color: $color-white-semi-transparent;
-  box-shadow: $shadow-elevation-low;
-  backdrop-filter: blur(6px);
+}
+
+.bg-gray-transparent {
+  background-color: $color-gray-transparent;
 }
 
 .pt-6 {
@@ -220,14 +250,9 @@ img {
 
 // DARK THEME
 body[theme="dark"] {
-  html, body {
+  html {
     scrollbar-color: green black !important;
     color-scheme: dark !important;
-  }
-
-
-  * {
-    border-color: $color-blue-500 !important;
   }
 
   table {
@@ -255,14 +280,6 @@ body[theme="dark"] {
     &:not(:checked) {
       background-color: $color-blue-400;
     }
-
-    &.form-control {
-      color: $color-white !important;
-
-      &::placeholder {
-        color: $color-blue-200 !important;
-      }
-    }
   }
 
   img {
@@ -277,8 +294,27 @@ body[theme="dark"] {
     }
   }
 
-  p, .list-group-item {
+  p, label, .list-group-item {
     color: $color-blue-200;
+  }
+
+  .form-control, .input-group-text, .list-group-item, .table {
+    color: $color-blue-200 !important;
+    border-color: $color-blue-600 !important;
+
+    &::placeholder {
+      color: $color-blue-200 !important;
+    }
+  }
+
+  .drop-inset-shadow {
+    box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.2) inset !important;
+  }
+
+  .bg-noisy {
+    &::after {
+      filter: sepia(100%) invert(0.95) opacity(0.87) hue-rotate(16deg) !important;
+    }
   }
 
   .list-group-item {
@@ -289,20 +325,19 @@ body[theme="dark"] {
     border-color: transparent !important;
   }
 
-  .bg {
+  .form-check-input {
+    border-color: $color-blue-500 !important;
+  }
 
+  .bg {
     &-light {
       background-color: $color-blue-500 !important;
     }
 
     &-primary {
 
-      .form-check-input {
-        border-color: transparent !important;
-      }
     }
   }
-
 
   .text {
     &-danger {
@@ -368,7 +403,20 @@ body[theme="dark"] {
   .form-floating {
     select {
       color: $color-white !important;
-      background-color: $color-blue-400 !important;
+      background-color: $color-dark-transparent !important;
+      border-color: $color-blue-600 !important;
+
+      &.is-invalid {
+        border-color: $color-danger !important;
+      }
+
+      &.is-valid {
+        border-color: $color-success !important;
+      }
+
+      option {
+        background: $color-dark-semi-transparent !important;
+      }
     }
 
     label {
@@ -381,6 +429,15 @@ body[theme="dark"] {
 
     .form-control {
       color: $color-white !important;
+      background-color: $color-dark-transparent !important;
+
+      &.is-invalid {
+        border-color: $color-danger !important;
+      }
+
+      &.is-valid {
+        border-color: $color-success !important;
+      }
 
       &::placeholder {
         color: transparent !important;
@@ -390,7 +447,7 @@ body[theme="dark"] {
 
   .input-group-text {
     color: $color-blue-200 !important;
-    background-color: $color-blue-300 !important;
+    background-color: $color-dark-semi-transparent !important;
   }
 
   .dropdown {
@@ -449,34 +506,28 @@ body[theme="dark"] {
     }
   }
 
-  .modal-content {
-    background-color: $color-blue-600 !important;
+
+  .accordion {
+    box-shadow: $shadow-elevation-high;
   }
 
-  .modal-body, .accordion-body {
-    background-color: $color-blue-600 !important;
-    color: $color-blue-200 !important;
-
+  .accordion-header, .accordion-body {
     > * {
-      color: $color-blue-200 !important;
+      color: $color-white-semi-transparent !important;
     }
   }
 
-  .modal-header, .modal-footer {
-    background-color: $color-blue-500 !important;
+  .accordion-header, .accordion-item {
+    background-color: $color-dark-transparent !important;
   }
 
-  .accordion-header {
-    background-color: $color-blue-500 !important;
-
-    > * {
-      color: $color-white-transparent !important;
-    }
+  .accordion-item, .accordion-header, .accordion-body, .modal-header, .modal-footer {
+    border-color: $color-blue-600 !important;
   }
 
   .accordion-button {
     &:not(.collapsed) {
-      color: $color-red-500 !important;
+      color: $color-red-100 !important;
     }
 
     &::after {
@@ -492,7 +543,4 @@ body[theme="dark"] {
     background-image: url('./assets/images/dark/main-bg-dark.png');
   }
 
-  .required {
-    border-color: #2400ff !important;
-  }
 }

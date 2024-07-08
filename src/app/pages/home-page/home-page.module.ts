@@ -10,7 +10,6 @@ import {WishListModalComponent} from './quick-actions/modals/wish-list-modal/wis
 import {FilterModalComponent} from './quick-actions/modals/filter-modal/filter-modal.component';
 import {CartModalComponent} from './quick-actions/modals/cart-modal/cart-modal.component';
 import {CouponsModule} from '../../features/coupons/coupons.module';
-import {HeaderModule} from '../../header/header.module';
 import {FilterService} from './quick-actions/modals/filter-modal/filter.service';
 
 
@@ -27,8 +26,7 @@ import {FilterService} from './quick-actions/modals/filter-modal/filter.service'
     CoreModule,
     SharedModule,
     HomePageRoutingModule,
-    CouponsModule,
-    HeaderModule
+    CouponsModule
   ],
   exports: [],
   providers: [CartService, FilterService]

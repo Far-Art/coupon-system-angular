@@ -1,4 +1,5 @@
-import {Component, HostBinding, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnChanges, OnInit} from '@angular/core';
+import {ModalComponent} from '../modal.component';
 
 
 @Component({
@@ -6,11 +7,23 @@ import {Component, HostBinding, OnInit} from '@angular/core';
   templateUrl: './modal-header.component.html',
   styleUrls: ['./modal-header.component.scss']
 })
-export class ModalHeaderComponent implements OnInit {
+export class ModalHeaderComponent implements OnInit, OnChanges {
 
-  @HostBinding('class') clazz: string;
+  @HostBinding('class') clazz: string = 'modal-header justify-content-between';
+
+  @Input() title: string;
+
+  constructor(private modal: ModalComponent) {}
 
   ngOnInit(): void {
-    this.clazz = 'modal-header';
+    if (!this.title) {
+      throw new Error('Title must be provided');
+    }
+    this.modal.title = this.title;
   }
+
+  ngOnChanges(): void {
+    this.modal.title = this.title;
+  }
+
 }

@@ -92,7 +92,7 @@ export class CartModalComponent implements OnInit, OnDestroy {
       ).subscribe({
         next: () => {
           if (this.cartList.length === 0) {
-            this.modalService.close(this.guestModalId);
+            this.modalService.close();
           } else if (!this.isUserPresent) {
             this.modalService.open(this.cartModalId);
           }

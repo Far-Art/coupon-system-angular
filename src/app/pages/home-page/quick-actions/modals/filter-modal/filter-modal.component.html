@@ -1,14 +1,12 @@
 <cs-modal *ngIf="form" id="filterModal">
-  <cs-modal-header>
-    <h4 class="modal-title text-primary user-select-none">{{ 'filters' | titlecase }}</h4></cs-modal-header>
+  <cs-modal-header [title]="'filters'"></cs-modal-header>
   <cs-modal-body>
-    <form class="modal-content border-0" [formGroup]="form">
-      <div class="accordion" id="accordion">
+    <form class="border-0" [formGroup]="form">
+      <div class="accordion drop-shadow-low rounded-2" id="accordion">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button bg-light-semi-transparent collapsed"
+            <button class="accordion-button collapsed"
                     type="button"
-                    unfocus
                     [disabled]="form.controls.freeText.value.value"
                     data-bs-toggle="collapse"
                     data-bs-target="#categoriesCollapse"
@@ -17,14 +15,13 @@
               Categories
             </button>
           </h2>
-          <div id="categoriesCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
+          <div id="categoriesCollapse" class="drop-inset-shadow accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body" formArrayName="categories">
               <div class="form-check user-select-none m-2"
                    [formGroupName]="i"
                    *ngFor="let c of form.controls.categories.controls; let i = index">
-                <input class="form-check-input drop-shadow-low"
+                <input class="form-check-input"
                        type="checkbox"
-                       unfocus
                        id="{{c.value.value}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
@@ -40,9 +37,8 @@
 
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button bg-light-semi-transparent collapsed"
+            <button class="accordion-button collapsed"
                     type="button"
-                    unfocus
                     [disabled]="form.controls.freeText.value.value"
                     data-bs-toggle="collapse"
                     data-bs-target="#companiesCollapse"
@@ -51,14 +47,13 @@
               Companies
             </button>
           </h2>
-          <div id="companiesCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
+          <div id="companiesCollapse" class="drop-inset-shadow accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body" formArrayName="companyNames">
               <div class="form-check user-select-none m-2"
                    [formGroupName]="i"
                    *ngFor="let c of form.controls.companyNames.controls; let i = index">
-                <input class="form-check-input drop-shadow-low"
+                <input class="form-check-input"
                        type="checkbox"
-                       unfocus
                        id="{{c.value.value + i}}"
                        formControlName="isChecked">
                 <label class="form-check-label text-hover"
@@ -74,8 +69,7 @@
 
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-light-semi-transparent"
-                    unfocus
+            <button class="accordion-button collapsed"
                     [disabled]="form.controls.freeText.value.value"
                     type="button"
                     data-bs-toggle="collapse"
@@ -85,7 +79,7 @@
               Price
             </button>
           </h2>
-          <div id="priceCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
+          <div id="priceCollapse" class="drop-inset-shadow accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
               <div class="row align-content-center" formGroupName="priceRange">
                 <div class="col flex-grow-1">
@@ -127,8 +121,7 @@
 
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-light-semi-transparent"
-                    unfocus
+            <button class="accordion-button collapsed"
                     [disabled]="form.controls.freeText.value.value"
                     type="button"
                     data-bs-toggle="collapse"
@@ -138,7 +131,7 @@
               Date
             </button>
           </h2>
-          <div id="dateCollapse" class="accordion-collapse collapse" data-bs-parent="#accordion">
+          <div id="dateCollapse" class="drop-inset-shadow accordion-collapse collapse" data-bs-parent="#accordion">
             <div class="accordion-body">
               <div class="row align-content-center" formGroupName="dateRange">
                 <div class="row align-content-center">
@@ -174,43 +167,14 @@
       </div>
       <br>
 
-      <div class="input-group mb-3 mt-3 drop-shadow-low position-relative" formGroupName="freeText">
-        <button [disabled]="!form.controls.freeText.value.value || form.controls.freeText.invalid"
-                unfocus
-                class="btn btn-outline-secondary"
-                type="submit"
-                id="freeText">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-               class="bi bi-search" viewBox="0 0 16 16">
-            <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-          </svg>
-        </button>
-        <input type="text"
-               formControlName="value"
-               class="form-control"
-               placeholder="Free text search"
-               aria-label="Free text search"
-               [minlength]="3"
-               [maxlength]="25"
-               aria-describedby="freeText">
-        <h3 class="text-primary position-absolute top-25"
-            *ngIf="form.controls.freeText.value.value"
-            style="right: 1rem; top: 4%; z-index:5; cursor: pointer"
-            (click)="form.controls.freeText.reset()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
-               viewBox="0 0 16 16">
-            <path
-                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-          </svg>
-        </h3>
+      <div formGroupName="freeText">
+        <cs-form-input type="search" placeholder="Free text search" formControlName="value"></cs-form-input>
       </div>
 
       <div class="form-check user-select-none m-1 mt-4"
            formGroupName="hidePurchased">
-        <input class="form-check-input drop-shadow-low"
+        <input class="form-check-input"
                type="checkbox"
-               unfocus
                id="hidePurchased"
                formControlName="isChecked">
         <label class="form-check-label text-hover"
@@ -221,13 +185,8 @@
     </form>
   </cs-modal-body>
   <cs-modal-footer>
-    <button unfocus type="reset" class="btn btn-outline-danger" (click)="onFormReset()" data-bs-dismiss="modal">Reset
-    </button>
-    <button unfocus type="button" class="btn btn-outline-secondary" (click)="onCancel()" data-bs-dismiss="modal">
-      Cancel
-    </button>
-    <button unfocus type="submit" class="btn btn-outline-success" (click)="onSubmit()" data-bs-dismiss="modal"
-            [disabled]="form.controls.freeText.invalid">Apply
-    </button>
+    <cs-modal-button class="btn btn-outline-danger" action="close" type="reset" (click)="onFormReset()">Reset</cs-modal-button>
+    <cs-modal-button class="btn btn-outline-secondary" action="close" (click)="onCancel()" aria-label="Cancel">Cancel</cs-modal-button>
+    <cs-modal-button class="btn btn-outline-success" action="close" type="submit" (click)="onSubmit()" [disabled]="form.controls.freeText.invalid" aria-label="Apply filters">Apply</cs-modal-button>
   </cs-modal-footer>
 </cs-modal>

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, filter, map, Observable, tap} from 'rxjs';
 import {Coupon, ICouponParams} from '../../shared/models/coupon.model';
-import {LogoService} from '../../header/logo/logo.service';
+import {LogoService} from '../../core/header/logo/logo.service';
 import tempCoupons from './temp-coupons.json';
 import {AuthService} from '../../auth/auth.service';
 
