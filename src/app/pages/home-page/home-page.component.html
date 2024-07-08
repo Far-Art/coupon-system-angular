@@ -2,7 +2,7 @@
   <div class="text-center">
     <sc-quick-actions></sc-quick-actions>
     <div class="d-flex flex-row justify-content-center position-absolute translate-middle-x w-100 start-50 top-100 pe-xl-4">
-      <div @offPage
+      <div @translateInOut
            *ngIf="!isHideOnScroll"
            class="text-primary bg-light-semi-transparent fw-medium rounded-4 p-3 pt-1 pb-1 mt-1 user-select-none">
         {{ (couponsNum > 0 ? 'displaying ' + couponsNum + ' coupons' : 'none found') | titlecase }}

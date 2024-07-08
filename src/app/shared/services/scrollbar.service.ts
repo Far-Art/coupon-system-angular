@@ -8,6 +8,7 @@ type Direction = 'up' | 'down' | 'top' | 'bottom';
 export type Scrollbar = {
   x: number,
   y: number,
+  scrollHeight: number,
   scrollDirection: Direction
 }
 
@@ -31,6 +32,7 @@ export class ScrollbarService {
   private scrollPositionSubject = new BehaviorSubject<Scrollbar>({
     x: 0,
     y: 0,
+    scrollHeight: document.body.scrollHeight,
     scrollDirection: 'top'
   });
 
@@ -63,6 +65,7 @@ export class ScrollbarService {
       subject.next({
         x: Math.floor(window.scrollX),
         y: posY,
+        scrollHeight: document.body.scrollHeight,
         scrollDirection: calcScrollDirection()
       });
       prevPositionY = posY;

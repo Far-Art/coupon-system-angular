@@ -16,7 +16,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @Input('showLogoTitle') isShowLogoTitle: boolean = false;
 
-  @ViewChild('headerContentContainer', {static: true, read: ViewContainerRef}) headerContent: ViewContainerRef;
+  @ViewChild('headerContentContainer', {
+    static: true,
+    read: ViewContainerRef
+  }) headerContent: ViewContainerRef;
 
   private parentNode: Node;
   private contentNode: Node;
@@ -45,13 +48,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.padding    = this.paddingWide;
 
     this.authSub = this.authService.user$.subscribe(user => {
-      this.user     = user;
+      this.user = user;
       this.userName = this.userName = user.name || 'Guest';
-      this.theme    = this.themeService.currentTheme;
+      this.theme = this.themeService.currentTheme;
     });
 
     this.scrollService.scrollPosition$().subscribe(s => {
-      if (s.y > 120 && s.scrollDirection === 'down') {
+      if (s.y > 120 && (s.scrollDirection === 'down' || s.scrollDirection === 'bottom')) {
         this.padding = this.paddingNarrow;
       } else {
         this.padding = this.paddingWide;

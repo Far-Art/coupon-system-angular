@@ -10,7 +10,7 @@ import {AnimationEvent} from '@angular/animations';
   selector: 'cs-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
-  animations: [TranslateInOutWithBlur(280)]
+  animations: [TranslateInOutWithBlur(280, {blur: 40})]
 })
 export class ModalComponent implements OnInit {
 
