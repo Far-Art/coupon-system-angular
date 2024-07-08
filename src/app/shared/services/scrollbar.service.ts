@@ -49,24 +49,23 @@ export class ScrollbarService {
     let prevPositionY = 0;
 
     function calcScrollDirection(): Direction {
-      positionY = Math.round(window.scrollY);
-      if (positionY < 5) {
+      positionY = Math.floor(window.scrollY);
+      if (positionY <= 1) {
         return 'top';
-      } else if (positionY + document.body.clientHeight >= document.body.scrollHeight - 1) {
+      } else if (document.body.scrollHeight - 1 <= positionY + document.body.clientHeight) {
         return 'bottom';
       }
-      return window.scrollY > prevPositionY ? 'down' : 'up'
+      return positionY > prevPositionY ? 'down' : 'up'
     }
 
     return function () {
-      if (positionY % 4 === 0) {
-        subject.next({
-          x: Math.round(window.scrollX),
-          y: positionY,
-          scrollDirection: calcScrollDirection()
-        });
-        prevPositionY = positionY;
-      }
+      const posY = Math.floor(window.scrollY);
+      subject.next({
+        x: Math.floor(window.scrollX),
+        y: posY,
+        scrollDirection: calcScrollDirection()
+      });
+      prevPositionY = posY;
     }
   }
 
