@@ -29,8 +29,8 @@ export class ScrollbarService {
   }
 
   private scrollPositionSubject = new BehaviorSubject<Scrollbar>({
-    x: window.scrollX,
-    y: window.scrollY,
+    x: 0,
+    y: 0,
     scrollDirection: 'top'
   });
 
@@ -44,25 +44,28 @@ export class ScrollbarService {
   }
 
   private listener() {
-    const subject = this.scrollPositionSubject;
+    const subject     = this.scrollPositionSubject;
+    let positionY     = 0;
     let prevPositionY = 0;
 
-    // TODO Element.scrollHeight
     function calcScrollDirection(): Direction {
-      if (window.scrollY === 0) {
+      positionY = Math.round(window.scrollY);
+      if (positionY < 5) {
         return 'top';
+      } else if (positionY + document.body.clientHeight >= document.body.scrollHeight - 1) {
+        return 'bottom';
       }
       return window.scrollY > prevPositionY ? 'down' : 'up'
     }
 
     return function () {
-      if (window.scrollY % 5 === 0) {
+      if (positionY % 4 === 0) {
         subject.next({
-          x: window.scrollX,
-          y: window.scrollY,
+          x: Math.round(window.scrollX),
+          y: positionY,
           scrollDirection: calcScrollDirection()
         });
-        prevPositionY = window.scrollY;
+        prevPositionY = positionY;
       }
     }
   }
