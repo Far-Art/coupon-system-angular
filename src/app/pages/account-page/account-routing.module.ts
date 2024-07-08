@@ -5,7 +5,7 @@ import {accountGuard} from './account.guard';
 import {AccountInfoComponent} from './account-info/account-info.component';
 import {PurchasedComponent} from './purchased/purchased.component';
 import {AccountEditComponent} from './account-edit/account-edit.component';
-import {confirmNavigationGuard} from '../../shared/guards/confirm-navigation/confirm-navigation.guard';
+import {confirmNavigationGuard} from '../../core/guards/confirm-navigation/confirm-navigation.guard';
 import {ManageAccountComponent} from './manage-account/manage-account.component';
 
 

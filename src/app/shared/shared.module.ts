@@ -9,10 +9,9 @@ import {ControlValuePipe} from './pipes/control-value.pipe';
 import {CouponTableComponent} from './components/coupon-table/coupon-table.component';
 import {CouponItemComponent} from './components/coupon-table/coupon-item/coupon-item.component';
 import {OffCanvasComponent} from './components/offcanvas/off-canvas.component';
-import {CoreModule} from '../core/core.module';
 import {HeaderContentDirective} from './directives/header-content.directive';
 import {ModalComponent} from './components/modal/modal.component';
-import {ConfirmNavigationComponent} from './guards/confirm-navigation/confirm-navigation.component';
+import {ConfirmNavigationComponent} from '../core/guards/confirm-navigation/confirm-navigation.component';
 import {SpinnerComponent} from './components/spinner/spinner.component';
 import {ModalHeaderComponent} from './components/modal/modal-header/modal-header.component';
 import {ModalBodyComponent} from './components/modal/modal-body/modal-body.component';
@@ -25,17 +24,58 @@ import {AbstractFormInputComponent} from './components/inputs/abstract-form-inpu
 import {CheckNgContentDirective} from './directives/check-ng-content.directive';
 import {ModalBackdropComponent} from './components/modal/modals-container/modal-backdrop/modal-backdrop.component';
 import {ModalsContainerComponent} from './components/modal/modals-container/modals-container.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    SliceTxtPipe, DatePickerComponent, CouponTableComponent, CouponItemComponent, ControlValuePipe, OffCanvasComponent, HeaderContentDirective, ModalComponent, ModalHeaderComponent, ModalBodyComponent, ModalFooterComponent, ConfirmNavigationComponent, SpinnerComponent, ModalButtonComponent, FormInputComponent, FormSelectComponent, AbstractFormInputComponent, CheckNgContentDirective, ModalBackdropComponent, ModalsContainerComponent
+    SliceTxtPipe,
+    DatePickerComponent,
+    CouponTableComponent,
+    CouponItemComponent,
+    ControlValuePipe,
+    OffCanvasComponent,
+    HeaderContentDirective,
+    ModalComponent,
+    ModalHeaderComponent,
+    ModalBodyComponent,
+    ModalFooterComponent,
+    ConfirmNavigationComponent,
+    SpinnerComponent,
+    ModalButtonComponent,
+    FormInputComponent,
+    FormSelectComponent,
+    AbstractFormInputComponent,
+    CheckNgContentDirective,
+    ModalBackdropComponent,
+    ModalsContainerComponent
   ],
   exports: [
-    SliceTxtPipe, ControlValuePipe, DatePickerComponent, CouponTableComponent, CouponItemComponent, OffCanvasComponent, HeaderContentDirective, ModalComponent, ModalHeaderComponent, ModalBodyComponent, ModalFooterComponent, ConfirmNavigationComponent, SpinnerComponent, ModalButtonComponent, FormInputComponent, FormSelectComponent, AbstractFormInputComponent, ModalBackdropComponent, ModalsContainerComponent
+    SliceTxtPipe,
+    ControlValuePipe,
+    DatePickerComponent,
+    CouponTableComponent,
+    CouponItemComponent,
+    OffCanvasComponent,
+    HeaderContentDirective,
+    ModalComponent,
+    ModalHeaderComponent,
+    ModalBodyComponent,
+    ModalFooterComponent,
+    ConfirmNavigationComponent,
+    SpinnerComponent,
+    ModalButtonComponent,
+    FormInputComponent,
+    FormSelectComponent,
+    AbstractFormInputComponent,
+    ModalBackdropComponent,
+    ModalsContainerComponent
   ],
   imports: [
-    CommonModule, NgbInputDatepicker, CoreModule
+    CommonModule,
+    NgbInputDatepicker,
+    ReactiveFormsModule
+    // CoreModule
   ],
   providers: [
     IdGeneratorService, {

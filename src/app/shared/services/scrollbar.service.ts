@@ -19,7 +19,11 @@ export class ScrollbarService {
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        window.scrollTo({top: 0, left: 0, behavior: 'instant'} as any);
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'instant'
+        } as any);
       }
     });
   }
@@ -40,9 +44,10 @@ export class ScrollbarService {
   }
 
   private listener() {
-    const subject     = this.scrollPositionSubject;
+    const subject = this.scrollPositionSubject;
     let prevPositionY = 0;
 
+    // TODO Element.scrollHeight
     function calcScrollDirection(): Direction {
       if (window.scrollY === 0) {
         return 'top';
