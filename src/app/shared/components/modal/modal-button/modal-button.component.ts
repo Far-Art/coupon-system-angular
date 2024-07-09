@@ -12,9 +12,9 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
   @Input('modal-id') modalId: string;
   @Input('class') clazz: string;
-  @Input('disabled') disabled: boolean          = false;
-  @Input() type: 'submit' | 'button' | 'reset'  = 'button';
-  @Input() action: 'close' | 'open' | 'go-back' = 'open';
+  @Input('disabled') disabled: boolean         = false;
+  @Input() type: 'submit' | 'button' | 'reset' = 'button';
+  @Input() action: 'close' | 'open' | 'go-back' | 'none';
 
   @HostBinding('id') protected id: string                            = '';
   @HostBinding('class') protected hostClazz: string;
@@ -22,23 +22,6 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   @HostBinding('tabindex') protected tabIndex: string                = '0';
   @HostBinding('attr.aria-label') protected ariaLabel: string;
   @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
-
-  @HostListener('keydown.enter')
-  @HostListener('keydown.space')
-  protected selfClick() {
-    if (!this.disabled) {
-      this.selfRef.nativeElement.click();
-    }
-  }
-
-  @HostListener('click')
-  protected onClick() {
-    if (this.action === 'close') {
-      this.close();
-    } else {
-      this.open();
-    }
-  }
 
   constructor(
       @Optional() private hostModal: ModalComponent,
@@ -54,6 +37,14 @@ export class ModalButtonComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    if (!this.action) {
+      if (!this.hostModal) {
+        this.action = 'open';
+      } else {
+        this.action = 'none';
+      }
+    }
+
     this.setAriaLabel();
     if (this.type === 'submit') {
       this.role = 'submit';
@@ -76,6 +67,23 @@ export class ModalButtonComponent implements OnInit, OnChanges {
 
   open() {
     this.service.open(this.modalId);
+  }
+
+  @HostListener('keydown.enter')
+  @HostListener('keydown.space')
+  protected selfClick() {
+    if (!this.disabled) {
+      this.selfRef.nativeElement.click();
+    }
+  }
+
+  @HostListener('click')
+  protected onClick() {
+    if (this.action === 'close') {
+      this.close();
+    } else if (this.action === 'open') {
+      this.open();
+    }
   }
 
   private setAriaLabel() {
