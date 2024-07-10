@@ -16,6 +16,7 @@ export class ModalService {
   private containerElement: HTMLElement;
   private prevModal: ModalComponent;
   private currentModal: ModalComponent;
+  private backdropConfig: boolean | 'static';
 
   constructor(rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
@@ -28,8 +29,10 @@ export class ModalService {
   /**
    * close current open modal
    */
-  close(): void {
-    this.showBackdrop.next(false);
+  close(closeBackdrop = true): void {
+    if (closeBackdrop) {
+      this.showBackdrop.next(false);
+    }
     if (this.currentModal) {
       this.currentModal.leaveTransitionEnded$().pipe(take(1))
           .subscribe(() => {
@@ -54,10 +57,10 @@ export class ModalService {
     if (modal) {
       if (this.currentModal) {
         this.prevModal = this.currentModal;
+        this.close(false);
         this.okToOpen.pipe(take(1)).subscribe(() => {
           this.openModalFlow(modal);
         });
-        this.close();
       } else {
         this.openModalFlow(modal);
       }
@@ -66,7 +69,7 @@ export class ModalService {
 
   goBack() {
     if (this.prevModal) {
-      this.close();
+      this.close(false);
       this.open(this.prevModal.id);
       this.prevModal = null;
     }
@@ -74,6 +77,14 @@ export class ModalService {
 
   getModalTitle(modalId: string) {
     return this.modalsMap.get(modalId)?.title;
+  }
+
+  protected onBackdropClose() {
+    if (this.backdropConfig === 'static' || this.backdropConfig === false) {
+      this.currentModal.triggerInvalidCloseAnimation();
+    } else {
+      this.close();
+    }
   }
 
   protected registerModal(modal: ModalComponent): void {
@@ -92,6 +103,7 @@ export class ModalService {
     this.currentModal = modal;
     modal['setOpen']();
     this.showBackdrop.next(true);
+    this.backdropConfig = modal.backdrop;
     this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
     this.renderer.setStyle(this.containerElement, 'z-index', 9999);
     this.renderer.appendChild(this.containerElement, modal['selfRef'].nativeElement);

@@ -4,13 +4,14 @@ import {IdGeneratorService} from '../../services/id-generator.service';
 import {TranslateInOutWithBlur} from '../../animations/translateInOut.animation';
 import {Observable, Subject} from 'rxjs';
 import {AnimationEvent} from '@angular/animations';
+import {invalidClose} from './invalidClose.animation';
 
 
 @Component({
   selector: 'cs-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
-  animations: [TranslateInOutWithBlur(280, {blur: 40})]
+  animations: [TranslateInOutWithBlur(280, {blur: 40}), invalidClose()]
 })
 export class ModalComponent implements OnInit {
 
@@ -19,14 +20,13 @@ export class ModalComponent implements OnInit {
   @Input() onCloseFn: (...params: any) => any;
   @Input() backdrop: boolean | 'static'         = true;
   @Input() size: 'sm' | 'default' | 'lg' | 'xl' = 'default';
-
+  title: string;
   @HostBinding('id') protected selfId: string;
   @HostBinding('style') protected style: string;
   @HostBinding('class') protected clazz: string = 'modal position-relative ms-auto me-auto ';
-
-  title: string;
-  protected isShown: boolean          = false;
-  private leaveTransitionEndedSubject = new Subject<void>();
+  protected isShown: boolean                    = false;
+  protected isInvalidClose: boolean             = false;
+  private leaveTransitionEndedSubject           = new Subject<void>();
 
   constructor(
       private service: ModalService,
@@ -45,6 +45,11 @@ export class ModalComponent implements OnInit {
         throw new Error('Modal header must be provided with title input, use cs-modal-header');
       }
     });
+  }
+
+  triggerInvalidCloseAnimation() {
+    this.isInvalidClose = true;
+    setTimeout(() => this.isInvalidClose = false,380);
   }
 
   open() {

@@ -27,15 +27,9 @@ export class CouponsService {
       private logo: LogoService,
       private auth: AuthService
   ) {
-    this.moveSaleEndedToWish();
-  }
-
-  findCoupons(filter: (coupon: Coupon) => boolean): Coupon[] {
-    return this.originCouponsSubject.value.filter(c => filter(c));
-  }
-
-  getCouponsById(...ids: string[]): Coupon[] {
-    return ids ? this.originCouponsSubject.value.filter(c => ids.includes(c.params.id)) : [];
+    setTimeout(() => {
+      this.moveSaleEndedToWish();
+    });
   }
 
   get purchasedCoupons$(): Observable<string[]> {
@@ -68,6 +62,14 @@ export class CouponsService {
 
   set coupons(coupons: Coupon[]) {
     this.filteredCouponsSubject.next(coupons);
+  }
+
+  findCoupons(filter: (coupon: Coupon) => boolean): Coupon[] {
+    return this.originCouponsSubject.value.filter(c => filter(c));
+  }
+
+  getCouponsById(...ids: string[]): Coupon[] {
+    return ids ? this.originCouponsSubject.value.filter(c => ids.includes(c.params.id)) : [];
   }
 
   addToCart(...coupons: Coupon[] | string[]) {

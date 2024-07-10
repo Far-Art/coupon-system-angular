@@ -5,6 +5,7 @@
      [attr.aria-hidden]="!isShown"
      [attr.aria-modal]="isShown"
      role="dialog"
+     [@invalidClose]="isInvalidClose"
      @translateInOutWithBlur
      (@translateInOutWithBlur.done)="onAnimationFinish($event)"
      class="modal-dialog modal-dialog-scrollable m-1 mt-2 position-relative {{size !== 'default' ? 'modal-' + size: ''}}">

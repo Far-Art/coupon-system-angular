@@ -25,7 +25,7 @@ export class ModalBackdropComponent implements OnInit, OnDestroy {
   }
 
   onClick() {
-    this.modalService.close();
+    this.modalService['onBackdropClose']();
   }
 
   ngOnDestroy(): void {
