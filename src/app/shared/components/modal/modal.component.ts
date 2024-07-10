@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostBinding, Input, OnInit, Renderer2, Self} from '@angular/core';
 import {ModalService} from './modal.service';
 import {IdGeneratorService} from '../../services/id-generator.service';
-import {TranslateInOutWithBlur} from '../../animations/translateInOut.animation';
+import {translateInOutWithBlur} from '../../animations/translateInOut.animation';
 import {Observable, Subject} from 'rxjs';
 import {AnimationEvent} from '@angular/animations';
 import {invalidClose} from './invalidClose.animation';
@@ -11,7 +11,7 @@ import {invalidClose} from './invalidClose.animation';
   selector: 'cs-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
-  animations: [TranslateInOutWithBlur(280, {blur: 40}), invalidClose()]
+  animations: [translateInOutWithBlur(280, {blur: 40}), invalidClose()]
 })
 export class ModalComponent implements OnInit {
 

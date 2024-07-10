@@ -2,14 +2,14 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {CouponsService} from '../../features/coupons/coupons.service';
 import {ScrollbarService} from '../../shared/services/scrollbar.service';
-import {TranslateInOut} from '../../shared/animations/translateInOut.animation';
+import {translateInOut} from '../../shared/animations/translateInOut.animation';
 
 
 @Component({
   selector: 'cs-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
-  animations: [TranslateInOut(300)]
+  animations: [translateInOut(300)]
 })
 export class HomePageComponent implements OnInit, OnDestroy {
 

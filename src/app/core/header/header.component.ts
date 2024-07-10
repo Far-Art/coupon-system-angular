@@ -21,17 +21,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     read: ViewContainerRef
   }) headerContent: ViewContainerRef;
 
-  private parentNode: Node;
-  private contentNode: Node;
-
   userName: string;
   user: Partial<UserData>;
   padding: string;
-
   theme: Themes;
 
-  private paddingNarrow = 'pt-1 pb-1';
+  private parentNode: Node;
+  private contentNode: Node;
+  private paddingNarrow = 'pt-2 pb-2';
   private paddingWide   = 'pt-4 pb-4';
+  private prevDirection: string;
 
   private authSub: Subscription;
 
@@ -48,16 +47,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.padding    = this.paddingWide;
 
     this.authSub = this.authService.user$.subscribe(user => {
-      this.user = user;
+      this.user     = user;
       this.userName = this.userName = user.name || 'Guest';
-      this.theme = this.themeService.currentTheme;
+      this.theme    = this.themeService.currentTheme;
     });
 
     this.scrollService.scrollPosition$().subscribe(s => {
-      if (s.y > 120 && (s.scrollDirection === 'down' || s.scrollDirection === 'bottom')) {
-        this.padding = this.paddingNarrow;
-      } else {
-        this.padding = this.paddingWide;
+      if (s.y > 120 && this.prevDirection !== s.scrollDirection) {
+        this.prevDirection = s.scrollDirection;
+        if (s.scrollDirection === 'down' || s.scrollDirection === 'bottom') {
+          this.padding = this.paddingNarrow;
+        } else {
+          this.padding = this.paddingWide;
+        }
       }
     });
 

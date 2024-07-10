@@ -1,5 +1,5 @@
 <img src="{{coupon.params.image}}"
-     alt="{{coupon.params.title}} coupon"
+     alt="{{coupon.params.title}} coupon image"
      [style.filter]=" isPurchased ? 'grayscale(0.7) sepia(0.7) hue-rotate(90deg)' : 'none'"
      class="object-fit-cover user-select-none">
 <div *ngIf="isPurchased" class="position-absolute start-0 top-0 w-100 h-100 bg-dark opacity-25"></div>
@@ -16,6 +16,7 @@
 
     <!-- INFO BUTTON -->
     <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative"
+         tabindex="0"
          [ngClass]="{'text-white': isPurchased}"
          (click)="switchInfoDescription()"
          role="button">
@@ -39,6 +40,7 @@
 
     <!-- DESCRIPTION BUTTON -->
     <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative"
+         tabindex="0"
          (click)="switchInfoDescription()"
          [ngClass]="{'text-white': isPurchased}"
          role="button">
@@ -62,6 +64,7 @@
 
     <!-- WISH LIST BUTTON -->
     <div class="p-3 pt-2 pb-2 text-primary position-relative m-1 mt-0 mb-0"
+         tabindex="0"
          [ngClass]="{'text-white': isPurchased}"
          (click)="onWishListClick()"
          role="button">
@@ -109,6 +112,7 @@
 
     <!-- CART -->
     <div class="p-3 pt-2 pb-2 m-1 mt-0 mb-0 text-primary position-relative"
+         tabindex="0"
          (click)="onCartClick()"
          [style.cursor]="isSaleEnded || isPurchased ? 'default': 'pointer'"
          [ngClass]="{'disabled': isSaleEnded}"
@@ -189,12 +193,12 @@
 
 <!-- INFO CONTENT -->
 <ng-container *ngIf="!isDescriptionShown">
-  <div class="d-flex flex-row"
+  <div class="d-flex flex-row z-1"
        [ngClass]="{'justify-content-between' : !isSaleEnded && isShowTimer, 'justify-content-start' : isSaleEnded, 'justify-content-end': !isSaleEnded && !isShowTimer}">
 
     <!-- TIMER -->
     <div *ngIf="isShowTimer"
-         class="p-2 mb-2 fs-6 fw-semibold bg-light-semi-transparent rounded-end text-primary position-relative user-select-none">
+         class="p-2 mb-2 fs-6 fw-semibold bg-noisy rounded-end text-primary position-relative user-select-none">
       <ng-container *ngIf="isSaleEnded">
         {{ 'sale ended' | titlecase }}
       </ng-container>
@@ -206,7 +210,7 @@
 
     <!-- PRICE -->
     <div *ngIf="!isSaleEnded && !isPurchased"
-         class="p-2 mb-2 fs-6 fw-semibold bg-light-semi-transparent rounded-start text-primary user-select-none">
+         class="p-2 mb-2 fs-6 fw-semibold bg-noisy rounded-start text-primary user-select-none">
       {{ coupon.params.price | currency: 'ILS' }}
     </div>
 

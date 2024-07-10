@@ -11,16 +11,17 @@ import {ModalService} from '../modal.service';
 export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input('modal-id') modalId: string;
-  @Input('class') clazz: string;
+  @Input('class') class: string;
   @Input('disabled') disabled: boolean         = false;
   @Input() type: 'submit' | 'button' | 'reset' = 'button';
   @Input() action: 'close' | 'open' | 'go-back' | 'none';
 
-  @HostBinding('class') protected hostClazz: string;
+  @HostBinding('attr.class') protected hostClass: string;
   @HostBinding('role') protected role: string;
   @HostBinding('tabindex') protected tabIndex: string                = '0';
   @HostBinding('attr.aria-label') protected ariaLabel: string;
   @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
+  @HostBinding('disabled') protected hostDisabled: boolean;
 
   constructor(
       @Optional() private hostModal: ModalComponent,
@@ -31,27 +32,22 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit(): void {
     this.modalId   = this.modalId || this.hostModal?.id;
-    this.hostClazz = 'position-relative ' + (this.clazz ? this.clazz : 'btn btn-primary');
+    this.hostClass = 'position-relative ' + (this.class ? this.class : 'btn btn-primary');
     this.service['registerButton'](this.modalId, this);
   }
 
   ngOnChanges(): void {
-    if (this.disabled) {
-      this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
-      this.ariaDisabled = true;
-    } else {
-      this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
-      this.ariaDisabled = false;
-    }
+    this.setDisabled();
   }
 
   ngAfterViewInit(): void {
     // ensure all fields was set
+    this.setDisabled();
     setTimeout(() => {
       this.setType();
       this.setAction();
       this.setAriaLabel();
-    })
+    });
   }
 
   close() {
@@ -117,6 +113,16 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
       }
     } else if (this.action === 'open') {
       this.ariaLabel = 'Open ' + (title ? title + ' ' : '') + 'modal';
+    }
+  }
+
+  private setDisabled() {
+    if (this.disabled) {
+      this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
+      this.ariaDisabled = true;
+    } else {
+      this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
+      this.ariaDisabled = false;
     }
   }
 

@@ -4,7 +4,7 @@ import {animate, AnimationTriggerMetadata, style, transition, trigger} from '@an
 const translateYDefaultValue = 15;
 const blurDefaultValue       = 0;
 
-export function TranslateInOut(timing: number, options?: { translateY?: number }): AnimationTriggerMetadata {
+export function translateInOut(timing: number, options?: { translateY?: number }): AnimationTriggerMetadata {
   return trigger('translateInOut', [
     transition(':enter', [
       style({
@@ -27,7 +27,7 @@ export function TranslateInOut(timing: number, options?: { translateY?: number }
   ]);
 }
 
-export function TranslateInOutWithBlur(timing: number, options?: { translateY?: number, blur: number }): AnimationTriggerMetadata {
+export function translateInOutWithBlur(timing: number, options?: { translateY?: number, blur: number }): AnimationTriggerMetadata {
   return trigger('translateInOutWithBlur', [
     transition(':enter', [
       style({
