@@ -37,7 +37,6 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.disabled) {
-      this.close();
       this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
       this.ariaDisabled = true;
     } else {

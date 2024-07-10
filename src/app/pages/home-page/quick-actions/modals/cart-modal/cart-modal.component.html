@@ -33,6 +33,7 @@
     <cs-modal-button *ngIf="!isUserPresent"
                      class="btn btn-outline-success"
                      aria-label="Checkout As Guest"
+                     [disabled]="_selectedCoupons.length === 0"
                      [ngClass]="{'w-100': _windowWidth < _switchWidth}"
                      [modal-id]="guestModalId">Checkout As Guest
     </cs-modal-button>
