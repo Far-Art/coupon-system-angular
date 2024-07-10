@@ -16,7 +16,6 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() type: 'submit' | 'button' | 'reset' = 'button';
   @Input() action: 'close' | 'open' | 'go-back' | 'none';
 
-  @HostBinding('id') protected id: string                            = '';
   @HostBinding('class') protected hostClazz: string;
   @HostBinding('role') protected role: string;
   @HostBinding('tabindex') protected tabIndex: string                = '0';
@@ -38,20 +37,13 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.disabled) {
+      this.close();
       this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
       this.ariaDisabled = true;
     } else {
       this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
       this.ariaDisabled = false;
     }
-  }
-
-  close() {
-    this.service.close();
-  }
-
-  open() {
-    this.service.open(this.modalId);
   }
 
   ngAfterViewInit(): void {
@@ -61,6 +53,14 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
       this.setAction();
       this.setAriaLabel();
     })
+  }
+
+  close() {
+    this.service.close();
+  }
+
+  open() {
+    this.service.open(this.modalId);
   }
 
   @HostListener('keydown.enter')
