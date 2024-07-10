@@ -52,7 +52,6 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit {
 
   @HostListener('click', ['$event'])
   protected onClick(event: Event): void {
-    this.isShowSpinner = !this.isShowSpinner;
     event?.stopPropagation();
   }
 

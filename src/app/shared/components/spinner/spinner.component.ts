@@ -11,11 +11,13 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
       state('true', style({
         width: '20px',
         height: '20px',
+        marginLeft: '0.5rem',
         opacity: 1
       })),
       state('false', style({
         width: 0,
         height: '20px',
+        marginLeft: '0',
         opacity: 0
       })),
       transition('false <=> true', animate(`${400}ms ease-in-out`))
