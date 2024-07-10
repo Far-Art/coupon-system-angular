@@ -2,6 +2,7 @@ import {Component, ElementRef, Input, Optional, Renderer2, Self} from '@angular/
 import {ModalComponent} from '../modal.component';
 import {ModalService} from '../modal.service';
 import {ButtonComponent} from '../../basic/button/button.component';
+import {FormGroupDirective} from '@angular/forms';
 
 
 @Component({
@@ -16,12 +17,11 @@ export class ModalButtonComponent extends ButtonComponent {
 
   constructor(
       @Optional() private hostModal: ModalComponent,
+      @Optional() formGroup: FormGroupDirective,
       @Self() override selfRef: ElementRef<HTMLElement>,
       override renderer: Renderer2,
       private service: ModalService
-  ) {
-    super(renderer, selfRef);
-  }
+  ) {super(renderer, selfRef, formGroup);}
 
   override ngOnInit(): void {
     super.ngOnInit();

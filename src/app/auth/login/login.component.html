@@ -20,38 +20,33 @@
   <div *ngIf="errorMessage" class="text-danger">{{ errorMessage | titlecase }}</div>
 
   <div class="list-group text-center mt-3">
-    <button [disabled]="form.invalid"
-            class="fw-bolder list-group-item list-group-item-success list-group-item-action"
-            type="submit">Login
-      <cs-spinner class="ms-1 text-dark" *ngIf="isLoading && quickLoginType == null"></cs-spinner>
-    </button>
-
-    <button [disabled]="form.pristine"
-            (click)="onReset()"
-            [ngClass]="{'text-danger': !form.pristine, 'text-bg-light': !form.pristine}"
-            class="fw-light list-group-item list-group-item-action"
-            type="button">Clear Form
-    </button>
+    <cs-button [showSpinner]="isLoading && quickLoginType == null"
+               [disabled]="form.invalid"
+               type="submit"
+               class="fw-semibold list-group-item list-group-item-success list-group-item-action">Login
+    </cs-button>
+    <cs-button [disabled]="form.pristine"
+               type="reset"
+               [ngClass]="{'text-danger': !form.pristine, 'text-secondary': form.pristine}"
+               class="w-light list-group-item list-group-item-action">Clear Form
+    </cs-button>
   </div>
   <br>
   <div class="list-group text-center mt-3 fw-light">
     Quick Login
-    <button class="list-group-item list-group-item-action text-bg-light"
-            type="button"
-            (click)="onQuickLogin('customer')">Customer
-      <cs-spinner class="ms-1 text-secondary" *ngIf="isLoading && quickLoginType === 'customer'"></cs-spinner>
-    </button>
+    <cs-button [showSpinner]="isLoading && quickLoginType === 'customer'"
+               (click)="onQuickLogin('customer')"
+               class="list-group-item list-group-item-action text-secondary">Customer
+    </cs-button>
 
-    <button class="list-group-item list-group-item-action text-bg-light"
-            type="button"
-            (click)="onQuickLogin('company')">Company
-      <cs-spinner class="ms-1 text-secondary" *ngIf="isLoading && quickLoginType === 'company'"></cs-spinner>
-    </button>
+    <cs-button [showSpinner]="isLoading && quickLoginType === 'company'"
+               (click)="onQuickLogin('company')"
+               class="list-group-item list-group-item-action text-secondary">Company
+    </cs-button>
 
-    <button class="list-group-item list-group-item-action text-bg-light"
-            type="button"
-            (click)="onQuickLogin('admin')">Admin
-      <cs-spinner class="ms-1 text-secondary" *ngIf="isLoading && quickLoginType === 'admin'"></cs-spinner>
-    </button>
+    <cs-button [showSpinner]="isLoading && quickLoginType === 'admin'"
+               (click)="onQuickLogin('admin')"
+               class="list-group-item list-group-item-action text-secondary">Admin
+    </cs-button>
   </div>
 </form>

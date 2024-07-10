@@ -1,4 +1,5 @@
-import {AfterViewInit, Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnInit, Renderer2, Self} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {FormGroupDirective} from '@angular/forms';
 
 
 @Component({
@@ -6,22 +7,25 @@ import {AfterViewInit, Component, ElementRef, HostBinding, HostListener, Input, 
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss']
 })
-export class ButtonComponent implements OnInit, OnChanges, AfterViewInit {
+export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('class') class: string;
   @Input('disabled') disabled: boolean         = false;
   @Input() type: 'submit' | 'button' | 'reset' = 'button';
-  @Input() isShowSpinner                       = false;
+  @Input() showSpinner                         = false;
 
   @HostBinding('class') protected hostClass: string;
-  @HostBinding('role') protected role: string;
+  @HostBinding('role') protected role: string                        = 'button';
   @HostBinding('tabindex') protected tabIndex: number                = 0;
   @HostBinding('attr.aria-label') protected ariaLabel: string;
   @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
   @HostBinding('disabled') protected hostDisabled: boolean;
+  private unsubscribe: () => void;
+  private initialFormValue: any;
 
   constructor(
       protected renderer: Renderer2,
-      @Self() protected selfRef: ElementRef<HTMLElement>
+      @Self() protected selfRef: ElementRef<HTMLElement>,
+      @Optional() protected formGroup: FormGroupDirective
   ) {}
 
   ngOnInit(): void {
@@ -32,12 +36,31 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit {
     this.setDisabled();
   }
 
+  private getParentElement(el: HTMLElement): HTMLElement {
+    const parent = el.parentElement;
+    if (!parent) {
+      return el;
+    }
+
+    if (parent.tagName === 'BODY' || parent.tagName === 'FORM' || parent.role === 'form') {
+      return parent;
+    }
+    return this.getParentElement(parent);
+  }
+
   ngAfterViewInit(): void {
     // ensure all fields was set
     this.setDisabled();
     setTimeout(() => {
-      this.setType();
+      if (this.unsubscribe) this.unsubscribe();
       this.setAriaLabel();
+      if (this.type === 'submit' || this.type === 'reset') {
+        if (this.formGroup) {
+          this.initialFormValue = this.formGroup.value;
+          const el              = this.getParentElement(this.selfRef.nativeElement);
+          this.unsubscribe      = this.renderer.listen(el, 'keydown.enter', event => this.onClick(event));
+        }
+      }
     });
   }
 
@@ -53,13 +76,14 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit {
   @HostListener('click', ['$event'])
   protected onClick(event: Event): void {
     event?.stopPropagation();
-  }
-
-  protected setType() {
-    if (this.type === 'submit') {
-      this.role = 'submit';
-    } else {
-      this.role = 'button';
+    if (!this.disabled) {
+      if (this.formGroup) {
+        if (this.type === 'submit' && !this.formGroup.submitted) {
+          this.formGroup.ngSubmit.emit();
+        } else if (this.type === 'reset') {
+          this.formGroup.form.reset(this.initialFormValue);
+        }
+      }
     }
   }
 
@@ -89,5 +113,9 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit {
       this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
       this.ariaDisabled = false;
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.unsubscribe) this.unsubscribe();
   }
 }

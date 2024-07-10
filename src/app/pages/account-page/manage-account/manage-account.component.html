@@ -5,9 +5,10 @@
 <div class="container mt-5">
   <router-outlet></router-outlet>
   <br>
-  <button class="btn btn-danger text-nowrap" (click)="onLogout()">Logout
-    <cs-spinner class="ms-1" *ngIf="isLoading"></cs-spinner>
-  </button>
+  <cs-button [showSpinner]="isLoading"
+             (click)="onLogout()"
+             class="btn btn-danger">Logout
+  </cs-button>
 </div>
 
 <ng-template #manageCoupons>

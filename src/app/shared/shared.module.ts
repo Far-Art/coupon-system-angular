@@ -25,7 +25,7 @@ import {CheckNgContentDirective} from './directives/check-ng-content.directive';
 import {ModalBackdropComponent} from './components/modal/modals-container/modal-backdrop/modal-backdrop.component';
 import {ModalsContainerComponent} from './components/modal/modals-container/modals-container.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import { ButtonComponent } from './components/basic/button/button.component';
+import {ButtonComponent} from './components/basic/button/button.component';
 
 
 @NgModule({
@@ -78,7 +78,6 @@ import { ButtonComponent } from './components/basic/button/button.component';
     CommonModule,
     NgbInputDatepicker,
     ReactiveFormsModule
-    // CoreModule
   ],
   providers: [
     IdGeneratorService, {

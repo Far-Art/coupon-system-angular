@@ -82,16 +82,15 @@
   <div *ngIf="errorMessage" class="text-danger">{{ errorMessage | titlecase }}</div>
 
   <div class="list-group text-center mt-3">
-    <button [disabled]="form.invalid"
-            class="fw-bolder list-group-item list-group-item-success list-group-item-action"
-            type="submit">Signup
-      <cs-spinner class="ms-1 text-dark" *ngIf="isLoading"></cs-spinner>
-    </button>
-    <button [disabled]="form.pristine"
-            [ngClass]="{'text-danger': !form.pristine, 'text-bg-light': !form.pristine}"
-            class="fw-light list-group-item list-group-item-action"
-            (click)="onReset()"
-            type="button">Reset Form
-    </button>
+    <cs-button [showSpinner]="isLoading"
+               [disabled]="form.invalid"
+               type="submit"
+               class="fw-semibold list-group-item list-group-item-success list-group-item-action">Signup
+    </cs-button>
+    <cs-button [disabled]="form.pristine"
+               type="reset"
+               [ngClass]="{'text-danger': !form.pristine, 'text-secondary': form.pristine}"
+               class="w-light list-group-item list-group-item-action">Clear Form
+    </cs-button>
   </div>
 </form>

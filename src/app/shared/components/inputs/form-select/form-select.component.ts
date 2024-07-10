@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, forwardRef} from '@angular/core';
+import {Component, forwardRef} from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AbstractFormInputComponent} from '../abstract-form-input.component';
 
@@ -7,7 +7,6 @@ import {AbstractFormInputComponent} from '../abstract-form-input.component';
   selector: 'cs-form-select',
   templateUrl: '../abstract-form-input.component.html',
   styleUrls: ['./form-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

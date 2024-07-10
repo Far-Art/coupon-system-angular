@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {Subscription} from 'rxjs';
@@ -10,8 +10,7 @@ export interface FormErrorParams<T> {
 }
 
 @Component({
-  templateUrl: './abstract-form-input.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './abstract-form-input.component.html'
 })
 export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
 
