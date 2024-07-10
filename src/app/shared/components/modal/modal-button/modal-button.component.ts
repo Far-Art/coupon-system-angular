@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, Input, Optional, Renderer2, Self} from '@angular/core';
+import {Component, ElementRef, Input, Optional, Renderer2, Self} from '@angular/core';
 import {ModalComponent} from '../modal.component';
 import {ModalService} from '../modal.service';
 import {ButtonComponent} from '../../basic/button/button.component';
@@ -6,7 +6,7 @@ import {ButtonComponent} from '../../basic/button/button.component';
 
 @Component({
   selector: 'cs-modal-button',
-  templateUrl: './modal-button.component.html',
+  templateUrl: '../../basic/button/button.component.html',
   styleUrls: ['./modal-button.component.scss']
 })
 export class ModalButtonComponent extends ButtonComponent {
@@ -46,7 +46,6 @@ export class ModalButtonComponent extends ButtonComponent {
     this.service.open(this.modalId);
   }
 
-  @HostListener('click')
   protected override onClick(event: Event) {
     super.onClick(event);
     if (this.action === 'close') {

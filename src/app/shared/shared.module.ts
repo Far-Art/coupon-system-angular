@@ -71,7 +71,8 @@ import { ButtonComponent } from './components/basic/button/button.component';
     FormSelectComponent,
     AbstractFormInputComponent,
     ModalBackdropComponent,
-    ModalsContainerComponent
+    ModalsContainerComponent,
+    ButtonComponent
   ],
   imports: [
     CommonModule,

@@ -10,6 +10,7 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit {
   @Input('class') class: string;
   @Input('disabled') disabled: boolean         = false;
   @Input() type: 'submit' | 'button' | 'reset' = 'button';
+  @Input() isShowSpinner                       = false;
 
   @HostBinding('class') protected hostClass: string;
   @HostBinding('role') protected role: string;
@@ -51,7 +52,8 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit {
 
   @HostListener('click', ['$event'])
   protected onClick(event: Event): void {
-    event.stopPropagation();
+    this.isShowSpinner = !this.isShowSpinner;
+    event?.stopPropagation();
   }
 
   protected setType() {

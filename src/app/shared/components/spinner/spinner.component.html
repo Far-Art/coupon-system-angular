@@ -1,8 +1,10 @@
 <!-- WITH ID -->
-<svg *ngIf="id" [id]="id" @popAnimation viewBox="25 25 50 50" class="{{clazz}}">
-  <circle r="20" cy="50" cx="50"></circle>
-</svg>
-<!-- WITHOUT ID -->
-<svg *ngIf="!id" @popAnimation viewBox="25 25 50 50" class="{{clazz}}">
-  <circle r="20" cy="50" cx="50"></circle>
-</svg>
+<div *ngIf="_show" class="position-relative">
+  <svg *ngIf="id" [id]="id" fill="currentColor" viewBox="25 25 50 50" class="position-absolute start-0 top-0">
+    <circle r="20" cy="50" cx="50"></circle>
+  </svg>
+  <!-- WITHOUT ID -->
+  <svg *ngIf="!id" fill="currentColor" viewBox="25 25 50 50" class="position-absolute start-0 top-0">
+    <circle r="20" cy="50" cx="50" style="stroke: currentColor"></circle>
+  </svg>
+</div>
