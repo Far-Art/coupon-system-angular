@@ -9,6 +9,7 @@ import {MainHeaderContentComponent} from './header/main-header-content/main-head
 import {FooterComponent} from './footer/footer/footer.component';
 import {CommonModule} from '@angular/common';
 import {SharedModule} from '../shared/shared.module';
+import {DeviceService} from './services/device.service';
 
 
 @NgModule({
@@ -32,7 +33,9 @@ import {SharedModule} from '../shared/shared.module';
     MainHeaderContentComponent,
     FooterComponent
   ],
-  providers: []
+  providers: [
+    DeviceService
+  ]
 })
 export class CoreModule {
 }
