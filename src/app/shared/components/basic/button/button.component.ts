@@ -36,18 +36,6 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.setDisabled();
   }
 
-  private getParentElement(el: HTMLElement): HTMLElement {
-    const parent = el.parentElement;
-    if (!parent) {
-      return el;
-    }
-
-    if (parent.tagName === 'BODY' || parent.tagName === 'FORM' || parent.role === 'form') {
-      return parent;
-    }
-    return this.getParentElement(parent);
-  }
-
   ngAfterViewInit(): void {
     // ensure all fields was set
     this.setDisabled();
@@ -113,6 +101,18 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
       this.ariaDisabled = false;
     }
+  }
+
+  private getParentElement(el: HTMLElement): HTMLElement {
+    const parent = el.parentElement;
+    if (!parent) {
+      return el;
+    }
+
+    if (parent.tagName === 'BODY' || parent.tagName === 'FORM' || parent.role === 'form') {
+      return parent;
+    }
+    return this.getParentElement(parent);
   }
 
   ngOnDestroy(): void {
