@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {Component, ElementRef, HostListener, Input, Optional, Renderer2, Self} from '@angular/core';
 import {ModalComponent} from '../modal.component';
 import {ModalService} from '../modal.service';
+import {ButtonComponent} from '../../basic/button/button.component';
 
 
 @Component({
@@ -8,43 +9,30 @@ import {ModalService} from '../modal.service';
   templateUrl: './modal-button.component.html',
   styleUrls: ['./modal-button.component.scss']
 })
-export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
+export class ModalButtonComponent extends ButtonComponent {
 
   @Input('modal-id') modalId: string;
-  @Input('class') class: string;
-  @Input('disabled') disabled: boolean         = false;
-  @Input() type: 'submit' | 'button' | 'reset' = 'button';
   @Input() action: 'close' | 'open' | 'go-back' | 'none';
-
-  @HostBinding('attr.class') protected hostClass: string;
-  @HostBinding('role') protected role: string;
-  @HostBinding('tabindex') protected tabIndex: string                = '0';
-  @HostBinding('attr.aria-label') protected ariaLabel: string;
-  @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
-  @HostBinding('disabled') protected hostDisabled: boolean;
 
   constructor(
       @Optional() private hostModal: ModalComponent,
-      @Self() private selfRef: ElementRef<HTMLElement>,
-      private renderer: Renderer2,
+      @Self() override selfRef: ElementRef<HTMLElement>,
+      override renderer: Renderer2,
       private service: ModalService
-  ) {}
+  ) {
+    super(renderer, selfRef);
+  }
 
-  ngOnInit(): void {
-    this.modalId   = this.modalId || this.hostModal?.id;
-    this.hostClass = 'position-relative ' + (this.class ? this.class : 'btn btn-primary');
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.modalId = this.modalId || this.hostModal?.id;
     this.service['registerButton'](this.modalId, this);
   }
 
-  ngOnChanges(): void {
-    this.setDisabled();
-  }
-
-  ngAfterViewInit(): void {
+  override ngAfterViewInit(): void {
+    super.ngAfterViewInit();
     // ensure all fields was set
-    this.setDisabled();
     setTimeout(() => {
-      this.setType();
       this.setAction();
       this.setAriaLabel();
     });
@@ -58,28 +46,13 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
     this.service.open(this.modalId);
   }
 
-  @HostListener('keydown.enter')
-  @HostListener('keydown.space')
-  protected selfClick() {
-    if (!this.disabled) {
-      this.selfRef.nativeElement.click();
-    }
-  }
-
   @HostListener('click')
-  protected onClick() {
+  protected override onClick(event: Event) {
+    super.onClick(event);
     if (this.action === 'close') {
       this.close();
     } else if (this.action === 'open') {
       this.open();
-    }
-  }
-
-  private setType() {
-    if (this.type === 'submit') {
-      this.role = 'submit';
-    } else {
-      this.role = 'button';
     }
   }
 
@@ -93,11 +66,13 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  private setAriaLabel() {
+  override setAriaLabel() {
     if (this.selfRef.nativeElement.ariaLabel) {
       this.ariaLabel = this.selfRef.nativeElement.ariaLabel;
       return;
     }
+
+    super.setAriaLabel();
 
     const title = this.service.getModalTitle(this.modalId);
     if (this.action === 'close') {
@@ -112,17 +87,7 @@ export class ModalButtonComponent implements OnInit, OnChanges, AfterViewInit {
           this.ariaLabel = 'Close' + (title ? ' ' + title : '');
       }
     } else if (this.action === 'open') {
-      this.ariaLabel = 'Open ' + (title ? title + ' ' : '') + 'modal';
-    }
-  }
-
-  private setDisabled() {
-    if (this.disabled) {
-      this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
-      this.ariaDisabled = true;
-    } else {
-      this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
-      this.ariaDisabled = false;
+      this.ariaLabel = 'Open ' + (title ? title + ' ' : '');
     }
   }
 
