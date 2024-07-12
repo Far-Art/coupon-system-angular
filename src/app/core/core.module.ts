@@ -11,7 +11,6 @@ import {CommonModule} from '@angular/common';
 import {SharedModule} from '../shared/shared.module';
 import {ToastComponent} from './toasts/toast.component';
 import {ToastContainerComponent} from './toasts/toast-container/toast-container.component';
-import {ToastService} from './toasts/toast.service';
 import {DeviceService} from './services/device.service';
 
 
@@ -40,8 +39,7 @@ import {DeviceService} from './services/device.service';
     ToastContainerComponent
   ],
   providers: [
-    DeviceService,
-    ToastService
+    DeviceService
   ]
 })
 export class CoreModule {

@@ -10,7 +10,9 @@ export interface ToastOptions {
   dismiss?: 'auto' | 'manual';
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ToastService {
 
   private renderer: Renderer2;

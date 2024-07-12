@@ -11,7 +11,7 @@ import {translateInOut} from '../../shared/animations/translateInOut.animation';
 })
 export class ToastComponent implements OnInit {
 
-  private readonly defaultTimeout = 5000;
+  private readonly defaultTimeout = 4000;
 
   @HostBinding('@translateInOut') protected animation = true;
 
