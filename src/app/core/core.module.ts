@@ -9,6 +9,9 @@ import {MainHeaderContentComponent} from './header/main-header-content/main-head
 import {FooterComponent} from './footer/footer/footer.component';
 import {CommonModule} from '@angular/common';
 import {SharedModule} from '../shared/shared.module';
+import {ToastComponent} from './toasts/toast.component';
+import {ToastContainerComponent} from './toasts/toast-container/toast-container.component';
+import {ToastService} from './toasts/toast.service';
 
 
 @NgModule({
@@ -16,7 +19,9 @@ import {SharedModule} from '../shared/shared.module';
     HeaderComponent,
     LogoComponent,
     MainHeaderContentComponent,
-    FooterComponent
+    FooterComponent,
+    ToastComponent,
+    ToastContainerComponent
   ],
   imports: [
     CommonModule,
@@ -30,9 +35,12 @@ import {SharedModule} from '../shared/shared.module';
     NgbModule,
     HeaderComponent,
     MainHeaderContentComponent,
-    FooterComponent
+    FooterComponent,
+    ToastContainerComponent
   ],
-  providers: []
+  providers: [
+    ToastService
+  ]
 })
 export class CoreModule {
 }
