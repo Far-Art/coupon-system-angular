@@ -12,6 +12,7 @@
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
 }

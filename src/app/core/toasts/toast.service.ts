@@ -34,7 +34,7 @@ export class ToastService {
     toast.instance.options = options;
     toast.instance.viewRef = toast.hostView;
     const toastEl          = toast.location.nativeElement;
-    this.renderer.insertBefore(this.container, toastEl, this.container.firstChild, true);
+    this.renderer.insertBefore(this.container, toastEl, this.container.firstChild);
     return toast.hostView;
   }
 
