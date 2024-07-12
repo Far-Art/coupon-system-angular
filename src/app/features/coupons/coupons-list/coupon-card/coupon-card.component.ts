@@ -4,6 +4,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {CouponsService} from '../../coupons.service';
 import {Subscription} from 'rxjs';
 import {WindowSizeService} from '../../../../shared/services/window-size.service';
+import {ToastService} from '../../../../core/toasts/toast.service';
 
 
 @Component({
@@ -64,6 +65,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
       private couponsService: CouponsService,
       private windowSize: WindowSizeService,
       private renderer: Renderer2,
+      private toast: ToastService,
       @Self() private selfRef: ElementRef<HTMLElement>
   ) {}
 
@@ -109,6 +111,10 @@ export class CouponCardComponent implements OnInit, OnDestroy {
       this.cartOnRemoveAnimationTrigger = !this.isAddedToCart;
 
       if (this.isAddedToCart) {
+        this.toast.notify({
+          header: 'added to cart',
+          message: this.coupon.params.title
+        });
         this.cartOnAddAnimationTrigger = true;
         setTimeout(() => {
           this.cartOnAddAnimationTrigger = false;

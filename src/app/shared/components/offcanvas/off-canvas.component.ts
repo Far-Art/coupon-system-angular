@@ -22,6 +22,6 @@ export class OffCanvasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.hostClass = 'bg-noisy ' + this.class;
+    this.hostClass = this.class;
   }
 }

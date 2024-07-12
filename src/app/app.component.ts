@@ -10,9 +10,8 @@ import {ModalService} from './shared/components/modal/modal.service';
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild('content', {static: true}) content: ElementRef<HTMLElement>
-
   static title = 'coupon system angular';
+  @ViewChild('content', {static: true}) content: ElementRef<HTMLElement>
 
   constructor(private authService: AuthService, private modalService: ModalService, private renderer: Renderer2) {}
 

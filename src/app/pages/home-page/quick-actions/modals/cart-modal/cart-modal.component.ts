@@ -91,7 +91,7 @@ export class CartModalComponent implements OnInit, OnDestroy {
     if (this._selectedCoupons.length > 0) {
       this.isLoading = true;
       this.cartService.buyCoupons$(this._selectedCoupons, {moveToWIsh: this.isMoveToWish}).pipe(
-          delay(1500)
+          delay(1000)
       ).subscribe({
         next: () => {
           if (this.cartList.length === 0) {

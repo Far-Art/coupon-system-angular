@@ -9,6 +9,8 @@ import {MainHeaderContentComponent} from './header/main-header-content/main-head
 import {FooterComponent} from './footer/footer/footer.component';
 import {CommonModule} from '@angular/common';
 import {SharedModule} from '../shared/shared.module';
+import {ToastComponent} from './toasts/toast.component';
+import {ToastContainerComponent} from './toasts/toast-container/toast-container.component';
 import {DeviceService} from './services/device.service';
 
 
@@ -17,7 +19,9 @@ import {DeviceService} from './services/device.service';
     HeaderComponent,
     LogoComponent,
     MainHeaderContentComponent,
-    FooterComponent
+    FooterComponent,
+    ToastComponent,
+    ToastContainerComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +35,8 @@ import {DeviceService} from './services/device.service';
     NgbModule,
     HeaderComponent,
     MainHeaderContentComponent,
-    FooterComponent
+    FooterComponent,
+    ToastContainerComponent
   ],
   providers: [
     DeviceService
