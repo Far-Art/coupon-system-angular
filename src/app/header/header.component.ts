@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
-import {ScrollbarService} from '../shared/services/scrollbar.service';
+import {ScrollService} from '../shared/services/scroll.service';
 import {UserData} from '../shared/models/user-data.model';
 import {HeaderService} from './header.service';
 import {Themes, ThemeService} from '../shared/services/theme.service';
@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
       private authService: AuthService,
-      private scrollService: ScrollbarService,
+      private scrollService: ScrollService,
       private renderer: Renderer2,
       private headerService: HeaderService,
       private themeService: ThemeService
@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.theme    = this.themeService.currentTheme;
     });
 
-    this.scrollService.scrollPosition$().subscribe(s => {
+    this.scrollService.scrollPosition$(1000).subscribe(s => {
       if (s.y > 120 && s.scrollDirection === 'down') {
         this.padding = this.paddingNarrow;
       } else {

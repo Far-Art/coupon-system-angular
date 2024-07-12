@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {CouponsService} from '../../features/coupons/coupons.service';
-import {ScrollbarService} from '../../shared/services/scrollbar.service';
+import {ScrollService} from '../../shared/services/scroll.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 
 
@@ -34,7 +34,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   constructor(
       private couponsService: CouponsService,
-      private scrollbar: ScrollbarService
+      private scrollbar: ScrollService
   ) {}
 
   ngOnInit(): void {
