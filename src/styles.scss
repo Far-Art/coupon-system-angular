@@ -49,6 +49,7 @@ rgba(0, 0, 0, 0.05) 0 32px 64px;
 :root {
   scrollbar-color: $color-red-500 $color-white;
   color-scheme: light;
+  scroll-behavior: smooth;
 }
 
 [theme="dark"] {
@@ -125,42 +126,13 @@ img {
 
 .bg-main {
   background: url('./assets/images/main-bg.png') fixed;
-  background-size: 17rem;
+  background-size: 15rem;
 }
 
 .bg-noisy {
-  background-color: transparent !important;
-  backdrop-filter: blur(40px);
-  position: relative;
-
-  &::before {
-    content: "";
-    background: linear-gradient(45deg, rgba(157, 0, 0, 1) 0%, rgba(164, 9, 166, 1) 50%, rgba(0, 255, 205, 1) 100%);
-    border-radius: inherit;
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    bottom: 0;
-    left: 0;
-    opacity: 0.1;
-    z-index: -2;
-  }
-
-  &::after {
-    content: "";
-    border-radius: inherit;
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    bottom: 0;
-    left: 0;
-    background: url("/assets/images/noise-pattern.png") fixed;
-    background-size: 40px !important;
-    opacity: 0.75;
-    z-index: -1;
-  }
+  background: linear-gradient(45deg, rgba(86, 0, 157, 0.02) 0%, rgba(164, 9, 166, 0.02) 25%, rgba(0, 60, 255, 0.02) 50%, rgba(9, 166, 46, 0.02) 75%, rgba(157, 0, 0, 0.02) 100%),
+  url("/assets/images/noise-pattern.png") fixed;
+  background-size: 100%, 60px;
 }
 
 .bg-primary-light {
@@ -231,14 +203,14 @@ img {
 
 
   .bg-main {
-    background-size: 22rem;
+    background-size: 20rem;
   }
 }
 
 //  lg: 992px
 @media (min-width: 992px) {
   .bg-main {
-    background-size: 26rem;
+    background-size: 22rem;
   }
 }
 
@@ -258,7 +230,7 @@ img {
   }
 
   .bg-main {
-    background-size: 30rem;
+    background-size: 26rem;
   }
 }
 
@@ -327,9 +299,8 @@ html[theme="dark"] {
   }
 
   .bg-noisy {
-    &::after {
-      filter: sepia(100%) invert(0.95) opacity(0.87) hue-rotate(16deg) !important;
-    }
+    background: linear-gradient(45deg, rgba(86, 0, 157, 0.02) 0%, rgba(164, 9, 166, 0.02) 25%, rgba(0, 60, 255, 0.02) 50%, rgba(9, 166, 46, 0.02) 75%, rgba(157, 0, 0, 0.02) 100%),
+    url("/assets/images/dark/noise-pattern-dark.png") fixed;
   }
 
   .list-group-item {
