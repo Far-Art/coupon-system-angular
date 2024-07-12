@@ -32,8 +32,8 @@ export class AppComponent implements OnInit {
   click() {
     this.toastService.notify({
       message: 'created new toast',
-      dismiss: 'manual',
-      header: 'header'
+      header: 'header',
+      style: 'warning'
     });
   }
 }
