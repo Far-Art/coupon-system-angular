@@ -1,11 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
-// Light Palette
-$color-success: #198754;
-$color-success-light: #26d780;
-$color-success-dark: #0f5435;
-$color-secondary: #565151;
-$color-danger: #dc3545;
 
 $color-red-100: #ffe0e5;
 $color-red-200: #e39090;
@@ -28,7 +20,6 @@ $color-blue-600: rgba(25, 25, 50, 0.96);
 $color-dark-transparent: rgba(25, 25, 50, 0.4);
 $color-dark-semi-transparent: rgba(25, 25, 50, 0.85);
 
-
 $shadow-elevation-low: 0 1px 1px rgba(0, 0, 0, 0.02),
 0 2px 2px rgba(0, 0, 0, 0.02),
 0 4px 4px rgba(0, 0, 0, 0.02);
@@ -46,12 +37,6 @@ rgba(0, 0, 0, 0.05) 0 8px 16px,
 rgba(0, 0, 0, 0.05) 0 16px 32px,
 rgba(0, 0, 0, 0.05) 0 32px 64px;
 
-
-html {
-  scrollbar-color: $color-red-500 $color-white;
-  color-scheme: light;
-}
-
 body {
   overflow-x: hidden;
   overflow-y: auto;
@@ -64,7 +49,6 @@ html, body {
   height: 100vh;
   min-width: 100vw;
   width: 100vw;
-  background: #0a141f;
 }
 
 @supports (height: 100svh) {
@@ -72,16 +56,6 @@ html, body {
     height: 100svh;
     width: 100svw;
   }
-}
-
-*:disabled {
-  opacity: 0.5 !important;
-  cursor: not-allowed !important;
-}
-
-button:disabled {
-  pointer-events: visible !important;
-  opacity: 0.5 !important;
 }
 
 img {
@@ -125,23 +99,25 @@ img {
 }
 
 .bg-noisy {
+  $opacity: 0.05;
   background-color: transparent !important;
-  backdrop-filter: blur(40px);
-  position: relative;
+  //backdrop-filter: blur(40px);
+  //position: relative;
+  background: linear-gradient(45deg, rgba(157, 0, 0, $opacity) 0%, rgba(164, 9, 166, $opacity) 50%, rgba(0, 255, 205, $opacity) 100%);
+  background-size: 100vh 100vw;
 
-  &::before {
-    content: "";
-    background: linear-gradient(45deg, rgba(157,0,0,1) 0%, rgba(164,9,166,1) 50%, rgba(0,255,205,1) 100%);
-    border-radius: inherit;
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    bottom: 0;
-    left: 0;
-    opacity: 0.1;
-    z-index: -2;
-  }
+  //&::before {
+  //  content: "";
+  //  border-radius: inherit;
+  //  display: block;
+  //  position: absolute;
+  //  width: 100%;
+  //  height: 100%;
+  //  bottom: 0;
+  //  left: 0;
+  //  opacity: 0.1;
+  //  z-index: -2;
+  //}
 
   &::after {
     content: "";
@@ -152,7 +128,7 @@ img {
     height: 100%;
     bottom: 0;
     left: 0;
-    background: url("/assets/images/noise-pattern.png") fixed;
+    background: url("/assets/images/noise-pattern.png");
     background-size: 40px !important;
     opacity: 0.75;
     z-index: -1;
@@ -169,394 +145,4 @@ img {
 
 .bg-gray-transparent {
   background-color: $color-gray-transparent;
-}
-
-.pt-6 {
-  padding-top: 6rem;
-}
-
-.pt-7 {
-  padding-top: 7rem;
-}
-
-.pb-6 {
-  padding-bottom: 6rem;
-}
-
-.pb-7 {
-  padding-bottom: 7rem;
-}
-
-.pb-8 {
-  padding-bottom: 8rem;
-}
-
-.pb-9 {
-  padding-bottom: 9rem;
-}
-
-.pb-10 {
-  padding-bottom: 10rem;
-}
-
-.fs-7 {
-  font-size: 0.7rem !important;
-}
-
-//  sm: 576px
-@media (min-width: 576px) {
-  .pt-6 {
-    padding-top: calc(6rem * 1.2);
-  }
-
-  .pt-7 {
-    padding-top: calc(7rem * 1.2);
-  }
-
-}
-
-//  md: 768px
-@media (min-width: 768px) {
-  .pt-6 {
-    padding-top: calc(6rem * 1.4);
-  }
-
-  .pt-7 {
-    padding-top: calc(7rem * 1.4);
-  }
-
-
-  .bg-main {
-    background-size: 22rem;
-  }
-}
-
-//  lg: 992px
-@media (min-width: 992px) {
-  .bg-main {
-    background-size: 26rem;
-  }
-}
-
-//  xl: 1200px
-@media (min-width: 1200px) {
-
-}
-
-//  xl: 1400px
-@media (min-width: 1400px) {
-  .pt-6 {
-    padding-top: calc(6rem * 1.6);
-  }
-
-  .pt-7 {
-    padding-top: calc(7rem * 1.6);
-  }
-
-  .bg-main {
-    background-size: 30rem;
-  }
-}
-
-@media (hover: none) {
-  *:hover {
-    text-decoration: inherit !important;
-  }
-}
-
-// DARK THEME
-body[theme="dark"] {
-  html {
-    scrollbar-color: green black !important;
-    color-scheme: dark !important;
-  }
-
-  table {
-    td, th {
-      background-color: $color-blue-400 !important;
-      color: $color-blue-200;
-    }
-  }
-
-  button {
-    &.list-group-item {
-
-      &-action {
-        color: $color-blue-500 !important;
-        background-color: $color-blue-200 !important;
-      }
-
-      &-success {
-        background-color: $color-success-light !important;
-      }
-    }
-  }
-
-  input, textarea {
-    &:not(:checked) {
-      background-color: $color-blue-400;
-    }
-  }
-
-  img {
-    filter: brightness(85%) !important;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    color: $color-blue-200;
-
-    &.text-primary {
-      color: $color-red-500 !important;
-    }
-  }
-
-  p, label, .list-group-item {
-    color: $color-blue-200;
-  }
-
-  .form-control, .input-group-text, .list-group-item, .table {
-    color: $color-blue-200 !important;
-    border-color: $color-blue-600 !important;
-
-    &::placeholder {
-      color: $color-blue-200 !important;
-    }
-  }
-
-  .drop-inset-shadow {
-    box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.2) inset !important;
-  }
-
-  .bg-noisy {
-    &::after {
-      filter: sepia(100%) invert(0.95) opacity(0.87) hue-rotate(16deg) !important;
-    }
-  }
-
-  .list-group-item {
-    background-color: $color-blue-400 !important;
-  }
-
-  .nav-link {
-    border-color: transparent !important;
-  }
-
-  .form-check-input {
-    border-color: $color-blue-500 !important;
-  }
-
-  .bg {
-    &-light {
-      background-color: $color-blue-500 !important;
-    }
-
-    &-primary {
-
-    }
-  }
-
-  .text {
-    &-danger {
-      color: $color-red-600 !important;
-
-      circle {
-        stroke: $color-red-600 !important;
-      }
-    }
-
-    &-light {
-      color: $color-blue-600 !important;
-
-      circle {
-        stroke: $color-blue-600 !important;
-      }
-    }
-
-    &-secondary {
-      color: $color-blue-200 !important;
-
-      circle {
-        stroke: $color-blue-600 !important;
-      }
-    }
-
-    &-dark {
-      color: $color-blue-300 !important;
-
-      circle {
-        stroke: $color-blue-600 !important;
-      }
-    }
-
-    &-primary circle {
-      stroke: $color-red-500 !important;
-    }
-
-    &-white circle {
-      stroke: $color-white !important;
-    }
-
-    &-success circle {
-      stroke: $color-success !important;
-    }
-
-  }
-
-  .offcanvas {
-    background-color: $color-blue-400 !important;
-
-    .list-group-item-action {
-      background-color: $color-blue-400 !important;
-      color: $color-blue-200 !important;
-
-      &.active {
-        background-color: $color-red-400 !important;
-        color: $color-white !important;
-      }
-    }
-  }
-
-  .form-floating {
-    select {
-      color: $color-white !important;
-      background-color: $color-dark-transparent !important;
-      border-color: $color-blue-600 !important;
-
-      &.is-invalid {
-        border-color: $color-danger !important;
-      }
-
-      &.is-valid {
-        border-color: $color-success !important;
-      }
-
-      option {
-        background: $color-dark-semi-transparent !important;
-      }
-    }
-
-    label {
-      color: $color-blue-200 !important;
-
-      &::after {
-        background-color: $color-blue-400 !important;
-      }
-    }
-
-    .form-control {
-      color: $color-white !important;
-      background-color: $color-dark-transparent !important;
-
-      &.is-invalid {
-        border-color: $color-danger !important;
-      }
-
-      &.is-valid {
-        border-color: $color-success !important;
-      }
-
-      &::placeholder {
-        color: transparent !important;
-      }
-    }
-  }
-
-  .input-group-text {
-    color: $color-blue-200 !important;
-    background-color: $color-dark-semi-transparent !important;
-  }
-
-  .dropdown {
-    &-menu, &-item {
-      color: $color-blue-200 !important;
-      background-color: $color-blue-400 !important;
-    }
-
-    &-item {
-      &:hover {
-        color: $color-blue-200 !important;
-        background-color: $color-blue-300 !important;
-      }
-    }
-  }
-
-  .btn {
-    &-close {
-      filter: invert(1);
-    }
-
-    &-outline {
-      &-success {
-        border-color: $color-success !important;
-      }
-
-      &-primary {
-        border-color: $color-red-500 !important;
-      }
-
-      &-secondary {
-        border-color: $color-secondary !important;
-      }
-
-      &-danger {
-        border-color: $color-danger !important;
-      }
-    }
-  }
-
-  .card {
-    border-color: $color-dark-semi-transparent !important;
-    background-color: $color-blue-500 !important;
-
-    &-title {
-      color: $color-blue-200 !important;
-    }
-
-    &-header {
-      background-color: $color-blue-400 !important;
-
-      .active {
-        background-color: $color-blue-500 !important;
-        color: $color-white !important;
-      }
-    }
-  }
-
-
-  .accordion {
-    box-shadow: $shadow-elevation-high;
-  }
-
-  .accordion-header, .accordion-body {
-    > * {
-      color: $color-white-semi-transparent !important;
-    }
-  }
-
-  .accordion-header, .accordion-item {
-    background-color: $color-dark-transparent !important;
-  }
-
-  .accordion-item, .accordion-header, .accordion-body, .modal-header, .modal-footer {
-    border-color: $color-blue-600 !important;
-  }
-
-  .accordion-button {
-    &:not(.collapsed) {
-      color: $color-red-100 !important;
-    }
-
-    &::after {
-      filter: invert(1);
-    }
-  }
-
-  .bg-light-semi-transparent {
-    background-color: $color-dark-semi-transparent !important;
-  }
-
-  .bg-main {
-    background-image: url('./assets/images/dark/main-bg-dark.png');
-  }
-
 }

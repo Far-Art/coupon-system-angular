@@ -1,0 +1,23 @@
+@import "./button.function";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+$dark-colors: (
+  "primary": #3909ad,
+  "secondary": #6c757d,
+  "success": #28a745,
+  "info": #17a2b8,
+  "warning": #ffc107,
+  "danger": #dc3545,
+  "light": #f8f9fa,
+  "dark": #343a40
+);
+
+[theme="dark"] {
+  @include theme-colors($dark-colors);
+  scrollbar-color: $indigo-400 $indigo-900;
+  color-scheme: dark;
+  background: $gray-900;
+}
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
