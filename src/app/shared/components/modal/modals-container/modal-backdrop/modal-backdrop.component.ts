@@ -8,7 +8,7 @@ import {slowBlur} from '../../../../animations/slowBlur.animation';
   selector: 'cs-modal-backdrop',
   templateUrl: './modal-backdrop.component.html',
   styleUrls: ['./modal-backdrop.component.scss'],
-  animations: [slowBlur(70000)]
+  animations: [slowBlur(0, 2)]
 })
 export class ModalBackdropComponent implements OnInit, OnDestroy {
 
