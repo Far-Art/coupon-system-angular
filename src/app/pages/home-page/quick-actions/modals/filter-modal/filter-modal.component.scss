@@ -11,3 +11,18 @@
 .left-90 {
   left: 90%;
 }
+
+.accordion-item, .accordion-header {
+  background: $color-white-transparent;
+}
+
+.accordion-button {
+  background: rgba(200, 80, 90, 0.5);
+  font-weight: bold;
+  color: $color-red-700;
+
+  &.collapsed {
+    color: $color-secondary;
+    background: none;
+  }
+}

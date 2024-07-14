@@ -1,17 +1,16 @@
 <div class="accordion-header transition-duration"
-     [ngClass]="{'bg-primary-light': this.options.isChecked, 'bg-light': !this.options.isChecked}">
+     [ngClass]="{'checked': this.options.isChecked}">
   <div class="d-flex align-content-center">
     <!-- CHECKBOX -->
-    <div *ngIf="!options.noCheckbox" class="flex-shrink-1 align-self-center transition-duration"
-         [ngClass]="{'bg-primary': this.options.isChecked, 'bg-light': !this.options.isChecked}"
+    <div *ngIf="!options.noCheckbox" class="checkbox flex-shrink-1 align-self-center transition-duration"
+         [ngClass]="{'bg-primary': this.options.isChecked}"
          type="button"
          (click)="onCheck()">
       <input class="form-check-input"
-             [ngClass]="{'drop-shadow-low': !this.options.isChecked}"
+             [ngClass]="{'checked': this.options.isChecked}"
              type="checkbox"
              style="cursor: pointer"
-             [checked]="this.options.isChecked"
-             unfocus>
+             [checked]="this.options.isChecked">
     </div>
 
     <!-- TITLE WITH CHECKBOX -->
@@ -47,10 +46,9 @@
     </div>
 
     <!-- ARROW BUTTON -->
-    <button class="accordion-button bg-light collapsed"
+    <button class="accordion-button collapsed"
             type="button"
             data-bs-toggle="collapse"
-            unfocus
             aria-expanded="false"
             [attr.data-bs-target]="'#collapse' + index"
             [attr.aria-controls]="'collapse' + index">
@@ -59,7 +57,7 @@
 </div>
 
 <!-- BODY -->
-<div id="collapse{{index}}" class="accordion-collapse collapse" [attr.data-bs-parent]="'#' + parentId">
+<div id="collapse{{index}}" class="accordion-collapse drop-inset-shadow collapse" [attr.data-bs-parent]="'#' + parentId">
   <div class="accordion-body">
     <div class="row">
       <div class="col text-start text-nowrap">

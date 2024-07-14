@@ -6,6 +6,7 @@ import {DataManagerService} from '../../../../../shared/services/data-manager.se
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
 import {UserData} from '../../../../../shared/models/user-data.model';
 import {Coupon} from '../../../../../shared/models/coupon.model';
+import {ToastService} from '../../../../../core/toasts/toast.service';
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class CartService {
   constructor(
       private authService: AuthService,
       private dataManager: DataManagerService,
-      private couponsService: CouponsService
+      private couponsService: CouponsService,
+      private toast: ToastService
   ) { }
 
   private userDataBackup: Partial<UserData>;
@@ -27,7 +29,14 @@ export class CartService {
         concatMap(user => user.type !== 'guest' ? this.dataManager.putUserData(user.authData.localId, user) : of(user)),
         tap(() => this.couponsService.removeFromCart(...purchased)),
         tap(() => options?.moveToWIsh ? this.couponsService.addToWish(...purchased) : null),
-        tap(user => this.authService.updateUser({user: user, immediate: true})),
+        tap(() => this.toast.notify({
+          message: `purchased ${purchased.length} coupon${purchased.length > 1 ? 's' : ''}`,
+          style: 'success'
+        })),
+        tap(user => this.authService.updateUser({
+          user: user,
+          immediate: true
+        })),
         catchError(this.handleError)
     );
   }

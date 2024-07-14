@@ -8,6 +8,7 @@ type Direction = 'up' | 'down' | 'top' | 'bottom';
 export type Scrollbar = {
   x: number,
   y: number,
+  scrollHeight: number,
   scrollDirection: Direction
 }
 
@@ -19,14 +20,19 @@ export class ScrollbarService {
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        window.scrollTo({top: 0, left: 0, behavior: 'instant'} as any);
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'instant'
+        } as any);
       }
     });
   }
 
   private scrollPositionSubject = new BehaviorSubject<Scrollbar>({
-    x: window.scrollX,
-    y: window.scrollY,
+    x: 0,
+    y: 0,
+    scrollHeight: document.body.scrollHeight,
     scrollDirection: 'top'
   });
 
@@ -41,24 +47,28 @@ export class ScrollbarService {
 
   private listener() {
     const subject     = this.scrollPositionSubject;
+    let positionY     = 0;
     let prevPositionY = 0;
 
     function calcScrollDirection(): Direction {
-      if (window.scrollY === 0) {
+      positionY = Math.floor(window.scrollY);
+      if (positionY <= 1) {
         return 'top';
+      } else if (document.body.scrollHeight - 1 <= positionY + document.body.clientHeight) {
+        return 'bottom';
       }
-      return window.scrollY > prevPositionY ? 'down' : 'up'
+      return positionY > prevPositionY ? 'down' : 'up'
     }
 
     return function () {
-      if (window.scrollY % 5 === 0) {
-        subject.next({
-          x: window.scrollX,
-          y: window.scrollY,
-          scrollDirection: calcScrollDirection()
-        });
-        prevPositionY = window.scrollY;
-      }
+      const posY = Math.floor(window.scrollY);
+      subject.next({
+        x: Math.floor(window.scrollX),
+        y: posY,
+        scrollHeight: document.body.scrollHeight,
+        scrollDirection: calcScrollDirection()
+      });
+      prevPositionY = posY;
     }
   }
 

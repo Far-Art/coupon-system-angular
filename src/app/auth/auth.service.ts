@@ -84,11 +84,8 @@ export class AuthService {
   updateUser(params?: { user: Partial<UserData>, immediate?: boolean }): number {
     clearTimeout(this.setTimeout);
     const updated = Object.assign(this.userDataSubject.value || {}, params?.user);
-
-    setTimeout(() => {
-      this.userDataSubject.next(updated);
-      this.storeUserDataLocally();
-    });
+    this.userDataSubject.next(updated);
+    this.storeUserDataLocally();
 
     // prevent large subsequent clicks
     this.setTimeout = setTimeout(() => {
@@ -116,15 +113,15 @@ export class AuthService {
         delay(1500),
         map(response => ({authData: response} as Partial<UserData>)),
         concatMap(user => this.dataManager.fetchUserData(user.authData.localId)
-            .pipe(
-                take(1),
-                tap(userData => {
-                  this.userDataSubject.next({
-                    ...user,
-                    ...userData
-                  });
-                  this.storeUserDataLocally();
-                }))),
+                              .pipe(
+                                  take(1),
+                                  tap(userData => {
+                                    this.userDataSubject.next({
+                                      ...user,
+                                      ...userData
+                                    });
+                                    this.storeUserDataLocally();
+                                  }))),
         catchError(this.handleError)
     );
   }
@@ -138,12 +135,12 @@ export class AuthService {
           returnSecureToken: true
         }).pipe(
         concatMap(res => this.dataManager.putUserData(res.localId, this.createUserData({signup: signup}))
-            .pipe(
-                take(1),
-                tap(user => {
-                  this.storeUserDataLocally();
-                  this.userDataSubject.next(user);
-                }))),
+                             .pipe(
+                                 take(1),
+                                 tap(user => {
+                                   this.storeUserDataLocally();
+                                   this.userDataSubject.next(user);
+                                 }))),
         catchError(this.handleError)
     );
   }

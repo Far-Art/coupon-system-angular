@@ -1,6 +1,7 @@
-import {Injectable} from '@angular/core';
+import {ElementRef, Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {ModalComponent} from './modal.component';
 import {ModalButtonComponent} from './modal-button/modal-button.component';
+import {BehaviorSubject, Observable, Subject, take} from 'rxjs';
 
 
 @Injectable({
@@ -9,28 +10,103 @@ import {ModalButtonComponent} from './modal-button/modal-button.component';
 export class ModalService {
   private modalsMap: Map<string, ModalComponent>        = new Map();
   private buttonsMap: Map<string, ModalButtonComponent> = new Map();
+  private showBackdrop                                  = new BehaviorSubject(false);
+  private okToOpen: Subject<void>                       = new Subject();
+  private renderer: Renderer2;
+  private containerElement: HTMLElement;
+  private prevModal: ModalComponent;
+  private currentModal: ModalComponent;
+  private backdropConfig: boolean | 'static';
 
-  close(modalId: string): void {
-    this.getButton(modalId).close();
+  constructor(rendererFactory: RendererFactory2) {
+    this.renderer = rendererFactory.createRenderer(null, null);
+  }
+
+  backdropVisible$(): Observable<boolean> {
+    return this.showBackdrop.asObservable();
+  }
+
+  /**
+   * close current open modal
+   */
+  close(closeBackdrop = true): void {
+    if (closeBackdrop) {
+      this.showBackdrop.next(false);
+    }
+    if (this.currentModal) {
+      this.currentModal.leaveTransitionEnded$().pipe(take(1))
+          .subscribe(() => {
+            this.renderer.removeChild(this.containerElement, this.currentModal['selfRef'].nativeElement);
+            this.renderer.setStyle(this.containerElement, 'z-index', -1);
+            this.renderer.removeStyle(document.body, 'overflow-y');
+            this.currentModal = null;
+            this.okToOpen.next();
+          });
+      this.currentModal['setClose']();
+    }
+
   }
 
   open(modalId: string): void {
-    this.getButton(modalId).open();
+    if (!this.containerElement) {
+      throw new Error('No container provided, please use method registerContainer of modal.service');
+    }
+
+    const modal = this.modalsMap.get(modalId);
+
+    if (modal) {
+      if (this.currentModal) {
+        this.prevModal = this.currentModal;
+        this.close(false);
+        this.okToOpen.pipe(take(1)).subscribe(() => {
+          this.openModalFlow(modal);
+        });
+      } else {
+        this.openModalFlow(modal);
+      }
+    }
+  }
+
+  goBack() {
+    if (this.prevModal) {
+      this.close(false);
+      this.open(this.prevModal.id);
+      this.prevModal = null;
+    }
+  }
+
+  getModalTitle(modalId: string) {
+    return this.modalsMap.get(modalId)?.title;
+  }
+
+  protected onBackdropClose() {
+    if (this.backdropConfig === 'static' || this.backdropConfig === false) {
+      this.currentModal.triggerInvalidCloseAnimation();
+    } else {
+      this.close();
+    }
   }
 
   protected registerModal(modal: ModalComponent): void {
     this.modalsMap.set(modal.id, modal);
   }
 
-  protected getModal(id: string): ModalComponent {
-    return this.modalsMap.get(id);
-  }
-
   protected registerButton(modalId: string, button: ModalButtonComponent): void {
     this.buttonsMap.set(modalId, button);
   }
 
-  protected getButton(id: string): ModalButtonComponent {
-    return this.buttonsMap.get(id);
+  protected registerContainer(containerRef: ElementRef): void {
+    this.containerElement = containerRef.nativeElement;
   }
+
+  private openModalFlow(modal: ModalComponent) {
+    this.currentModal = modal;
+    modal['setOpen']();
+    this.showBackdrop.next(true);
+    this.backdropConfig = modal.backdrop;
+    this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
+    this.renderer.setStyle(this.containerElement, 'z-index', 9999);
+    this.renderer.appendChild(this.containerElement, modal['selfRef'].nativeElement);
+  }
+
 }

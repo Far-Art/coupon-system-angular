@@ -5,17 +5,18 @@
 <div class="container mt-5">
   <router-outlet></router-outlet>
   <br>
-  <button class="btn btn-danger text-nowrap" (click)="onLogout()">Logout
-    <cs-spinner class="ms-1" *ngIf="isLoading"></cs-spinner>
-  </button>
+  <cs-button [showSpinner]="isLoading"
+             (click)="onLogout()"
+             class="btn btn-danger">Logout
+  </cs-button>
 </div>
 
 <ng-template #manageCoupons>
   <div class="d-flex flex-column justify-content-center">
-    <cs-modal-button [modal-id]="'create-coupon-modal'" class="btn btn-outline-success no-outline m-1">
+    <cs-modal-button [modal-id]="'create-coupon-modal'" class="btn btn-outline-success m-1">
       Create Coupon
     </cs-modal-button>
-    <cs-modal-button [modal-id]="'manage-coupons-modal'" class="btn btn-outline-success no-outline m-1">
+    <cs-modal-button [modal-id]="'manage-coupons-modal'" class="btn btn-outline-success m-1">
       Manage Coupons
     </cs-modal-button>
   </div>
@@ -24,7 +25,7 @@
 </ng-template>
 
 <ng-template #manageUsers>
-  <cs-modal-button [modal-id]="'users-manage-modal'" class="btn btn-outline-success no-outline">
+  <cs-modal-button [modal-id]="'users-manage-modal'" class="btn btn-outline-success">
     Manage Users
   </cs-modal-button>
   <cs-users-manage-modal></cs-users-manage-modal>

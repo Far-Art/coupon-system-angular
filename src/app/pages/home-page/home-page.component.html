@@ -1,17 +1,17 @@
 <cs-main-header-content>
   <div class="text-center">
     <sc-quick-actions></sc-quick-actions>
-    <div class="d-flex flex-row justify-content-center position-absolute translate-middle-x w-100 start-50 top-100">
-      <div @offPage
+    <div class="d-flex flex-row justify-content-center position-absolute translate-middle-x w-100 start-50 top-100 pe-xl-4">
+      <div @translateInOut
            *ngIf="!isHideOnScroll"
-           class="text-primary bg-light-semi-transparent fw-medium rounded-4 p-3 pt-1 pb-1 mt-1 user-select-none">
+           class="text-primary bg-noisy drop-shadow-high fw-medium rounded-4 p-3 pt-1 pb-1 mt-1 user-select-none">
         {{ (couponsNum > 0 ? 'displaying ' + couponsNum + ' coupons' : 'none found') | titlecase }}
       </div>
     </div>
   </div>
 </cs-main-header-content>
 
-<cs-coupons-list></cs-coupons-list>
+<cs-coupons-list class="mt-4 mt-md-0 mb-4"></cs-coupons-list>
 
 <sc-wish-list-modal></sc-wish-list-modal>
 <sc-filter-modal></sc-filter-modal>

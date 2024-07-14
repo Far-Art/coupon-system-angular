@@ -1,7 +1,5 @@
 <cs-modal [id]="cartModalId" [onCloseFn]="onCloseModal">
-  <cs-modal-header>
-    <h4 class="modal-title text-primary user-select-none">{{ 'cart' | titlecase }}</h4>
-  </cs-modal-header>
+  <cs-modal-header [title]="'cart'"></cs-modal-header>
   <cs-modal-body>
     <sc-coupon-table [coupons]="cartList"
                      [options]="{selectAll: true}"
@@ -16,8 +14,7 @@
     <div class="btn-group dropup"
          [ngClass]="{'w-100': _windowWidth < _switchWidth}"
          role="group">
-      <button unfocus
-              type="button"
+      <button type="button"
               [disabled]="_selectedCoupons.length === 0"
               [ngClass]="{
                 'btn-outline-primary': _selectedCoupons.length > 0,
@@ -29,12 +26,14 @@
         Manage
       </button>
       <ul class="dropdown-menu ps-2 pe-2 drop-shadow-high user-select-none">
-        <li unfocus class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
-        <li unfocus class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
+        <li class="dropdown-item" (click)="onMove()" style="cursor: pointer">Move To Wish</li>
+        <li class="dropdown-item" (click)="onDelete()" style="cursor: pointer">Delete</li>
       </ul>
     </div>
     <cs-modal-button *ngIf="!isUserPresent"
                      class="btn btn-outline-success"
+                     aria-label="Checkout As Guest"
+                     [disabled]="_selectedCoupons.length === 0"
                      [ngClass]="{'w-100': _windowWidth < _switchWidth}"
                      [modal-id]="guestModalId">Checkout As Guest
     </cs-modal-button>
@@ -43,20 +42,16 @@
       <ng-container *ngTemplateOutlet="modalPurchaseButton"></ng-container>
     </ng-container>
 
-    <button unfocus
-            [ngClass]="{'w-100': _windowWidth < _switchWidth}"
-            class="btn btn-outline-secondary"
-            type="button"
-            data-bs-dismiss="modal">Close
-    </button>
+    <cs-modal-button class="btn btn-outline-secondary"
+                     action="close"
+                     [ngClass]="{'w-100': _windowWidth < _switchWidth}">Close
+    </cs-modal-button>
   </cs-modal-footer>
 </cs-modal>
 
 <!-- GUEST CHECKOUT MODAL -->
 <cs-modal [id]="guestModalId" backdrop="static" [onCloseFn]="onCloseModal">
-  <cs-modal-header>
-    <h4 class="modal-title text-primary user-select-none">Checkout As Guest</h4>
-  </cs-modal-header>
+  <cs-modal-header [title]="'Checkout As Guest'"></cs-modal-header>
   <cs-modal-body>
     <form class="container-sm" [formGroup]="guestForm">
       <div class="text-center fs-5 user-select-none">Please fill your email and name</div>
@@ -90,8 +85,8 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
              class="bi bi-person-bounding-box" viewBox="0 0 16 16">
             <path
-                d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/>
-            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5" />
+            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
           </svg>
       </span>
         <div class="form-floating">
@@ -125,10 +120,12 @@
   <cs-modal-footer class="justify-content-between flex-column flex-sm-row">
     <ng-container *ngTemplateOutlet="modalPurchaseButton"></ng-container>
     <cs-modal-button class="btn btn-outline-danger"
+                     aria-label="Go back to previous modal"
                      [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-0': _windowWidth >= _switchWidth}"
                      [modal-id]="cartModalId">Go Back
     </cs-modal-button>
     <cs-modal-button class="btn btn-outline-secondary"
+                     action="close"
                      [ngClass]="{'w-100': _windowWidth < _switchWidth, 'order-2': _windowWidth >= _switchWidth}">Close
     </cs-modal-button>
   </cs-modal-footer>
@@ -161,10 +158,9 @@
     <ul class="dropdown-menu dropdown-menu-end drop-shadow-high text-nowrap align-self-center">
       <li class="ps-2 pe-2">
         <div class="form-check user-select-none m-2" (click)="onMoveToWishCheckboxClick()">
-          <input class="form-check-input drop-shadow-low"
+          <input class="form-check-input"
                  style="cursor: pointer"
                  type="checkbox"
-                 unfocus
                  id="moveToWishCheckbox"
                  [checked]="isMoveToWish">
           <label class="form-check-label text-hover"

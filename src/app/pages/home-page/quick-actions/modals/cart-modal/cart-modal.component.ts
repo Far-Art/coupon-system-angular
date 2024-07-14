@@ -58,6 +58,9 @@ export class CartModalComponent implements OnInit, OnDestroy {
 
     this.cartSubscription = this.couponsService.cartIds$.subscribe(ids => {
       this.cartList = this.couponsService.getCouponsById(...ids);
+      if (this.cartList.length === 0) {
+        this.modalService.close();
+      }
     });
 
     this.userSubscription = this.cartService.isUserPresent$().subscribe(isPresent => this.isUserPresent = isPresent);
@@ -88,16 +91,17 @@ export class CartModalComponent implements OnInit, OnDestroy {
     if (this._selectedCoupons.length > 0) {
       this.isLoading = true;
       this.cartService.buyCoupons$(this._selectedCoupons, {moveToWIsh: this.isMoveToWish}).pipe(
-          delay(1500)
+          delay(1000)
       ).subscribe({
         next: () => {
           if (this.cartList.length === 0) {
-            this.modalService.close(this.guestModalId);
+            this.modalService.close();
           } else if (!this.isUserPresent) {
             this.modalService.open(this.cartModalId);
           }
           this.isLoading = false;
-        }, error: (err: Error) => {
+        },
+        error: (err: Error) => {
           this.isLoading    = false;
           this.errorMessage = err.message;
         }
@@ -113,6 +117,12 @@ export class CartModalComponent implements OnInit, OnDestroy {
     this.errorMessage = null;
   }
 
+  ngOnDestroy(): void {
+    this.cartSubscription.unsubscribe();
+    this.windowSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
+  }
+
   private updatePrice() {
     this.totalPrice = this._selectedCoupons.length > 0 ? this._selectedCoupons.map(c => c.params.price).reduceRight((acc, val) => acc + val) : 0;
   }
@@ -122,12 +132,6 @@ export class CartModalComponent implements OnInit, OnDestroy {
       email: new FormControl<string>(null, [Validators.required, Validators.email]),
       name: new FormControl<string>(null, [Validators.required, Validators.minLength(3)])
     })
-  }
-
-  ngOnDestroy(): void {
-    this.cartSubscription.unsubscribe();
-    this.windowSubscription.unsubscribe();
-    this.userSubscription.unsubscribe();
   }
 
 }

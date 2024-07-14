@@ -1,5 +1,5 @@
-<nav class="navbar fixed-top bg-light-semi-transparent p-4 position-fixed min-vw-100 {{padding}}">
-  <div class="d-flex flex-row justify-content-between w-100 pe-xl-4">
+<header class="navbar bg-noisy drop-shadow-low fixed-top p-4 position-fixed min-vw-100 {{padding}} ">
+  <div class="d-flex flex-row justify-content-between w-100  pe-xl-4">
     <sc-logo [showTitle]="isShowLogoTitle"></sc-logo>
 
     <ng-container #headerContentContainer>
@@ -7,7 +7,7 @@
     </ng-container>
 
     <sc-offcanvas [title]="('hello ' + userName) | titlecase">
-      <div class="list-group list-group-flush">
+      <div class="list-group list-group-flush w-100">
         <a routerLink='/home'
            routerLinkActive="active"
            [routerLinkActiveOptions]="{exact: true}"
@@ -37,7 +37,7 @@
         </a>
 
         <a
-            class="d-flex flex-column text-center justify-content-center list-group-item list-group-item-action pt-3 pb-3 position-absolute bottom-0 end-0">
+            class="d-flex flex-column w-100 text-center justify-content-center list-group-item pt-3 pb-3 position-absolute bottom-0 end-0">
           <div class="mb-2">Theme</div>
           <div class="btn-group w-100 mb-5" role="group" aria-label="theme select buttons">
             <input type="radio" class="btn-check" name="theme-select" id="light-theme" autocomplete="off"
@@ -61,4 +61,4 @@
       </div>
     </sc-offcanvas>
   </div>
-</nav>
+</header>

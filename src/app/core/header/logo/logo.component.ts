@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {LogoService} from './logo.service';
-import {WindowSizeService} from '../../shared/services/window-size.service';
+import {WindowSizeService} from '../../../shared/services/window-size.service';
 
 
 @Component({

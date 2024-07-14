@@ -1,0 +1,17 @@
+<div tabindex="1" class="card drop-shadow-high user-select-none position-relative" style="pointer-events: auto"
+     [ngClass]="{
+    'bg-warning-subtle': options.style === 'warning',
+    'bg-danger-subtle': options.style === 'danger',
+    'bg-success-subtle': options.style === 'success'
+    }">
+  <div *ngIf="options.header" class="card-header m-0 bg-danger"
+       [ngClass]="{
+    'text-white': options.style,
+    'bg-warning': options.style === 'warning',
+    'bg-danger': options.style === 'danger',
+    'bg-success': options.style === 'success'
+    }">
+    <h6 class="display-6 m-0" style="font-size: 1rem; font-weight: 500;">{{ options.header | titlecase }}</h6>
+  </div>
+  <p class="ps-3 pe-3 p-2 m-0 text-dark">{{ options.message | titlecase }}</p>
+</div>

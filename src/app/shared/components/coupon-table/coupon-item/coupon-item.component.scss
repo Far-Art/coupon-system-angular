@@ -1,3 +1,4 @@
+@import "src/styles";
 
 img {
   width: 50%;
@@ -14,4 +15,34 @@ img {
 span {
   left: 1rem;
   top: calc(100% - 1.15rem);
+}
+
+div.checkbox {
+  &.checked {
+    &:focus-within {
+      background: $color-red-700 !important;
+    }
+  }
+}
+
+.accordion-button {
+  background-color: $color-white-transparent !important;
+  border-left: 1px solid $color-white-transparent;
+}
+
+.accordion-header {
+
+  &.checked {
+    background-color: $color-red-300 !important;
+
+    * {
+      color: $color-white !important;
+    }
+  }
+}
+
+.form-check-input {
+  &.checked {
+    border-color: transparent !important;
+  }
 }
