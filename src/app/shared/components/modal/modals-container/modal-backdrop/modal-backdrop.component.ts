@@ -1,14 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ModalService} from '../../modal.service';
 import {Subscription} from 'rxjs';
-import {slowBlur} from '../../../../animations/slowBlur.animation';
 
 
 @Component({
   selector: 'cs-modal-backdrop',
   templateUrl: './modal-backdrop.component.html',
-  styleUrls: ['./modal-backdrop.component.scss'],
-  animations: [slowBlur(0, 2)]
+  styleUrls: ['./modal-backdrop.component.scss']
 })
 export class ModalBackdropComponent implements OnInit, OnDestroy {
 

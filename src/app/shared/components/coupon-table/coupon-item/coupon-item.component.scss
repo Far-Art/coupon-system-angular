@@ -20,7 +20,7 @@ span {
 div.checkbox {
   &.checked {
     &:focus-within {
-      background: $color-red-700 !important;
+      //background: $color-red-700 !important;
     }
   }
 }
@@ -33,10 +33,10 @@ div.checkbox {
 .accordion-header {
 
   &.checked {
-    background-color: $color-red-300 !important;
+    //background-color: $color-red-300 !important;
 
     * {
-      color: $color-white !important;
+      //color: $color-white !important;
     }
   }
 }

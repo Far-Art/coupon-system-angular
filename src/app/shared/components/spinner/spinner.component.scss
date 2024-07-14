@@ -1,39 +1,3 @@
-@import "bootstrap/scss/bootstrap";
-@import "../../../../themes/dark.theme";
-@import "src/styles";
-
-.text-primary circle {
-  stroke: $primary;
-}
-
-.text-secondary circle {
-  stroke: $secondary;
-}
-
-.text-light circle {
-  stroke: $light;
-}
-
-.text-white circle {
-  stroke: $color-white;
-}
-
-.text-success circle {
-  stroke: $success;
-}
-
-.text-danger circle {
-  stroke: $danger;
-}
-
-.text-info circle {
-  stroke: $info;
-}
-
-.text-dark circle {
-  stroke: $dark;
-}
-
 svg {
   width: 1.2em;
   transform-origin: center;
@@ -42,7 +6,7 @@ svg {
 
 circle {
   fill: none;
-  stroke: $color-white;
+  stroke: currentColor;
   stroke-width: 7;
   stroke-dasharray: 0, 250;
   stroke-dashoffset: 0;

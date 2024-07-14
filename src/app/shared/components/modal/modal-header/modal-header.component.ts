@@ -9,7 +9,7 @@ import {ModalComponent} from '../modal.component';
 })
 export class ModalHeaderComponent implements OnInit, OnChanges {
 
-  @HostBinding('class') clazz: string = 'modal-header justify-content-between';
+  @HostBinding('class') clazz: string = 'modal-header justify-content-between z-3';
 
   @Input() title: string;
 

@@ -1,5 +1,3 @@
-@import "src/styles";
-
 .btn {
 
   svg {
@@ -9,7 +7,7 @@
   &:hover, &:focus-visible {
     svg {
       scale: 1.5;
-      color: $color-red-500;
+      color: currentColor;
     }
   }
 }
