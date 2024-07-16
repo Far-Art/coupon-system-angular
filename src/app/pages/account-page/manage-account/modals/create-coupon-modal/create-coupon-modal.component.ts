@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../../../../shared/services/id-generator.service';
 import {AuthService} from '../../../../../auth/auth.service';
-import {Subscription} from 'rxjs';
+import {filter, Subscription} from 'rxjs';
 import {UserData} from '../../../../../shared/models/user-data.model';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
 import {FormErrorParams} from '../../../../../shared/components/inputs/abstract-form-input.component';
@@ -44,7 +44,7 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.authService.user$.subscribe(user => {
+    this.subscription = this.authService.user$.pipe(filter(user => !!user.authData)).subscribe(user => {
       this.user = user as UserData;
       this.form = this.initForm();
     })

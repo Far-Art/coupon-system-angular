@@ -45,18 +45,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         next: () => {
           this.isLoading = false;
           this.router.navigate(['/']);
-        }, error: (error: Error) => {
+        },
+        error: (error: Error) => {
           this.isLoading    = false;
           this.errorMessage = error.message;
-        }, complete: () => this.isLoading = false
+        },
+        complete: () => this.isLoading = false
       });
     }
-  }
-
-  onReset() {
-    this.initForm();
-    this.errorMessage              = null;
-    this.authService.loginFormData = this.form.value as LoginData;
   }
 
   private initForm(): void {
@@ -102,10 +98,12 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: () => {
         this.isLoading = false;
         this.router.navigate(['/']);
-      }, error: (error: Error) => {
+      },
+      error: (error: Error) => {
         this.isLoading    = false;
         this.errorMessage = error.message;
-      }, complete: () => this.isLoading = false
+      },
+      complete: () => this.isLoading = false
     });
   }
 

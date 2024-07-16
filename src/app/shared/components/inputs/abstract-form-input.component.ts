@@ -1,5 +1,5 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, ViewChild} from '@angular/core';
-import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {Subscription} from 'rxjs';
 
@@ -10,8 +10,7 @@ export interface FormErrorParams<T> {
 }
 
 @Component({
-  templateUrl: './abstract-form-input.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './abstract-form-input.component.html'
 })
 export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
 
@@ -21,11 +20,15 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   @Input() placeholder: string = 'input';
 
-  @Input() type: 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' = 'text';
+  @Input() type: 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' | 'search' = 'text';
 
   @Input() options: T[] = [];
 
   @Input() errors: FormErrorParams<T> | FormErrorParams<T>[];
+
+  @HostBinding('style.width') width = '100%';
+
+
 
   value: T;
   _type: string;
@@ -50,11 +53,11 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   onTouched: any = () => {};
 
   constructor(
-      protected idGenerator: IdGeneratorService,
-      protected changeDetection: ChangeDetectorRef,
-      protected elRef: ElementRef<HTMLElement>,
-      protected renderer: Renderer2,
-      @Optional() protected rootForm: FormGroupDirective
+      private idGenerator: IdGeneratorService,
+      private changeDetection: ChangeDetectorRef,
+      private elRef: ElementRef<HTMLElement>,
+      @Optional() private rootForm: FormGroupDirective,
+      @Optional() private formGroup: FormGroupName
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +65,12 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
     this.form            = this.rootForm.form;
     this.nodeName        = this.elRef.nativeElement.nodeName;
     this.formControlName = this.elRef.nativeElement.getAttribute('formcontrolname');
-    this.control         = this.form?.get(this.formControlName) || this.form;
+    this.control         = this.form?.get(this.formGroup ? `${this.formGroup.name}` : this.formControlName);
+
+    if (this.formGroup && this.control) {
+      this.control = this.control.get(this.formControlName);
+    }
+
     this.setDayOfWeek();
     if (this.control) {
       this.handleValueChanges();
@@ -95,7 +103,6 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   }
 
   ngOnChanges(): void {
-    this.ngOnInit();
     // this.handleErrors();
   }
 
@@ -156,6 +163,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
       case 'currency':
         this._type = 'number';
         break;
+      case 'search':
       case 'image':
         this._type = 'text';
         break;
@@ -169,11 +177,8 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   }
 
   ngAfterViewInit(): void {
-    console.log('view')
-    this.hasContent = this.content?.nativeElement.classList.contains('has-content');
-    if (this.hasContent) {
-      this.changeDetection.detectChanges();
-    }
+    this.hasContent = this.content.nativeElement.classList.contains('has-content');
+    this.changeDetection.detectChanges();
   }
 
 }

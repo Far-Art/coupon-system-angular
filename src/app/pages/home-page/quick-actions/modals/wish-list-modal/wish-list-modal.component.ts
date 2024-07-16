@@ -3,6 +3,7 @@ import {Subscription, take} from 'rxjs';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
 import {WindowSizeService} from '../../../../../shared/services/window-size.service';
 import {Coupon} from '../../../../../shared/models/coupon.model';
+import {ModalService} from '../../../../../shared/components/modal/modal.service';
 
 
 @Component({
@@ -29,15 +30,21 @@ export class WishListModalComponent implements OnInit, OnDestroy {
 
   constructor(
       private couponsService: CouponsService,
-      private windowSize: WindowSizeService
+      private windowSize: WindowSizeService,
+      private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
     this.windowSubscription = this.windowSize.windowSize$
-        .subscribe(size => this._windowWidth = size.width)
+                                  .subscribe(size => this._windowWidth = size.width)
 
     this.wishSubscription = this.couponsService.wishIds$
-        .subscribe(ids => this.wishList = this.couponsService.getCouponsById(...ids));
+                                .subscribe(ids => {
+                                  this.wishList = this.couponsService.getCouponsById(...ids);
+                                  if (this.wishList.length === 0) {
+                                    this.modalService.close();
+                                  }
+                                });
   }
 
   onCouponsSelected(coupons: Coupon[]): void {

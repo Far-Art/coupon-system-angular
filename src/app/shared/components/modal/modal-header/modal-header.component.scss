@@ -1,0 +1,15 @@
+@import "src/styles";
+
+.btn {
+
+  svg {
+    transition: all ease-out 80ms;
+  }
+
+  &:hover, &:focus-visible {
+    svg {
+      scale: 1.5;
+      color: $color-red-500;
+    }
+  }
+}

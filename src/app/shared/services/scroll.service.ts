@@ -8,19 +8,14 @@ type Direction = 'up' | 'down' | 'top' | 'bottom';
 export type Scrollbar = {
   x: number,
   y: number,
+  scrollHeight: number,
   scrollDirection: Direction
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class ScrollService {
-
-  private scrollPositionSubject = new BehaviorSubject<Scrollbar>({
-    x: window.scrollX,
-    y: window.scrollY,
-    scrollDirection: 'top'
-  });
+export class ScrollbarService {
 
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
@@ -34,35 +29,46 @@ export class ScrollService {
     });
   }
 
-  scrollPosition$(offset: number = 0) {
-    window.addEventListener('scroll', this.listener(offset));
+  private scrollPositionSubject = new BehaviorSubject<Scrollbar>({
+    x: 0,
+    y: 0,
+    scrollHeight: document.body.scrollHeight,
+    scrollDirection: 'top'
+  });
+
+  scrollPosition$() {
+    window.addEventListener('scroll', this.listener());
     return this.scrollPositionSubject.asObservable();
   }
 
-  private listener(offset: number) {
+  unsubscribeScroll() {
+    window.removeEventListener('scroll', this.listener());
+  }
+
+  private listener() {
     const subject     = this.scrollPositionSubject;
+    let positionY     = 0;
     let prevPositionY = 0;
 
     function calcScrollDirection(): Direction {
-      if (window.scrollY === 0) {
+      positionY = Math.floor(window.scrollY);
+      if (positionY <= 1) {
         return 'top';
-      } else if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+      } else if (document.body.scrollHeight - 1 <= positionY + document.body.clientHeight) {
         return 'bottom';
       }
-      return window.scrollY > prevPositionY ? 'down' : 'up'
+      return positionY > prevPositionY ? 'down' : 'up'
     }
 
     return function () {
-      if (window.scrollY % 5 === 0) {
-        if ((window.scrollY > prevPositionY + offset) || (window.scrollY < prevPositionY - offset)) {
-          subject.next({
-            x: Math.floor(window.scrollX),
-            y: Math.floor(window.scrollY),
-            scrollDirection: calcScrollDirection()
-          });
-        }
-        prevPositionY = Math.floor(window.scrollY);
-      }
+      const posY = Math.floor(window.scrollY);
+      subject.next({
+        x: Math.floor(window.scrollX),
+        y: posY,
+        scrollHeight: document.body.scrollHeight,
+        scrollDirection: calcScrollDirection()
+      });
+      prevPositionY = posY;
     }
   }
 

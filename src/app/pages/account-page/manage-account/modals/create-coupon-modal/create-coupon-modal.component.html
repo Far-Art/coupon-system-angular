@@ -1,9 +1,7 @@
 <cs-modal size="lg" backdrop="static" id="create-coupon-modal">
-  <cs-modal-header>
-    <h4 class="text-primary user-select-none">Create Coupon</h4>
-  </cs-modal-header>
+  <cs-modal-header [title]="'Create Coupon'"></cs-modal-header>
   <cs-modal-body>
-    <form *ngIf="form" [formGroup]="form">
+    <form class="d-flex flex-column align-items-center" *ngIf="form" [formGroup]="form">
       <img class="w-25 rounded-3 drop-shadow-high" src="{{form.controls.image.value}}" alt="coupon image">
       <cs-form-input type="image" placeholder="image" formControlName="image"></cs-form-input>
 
@@ -34,7 +32,7 @@
     </form>
   </cs-modal-body>
   <cs-modal-footer>
-    <cs-modal-button class="btn btn-outline-secondary">Close</cs-modal-button>
-    <cs-modal-button [disabled]="form.invalid" class="btn btn-outline-secondary" (click)="onSubmit()">Save</cs-modal-button>
+    <cs-modal-button action="close" class="btn btn-outline-secondary">Close</cs-modal-button>
+    <cs-modal-button action="close" [disabled]="form.invalid" class="btn btn-outline-success" (click)="onSubmit()">Save</cs-modal-button>
   </cs-modal-footer>
 </cs-modal>

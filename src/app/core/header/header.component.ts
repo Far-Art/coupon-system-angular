@@ -1,10 +1,10 @@
 import {Component, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {AuthService} from '../auth/auth.service';
-import {ScrollService} from '../shared/services/scroll.service';
-import {UserData} from '../shared/models/user-data.model';
+import {AuthService} from '../../auth/auth.service';
+import {ScrollbarService} from '../../shared/services/scrollbar.service';
+import {UserData} from '../../shared/models/user-data.model';
 import {HeaderService} from './header.service';
-import {Themes, ThemeService} from '../shared/services/theme.service';
+import {Themes, ThemeService} from '../../shared/services/theme.service';
 
 
 @Component({
@@ -16,25 +16,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @Input('showLogoTitle') isShowLogoTitle: boolean = false;
 
-  @ViewChild('headerContentContainer', {static: true, read: ViewContainerRef}) headerContent: ViewContainerRef;
-
-  private parentNode: Node;
-  private contentNode: Node;
+  @ViewChild('headerContentContainer', {
+    static: true,
+    read: ViewContainerRef
+  }) headerContent: ViewContainerRef;
 
   userName: string;
   user: Partial<UserData>;
   padding: string;
-
   theme: Themes;
 
-  private paddingNarrow = 'pt-1 pb-1';
+  private parentNode: Node;
+  private contentNode: Node;
+  private paddingNarrow = 'pt-2 pb-2';
   private paddingWide   = 'pt-4 pb-4';
+  private prevDirection: string;
 
   private authSub: Subscription;
 
   constructor(
       private authService: AuthService,
-      private scrollService: ScrollService,
+      private scrollService: ScrollbarService,
       private renderer: Renderer2,
       private headerService: HeaderService,
       private themeService: ThemeService
@@ -50,11 +52,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.theme    = this.themeService.currentTheme;
     });
 
-    this.scrollService.scrollPosition$(1000).subscribe(s => {
-      if (s.y > 120 && s.scrollDirection === 'down') {
-        this.padding = this.paddingNarrow;
-      } else {
-        this.padding = this.paddingWide;
+    this.scrollService.scrollPosition$().subscribe(s => {
+      if (s.y > 120 && this.prevDirection !== s.scrollDirection) {
+        this.prevDirection = s.scrollDirection;
+        if (s.scrollDirection === 'down' || s.scrollDirection === 'bottom') {
+          this.padding = this.paddingNarrow;
+        } else {
+          this.padding = this.paddingWide;
+        }
       }
     });
 

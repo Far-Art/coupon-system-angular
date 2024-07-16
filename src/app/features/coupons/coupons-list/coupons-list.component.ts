@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CouponsService} from '../coupons.service';
 import {Coupon} from '../../../shared/models/coupon.model';
 import {Subscription} from 'rxjs';
@@ -11,8 +11,8 @@ import {Subscription} from 'rxjs';
 })
 export class CouponsListComponent implements OnInit, OnDestroy {
 
+  @Input() class: string;
   coupons: Coupon[] = [];
-
   private subscription: Subscription;
 
   constructor(private couponService: CouponsService) {}
@@ -24,4 +24,5 @@ export class CouponsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
 }

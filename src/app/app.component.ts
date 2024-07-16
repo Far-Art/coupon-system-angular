@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {AuthService} from './auth/auth.service';
+import {ModalService} from './shared/components/modal/modal.service';
 
 
 @Component({
@@ -10,10 +11,18 @@ import {AuthService} from './auth/auth.service';
 export class AppComponent implements OnInit {
 
   static title = 'coupon system angular';
+  @ViewChild('content', {static: true}) content: ElementRef<HTMLElement>
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private modalService: ModalService, private renderer: Renderer2) {}
 
   ngOnInit(): void {
     this.authService.autoLogin();
+    this.modalService.backdropVisible$().subscribe(isVisible => {
+      if (isVisible) {
+        this.renderer.setAttribute(this.content.nativeElement, 'inert', '');
+      } else {
+        this.renderer.removeAttribute(this.content.nativeElement, 'inert');
+      }
+    });
   }
 }

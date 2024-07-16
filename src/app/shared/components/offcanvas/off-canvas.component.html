@@ -1,12 +1,12 @@
 <ng-template #content let-offcanvas>
   <div class="offcanvas-header user-select-none">
     <h4 class="offcanvas-title">{{ title }}</h4>
-    <button unfocus type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
   </div>
   <hr>
-  <div class="offcanvas-body user-select-none" (click)="offcanvas.dismiss()">
+  <nav class="offcanvas-body user-select-none ps-0 pe-0" (click)="offcanvas.dismiss()">
     <ng-content></ng-content>
-  </div>
+  </nav>
 </ng-template>
 
 <div class="offcanvas-btn user-select-none"
