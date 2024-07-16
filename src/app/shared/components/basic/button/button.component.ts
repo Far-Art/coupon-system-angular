@@ -12,6 +12,7 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input('disabled') disabled: boolean         = false;
   @Input() type: 'submit' | 'button' | 'reset' = 'button';
   @Input() showSpinner                         = false;
+  @Input() placeholder: string;
 
   @HostBinding('class') protected hostClass: string;
   @HostBinding('role') protected role: string                        = 'button';

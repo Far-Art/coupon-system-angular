@@ -22,3 +22,24 @@ export function textAnimation(timing: number): AnimationTriggerMetadata {
     transition('false <=> true', animate(`${timing}ms ease-in-out`))
   ]);
 }
+
+export function contentAnimation(timing: number): AnimationTriggerMetadata {
+  return trigger('contentAnimation', [
+    transition(':enter', [
+      style({
+        height: 0
+      }),
+      animate(`${timing}ms linear`, style({
+        height: '*'
+      }))
+    ]),
+    transition(':leave', [
+      style({
+        height: '*'
+      }),
+      animate(`${timing}ms linear`, style({
+        height: 0
+      }))
+    ])
+  ]);
+}
