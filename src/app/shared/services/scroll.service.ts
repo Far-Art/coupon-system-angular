@@ -15,7 +15,7 @@ export type Scrollbar = {
 @Injectable({
   providedIn: 'root'
 })
-export class ScrollbarService {
+export class ScrollService {
 
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
