@@ -28,6 +28,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {ButtonComponent} from './components/basic/button/button.component';
 import {AccordionComponent} from './components/accordion/accordion.component';
 import {AccordionItemComponent} from './components/accordion/accordion-item/accordion-item.component';
+import { CheckboxComponent } from './components/inputs/checkbox/checkbox.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import {AccordionItemComponent} from './components/accordion/accordion-item/acco
     ModalsContainerComponent,
     ButtonComponent,
     AccordionComponent,
-    AccordionItemComponent
+    AccordionItemComponent,
+    CheckboxComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -78,7 +80,8 @@ import {AccordionItemComponent} from './components/accordion/accordion-item/acco
     ModalsContainerComponent,
     ButtonComponent,
     AccordionComponent,
-    AccordionItemComponent
+    AccordionItemComponent,
+    CheckboxComponent
   ],
   imports: [
     CommonModule,

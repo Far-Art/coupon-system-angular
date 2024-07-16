@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ContentChildren, QueryList} from '@angular/core';
+import {AfterContentInit, Component, ContentChildren, Input, QueryList} from '@angular/core';
 import {AccordionItemComponent} from './accordion-item/accordion-item.component';
 
 
@@ -7,9 +7,11 @@ import {AccordionItemComponent} from './accordion-item/accordion-item.component'
   templateUrl: './accordion.component.html',
   styleUrls: ['./accordion.component.scss']
 })
-export class AccordionComponent implements AfterViewInit {
+export class AccordionComponent implements AfterContentInit {
 
   @ContentChildren(AccordionItemComponent) items: QueryList<AccordionItemComponent>;
+
+  @Input() disabled = false;
 
   constructor() {}
 
@@ -17,8 +19,13 @@ export class AccordionComponent implements AfterViewInit {
     this.items.filter(item => item.index !== index).forEach(item => item.close());
   }
 
-  ngAfterViewInit(): void {
+  ngAfterContentInit(): void {
+    const topRadius    = 'border-top-left-radius: var(--accordion-border-radius); border-top-right-radius: var(--accordion-border-radius);';
+    const bottomRadius = 'border-bottom-left-radius: var(--accordion-border-radius); border-bottom-right-radius: var(--accordion-border-radius);';
     this.items.forEach((item, i) => item.index = i);
+    this.items.first.style = this.items.first.style ? this.items.first.style + topRadius : topRadius;
+    this.items.last.style  = this.items.last.style ? this.items.last.style + bottomRadius : bottomRadius;
+    this.items.last.style += 'border-bottom-width: var(--accordion-border-width);';
   }
 
 }

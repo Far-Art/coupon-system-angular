@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {textAnimation, arrowAnimation, contentAnimation} from './accordion.animation';
+import {Component, HostBinding, Input} from '@angular/core';
+import {arrowAnimation, contentAnimation, textAnimation} from './accordion.animation';
 import {AccordionComponent} from '../accordion.component';
 
 
@@ -7,15 +7,18 @@ import {AccordionComponent} from '../accordion.component';
   selector: 'cs-accordion-item',
   templateUrl: './accordion-item.component.html',
   styleUrls: ['./accordion-item.component.scss'],
-  animations: [arrowAnimation(200), textAnimation(200), contentAnimation(200)]
+  animations: [arrowAnimation(150), textAnimation(200), contentAnimation(250)]
 })
 export class AccordionItemComponent {
 
   index: number;
   isShown: boolean           = false;
   disableAnimations: boolean = false;
+  @HostBinding('style') style: string;
 
   @Input() text: string;
+
+  @Input() disabled = false;
 
   constructor(private parent: AccordionComponent) {}
 
@@ -35,4 +38,5 @@ export class AccordionItemComponent {
   close() {
     this.isShown = false;
   }
+
 }

@@ -28,8 +28,6 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   @HostBinding('style.width') width = '100%';
 
-
-
   value: T;
   _type: string;
 
@@ -49,16 +47,17 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   private subscription: Subscription;
 
-  onChange: any  = () => {};
-  onTouched: any = () => {};
-
   constructor(
-      private idGenerator: IdGeneratorService,
-      private changeDetection: ChangeDetectorRef,
-      private elRef: ElementRef<HTMLElement>,
-      @Optional() private rootForm: FormGroupDirective,
-      @Optional() private formGroup: FormGroupName
+      protected idGenerator: IdGeneratorService,
+      protected changeDetection: ChangeDetectorRef,
+      protected elRef: ElementRef<HTMLElement>,
+      @Optional() protected rootForm: FormGroupDirective,
+      @Optional() protected formGroup: FormGroupName
   ) {}
+
+  onChange: any  = () => {};
+
+  onTouched: any = () => {};
 
   ngOnInit(): void {
     this.setType();
@@ -77,29 +76,6 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
       this.subscription = this.control.valueChanges.subscribe(() => this.handleValueChanges());
     }
 
-  }
-
-  private setDayOfWeek() {
-    if (this.control) {
-      if (this.type === 'date') {
-        const date: Date | string = this.control.value;
-        if (typeof date === 'string') {
-          this.dayOfWeek = new Date(date).getDate();
-        } else {
-          this.dayOfWeek = date.getDate();
-        }
-      }
-    } else {
-      this.dayOfWeek = new Date().getDate();
-    }
-  }
-
-  private handleValueChanges() {
-    this.isValid    = this.control.valid;
-    this.isTouched  = this.control.touched;
-    this.isPristine = this.control.pristine;
-    this.isRequired = this.control.hasValidator(Validators.required);
-    this.setDayOfWeek();
   }
 
   ngOnChanges(): void {
@@ -141,6 +117,38 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
     this.onTouched = fn;
   }
 
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
+  }
+
+  ngAfterViewInit(): void {
+    this.hasContent = this.content.nativeElement.classList.contains('has-content');
+    this.changeDetection.detectChanges();
+  }
+
+  private setDayOfWeek() {
+    if (this.control) {
+      if (this.type === 'date') {
+        const date: Date | string = this.control.value;
+        if (typeof date === 'string') {
+          this.dayOfWeek = new Date(date).getDate();
+        } else {
+          this.dayOfWeek = date.getDate();
+        }
+      }
+    } else {
+      this.dayOfWeek = new Date().getDate();
+    }
+  }
+
+  private handleValueChanges() {
+    this.isValid    = this.control.valid;
+    this.isTouched  = this.control.touched;
+    this.isPristine = this.control.pristine;
+    this.isRequired = this.control.hasValidator(Validators.required);
+    this.setDayOfWeek();
+  }
+
   private handleErrors() {
     this.errorMessages.length = 0;
     if (this.errors && this.isTouched) {
@@ -170,15 +178,6 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
       default:
         this._type = this.type;
     }
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
-  }
-
-  ngAfterViewInit(): void {
-    this.hasContent = this.content.nativeElement.classList.contains('has-content');
-    this.changeDetection.detectChanges();
   }
 
 }

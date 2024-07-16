@@ -1,13 +1,18 @@
-<button class="accordion-header" (click)="click()"
+<button class="fa-accordion-header" (click)="click()"
+        [disabled]="disabled"
         [attr.aria-expanded]="isShown"
         [attr.aria-controls]="text + ' collapse'">
-  <span [@textAnimation]="isShown" [@.disabled]="disableAnimations" class="accordion-header-text">{{ text | titlecase }}</span>
-  <div [@arrowAnimation]="isShown" [@.disabled]="disableAnimations" class="position-relative" style="height: 16px; width: 16px;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill position-absolute top-0 start-0" viewBox="0 0 16 16">
+  <span class="fa-accordion-header-text">{{ text | titlecase }}</span>
+  <div [@arrowAnimation]="isShown" [@.disabled]="disableAnimations" class="fa-accordion-header-button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
+         class="bi bi-caret-right-fill"
+         viewBox="0 0 16 16">
       <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
     </svg>
   </div>
 </button>
-<div *ngIf="isShown" @contentAnimation [@.disabled]="disableAnimations" class="accordion-content">
-  <ng-content></ng-content>
+<div *ngIf="isShown" @contentAnimation [@.disabled]="disableAnimations" class="fa-accordion-content">
+  <div>
+    <ng-content></ng-content>
+  </div>
 </div>

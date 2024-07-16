@@ -1,20 +1,22 @@
 :host {
-  // TODO take from theme variable
-  --accordion-border-color: #707070;
-  --accordion-header-text-color: #ffffff;
-  --accordion-header-bg: #b04b4b;
+  --accordion-header-text-color: black;
+  --accordion-header-bg: #f3f3f3;
   --accordion-content-text-color: black;
-  --accordion-content-bg: #c0b4b4;
+  --accordion-content-bg: #ffffff;
 
   display: block;
   width: 100%;
-  border: 1px solid var(--accordion-border-color);
+  margin: 0;
+  border: var(--accordion-border-width) solid var(--accordion-border-color);
+  border-bottom-width: 0;
+  overflow: hidden;
 
-  .accordion-header {
+  .fa-accordion-header {
     color: var(--accordion-header-text-color);
     background-color: var(--accordion-header-bg);
     width: 100%;
-    height: 45px;
+    height: 50px;
+    margin: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,15 +29,27 @@
       text-overflow: ellipsis;
       overflow: hidden;
     }
+
+    &-button {
+      position: relative;
+      margin: 0.5rem;
+      height: 20px;
+      aspect-ratio: 1;
+    }
   }
 
-  .accordion-content {
+  .fa-accordion-content {
     overflow: hidden;
     color: var(--accordion-content-text-color);
     background-color: var(--accordion-content-bg);
     width: 100%;
     display: block;
-    padding: 1rem;
     transition: height 200ms linear;
+    padding: 0;
+
+    > div {
+      padding: 0.4rem 1rem;
+
+    }
   }
 }

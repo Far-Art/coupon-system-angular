@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  height: 40px;
+  user-select: none;
+  align-items: center;
+  margin: 0.2rem 0;
+
+  &:hover {
+    //background: ;
+    > input {
+      box-shadow: 0 0 0 15px black;
+    }
+  }
+
+  > input {
+    width: 18px;
+    height: 18px;
+    margin: 0.5rem;
+    padding: 0.02rem;
+  }
+
+  > label {
+    padding: 0 0.5rem;
+    width: calc(100% - 18px);
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

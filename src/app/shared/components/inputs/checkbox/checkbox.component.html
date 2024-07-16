@@ -1,0 +1,9 @@
+<input type="checkbox"
+       [attr.aria-label]=" placeholder + ' input'"
+       [id]="id"
+       [value]="value"
+       (input)="handleInput($event)"
+       (blur)="onBlur()">
+<label class="form-check-label text-hover"
+       for="{{id}}">{{ placeholder | titlecase }}
+</label>

@@ -4,12 +4,10 @@ import {animate, AnimationTriggerMetadata, state, style, transition, trigger} fr
 export function arrowAnimation(timing: number): AnimationTriggerMetadata {
   return trigger('arrowAnimation', [
     state('false', style({
-      transform: `rotate(45deg)`,
-      opacity: 0.85
+      transform: `rotate(45deg)`
     })),
     state('true', style({
-      transform: `rotate(90deg)`,
-      opacity: 1
+      transform: `rotate(90deg)`
     })),
     transition('false <=> true', animate(`${timing}ms ease-in-out`))
   ]);
@@ -29,7 +27,7 @@ export function contentAnimation(timing: number): AnimationTriggerMetadata {
       style({
         height: 0
       }),
-      animate(`${timing}ms linear`, style({
+      animate(`${timing}ms ease`, style({
         height: '*'
       }))
     ]),
@@ -37,7 +35,7 @@ export function contentAnimation(timing: number): AnimationTriggerMetadata {
       style({
         height: '*'
       }),
-      animate(`${timing}ms linear`, style({
+      animate(`${timing}ms ease`, style({
         height: 0
       }))
     ])
