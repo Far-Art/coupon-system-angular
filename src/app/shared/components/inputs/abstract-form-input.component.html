@@ -53,7 +53,6 @@
           [attr.aria-label]="placeholder + ' select' | titlecase"
           [id]="id"
           [value]="value"
-          (blur)="onBlur()"
           (input)="handleInput($event)">
     <option [selected]="value == null" hidden class="text-secondary pt-1 pb-1" value="">Choose {{ placeholder | titlecase }}...</option>
     <option class="pt-1 pb-1" *ngFor="let option of options" [selected]="value === option" [value]="option">{{ '' + option  | titlecase }}</option>
@@ -69,7 +68,6 @@
          [id]="id"
          [value]="value"
          (input)="handleInput($event)"
-         (blur)="onBlur()"
          [placeholder]="placeholder | titlecase">
   <textarea *ngIf="type === 'textarea'"
             class="form-control"
@@ -78,9 +76,8 @@
             [id]="id"
             [value]="value"
             (input)="handleInput($event)"
-            (blur)="onBlur()"
             [placeholder]="placeholder | titlecase">
-    </textarea>
+  </textarea>
 </ng-template>
 
 <ng-template #email_icon>

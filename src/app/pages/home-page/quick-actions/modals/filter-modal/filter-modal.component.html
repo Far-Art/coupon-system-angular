@@ -3,9 +3,11 @@
   <cs-modal-body>
     <form class="border-0" [formGroup]="form">
       <cs-accordion>
-        <cs-accordion-item [text]="'categories'" [disabled]="form.controls.freeText.value.value">
-          <cs-checkbox [placeholder]="'categories'"></cs-checkbox>
-          <cs-checkbox [placeholder]="'categories 2'"></cs-checkbox>
+        <cs-accordion-item formArrayName="categories" [text]="'categories'" [disabled]="form.controls.freeText.value.value">
+          <div [formGroupName]="i"
+               *ngFor="let c of form.controls.categories.controls; let i = index">
+            <cs-checkbox [placeholder]="'categories'" formControlName="isChecked"></cs-checkbox>
+          </div>
         </cs-accordion-item>
         <cs-accordion-item [text]="'companies'" [disabled]="form.controls.freeText.value.value">
           <div> בלוג של ארתור הכי טוב דיב דיב דיב דיב</div>

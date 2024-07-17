@@ -32,15 +32,14 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   _type: string;
 
   form: FormGroup;
+  control: AbstractControl<any, any>;
+
   isTouched: boolean;
   isPristine: boolean;
   isValid: boolean;
   isRequired: boolean;
-  hasContent: boolean = true;
-
+  hasContent: boolean;
   nodeName: string;
-  formControlName: string;
-  control: AbstractControl<any, any>;
   dayOfWeek: number;
 
   errorMessages: string[] = [];
@@ -49,31 +48,27 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   constructor(
       protected idGenerator: IdGeneratorService,
-      protected changeDetection: ChangeDetectorRef,
       protected elRef: ElementRef<HTMLElement>,
+      protected changeDetector: ChangeDetectorRef,
       @Optional() protected rootForm: FormGroupDirective,
       @Optional() protected formGroup: FormGroupName
   ) {}
 
-  onChange: any  = () => {};
+  onChange: any = () => {};
 
   onTouched: any = () => {};
 
   ngOnInit(): void {
     this.setType();
-    this.form            = this.rootForm.form;
-    this.nodeName        = this.elRef.nativeElement.nodeName;
-    this.formControlName = this.elRef.nativeElement.getAttribute('formcontrolname');
-    this.control         = this.form?.get(this.formGroup ? `${this.formGroup.name}` : this.formControlName);
 
-    if (this.formGroup && this.control) {
-      this.control = this.control.get(this.formControlName);
-    }
+    this.nodeName = this.elRef.nativeElement.nodeName;
 
-    this.setDayOfWeek();
-    if (this.control) {
-      this.handleValueChanges();
-      this.subscription = this.control.valueChanges.subscribe(() => this.handleValueChanges());
+    if (this.formGroup) {
+      this.form    = this.rootForm.form;
+      this.control = this.form.get(this.formGroup.path);
+      this.setDayOfWeekIfDate();
+      this.handleFormStatusChanges();
+      this.subscription = this.control.valueChanges.subscribe(() => this.handleFormStatusChanges());
     }
 
   }
@@ -99,6 +94,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
     const input = event.target as HTMLInputElement;
     this.value  = input.value as T;
 
+    console.log(this.value) // TODO remove after test
     this.handleErrors();
 
     this.onChange(this.value);
@@ -122,11 +118,11 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.hasContent = this.content.nativeElement.classList.contains('has-content');
-    this.changeDetection.detectChanges();
+    this.hasContent = this.content?.nativeElement.classList.contains('has-content');
+    this.changeDetector.detectChanges();
   }
 
-  private setDayOfWeek() {
+  private setDayOfWeekIfDate() {
     if (this.control) {
       if (this.type === 'date') {
         const date: Date | string = this.control.value;
@@ -141,12 +137,13 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
     }
   }
 
-  private handleValueChanges() {
+  private handleFormStatusChanges() {
+    console.log(this.value) // TODO remove after test, console log prints twice with a delay
     this.isValid    = this.control.valid;
     this.isTouched  = this.control.touched;
     this.isPristine = this.control.pristine;
     this.isRequired = this.control.hasValidator(Validators.required);
-    this.setDayOfWeek();
+    this.setDayOfWeekIfDate();
   }
 
   private handleErrors() {
