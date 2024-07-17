@@ -1,4 +1,5 @@
-import { HeaderContentDirective } from './header-content.directive';
+import {HeaderContentDirective} from './header-content.directive';
+
 
 describe('HeaderContentDirective', () => {
   it('should create an instance', () => {

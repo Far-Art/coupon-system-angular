@@ -2,6 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, In
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../services/id-generator.service';
 import {Subscription} from 'rxjs';
+import {HostComponent} from '../basic/host/host.component';
 
 
 export interface FormErrorParams<T> {
@@ -14,10 +15,11 @@ export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 
 @Component({
   templateUrl: './abstract-form-input.component.html'
 })
-export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
+export class AbstractFormInputComponent<T> extends HostComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
 
-  @ViewChild('content', {static: true}) content: ElementRef<HTMLDivElement>;
-  @HostBinding('style.width') width = '100%';
+  @ViewChild('content', {static: true}) protected content: ElementRef<HTMLDivElement>;
+  @HostBinding('style.width') protected width = '100%';
+  @HostBinding('attr.disabled') protected isDisabled = false;
 
   @Input() id: string = this.idGenerator.generate();
   @Input() placeholder: string = 'input';
@@ -51,7 +53,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
       protected changeDetector: ChangeDetectorRef,
       @Optional() protected rootForm: FormGroupDirective,
       @Optional() protected formGroup: FormGroupName
-  ) {}
+  ) {super(elRef);}
 
   onChange: any = () => {};
 
@@ -74,6 +76,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   }
 
   ngOnChanges(): void {
+    this.isDisabled = this.disabled;
     // this.handleErrors();
   }
 
@@ -182,5 +185,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
     }
 
   }
+
+  onHostClick(event: Event): void {}
 
 }

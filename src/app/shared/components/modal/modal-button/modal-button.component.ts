@@ -46,8 +46,8 @@ export class ModalButtonComponent extends ButtonComponent {
     this.service.open(this.modalId);
   }
 
-  protected override onClick(event: Event) {
-    super.onClick(event);
+  protected override onHostClick(event: Event) {
+    super.onHostClick(event);
     if (this.action === 'close') {
       this.close();
     } else if (this.action === 'open') {

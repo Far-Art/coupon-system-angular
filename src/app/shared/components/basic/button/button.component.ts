@@ -47,7 +47,7 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         if (this.formGroup) {
           this.initialFormValue = this.formGroup.value;
           const el              = this.getParentElement(this.selfRef.nativeElement);
-          this.unsubscribe      = this.renderer.listen(el, 'keydown.enter', event => this.onClick(event));
+          this.unsubscribe      = this.renderer.listen(el, 'keydown.enter', event => this.onHostClick(event));
         }
       }
     });
@@ -55,7 +55,7 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   @HostListener('keydown.enter', ['$event'])
   @HostListener('keydown.space', ['$event'])
-  protected selfClick(event: Event): void {
+  protected onKeydownClick(event: Event): void {
     event.preventDefault();
     if (!this.disabled) {
       this.selfRef.nativeElement.click();
@@ -63,7 +63,7 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   @HostListener('click', ['$event'])
-  protected onClick(event: Event): void {
+  protected onHostClick(event: Event): void {
     event?.stopPropagation();
     if (!this.disabled) {
       if (this.formGroup) {

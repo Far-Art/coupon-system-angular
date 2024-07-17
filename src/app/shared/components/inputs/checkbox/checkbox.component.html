@@ -5,8 +5,8 @@
          [attr.aria-label]=" placeholder + ' input'"
          [id]="id"
          [checked]="checked || value"
-         [disabled]="disabled"
-         tabindex="0"
+         [disabled]="isDisabled"
+         tabindex="{{disabled ? -1 : 0}}"
          (input)="handleInput($event)">
   <svg *ngIf="checked || value" viewBox="0 0 24 24" stroke="white" stroke-width="3" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="m9 12, L12 15, 12, 15, 12, 15, V15, L18 8" stroke-linecap="round" stroke-linejoin="round" />
