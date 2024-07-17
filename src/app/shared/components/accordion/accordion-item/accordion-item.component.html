@@ -1,7 +1,7 @@
 <button class="fa-accordion-header" (click)="click()"
         [disabled]="disabled"
         [attr.aria-expanded]="isShown"
-        [attr.aria-controls]="text + ' collapse'">
+        [attr.aria-controls]="text + '-collapse'">
   <span class="fa-accordion-header-text">{{ text | titlecase }}</span>
   <div [@arrowAnimation]="isShown" [@.disabled]="disableAnimations" class="fa-accordion-header-button">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
@@ -11,7 +11,7 @@
     </svg>
   </div>
 </button>
-<div *ngIf="isShown" @contentAnimation [@.disabled]="disableAnimations" class="fa-accordion-content">
+<div id="{{text}}-collapse" *ngIf="isShown" @contentAnimation [@.disabled]="disableAnimations" class="fa-accordion-content">
   <div>
     <ng-content></ng-content>
   </div>

@@ -9,31 +9,28 @@ export interface FormErrorParams<T> {
   message: string
 }
 
+export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' | 'search';
+
 @Component({
   templateUrl: './abstract-form-input.component.html'
 })
 export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
 
   @ViewChild('content', {static: true}) content: ElementRef<HTMLDivElement>;
-
-  @Input() id: string = this.idGenerator.generate();
-
-  @Input() placeholder: string = 'input';
-
-  @Input() type: 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' | 'search' = 'text';
-
-  @Input() options: T[] = [];
-
-  @Input() errors: FormErrorParams<T> | FormErrorParams<T>[];
-
   @HostBinding('style.width') width = '100%';
 
-  value: T;
-  _type: string;
+  @Input() id: string = this.idGenerator.generate();
+  @Input() placeholder: string = 'input';
+  @Input() type: InputTypes = 'text';
+  @Input() options: T[] = [];
+  @Input() disabled: boolean;
+  @Input() errors: FormErrorParams<T> | FormErrorParams<T>[];
+  @Input() min: number;
+  @Input() max: number;
 
+  value: T;
   form: FormGroup;
   control: AbstractControl<any, any>;
-
   isTouched: boolean;
   isPristine: boolean;
   isValid: boolean;
@@ -41,9 +38,11 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   hasContent: boolean;
   nodeName: string;
   dayOfWeek: number;
-
   errorMessages: string[] = [];
 
+  protected _type: Exclude<InputTypes, 'currency' | 'search' | 'image' | 'textarea'>;
+  protected _min: number;
+  protected _max: number;
   private subscription: Subscription;
 
   constructor(
@@ -60,11 +59,12 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   ngOnInit(): void {
     this.setType();
+    this.setMinMax();
 
     this.nodeName = this.elRef.nativeElement.nodeName;
 
     if (this.formGroup) {
-      this.form    = this.rootForm.form;
+      this.form = this.rootForm.form;
       this.control = this.form.get(this.formGroup.path);
       this.setDayOfWeekIfDate();
       this.handleFormStatusChanges();
@@ -92,9 +92,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.value  = input.value as T;
-
-    console.log(this.value) // TODO remove after test
+    this.value = this.type === 'checkbox' ? input.checked as T : input.value as T;
     this.handleErrors();
 
     this.onChange(this.value);
@@ -138,9 +136,8 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   }
 
   private handleFormStatusChanges() {
-    console.log(this.value) // TODO remove after test, console log prints twice with a delay
-    this.isValid    = this.control.valid;
-    this.isTouched  = this.control.touched;
+    this.isValid = this.control.valid;
+    this.isTouched = this.control.touched;
     this.isPristine = this.control.pristine;
     this.isRequired = this.control.hasValidator(Validators.required);
     this.setDayOfWeekIfDate();
@@ -169,12 +166,21 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
         this._type = 'number';
         break;
       case 'search':
+      case 'textarea':
       case 'image':
         this._type = 'text';
         break;
       default:
         this._type = this.type;
     }
+  }
+
+  private setMinMax() {
+    if (this.min != null || this.max != null) {
+      this._min = this.min;
+      this._max = this.max;
+    }
+
   }
 
 }

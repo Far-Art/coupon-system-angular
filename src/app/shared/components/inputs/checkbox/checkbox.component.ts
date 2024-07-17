@@ -15,6 +15,12 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
     }
   ]
 })
-export class CheckboxComponent extends AbstractFormInputComponent<CheckboxComponent> {
+export class CheckboxComponent extends AbstractFormInputComponent<boolean> {
+
+  override ngOnInit() {
+    this.type = 'checkbox';
+    this._type = this.type;
+    super.ngOnInit();
+  }
 
 }

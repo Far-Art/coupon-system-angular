@@ -60,13 +60,26 @@
 </ng-template>
 
 <ng-template #inputType>
-  <input *ngIf="type !== 'textarea'"
+  <input *ngIf="type !== 'textarea' && _type !== 'text'"
          [type]="_type"
          class="form-control"
          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
          [attr.aria-label]=" placeholder + ' input'"
          [id]="id"
          [value]="value"
+         [attr.min]="_min"
+         [attr.max]="_max"
+         (input)="handleInput($event)"
+         [placeholder]="placeholder | titlecase">
+  <input *ngIf="type !== 'textarea' && _type === 'text'"
+         [type]="_type"
+         class="form-control"
+         [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
+         [attr.aria-label]=" placeholder + ' input'"
+         [id]="id"
+         [value]="value"
+         [attr.minlength]="_min"
+         [attr.maxlength]="_max"
          (input)="handleInput($event)"
          [placeholder]="placeholder | titlecase">
   <textarea *ngIf="type === 'textarea'"
@@ -74,6 +87,8 @@
             [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
             [attr.aria-label]="placeholder + ' input'"
             [id]="id"
+            [attr.minlength]="_min"
+            [attr.maxlength]="_max"
             [value]="value"
             (input)="handleInput($event)"
             [placeholder]="placeholder | titlecase">

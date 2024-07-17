@@ -1,8 +1,7 @@
 <input type="checkbox"
        [attr.aria-label]=" placeholder + ' input'"
        [id]="id"
-       [value]="value"
+       [checked]="value"
+       [disabled]="disabled"
        (input)="handleInput($event)">
-<label class="form-check-label text-hover"
-       for="{{id}}">{{ placeholder | titlecase }}
-</label>
+<label for="{{id}}">{{ placeholder | titlecase }}</label>

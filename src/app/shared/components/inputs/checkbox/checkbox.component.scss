@@ -3,7 +3,7 @@
   height: 40px;
   user-select: none;
   align-items: center;
-  margin: 0.2rem 0;
+  margin: 0;
 
   &:hover {
     //background: ;
@@ -15,11 +15,14 @@
   > input {
     width: 18px;
     height: 18px;
-    margin: 0.5rem;
-    padding: 0.02rem;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+    border-radius: 0.3rem;
   }
 
   > label {
+    height: 100%;
+    display: flex;
+    align-items: center;
     padding: 0 0.5rem;
     width: calc(100% - 18px);
     text-wrap: nowrap;
