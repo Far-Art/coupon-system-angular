@@ -16,9 +16,10 @@
 
   .bg-noisy {
     background: linear-gradient(45deg, rgba(86, 0, 157, 0.05) 0%, rgba(164, 9, 166, 0.05) 25%, rgba(0, 60, 255, 0.05) 50%, rgba(9, 142, 166, 0.05) 75%, rgba(157, 0, 0, 0.05) 100%),
-    url("/assets/images/noise-pattern.png") fixed,
+    linear-gradient(0deg, rgba(20, 15, 50, 0.5), rgba(20, 15, 50, 0.5)),
+    url("/assets/images/noise-pattern.png"),
     linear-gradient(0deg, rgb(20, 15, 50), rgb(20, 15, 50));
-    background-size: 100vw 100vh, 30px, 100%;
+    background-size: 100vw 100vh, 100%, 30px, 100%;
   }
 
   .bg-main {
