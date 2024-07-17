@@ -1,18 +1,12 @@
 <div class="drop-shadow-low m-0 rounded-3">
-  <div *ngIf="!options?.noCheckbox && coupons?.length > 0" class="form-check transition-duration user-select-none"
-       type="button">
-    <input #indeterminateCheckBox
-           id="indeterminateCheckBox{{randomId}}"
-           (click)="onIndeterminateClick()"
-           class="form-check-input"
-           type="checkbox"
-           style="cursor: pointer"
-           [checked]="_indeterminateCheckBox">
-    <label class="h-6 opacity-75 form-check-label text-nowrap ps-4 text-end fw-bold"
-           for="indeterminateCheckBox{{randomId}}">
-      {{ (_indeterminateCheckBox ? 'unselect all' : 'select all') | titlecase }}
-    </label>
-  </div>
+
+  <cs-checkbox *ngIf="!options?.noCheckbox && coupons?.length > 0"
+               [checked]="_isChecked"
+               (click)="onIndeterminateClick()"
+               [indeterminate]="_isIndeterminate"
+               [placeholder]="_isChecked ? 'unselect all' : 'select all'"
+               class="fw-semibold">
+  </cs-checkbox>
 
   <div class="accordion mt-3" id="accordionTable{{randomId}}">
     <ng-container *ngIf="coupons?.length > 0">

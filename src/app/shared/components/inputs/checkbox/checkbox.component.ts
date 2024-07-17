@@ -1,4 +1,4 @@
-import {Component, forwardRef} from '@angular/core';
+import {Component, ElementRef, forwardRef, Input, ViewChild} from '@angular/core';
 import {AbstractFormInputComponent} from '../abstract-form-input.component';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -17,10 +17,26 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class CheckboxComponent extends AbstractFormInputComponent<boolean> {
 
+  @Input() indeterminate = false;
+  @Input() checked: boolean;
+  @ViewChild('checkbox', {static: true}) checkbox: ElementRef<HTMLInputElement>;
+
   override ngOnInit() {
     this.type = 'checkbox';
     this._type = this.type;
     super.ngOnInit();
+  }
+
+  override ngOnChanges() {
+    super.ngOnChanges();
+    if (this.checked != null) {
+      this.value = this.checked;
+    }
+    this.setIndeterminate();
+  }
+
+  private setIndeterminate() {
+    this.checkbox.nativeElement.indeterminate = this.indeterminate;
   }
 
 }

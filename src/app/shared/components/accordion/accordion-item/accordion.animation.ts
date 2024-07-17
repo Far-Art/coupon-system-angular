@@ -4,7 +4,7 @@ import {animate, AnimationTriggerMetadata, state, style, transition, trigger} fr
 export function arrowAnimation(timing: number): AnimationTriggerMetadata {
   return trigger('arrowAnimation', [
     state('false', style({
-      transform: `rotate(45deg)`
+      transform: `rotate(0deg)`
     })),
     state('true', style({
       transform: `rotate(90deg)`
