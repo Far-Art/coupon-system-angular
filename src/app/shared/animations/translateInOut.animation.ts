@@ -10,11 +10,13 @@ export function translateInOut(timing: number, options?: { translateY?: number }
       style({
         opacity: 0,
         transform: `translateY(-${options?.translateY || translateYDefaultValue}%)`
-      }), animate(`${timing}ms ease-out`, style({
+      }),
+      animate(`${timing}ms ease-out`, style({
         opacity: 1,
         transform: `translateY(${0}%)`
       }))
-    ]), transition(':leave', [
+    ]),
+    transition(':leave', [
       style({
         opacity: 1,
         transform: `translateY(${0}%)`

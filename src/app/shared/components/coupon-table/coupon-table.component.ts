@@ -26,7 +26,8 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
     noCheckbox?: boolean
   } = {}
 
-  _indeterminateCheckBox = false
+  _isChecked = false
+  _isIndeterminate = false
 
   readonly selectedCoupons = new Set<string>();
 
@@ -37,7 +38,7 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.randomId = this.idGenerator.generate();
     if (this.options?.selectAll) {
-      this._indeterminateCheckBox = true;
+      this._isChecked = true;
       this.selectAll();
       this.updateIndeterminateStatus();
     }
@@ -80,23 +81,23 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
     this.updateIndeterminateStatus();
   }
 
+  ngOnDestroy(): void {
+    if (this.couponsSub) this.couponsSub.unsubscribe();
+  }
+
   private updateIndeterminateStatus() {
-    const button = this.indeterminateCheckBoxRef?.nativeElement;
+    const total = this.coupons.length;
+    const selected = this.selectedCoupons.size;
 
-    if (button) {
-      const total    = this.coupons.length;
-      const selected = this.selectedCoupons.size;
-
-      if (selected === total) {
-        this._indeterminateCheckBox = true;
-        button.indeterminate        = false;
-      } else if (selected > 0) {
-        this._indeterminateCheckBox = false;
-        button.indeterminate        = true;
-      } else {
-        this._indeterminateCheckBox = false;
-        button.indeterminate        = false;
-      }
+    if (selected === total) {
+      this._isChecked = true;
+      this._isIndeterminate = false;
+    } else if (selected > 0) {
+      this._isChecked = false;
+      this._isIndeterminate = true;
+    } else {
+      this._isChecked = false;
+      this._isIndeterminate = false;
     }
   }
 
@@ -112,10 +113,6 @@ export class CouponTableComponent implements OnInit, OnChanges, OnDestroy {
 
   private emitSelected() {
     this.selectedCouponsEmitter.emit(this.couponsService.getCouponsById(...this.selectedCoupons));
-  }
-
-  ngOnDestroy(): void {
-    if (this.couponsSub) this.couponsSub.unsubscribe();
   }
 
 }

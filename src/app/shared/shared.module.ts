@@ -26,6 +26,9 @@ import {ModalBackdropComponent} from './components/modal/modals-container/modal-
 import {ModalsContainerComponent} from './components/modal/modals-container/modals-container.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ButtonComponent} from './components/basic/button/button.component';
+import {AccordionComponent} from './components/accordion/accordion.component';
+import {AccordionItemComponent} from './components/accordion/accordion-item/accordion-item.component';
+import { CheckboxComponent } from './components/inputs/checkbox/checkbox.component';
 
 
 @NgModule({
@@ -44,13 +47,16 @@ import {ButtonComponent} from './components/basic/button/button.component';
     ConfirmNavigationComponent,
     SpinnerComponent,
     ModalButtonComponent,
+    AbstractFormInputComponent,
     FormInputComponent,
     FormSelectComponent,
-    AbstractFormInputComponent,
     CheckNgContentDirective,
     ModalBackdropComponent,
     ModalsContainerComponent,
-    ButtonComponent
+    ButtonComponent,
+    AccordionComponent,
+    AccordionItemComponent,
+    CheckboxComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -72,7 +78,10 @@ import {ButtonComponent} from './components/basic/button/button.component';
     AbstractFormInputComponent,
     ModalBackdropComponent,
     ModalsContainerComponent,
-    ButtonComponent
+    ButtonComponent,
+    AccordionComponent,
+    AccordionItemComponent,
+    CheckboxComponent
   ],
   imports: [
     CommonModule,

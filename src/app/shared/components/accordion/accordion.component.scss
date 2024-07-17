@@ -1,0 +1,9 @@
+:host {
+  --accordion-border-radius: 0.3rem;
+  --accordion-border-color: #e5e5e5;
+  --accordion-border-width: 1px;
+  display: block;
+  padding: 0;
+  transition: height 200ms linear;
+  border-radius: var(--accordion-border-radius);
+}

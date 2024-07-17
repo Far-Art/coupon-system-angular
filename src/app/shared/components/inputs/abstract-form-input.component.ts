@@ -9,97 +9,68 @@ export interface FormErrorParams<T> {
   message: string
 }
 
+export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' | 'search';
+
 @Component({
   templateUrl: './abstract-form-input.component.html'
 })
 export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
 
   @ViewChild('content', {static: true}) content: ElementRef<HTMLDivElement>;
-
-  @Input() id: string = this.idGenerator.generate();
-
-  @Input() placeholder: string = 'input';
-
-  @Input() type: 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' | 'search' = 'text';
-
-  @Input() options: T[] = [];
-
-  @Input() errors: FormErrorParams<T> | FormErrorParams<T>[];
-
   @HostBinding('style.width') width = '100%';
 
-
+  @Input() id: string = this.idGenerator.generate();
+  @Input() placeholder: string = 'input';
+  @Input() type: InputTypes = 'text';
+  @Input() options: T[] = [];
+  @Input() disabled: boolean;
+  @Input() errors: FormErrorParams<T> | FormErrorParams<T>[];
+  @Input() min: number;
+  @Input() max: number;
 
   value: T;
-  _type: string;
-
   form: FormGroup;
+  control: AbstractControl<any, any>;
   isTouched: boolean;
   isPristine: boolean;
   isValid: boolean;
   isRequired: boolean;
-  hasContent: boolean = true;
-
+  hasContent: boolean;
   nodeName: string;
-  formControlName: string;
-  control: AbstractControl<any, any>;
   dayOfWeek: number;
-
   errorMessages: string[] = [];
 
+  protected _type: Exclude<InputTypes, 'currency' | 'search' | 'image' | 'textarea'>;
+  protected _min: number;
+  protected _max: number;
   private subscription: Subscription;
 
-  onChange: any  = () => {};
-  onTouched: any = () => {};
-
   constructor(
-      private idGenerator: IdGeneratorService,
-      private changeDetection: ChangeDetectorRef,
-      private elRef: ElementRef<HTMLElement>,
-      @Optional() private rootForm: FormGroupDirective,
-      @Optional() private formGroup: FormGroupName
+      protected idGenerator: IdGeneratorService,
+      protected elRef: ElementRef<HTMLElement>,
+      protected changeDetector: ChangeDetectorRef,
+      @Optional() protected rootForm: FormGroupDirective,
+      @Optional() protected formGroup: FormGroupName
   ) {}
+
+  onChange: any = () => {};
+
+  onTouched: any = () => {};
 
   ngOnInit(): void {
     this.setType();
-    this.form            = this.rootForm.form;
-    this.nodeName        = this.elRef.nativeElement.nodeName;
-    this.formControlName = this.elRef.nativeElement.getAttribute('formcontrolname');
-    this.control         = this.form?.get(this.formGroup ? `${this.formGroup.name}` : this.formControlName);
+    this.setMinMax();
 
-    if (this.formGroup && this.control) {
-      this.control = this.control.get(this.formControlName);
+    this.nodeName = this.elRef.nativeElement.nodeName;
+
+    if (this.formGroup) {
+      this.form = this.rootForm.form;
+      this.control = this.form.get(this.formGroup.path);
+      this.setDayOfWeekIfDate();
+      this.handleFormStatusChanges();
+      this.subscription = this.control.valueChanges.subscribe(() => this.handleFormStatusChanges());
     }
 
-    this.setDayOfWeek();
-    if (this.control) {
-      this.handleValueChanges();
-      this.subscription = this.control.valueChanges.subscribe(() => this.handleValueChanges());
-    }
-
-  }
-
-  private setDayOfWeek() {
-    if (this.control) {
-      if (this.type === 'date') {
-        const date: Date | string = this.control.value;
-        if (typeof date === 'string') {
-          this.dayOfWeek = new Date(date).getDate();
-        } else {
-          this.dayOfWeek = date.getDate();
-        }
-      }
-    } else {
-      this.dayOfWeek = new Date().getDate();
-    }
-  }
-
-  private handleValueChanges() {
-    this.isValid    = this.control.valid;
-    this.isTouched  = this.control.touched;
-    this.isPristine = this.control.pristine;
-    this.isRequired = this.control.hasValidator(Validators.required);
-    this.setDayOfWeek();
   }
 
   ngOnChanges(): void {
@@ -121,8 +92,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.value  = input.value as T;
-
+    this.value = this.type === 'checkbox' ? input.checked as T : input.value as T;
     this.handleErrors();
 
     this.onChange(this.value);
@@ -139,6 +109,38 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) this.subscription.unsubscribe();
+  }
+
+  ngAfterViewInit(): void {
+    this.hasContent = this.content?.nativeElement.classList.contains('has-content');
+    this.changeDetector.detectChanges();
+  }
+
+  private setDayOfWeekIfDate() {
+    if (this.control) {
+      if (this.type === 'date') {
+        const date: Date | string = this.control.value;
+        if (typeof date === 'string') {
+          this.dayOfWeek = new Date(date).getDate();
+        } else {
+          this.dayOfWeek = date.getDate();
+        }
+      }
+    } else {
+      this.dayOfWeek = new Date().getDate();
+    }
+  }
+
+  private handleFormStatusChanges() {
+    this.isValid = this.control.valid;
+    this.isTouched = this.control.touched;
+    this.isPristine = this.control.pristine;
+    this.isRequired = this.control.hasValidator(Validators.required);
+    this.setDayOfWeekIfDate();
   }
 
   private handleErrors() {
@@ -164,6 +166,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
         this._type = 'number';
         break;
       case 'search':
+      case 'textarea':
       case 'image':
         this._type = 'text';
         break;
@@ -172,13 +175,12 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
-  }
+  private setMinMax() {
+    if (this.min != null || this.max != null) {
+      this._min = this.min;
+      this._max = this.max;
+    }
 
-  ngAfterViewInit(): void {
-    this.hasContent = this.content.nativeElement.classList.contains('has-content');
-    this.changeDetection.detectChanges();
   }
 
 }

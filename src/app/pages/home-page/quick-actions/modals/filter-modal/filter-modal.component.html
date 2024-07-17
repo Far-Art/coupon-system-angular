@@ -2,185 +2,52 @@
   <cs-modal-header [title]="'filters'"></cs-modal-header>
   <cs-modal-body>
     <form class="border-0" [formGroup]="form">
-      <div class="accordion drop-shadow-low rounded-2" id="accordion">
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed"
-                    type="button"
-                    [disabled]="form.controls.freeText.value.value"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#categoriesCollapse"
-                    aria-expanded="true"
-                    aria-controls="categoriesCollapse">
-              Categories
-            </button>
-          </h2>
-          <div id="categoriesCollapse" class="drop-inset-shadow accordion-collapse collapse" data-bs-parent="#accordion">
-            <div class="accordion-body" formArrayName="categories">
-              <div class="form-check user-select-none m-2"
-                   [formGroupName]="i"
-                   *ngFor="let c of form.controls.categories.controls; let i = index">
-                <input class="form-check-input"
-                       type="checkbox"
-                       id="{{c.value.value}}"
-                       formControlName="isChecked">
-                <label class="form-check-label text-hover"
-                       [ngClass]="{'text-primary': c.value.isChecked}"
-                       for="{{c.value.value}}">{{ c.value.value | titlecase }}
-                </label>
-              </div>
-              <hr>
-              <a class="text-hover" (click)="onCategoryReset()">reset</a>
-            </div>
+      <cs-accordion>
+        <cs-accordion-item formArrayName="categories" [text]="'categories'" [disabled]="form.controls.freeText.value.value">
+          <div [formGroupName]="i"
+               *ngFor="let c of form.controls.categories.controls; let i = index">
+            <cs-checkbox [placeholder]="c.value.value" formControlName="isChecked"></cs-checkbox>
           </div>
-        </div>
+        </cs-accordion-item>
 
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed"
-                    type="button"
-                    [disabled]="form.controls.freeText.value.value"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#companiesCollapse"
-                    aria-expanded="false"
-                    aria-controls="companiesCollapse">
-              Companies
-            </button>
-          </h2>
-          <div id="companiesCollapse" class="drop-inset-shadow accordion-collapse collapse" data-bs-parent="#accordion">
-            <div class="accordion-body" formArrayName="companyNames">
-              <div class="form-check user-select-none m-2"
-                   [formGroupName]="i"
-                   *ngFor="let c of form.controls.companyNames.controls; let i = index">
-                <input class="form-check-input"
-                       type="checkbox"
-                       id="{{c.value.value + i}}"
-                       formControlName="isChecked">
-                <label class="form-check-label text-hover"
-                       [ngClass]="{'text-primary': c.value.isChecked}"
-                       for="{{c.value.value + i}}">{{ c.value.value | titlecase }}
-                </label>
-              </div>
-              <hr>
-              <a class="text-hover" (click)="onCompanyReset()">reset</a>
-            </div>
+        <cs-accordion-item formArrayName="companyNames" [text]="'companies'" [disabled]="form.controls.freeText.value.value">
+          <div [formGroupName]="i"
+               *ngFor="let c of form.controls.companyNames.controls; let i = index">
+            <cs-checkbox [placeholder]="c.value.value" formControlName="isChecked"></cs-checkbox>
           </div>
-        </div>
+        </cs-accordion-item>
 
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed"
-                    [disabled]="form.controls.freeText.value.value"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#priceCollapse"
-                    aria-expanded="false"
-                    aria-controls="priceCollapse">
-              Price
-            </button>
-          </h2>
-          <div id="priceCollapse" class="drop-inset-shadow accordion-collapse collapse" data-bs-parent="#accordion">
-            <div class="accordion-body">
-              <div class="row align-content-center" formGroupName="priceRange">
-                <div class="col flex-grow-1">
-                  <div class="input-group drop-shadow-low">
-                    <span class="input-group-text fs-4">₪</span>
-                    <div class="form-floating">
-                      <input type="number"
-                             class="form-control"
-                             formControlName="start"
-                             id="minPrice"
-                             placeholder="min price"
-                             [min]="filters.priceRange.start"
-                             [max]="filters.priceRange.end">
-                      <label for="minPrice">Min price</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="input-group drop-shadow-low">
-                    <span class="input-group-text fs-4">₪</span>
-                    <div class="form-floating">
-                      <input type="number"
-                             class="form-control"
-                             id="maxPrice"
-                             placeholder="max price"
-                             formControlName="end"
-                             [min]="filters.priceRange.start"
-                             [max]="filters.priceRange.end">
-                      <label for="minPrice">Max price</label>
-                    </div>
-                  </div>
-                  <br>
-                </div>
-              </div>
-              <a class="text-hover" (click)="onPriceReset()">reset</a>
-            </div>
+        <cs-accordion-item formGroupName="priceRange" [text]="'price'" [disabled]="form.controls.freeText.value.value">
+          <div class="row">
+            <cs-form-input formControlName="start"
+                           class="col"
+                           [min]="filters.priceRange.start"
+                           [max]="filters.priceRange.end"
+                           type="currency"
+                           [placeholder]="'min price'">
+            </cs-form-input>
+            <cs-form-input formControlName="end"
+                           class="col"
+                           [min]="filters.priceRange.start"
+                           [max]="filters.priceRange.end"
+                           type="currency"
+                           [placeholder]="'max price'">
+            </cs-form-input>
           </div>
-        </div>
-
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed"
-                    [disabled]="form.controls.freeText.value.value"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#dateCollapse"
-                    aria-expanded="false"
-                    aria-controls="dateCollapse">
-              Date
-            </button>
-          </h2>
-          <div id="dateCollapse" class="drop-inset-shadow accordion-collapse collapse" data-bs-parent="#accordion">
-            <div class="accordion-body">
-              <div class="row align-content-center" formGroupName="dateRange">
-                <div class="row align-content-center">
-                  <div class="col-sm-3 align-self-center">
-                    Start date
-                  </div>
-                  <div class="col-sm-5 mb-2">
-                    <sc-date-picker formControlName="start"
-                                    id="startDate"
-                                    [minDate]="filters.dateRange.start"
-                                    [maxDate]="filters.dateRange.end">
-                    </sc-date-picker>
-                  </div>
-                </div>
-                <div class="row align-content-center">
-                  <div class="col-sm-3 align-self-center">
-                    End date
-                  </div>
-                  <div class="col-sm-5">
-                    <sc-date-picker formControlName="end"
-                                    id="endDate"
-                                    [minDate]="filters.dateRange.start"
-                                    [maxDate]="filters.dateRange.end">
-                    </sc-date-picker>
-                    <br>
-                  </div>
-                </div>
-              </div>
-              <a class="text-hover" (click)="onDateReset()">reset</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
+        </cs-accordion-item>
+      </cs-accordion>
 
       <div formGroupName="freeText">
-        <cs-form-input type="search" placeholder="Free text search" formControlName="value"></cs-form-input>
+        <cs-form-input type="search"
+                       placeholder="Free text search"
+                       [min]="3"
+                       [max]="20"
+                       formControlName="value">
+        </cs-form-input>
       </div>
 
-      <div class="form-check user-select-none m-1 mt-4"
-           formGroupName="hidePurchased">
-        <input class="form-check-input"
-               type="checkbox"
-               id="hidePurchased"
-               formControlName="isChecked">
-        <label class="form-check-label text-hover"
-               [ngClass]="{'text-primary': form.controls.hidePurchased.value.isChecked}"
-               for="hidePurchased">Hide Purchased Coupons
-        </label>
+      <div class="m-1 mt-4" formGroupName="hidePurchased">
+        <cs-checkbox class="text-primary" [placeholder]="'Hide Purchased Coupons'" formControlName="isChecked"></cs-checkbox>
       </div>
     </form>
   </cs-modal-body>

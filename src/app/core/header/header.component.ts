@@ -1,10 +1,10 @@
 import {Component, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../../auth/auth.service';
-import {ScrollbarService} from '../../shared/services/scrollbar.service';
 import {UserData} from '../../shared/models/user-data.model';
 import {HeaderService} from './header.service';
 import {Themes, ThemeService} from '../../shared/services/theme.service';
+import {ScrollService} from '../../shared/services/scroll.service';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
       private authService: AuthService,
-      private scrollService: ScrollbarService,
+      private scrollService: ScrollService,
       private renderer: Renderer2,
       private headerService: HeaderService,
       private themeService: ThemeService

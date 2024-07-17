@@ -1,0 +1,101 @@
+:host {
+  --checkbox-focus-shadow: 0 0 0 0.3rem #{fade-out(darken(red, 0.5), 0.7)};
+  --checkbox-bg-unchecked: white;
+  --checkbox-bg-checked: red;
+  --checkbox-color-checked: white;
+  --checkbox-color-unchecked: transparent;
+  --checkbox-transition-function: cubic-bezier(.39, .18, .44, 1.92);
+  --checkbox-transition-duration: 150ms;
+
+  display: flex;
+  height: 40px;
+  user-select: none;
+  align-items: center;
+  margin: 0;
+  color: currentColor;
+
+
+  .checkbox-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin: 0.5rem;
+
+    > svg {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    > input {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-color: var(--checkbox-bg-unchecked);
+      display: grid;
+      place-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 0.3rem;
+      transform: scale(1);
+      color: currentColor;
+      transition-duration: var(--checkbox-transition-duration);
+      transition-timing-function: var(--checkbox-transition-function);
+
+      &:indeterminate {
+        background-color: var(--checkbox-bg-checked);
+      }
+
+      &:focus-visible {
+        box-shadow: var(--checkbox-focus-shadow);
+      }
+
+      &:checked {
+        transform: scale(1.3);
+        background-color: var(--checkbox-bg-checked);
+      }
+    }
+  }
+
+
+  &:hover {
+    > input {
+      box-shadow: var(--checkbox-focus-shadow);
+    }
+
+    > label {
+      position: relative;
+      color: var(--checkbox-bg-checked);
+      transition-duration: 100ms;
+      transition-timing-function: linear;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: var(--checkbox-bg-checked);
+      }
+    }
+  }
+
+  > label {
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+    width: calc(100% - 18px);
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+
+}
