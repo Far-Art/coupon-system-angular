@@ -230,11 +230,9 @@
       [ngClass]="{'text-success-emphasis': isPurchased}">
     <p class="text-decoration-underline mb-0 user-select-none">Title:</p>
     <p class="fw-semibold">{{ coupon.params.title }}</p>
-    <hr>
 
     <p class="text-decoration-underline mb-0 user-select-none">Description:</p>
     <p>{{ coupon.params.description }}</p>
-    <hr>
 
     <p class="text-decoration-underline mb-0 user-select-none">Category:</p>
     <p class="fw-semibold">{{ coupon.params.category }}</p>
@@ -242,7 +240,6 @@
     <p class="text-decoration-underline mb-0 user-select-none">Company:</p>
     <p class="mb-0 fw-lighter">name: <span class="fw-semibold mb-0">{{ coupon.params.companyName }}</span></p>
     <p class="fw-lighter">email: <span class="fw-semibold">{{ coupon.params.companyEmail }}</span></p>
-    <hr>
 
     <p class="text-decoration-underline mb-0 user-select-none">Ends on:</p>
     <p class="fw-semibold">{{ coupon.params.endDate | date: 'd/M/yy, hh:mm' }}</p>
