@@ -32,6 +32,7 @@ export class CheckboxComponent extends AbstractFormInputComponent<boolean> {
     if (this.checked != null) {
       this.value = this.checked;
     }
+
     this.setIndeterminate();
   }
 
