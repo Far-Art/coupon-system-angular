@@ -1,7 +1,9 @@
 <input type="checkbox"
+       class="drop-shadow-low"
        [attr.aria-label]=" placeholder + ' input'"
        [id]="id"
        [checked]="value"
        [disabled]="disabled"
+       tabindex="0"
        (input)="handleInput($event)">
 <label for="{{id}}">{{ placeholder | titlecase }}</label>
