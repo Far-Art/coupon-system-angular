@@ -1,7 +1,6 @@
 import {Component, ElementRef, forwardRef, Input, ViewChild} from '@angular/core';
 import {AbstractFormInputComponent} from '../abstract-form-input.component';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
-import {HostComponent} from '../../basic/host/host.component';
 
 
 @Component({

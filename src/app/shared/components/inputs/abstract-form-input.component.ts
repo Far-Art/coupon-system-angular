@@ -13,7 +13,8 @@ export interface FormErrorParams<T> {
 export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' | 'search';
 
 @Component({
-  templateUrl: './abstract-form-input.component.html'
+  templateUrl: './abstract-form-input.component.html',
+  styleUrls:['./abstract-form-input.component.scss'],
 })
 export class AbstractFormInputComponent<T> extends HostComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
 

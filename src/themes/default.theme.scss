@@ -5,6 +5,7 @@
 :root {
   $primary-color: #e7103d;
   --primary-color: #{$primary-color};
+  --secondary-color: #{$gray-500};
   scrollbar-color: #{$primary-color} #{$white};
   color-scheme: light;
   background: #{$gray-500};

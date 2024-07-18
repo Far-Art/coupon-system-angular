@@ -1,6 +1,19 @@
+:root {
+  &[color-scheme=light] {
+    :host {
+      --accordion-border-color: hsl(from var(--primary-color) h 0 80% / .5);
+    }
+  }
+
+  &[color-scheme=dark] {
+    :host {
+      --accordion-border-color: hsl(from var(--primary-color) h 40% 40% / .5);
+    }
+  }
+}
+
 :host {
   --accordion-border-radius: 0.3rem;
-  --accordion-border-color: #e5e5e5;
   --accordion-border-width: 1px;
   display: block;
   padding: 0;

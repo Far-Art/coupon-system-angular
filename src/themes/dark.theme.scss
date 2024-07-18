@@ -4,6 +4,7 @@
 
 :root[theme="dark"] {
   $primary-color: $indigo-300;
+  --primary-color: #{$primary-color};
   scrollbar-color: $purple-500 $purple-900;
   color-scheme: dark;
   background: $gray-900;

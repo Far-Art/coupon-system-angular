@@ -1,11 +1,15 @@
 @import '/src/styles';
+
 :host {
   box-shadow: $shadow-elevation-high;
   text-wrap: nowrap;
 }
 
-.description {
+.card-description {
   height: calc(100% - 3rem);
+  scrollbar-gutter: stable both-edges;
+  scrollbar-color: var(--primary-color) transparent;
+  scrollbar-width: thin;
 }
 
 .mb-5 {
