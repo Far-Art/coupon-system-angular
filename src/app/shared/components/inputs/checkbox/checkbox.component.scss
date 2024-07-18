@@ -44,8 +44,8 @@
 
     > svg {
       position: absolute;
-      width: 22px;
-      height: 22px;
+      width: 21px;
+      height: 21px;
       z-index: 1;
       pointer-events: none;
     }
@@ -89,7 +89,6 @@
     }
 
     > label {
-      color: var(--checkbox-bg-checked);
       transition-duration: 100ms;
       transition-timing-function: linear;
       background-size: 100% 0.1em;

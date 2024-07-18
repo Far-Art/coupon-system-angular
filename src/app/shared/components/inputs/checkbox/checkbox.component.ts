@@ -30,7 +30,7 @@ export class CheckboxComponent extends AbstractFormInputComponent<boolean> {
   override ngOnChanges() {
     super.ngOnChanges();
     if (this.checked != null) {
-      this.value = this.checked;
+      this.setValue(this.checked)
     }
     this.setIndeterminate();
   }
@@ -41,7 +41,7 @@ export class CheckboxComponent extends AbstractFormInputComponent<boolean> {
 
   override onHostClick() {
     if (!this.isDisabled) {
-      this.value = !this.value;
+      this.setValue(!this.value);
     }
   }
 }
