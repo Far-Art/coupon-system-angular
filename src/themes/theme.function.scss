@@ -5,6 +5,10 @@
     color: #{$color};
   }
 
+  span:not(.bg-primary), li {
+    color: #{saturate($color, 50%)};
+  }
+
   a {
     color: #{saturate($color, 50%)};
 
@@ -15,6 +19,21 @@
     &:active {
       color: #{darken(adjust-hue(saturate($color, 50%), -70), 10%)};
     }
+  }
+
+  .card {
+    --bs-card-bg: #{darken($color, 50%)}
+  }
+
+  .nav-tabs {
+    --bs-border-color: #{darken($color, 35%)};
+    --bs-nav-tabs-link-hover-border-color: #{darken($color, 35%)};
+  }
+
+  .table {
+    --bs-table-bg: #{darken($color, 60%)};
+    --bs-table-color: #{saturate($color, 50%)};
+    --bs-table-border-color: #{darken($color, 45%)};
   }
 
   .btn-check:checked + .btn, .form-check-input:checked {
@@ -93,6 +112,10 @@
 
 @mixin recolor-btn($prefix, $btn-color, $text-color: #fff) {
   .btn {
+    &-check:checked + .btn {
+      color: #{$text-color};
+    }
+
     &-#{$prefix} {
       color: #{$text-color};
       border: var(--bs-btn-border-width) solid #{$btn-color};

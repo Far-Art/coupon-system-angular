@@ -4,7 +4,7 @@
       --checkbox-focus-shadow: 0 0 0 0.35rem hsl(from var(--primary-color) h s 80% / .5);
       --checkbox-bg-unchecked: white;
       --checkbox-border-unchecked: hsl(from var(--checkbox-bg-unchecked) h s 90%);
-      --checkbox-color-checked: white;
+      --checkbox-label-color: black;
     }
   }
 
@@ -13,7 +13,7 @@
       --checkbox-focus-shadow: 0 0 0 0.35rem hsl(from var(--primary-color) h s 80% / .5);
       --checkbox-bg-unchecked: hsl(from var(--primary-color) h 40% 60% / .4);
       --checkbox-border-unchecked: var(--checkbox-bg-unchecked);
-      --checkbox-color-checked: white;
+      --checkbox-label-color: white;
     }
   }
 }
@@ -48,6 +48,7 @@
     background: linear-gradient(270deg, var(--underline-color), var(--checkbox-bg-checked)) 0 100% no-repeat;
     background-size: 0 0.1em;
     transition: background-size 250ms;
+    color: var(--checkbox-label-color);
   }
 
   .checkbox-container {

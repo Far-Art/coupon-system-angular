@@ -13,6 +13,10 @@
     background: #{$purple-900};
   }
 
+  p {
+    color: var(--secondary-color);
+  }
+
   @include recolor-main($primary-color);
   @include recolor-prefix(primary, $primary-color);
   @include recolor-btn(primary, $primary-color);
@@ -34,5 +38,28 @@
 
   img {
     filter: brightness(85%) !important;
+  }
+
+  .border-light {
+    border-color: #{$indigo-800} !important;
+  }
+
+  .offcanvas {
+    --bs-offcanvas-bg: #{$indigo-900};
+  }
+
+  .btn-close {
+    filter: invert(1);
+  }
+
+  .list-group-item {
+    --bs-list-group-bg: #{$indigo-900};
+    --bs-list-group-border-color: #{$indigo-800};
+
+    &-action {
+      &:hover {
+        background-color: #{$indigo-500};
+      }
+    }
   }
 }
