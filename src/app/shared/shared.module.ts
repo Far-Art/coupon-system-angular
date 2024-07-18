@@ -29,6 +29,7 @@ import {ButtonComponent} from './components/basic/button/button.component';
 import {AccordionComponent} from './components/accordion/accordion.component';
 import {AccordionItemComponent} from './components/accordion/accordion-item/accordion-item.component';
 import {CheckboxComponent} from './components/inputs/checkbox/checkbox.component';
+import { CloseButtonComponent } from './components/basic/close-button/close-button.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import {CheckboxComponent} from './components/inputs/checkbox/checkbox.component
     ButtonComponent,
     AccordionComponent,
     AccordionItemComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    CloseButtonComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -81,7 +83,8 @@ import {CheckboxComponent} from './components/inputs/checkbox/checkbox.component
     ButtonComponent,
     AccordionComponent,
     AccordionItemComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    CloseButtonComponent
   ],
   imports: [
     CommonModule,

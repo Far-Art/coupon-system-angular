@@ -1,0 +1,17 @@
+:host {
+  outline: none;
+  color: var(--secondary-color);
+
+  svg {
+    border-radius: 0.4rem;
+    transition: all ease-out 80ms;
+  }
+
+  &:hover, &:focus-visible {
+    svg {
+      scale: 1.5;
+      color: var(--primary-color);
+    }
+  }
+
+}

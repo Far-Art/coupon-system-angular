@@ -26,4 +26,8 @@ export class ModalHeaderComponent implements OnInit, OnChanges {
     this.modal.title = this.title;
   }
 
+  close(){
+    this.modal.close();
+  }
+
 }
