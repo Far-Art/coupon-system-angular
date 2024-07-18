@@ -25,6 +25,7 @@
   border: var(--accordion-border-width) solid var(--accordion-border-color);
   border-bottom-width: 0;
   overflow: hidden;
+  user-select: none;
 
   .fa-accordion-header {
     color: var(--accordion-header-text-color);

@@ -8,7 +8,11 @@
   --secondary-color: #{$gray-500};
   scrollbar-color: #{$primary-color} #{$white};
   color-scheme: light;
-  background: #{$gray-500};
+
+  html, body {
+    background: #{$gray-500};
+  }
+
   @include recolor-main($primary-color);
   @include recolor-prefix(primary, $primary-color);
   @include recolor-btn(primary, $primary-color);
