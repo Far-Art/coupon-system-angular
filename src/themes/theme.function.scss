@@ -1,0 +1,174 @@
+@import "bootstrap/scss/functions";
+
+@mixin recolor-main($color) {
+  h1, h2, h3, h4, h5, h6 {
+    color: #{$color};
+  }
+
+  span:not(.bg-primary), li {
+    color: #{saturate($color, 50%)};
+  }
+
+  a {
+    color: #{saturate($color, 50%)};
+
+    &:hover {
+      color: #{adjust-hue(saturate($color, 50%), -70)};
+    }
+
+    &:active {
+      color: #{darken(adjust-hue(saturate($color, 50%), -70), 10%)};
+    }
+  }
+
+  .card {
+    --bs-card-bg: #{darken($color, 50%)}
+  }
+
+  .nav-tabs {
+    --bs-border-color: #{darken($color, 35%)};
+    --bs-nav-tabs-link-hover-border-color: #{darken($color, 35%)};
+  }
+
+  .table {
+    --bs-table-bg: #{darken($color, 60%)};
+    --bs-table-color: #{saturate($color, 50%)};
+    --bs-table-border-color: #{darken($color, 45%)};
+  }
+
+  .btn-check:checked + .btn, .form-check-input:checked {
+    background-color: #{$color};
+    border-color: #{$color};
+  }
+
+  .modal-header, .modal-footer {
+    border-color: transparent;
+  }
+
+  .accordion-item {
+    border-color: color-mix(in lch, #{$color} 7%, rgba(128, 128, 128, 0.2));
+  }
+
+  .accordion-button {
+    font-weight: bold;
+    color: #{fade-out(darken($color, 25%), 0.3)};
+
+    &:not(.collapsed) {
+      color: #{darken($color, 10%)};
+      background: #{lighten($color, 48%)};
+    }
+
+
+    &:focus {
+      box-shadow: 0 0 0 0.25rem #{rgba($color, 0.5)};
+    }
+  }
+
+  .form-check-input {
+    &[type="checkbox"] {
+      transition-duration: 200ms;
+      transition-timing-function: cubic-bezier(.39, .18, .44, 1.92);
+
+      &:checked {
+        transform: scale(1.35);
+      }
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.25rem #{rgba($color, 0.5)};
+      border-color: rgba($color, 0.5);
+    }
+
+  }
+
+  .list-group {
+    &-item {
+      &.active {
+        color: white !important;
+        background: #{$color};
+        border-color: #{$color};
+
+        &:hover {
+          background: #{darken($color, 5%)};
+        }
+      }
+    }
+  }
+}
+
+@mixin recolor-prefix($prefix, $color) {
+  .text-#{$prefix} {
+    color: #{$color} !important;
+  }
+
+  .bg-#{$prefix} {
+    background-color: #{$color} !important;
+  }
+
+  .border-#{$prefix} {
+    border-color: #{$color} !important;
+  }
+}
+
+@mixin recolor-btn($prefix, $btn-color, $text-color: #fff) {
+  .btn {
+    &-check:checked + .btn {
+      color: #{$text-color};
+    }
+
+    &-#{$prefix} {
+      color: #{$text-color};
+      border: var(--bs-btn-border-width) solid #{$btn-color};
+      background-color: #{$btn-color};
+
+      &:hover {
+        border-color: #{darken($btn-color, 5%)};
+        background-color: #{darken($btn-color, 5%)};
+      }
+
+      &:active {
+        border-color: #{darken($btn-color, 10%)};
+        background-color: #{darken($btn-color, 10%)};
+      }
+
+      &.disabled, &[disabled] {
+        border-color: #{fade-out(desaturate($btn-color, 50%), 0.3)};
+        background: #{fade-out(desaturate($btn-color, 50%), 0.3)};
+      }
+
+      &:focus-visible {
+        box-shadow: 0 0 0 0.25rem #{rgba($btn-color, 0.5)};
+      }
+
+    }
+
+    &-outline-#{$prefix} {
+      color: #{$btn-color};
+      border: var(--bs-btn-border-width) solid #{$btn-color};
+      background-color: transparent;
+
+      &:hover {
+        color: #{$text-color};
+        border-color: #{$btn-color};
+        background-color: #{$btn-color};
+      }
+
+      &:active {
+        border-color: #{darken($btn-color, 5%)};
+        background-color: #{darken($btn-color, 5%)};
+      }
+
+      &:focus-visible {
+        box-shadow: 0 0 0 0.25rem #{rgba($btn-color, 0.5)};
+      }
+
+      &.disabled, &[disabled] {
+        color: #{fade-out(desaturate($btn-color, 50%), 0.2)};
+        border-color: #{fade-out(desaturate($btn-color, 50%), 0.2)};
+      }
+
+    }
+
+  }
+
+}

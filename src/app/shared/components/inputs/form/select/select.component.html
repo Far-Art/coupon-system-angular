@@ -25,32 +25,27 @@
       </svg>
     </div>
   </span>
-  <div class="form-floating position-relative">
-    <cs-option *ngIf="showEmptyOption" [value]="null">Select {{ label }}</cs-option>
+  <div class="form-floating position-relative" [attr.aria-label]="'select ' + label"
+       [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}">
     <!-- selected option -->
-    <div class="fa-option-selected" *ngIf="selected?.templateRef && !isOpen">
+    <div [id]="id" class="fa-option-selected" *ngIf="selected?.templateRef && !isOpen">
       <ng-container *ngTemplateOutlet="selected.templateRef"></ng-container>
     </div>
-    <!-- placeholder for content -->
-    <div *ngIf="isOpen" style="display: none">
-      <ng-content select="cs-option"></ng-content>
-    </div>
+
     <!-- displayed values from placeholder content -->
-    <div *ngIf="isOpen" class="fa-options-container">
-      <div class="fa-option" *ngFor="let option of _options">
+    <div *ngIf="isOpen" class="fa-options-container" role="combobox">
+      <div class="fa-option" (click)="onOptionClick(i)" *ngFor="let option of _options; let i = index" role="option">
         <ng-container *ngTemplateOutlet="option.templateRef"></ng-container>
       </div>
     </div>
 
-    <!--    <select class="form-select"-->
-    <!--            [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"-->
-    <!--            [attr.aria-label]="label + ' select' | titlecase"-->
-    <!--            [id]="id"-->
-    <!--            [value]="value"-->
-    <!--            (input)="handleInput($event)">-->
-    <!--      <option [selected]="value == null" hidden class="text-secondary pt-1 pb-1" value="">Choose {{ label | titlecase }}...</option>-->
-    <!--      <option class="pt-1 pb-1" *ngFor="let option of options" [selected]="value === option" [value]="option">{{ '' + option  | titlecase }}</option>-->
-    <!--    </select>-->
+    <!-- placeholder for content -->
+    <div *ngIf="isOpen" style="display: none">
+      <ng-content select="cs-option"></ng-content>
+    </div>
+
+    <!-- empty option template -->
+    <cs-option style="display: none" *ngIf="showEmptyOption" [value]="null">Select {{ label }}</cs-option>
     <label [for]="id">{{ label | titlecase }}</label>
   </div>
 </div>

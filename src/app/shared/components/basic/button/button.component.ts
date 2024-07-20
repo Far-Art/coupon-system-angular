@@ -1,5 +1,6 @@
-import {AfterViewInit, Component, ElementRef, HostBinding, HostListener, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self} from '@angular/core';
 import {FormGroupDirective} from '@angular/forms';
+import {HostComponent} from '../host/host.component';
 
 
 @Component({
@@ -7,16 +8,16 @@ import {FormGroupDirective} from '@angular/forms';
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss']
 })
-export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class ButtonComponent extends HostComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input('class') class: string;
-  @Input('disabled') disabled: boolean         = false;
+  @Input('disabled') disabled: boolean = false;
   @Input() type: 'submit' | 'button' | 'reset' = 'button';
-  @Input() showSpinner                         = false;
+  @Input() showSpinner = false;
   @Input() placeholder: string;
 
   @HostBinding('class') protected hostClass: string;
-  @HostBinding('role') protected role: string                        = 'button';
-  @HostBinding('tabindex') protected tabIndex: number                = 0;
+  @HostBinding('role') protected role: string = 'button';
+  @HostBinding('tabindex') protected tabIndex: number = 0;
   @HostBinding('attr.aria-label') protected ariaLabel: string;
   @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
   @HostBinding('disabled') protected hostDisabled: boolean;
@@ -27,7 +28,7 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       protected renderer: Renderer2,
       @Self() protected selfRef: ElementRef<HTMLElement>,
       @Optional() protected formGroup: FormGroupDirective
-  ) {}
+  ) {super(selfRef);}
 
   ngOnInit(): void {
     this.hostClass = 'position-relative ' + (this.class ? this.class : 'btn btn-primary');
@@ -46,25 +47,14 @@ export class ButtonComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       if (this.type === 'submit' || this.type === 'reset') {
         if (this.formGroup) {
           this.initialFormValue = this.formGroup.value;
-          const el              = this.getParentElement(this.selfRef.nativeElement);
-          this.unsubscribe      = this.renderer.listen(el, 'keydown.enter', event => this.onClick(event));
+          const el = this.getParentElement(this.selfRef.nativeElement);
+          this.unsubscribe = this.renderer.listen(el, 'keydown.enter', event => this.onHostClick(event));
         }
       }
     });
   }
 
-  @HostListener('keydown.enter', ['$event'])
-  @HostListener('keydown.space', ['$event'])
-  protected selfClick(event: Event): void {
-    event.preventDefault();
-    if (!this.disabled) {
-      this.selfRef.nativeElement.click();
-    }
-  }
-
-  @HostListener('click', ['$event'])
-  protected onClick(event: Event): void {
-    event?.stopPropagation();
+  protected onHostClick(event: Event): void {
     if (!this.disabled) {
       if (this.formGroup) {
         if (this.type === 'submit' && !this.formGroup.submitted) {

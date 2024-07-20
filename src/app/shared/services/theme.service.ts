@@ -70,6 +70,7 @@ export class ThemeService {
 
   private setThemeOnBody(theme: Exclude<Themes, 'auto'>) {
     this.renderer.setAttribute(document.documentElement, 'theme', theme);
+    this.renderer.setAttribute(document.documentElement, 'color-scheme', theme);
   }
 
 }

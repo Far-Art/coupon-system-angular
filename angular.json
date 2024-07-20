@@ -31,7 +31,8 @@
             ],
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
-              "src/bootstrap_overrides.scss",
+              "src/themes/default.theme.scss",
+              "src/themes/dark.theme.scss",
               "src/styles.scss"
             ],
             "scripts": [

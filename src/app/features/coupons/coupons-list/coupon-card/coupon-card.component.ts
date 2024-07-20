@@ -70,7 +70,7 @@ export class CouponCardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.clazz = 'card d-flex justify-content-between overflow-hidden rounded-4 drop-shadow-low ms-3 me-3 p-0'
+    this.clazz = 'card border-3 border-light rounded-4 d-flex justify-content-between overflow-hidden ms-3 me-3 p-0'
     this.showSaleEndTimout();
 
     this.wishSub = this.couponsService.wishIds$.subscribe(ids => {

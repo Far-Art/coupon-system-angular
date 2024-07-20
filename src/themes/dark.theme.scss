@@ -1,0 +1,65 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "./theme.function";
+
+:root[theme="dark"] {
+  $primary-color: $indigo-300;
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$purple-300};
+  scrollbar-color: $purple-500 $purple-900;
+  color-scheme: dark;
+
+  html, body {
+    background: #{$purple-900};
+  }
+
+  p {
+    color: var(--secondary-color);
+  }
+
+  @include recolor-main($primary-color);
+  @include recolor-prefix(primary, $primary-color);
+  @include recolor-btn(primary, $primary-color);
+  @include recolor-btn(secondary, $gray-600);
+  @include recolor-btn(danger, $red-500);
+
+  .bg-main {
+    background: url('/assets/images/dark/main-bg-dark.png');
+    background-size: 15rem;
+  }
+
+  .bg-noisy {
+    background: linear-gradient(45deg, rgba(86, 0, 157, 0.05) 0%, rgba(164, 9, 166, 0.05) 25%, rgba(0, 60, 255, 0.05) 50%, rgba(9, 142, 166, 0.05) 75%, rgba(157, 0, 0, 0.05) 100%),
+    linear-gradient(0deg, rgba(20, 15, 50, 0.5), rgba(20, 15, 50, 0.5)),
+    url("/assets/images/noise-pattern.png"),
+    linear-gradient(0deg, rgb(20, 15, 50), rgb(20, 15, 50));
+    background-size: 100vw 100vh, 100%, 30px, 100%;
+  }
+
+  img {
+    filter: brightness(85%) !important;
+  }
+
+  .border-light {
+    border-color: #{$indigo-800} !important;
+  }
+
+  .offcanvas {
+    --bs-offcanvas-bg: #{$indigo-900};
+  }
+
+  .btn-close {
+    filter: invert(1);
+  }
+
+  .list-group-item {
+    --bs-list-group-bg: #{$indigo-900};
+    --bs-list-group-border-color: #{$indigo-800};
+
+    &-action {
+      &:hover {
+        background-color: #{$indigo-500};
+      }
+    }
+  }
+}

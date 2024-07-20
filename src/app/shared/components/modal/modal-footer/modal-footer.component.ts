@@ -13,7 +13,7 @@ export class ModalFooterComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.clazz = 'modal-footer';
+    this.clazz = 'modal-footer z-3';
   }
 
 }

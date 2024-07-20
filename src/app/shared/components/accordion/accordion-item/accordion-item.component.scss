@@ -1,15 +1,31 @@
-:host {
-  --accordion-header-text-color: black;
-  --accordion-header-bg: #f3f3f3;
-  --accordion-content-text-color: black;
-  --accordion-content-bg: #ffffff;
+:root {
+  &[color-scheme=light] {
+    :host {
+      --accordion-header-text-color: hsl(from var(--primary-color) h 100% 30%);
+      --accordion-header-bg: hsl(from var(--primary-color) h 0 100%);
+      --accordion-content-text-color: black;
+      --accordion-content-bg: hsl(from var(--primary-color) h 30% 95% / .3);
+    }
+  }
 
+  &[color-scheme=dark] {
+    :host {
+      --accordion-header-text-color: hsl(from var(--primary-color) h s 85%);
+      --accordion-header-bg: hsl(from var(--primary-color) calc(h - 10) 50% 20%);
+      --accordion-content-text-color: var(--accordion-header-text-color);
+      --accordion-content-bg: hsl(from var(--primary-color) h 60% 15% / .2);
+    }
+  }
+}
+
+:host {
   display: block;
   width: 100%;
   margin: 0;
   border: var(--accordion-border-width) solid var(--accordion-border-color);
   border-bottom-width: 0;
   overflow: hidden;
+  user-select: none;
 
   .fa-accordion-header {
     color: var(--accordion-header-text-color);
@@ -34,7 +50,7 @@
     &-button {
       position: relative;
       margin: 0.5rem;
-      height: 20px;
+      height: 15px;
       aspect-ratio: 1;
     }
   }

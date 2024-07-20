@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, ElementRef, HostBinding, Injector, Input, Self, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Input, TemplateRef, ViewChild} from '@angular/core';
 import {ButtonComponent} from '../../../../basic/button/button.component';
 
 
@@ -7,22 +7,12 @@ import {ButtonComponent} from '../../../../basic/button/button.component';
   templateUrl: './option.component.html',
   styleUrls: ['./option.component.scss']
 })
-export class OptionComponent extends ButtonComponent implements AfterContentInit {
+export class OptionComponent extends ButtonComponent {
 
   @Input() value: any;
 
-  @HostBinding('role') override role = 'option';
-
   @ViewChild('templateRef', {static: true}) templateRef: TemplateRef<HTMLElement>;
 
-  // templateRef: TemplateRef<HTMLElement>;
-
-  // constructor(@Self() elRef: ElementRef<HTMLElement>) {
-  //   this.template = elRef.nativeElement;
-  // }
-
-  ngAfterContentInit(): void {
-    //   this.template = this.templateRef;
-  }
+  override ngOnInit() {}
 
 }

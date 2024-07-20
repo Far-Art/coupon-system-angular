@@ -1,7 +1,8 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild, Renderer2} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
 import {IdGeneratorService} from '../../../services/id-generator.service';
+import {Subscription} from 'rxjs';
+import {HostComponent} from '../../basic/host/host.component';
 
 
 export interface FormErrorParams<T> {
@@ -14,10 +15,11 @@ export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 
 @Component({
   templateUrl: './abstract-form-input.component.html'
 })
-export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterContentInit, AfterViewInit, ControlValueAccessor, OnDestroy {
+export class AbstractFormInputComponent<T> extends HostComponent implements OnInit, OnChanges, AfterContentInit, AfterViewInit, ControlValueAccessor, OnDestroy {
 
-  @ViewChild('content', {static: true}) content: ElementRef<HTMLDivElement>;
-  @HostBinding('style.width') width = '100%';
+  @ViewChild('content', {static: true}) protected content: ElementRef<HTMLDivElement>;
+  @HostBinding('style.width') protected width = '100%';
+  @HostBinding('attr.disabled') protected isDisabled = false;
 
   @Input() id: string = this.idGenerator.generate();
   @Input() label: string = 'input';
@@ -52,7 +54,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterCo
       protected renderer: Renderer2,
       @Optional() protected rootForm: FormGroupDirective,
       @Optional() protected formGroup: FormGroupName
-  ) {}
+  ) {super(elRef);}
 
   onChange: any = () => {};
 
@@ -65,6 +67,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterCo
   }
 
   ngOnChanges(): void {
+    this.isDisabled = this.disabled;
     // this.handleErrors();
   }
 
@@ -191,5 +194,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterCo
     }
 
   }
+
+  onHostClick(event: Event): void {}
 
 }

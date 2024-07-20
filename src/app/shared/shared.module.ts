@@ -31,6 +31,7 @@ import {InputComponent} from './components/inputs/form/input/input.component';
 import {SelectComponent} from './components/inputs/form/select/select.component';
 import {IconContainerComponent} from './components/icon-container/icon-container.component';
 import {OptionComponent} from './components/inputs/form/select/option/option.component';
+import {CloseButtonComponent} from './components/basic/close-button/close-button.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import {OptionComponent} from './components/inputs/form/select/option/option.com
     AccordionComponent,
     AccordionItemComponent,
     CheckboxComponent,
+    CloseButtonComponent,
     IconContainerComponent
   ],
   exports: [
@@ -86,7 +88,8 @@ import {OptionComponent} from './components/inputs/form/select/option/option.com
     ButtonComponent,
     AccordionComponent,
     AccordionItemComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    CloseButtonComponent
   ],
   imports: [
     CommonModule,

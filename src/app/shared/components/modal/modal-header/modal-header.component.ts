@@ -9,7 +9,7 @@ import {ModalComponent} from '../modal.component';
 })
 export class ModalHeaderComponent implements OnInit, OnChanges {
 
-  @HostBinding('class') clazz: string = 'modal-header justify-content-between';
+  @HostBinding('class') clazz: string = 'modal-header justify-content-between z-3';
 
   @Input() title: string;
 
@@ -24,6 +24,10 @@ export class ModalHeaderComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.modal.title = this.title;
+  }
+
+  close(){
+    this.modal.close();
   }
 
 }

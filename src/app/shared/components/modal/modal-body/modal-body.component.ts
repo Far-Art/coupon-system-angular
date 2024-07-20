@@ -11,7 +11,7 @@ export class ModalBodyComponent implements OnInit {
   @HostBinding('class') clazz: string;
 
   ngOnInit(): void {
-    this.clazz = 'modal-body';
+    this.clazz = 'modal-body p-1';
   }
 
 }
