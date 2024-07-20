@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormSelectComponent } from './form-select.component';
+import { IconContainerComponent } from './icon-container.component';
 
-describe('FormSelectComponent', () => {
-  let component: FormSelectComponent;
-  let fixture: ComponentFixture<FormSelectComponent>;
+describe('IconContainerComponent', () => {
+  let component: IconContainerComponent;
+  let fixture: ComponentFixture<IconContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FormSelectComponent ]
+      declarations: [ IconContainerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FormSelectComponent);
+    fixture = TestBed.createComponent(IconContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

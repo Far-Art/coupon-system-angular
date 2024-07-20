@@ -5,7 +5,7 @@ import {AuthService} from '../../../../../auth/auth.service';
 import {filter, Subscription} from 'rxjs';
 import {UserData} from '../../../../../shared/models/user-data.model';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
-import {FormErrorParams} from '../../../../../shared/components/inputs/abstract-form-input.component';
+import {FormErrorParams} from '../../../../../shared/components/inputs/form/abstract-form-input.component';
 
 
 @Component({
@@ -157,7 +157,7 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
       const value = new Date(control.value);
 
       if (value < min) {
-        return {'error': `${controlName} cannot be less than ${minDate.getDate()}/${minDate.getMonth() + 1}/${minDate.getFullYear()}`};
+        return {'error': `${controlName} cannot be less than ${min.getDate()}/${min.getMonth() + 1}/${min.getFullYear()}`};
       }
       return null;
     }

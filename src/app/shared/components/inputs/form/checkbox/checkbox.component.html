@@ -2,7 +2,7 @@
   <input type="checkbox"
          #checkbox
          class="drop-shadow-low"
-         [attr.aria-label]=" placeholder + ' input'"
+         [attr.aria-label]=" label + ' input'"
          [id]="id"
          [checked]="value"
          [disabled]="isDisabled"
@@ -15,4 +15,4 @@
     <path fill="none" stroke="white" d="M8, 12 H19, 12" stroke-linecap="round" stroke-linejoin="round" />
   </svg>
 </div>
-<label for="{{id}}">{{ placeholder | titlecase }}</label>
+<label for="{{id}}">{{ label | titlecase }}</label>

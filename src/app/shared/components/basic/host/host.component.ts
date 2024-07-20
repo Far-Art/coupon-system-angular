@@ -23,6 +23,6 @@ export abstract class HostComponent {
     this.onHostClick(event);
   }
 
-  abstract onHostClick(event: Event): void;
+  protected abstract onHostClick(event: Event): void;
 
 }

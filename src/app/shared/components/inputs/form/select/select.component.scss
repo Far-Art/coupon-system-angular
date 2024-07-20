@@ -1,0 +1,20 @@
+.fa-options-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+}
+
+.fa-option, .fa-option-selected {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+
+  &:not(.disabled) {
+    cursor: pointer;
+  }
+
+}

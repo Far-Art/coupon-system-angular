@@ -1,0 +1,70 @@
+<div class="drop-shadow-low rounded-3 input-group has-validation mt-2 mb-2">
+  <span style="min-width: 42px" class="d-flex justify-content-center input-group-text p-0 rounded-end-0">
+    <!-- PROVIDED ICON -->
+    <div csCheckNgContent #content>
+      <ng-content></ng-content>
+    </div>
+    <!-- DEFAULT ICONS -->
+    <div *ngIf="!hasContent">
+      <cs-icon-container [iconType]="type" [iconValue]="dayOfWeek"></cs-icon-container>
+    </div>
+  </span>
+  <div class="form-floating">
+    <ng-container *ngTemplateOutlet="nodeName === 'CS-SELECT' ? selectType : inputType"></ng-container>
+    <label [for]="id">{{ label | titlecase }}</label>
+  </div>
+</div>
+
+<div *ngIf="errorMessages.length > 0" class="p-5 pt-0 pb-0">
+  <div *ngFor="let error of errorMessages" class="text-start text-danger">
+    {{ error }}
+  </div>
+</div>
+
+<ng-template #selectType>
+  <select class="form-select"
+          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
+          [attr.aria-label]="label + ' select' | titlecase"
+          [id]="id"
+          [value]="value"
+          (input)="handleInput($event)">
+    <option [selected]="value == null" hidden class="text-secondary pt-1 pb-1" value="">Choose {{ label | titlecase }}...</option>
+    <option class="pt-1 pb-1" *ngFor="let option of options" [selected]="value === option" [value]="option">{{ '' + option  | titlecase }}</option>
+  </select>
+</ng-template>
+
+<ng-template #inputType>
+  <input *ngIf="type !== 'textarea' && _type !== 'text'"
+         [type]="_type"
+         class="form-control"
+         [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
+         [attr.aria-label]=" label + ' input'"
+         [id]="id"
+         [value]="value"
+         [attr.min]="_min"
+         [attr.max]="_max"
+         (input)="handleInput($event)"
+         [placeholder]="label | titlecase">
+  <input *ngIf="type !== 'textarea' && _type === 'text'"
+         [type]="_type"
+         class="form-control"
+         [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
+         [attr.aria-label]=" label + ' input'"
+         [id]="id"
+         [value]="value"
+         [attr.minlength]="_min"
+         [attr.maxlength]="_max"
+         (input)="handleInput($event)"
+         [placeholder]="label | titlecase">
+  <textarea *ngIf="type === 'textarea'"
+            class="form-control"
+            [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
+            [attr.aria-label]="label + ' input'"
+            [id]="id"
+            [attr.minlength]="_min"
+            [attr.maxlength]="_max"
+            [value]="value"
+            (input)="handleInput($event)"
+            [placeholder]="label | titlecase">
+  </textarea>
+</ng-template>

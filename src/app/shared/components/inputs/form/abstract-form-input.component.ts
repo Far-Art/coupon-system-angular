@@ -1,8 +1,8 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild, Renderer2} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
-import {IdGeneratorService} from '../../services/id-generator.service';
+import {IdGeneratorService} from '../../../services/id-generator.service';
 import {Subscription} from 'rxjs';
-import {HostComponent} from '../basic/host/host.component';
+import {HostComponent} from '../../basic/host/host.component';
 
 
 export interface FormErrorParams<T> {
@@ -13,17 +13,16 @@ export interface FormErrorParams<T> {
 export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 'email' | 'password' | 'button' | 'checkbox' | 'radio' | 'range' | 'image' | 'search';
 
 @Component({
-  templateUrl: './abstract-form-input.component.html',
-  styleUrls:['./abstract-form-input.component.scss'],
+  templateUrl: './abstract-form-input.component.html'
 })
-export class AbstractFormInputComponent<T> extends HostComponent implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
+export class AbstractFormInputComponent<T> extends HostComponent implements OnInit, OnChanges, AfterContentInit, AfterViewInit, ControlValueAccessor, OnDestroy {
 
   @ViewChild('content', {static: true}) protected content: ElementRef<HTMLDivElement>;
   @HostBinding('style.width') protected width = '100%';
   @HostBinding('attr.disabled') protected isDisabled = false;
 
   @Input() id: string = this.idGenerator.generate();
-  @Input() placeholder: string = 'input';
+  @Input() label: string = 'input';
   @Input() type: InputTypes = 'text';
   @Input() options: T[] = [];
   @Input() disabled: boolean;
@@ -52,6 +51,7 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
       protected idGenerator: IdGeneratorService,
       protected elRef: ElementRef<HTMLElement>,
       protected changeDetector: ChangeDetectorRef,
+      protected renderer: Renderer2,
       @Optional() protected rootForm: FormGroupDirective,
       @Optional() protected formGroup: FormGroupName
   ) {super(elRef);}
@@ -63,17 +63,7 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
   ngOnInit(): void {
     this.setType();
     this.setMinMax();
-
     this.nodeName = this.elRef.nativeElement.nodeName;
-
-    if (this.formGroup) {
-      this.form = this.rootForm.form;
-      this.control = this.form.get(this.formGroup.path);
-      this.setDayOfWeekIfDate();
-      this.handleFormStatusChanges();
-      this.subscription = this.control.valueChanges.subscribe(() => this.handleFormStatusChanges());
-    }
-
   }
 
   ngOnChanges(): void {
@@ -122,6 +112,24 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
   ngAfterViewInit(): void {
     this.hasContent = this.content?.nativeElement.classList.contains('has-content');
     this.changeDetector.detectChanges();
+  }
+
+  ngAfterContentInit(): void {
+    if (this.rootForm) {
+      this.form = this.rootForm.form;
+
+      if (this.formGroup != null) {
+        this.control = this.form.get(this.formGroup.path);
+      } else {
+        const controlName = this.elRef.nativeElement.attributes.getNamedItem('formcontrolname');
+        this.control = this.form.get(controlName?.value);
+      }
+
+      if (this.control) {
+        this.handleFormStatusChanges();
+        this.subscription = this.control.valueChanges.subscribe(() => this.handleFormStatusChanges());
+      }
+    }
   }
 
   private setDayOfWeekIfDate() {
