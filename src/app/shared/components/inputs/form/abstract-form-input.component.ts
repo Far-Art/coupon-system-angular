@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {IdGeneratorService} from '../../../services/id-generator.service';
@@ -14,13 +14,13 @@ export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 
 @Component({
   templateUrl: './abstract-form-input.component.html'
 })
-export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterViewInit, ControlValueAccessor, OnDestroy {
+export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterContentInit, AfterViewInit, ControlValueAccessor, OnDestroy {
 
   @ViewChild('content', {static: true}) content: ElementRef<HTMLDivElement>;
   @HostBinding('style.width') width = '100%';
 
   @Input() id: string = this.idGenerator.generate();
-  @Input() placeholder: string = 'input';
+  @Input() label: string = 'input';
   @Input() type: InputTypes = 'text';
   @Input() options: T[] = [];
   @Input() disabled: boolean;
@@ -60,17 +60,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   ngOnInit(): void {
     this.setType();
     this.setMinMax();
-
     this.nodeName = this.elRef.nativeElement.nodeName;
-
-    if (this.formGroup) {
-      this.form = this.rootForm.form;
-      this.control = this.form.get(this.formGroup.path);
-      this.setDayOfWeekIfDate();
-      this.handleFormStatusChanges();
-      this.subscription = this.control.valueChanges.subscribe(() => this.handleFormStatusChanges());
-    }
-
   }
 
   ngOnChanges(): void {
@@ -118,6 +108,24 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterVi
   ngAfterViewInit(): void {
     this.hasContent = this.content?.nativeElement.classList.contains('has-content');
     this.changeDetector.detectChanges();
+  }
+
+  ngAfterContentInit(): void {
+    if (this.rootForm) {
+      this.form = this.rootForm.form;
+
+      if (this.formGroup != null) {
+        this.control = this.form.get(this.formGroup.path);
+      } else {
+        const controlName = this.elRef.nativeElement.attributes.getNamedItem('formcontrolname');
+        this.control = this.form.get(controlName?.value);
+      }
+
+      if (this.control) {
+        this.handleFormStatusChanges();
+        this.subscription = this.control.valueChanges.subscribe(() => this.handleFormStatusChanges());
+      }
+    }
   }
 
   private setDayOfWeekIfDate() {

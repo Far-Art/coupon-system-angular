@@ -6,14 +6,14 @@
         <cs-accordion-item formArrayName="categories" [text]="'categories'" [disabled]="form.controls.freeText.value.value">
           <div [formGroupName]="i"
                *ngFor="let c of form.controls.categories.controls; let i = index">
-            <cs-checkbox [placeholder]="c.value.value" formControlName="isChecked"></cs-checkbox>
+            <cs-checkbox [label]="c.value.value" formControlName="isChecked"></cs-checkbox>
           </div>
         </cs-accordion-item>
 
         <cs-accordion-item formArrayName="companyNames" [text]="'companies'" [disabled]="form.controls.freeText.value.value">
           <div [formGroupName]="i"
                *ngFor="let c of form.controls.companyNames.controls; let i = index">
-            <cs-checkbox [placeholder]="c.value.value" formControlName="isChecked"></cs-checkbox>
+            <cs-checkbox [label]="c.value.value" formControlName="isChecked"></cs-checkbox>
           </div>
         </cs-accordion-item>
 
@@ -24,14 +24,14 @@
                            [min]="filters.priceRange.start"
                            [max]="filters.priceRange.end"
                            type="currency"
-                           [placeholder]="'min price'">
+                           [label]="'min price'">
             </cs-input>
             <cs-input formControlName="end"
                            class="col"
                            [min]="filters.priceRange.start"
                            [max]="filters.priceRange.end"
                            type="currency"
-                           [placeholder]="'max price'">
+                           [label]="'max price'">
             </cs-input>
           </div>
         </cs-accordion-item>
@@ -39,7 +39,7 @@
 
       <div formGroupName="freeText">
         <cs-input type="search"
-                       placeholder="Free text search"
+                       label="Free text search"
                        [min]="3"
                        [max]="20"
                        formControlName="value">
@@ -47,7 +47,7 @@
       </div>
 
       <div class="m-1 mt-4" formGroupName="hidePurchased">
-        <cs-checkbox class="text-primary" [placeholder]="'Hide Purchased Coupons'" formControlName="isChecked"></cs-checkbox>
+        <cs-checkbox class="text-primary" [label]="'Hide Purchased Coupons'" formControlName="isChecked"></cs-checkbox>
       </div>
     </form>
   </cs-modal-body>

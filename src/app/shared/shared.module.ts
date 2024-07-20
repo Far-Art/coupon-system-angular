@@ -29,6 +29,7 @@ import {AbstractFormInputComponent} from './components/inputs/form/abstract-form
 import {CheckboxComponent} from './components/inputs/form/checkbox/checkbox.component';
 import {InputComponent} from './components/inputs/form/input/input.component';
 import {SelectComponent} from './components/inputs/form/select/select.component';
+import { IconContainerComponent } from './components/icon-container/icon-container.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import {SelectComponent} from './components/inputs/form/select/select.component'
     ButtonComponent,
     AccordionComponent,
     AccordionItemComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    IconContainerComponent
   ],
   exports: [
     SliceTxtPipe,

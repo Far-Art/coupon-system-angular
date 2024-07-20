@@ -5,7 +5,7 @@ import {AbstractFormInputComponent} from '../abstract-form-input.component';
 
 @Component({
   selector: 'cs-select',
-  templateUrl: '../abstract-form-input.component.html',
+  templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
   providers: [
     {

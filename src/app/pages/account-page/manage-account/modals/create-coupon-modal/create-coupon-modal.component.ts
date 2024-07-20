@@ -157,7 +157,7 @@ export class CreateCouponModalComponent implements OnInit, OnDestroy {
       const value = new Date(control.value);
 
       if (value < min) {
-        return {'error': `${controlName} cannot be less than ${minDate.getDate()}/${minDate.getMonth() + 1}/${minDate.getFullYear()}`};
+        return {'error': `${controlName} cannot be less than ${min.getDate()}/${min.getMonth() + 1}/${min.getFullYear()}`};
       }
       return null;
     }

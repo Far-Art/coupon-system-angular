@@ -1,5 +1,5 @@
 <form class="user-select-none w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <cs-input type="email" placeholder="Email" formControlName="email"></cs-input>
+  <cs-input type="email" label="Email" formControlName="email"></cs-input>
   <div class="p-5 pt-0 pb-0">
     <div *ngIf="form.controls.email.touched && !form.controls.email.value" class="text-danger">
       Please enter an email.
@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  <cs-input type="password" placeholder="Password" formControlName="password"></cs-input>
+  <cs-input type="password" label="Password" formControlName="password"></cs-input>
   <div class="p-4 pt-0">
     <div *ngIf="form.controls.password.touched && !form.controls.password.value"
          class="text-danger">

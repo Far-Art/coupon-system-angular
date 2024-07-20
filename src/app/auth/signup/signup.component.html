@@ -1,8 +1,8 @@
 <form class="user-select-none w-100" [formGroup]="form" (ngSubmit)="onSubmit()">
   <img src="{{form.controls.image.value}}" alt="user image">
 
-  <cs-input type="image" placeholder="Image" formControlName="image"></cs-input>
-  <cs-select placeholder="User Type" formControlName="type" [options]="['customer', 'company']">
+  <cs-input type="image" label="Image" formControlName="image"></cs-input>
+  <cs-select label="User Type" formControlName="type" [options]="['customer', 'company']">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-vcard"
          viewBox="0 0 16 16">
       <path
@@ -12,7 +12,7 @@
     </svg>
   </cs-select>
 
-  <cs-input type="email" placeholder="Email" formControlName="email"></cs-input>
+  <cs-input type="email" label="Email" formControlName="email"></cs-input>
   <div class="p-5 pt-0 pb-0">
     <div *ngIf="form.controls.email.touched && !form.controls.email.value" class="text-danger">
       Please enter an email.
@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <cs-input type="password" placeholder="Password" formControlName="password"></cs-input>
+  <cs-input type="password" label="Password" formControlName="password"></cs-input>
   <div class="p-5 pt-0 pb-0">
     <div *ngIf="form.controls.password.touched && !form.controls.password.value"
          class="text-danger">
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <cs-input placeholder="{{ type === 'customer' ? 'First' : 'Company' }} Name" formControlName="name">
+  <cs-input label="{{ type === 'customer' ? 'First' : 'Company' }} Name" formControlName="name">
     <svg *ngIf="type === 'customer'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
          class="bi bi-person-bounding-box" viewBox="0 0 16 16">
       <path
@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <cs-input *ngIf="type === 'customer'" placeholder="Last Name" formControlName="lastName">
+  <cs-input *ngIf="type === 'customer'" label="Last Name" formControlName="lastName">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
          class="bi bi-person-bounding-box" viewBox="0 0 16 16">
       <path
