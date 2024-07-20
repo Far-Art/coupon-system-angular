@@ -5,7 +5,7 @@ import {AuthService} from '../../../../../auth/auth.service';
 import {filter, Subscription} from 'rxjs';
 import {UserData} from '../../../../../shared/models/user-data.model';
 import {CouponsService} from '../../../../../features/coupons/coupons.service';
-import {FormErrorParams} from '../../../../../shared/components/inputs/abstract-form-input.component';
+import {FormErrorParams} from '../../../../../shared/components/inputs/form/abstract-form-input.component';
 
 
 @Component({

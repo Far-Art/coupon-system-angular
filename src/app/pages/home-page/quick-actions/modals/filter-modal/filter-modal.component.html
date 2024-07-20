@@ -19,31 +19,31 @@
 
         <cs-accordion-item formGroupName="priceRange" [text]="'price'" [disabled]="form.controls.freeText.value.value">
           <div class="row">
-            <cs-form-input formControlName="start"
+            <cs-input formControlName="start"
                            class="col"
                            [min]="filters.priceRange.start"
                            [max]="filters.priceRange.end"
                            type="currency"
                            [placeholder]="'min price'">
-            </cs-form-input>
-            <cs-form-input formControlName="end"
+            </cs-input>
+            <cs-input formControlName="end"
                            class="col"
                            [min]="filters.priceRange.start"
                            [max]="filters.priceRange.end"
                            type="currency"
                            [placeholder]="'max price'">
-            </cs-form-input>
+            </cs-input>
           </div>
         </cs-accordion-item>
       </cs-accordion>
 
       <div formGroupName="freeText">
-        <cs-form-input type="search"
+        <cs-input type="search"
                        placeholder="Free text search"
                        [min]="3"
                        [max]="20"
                        formControlName="value">
-        </cs-form-input>
+        </cs-input>
       </div>
 
       <div class="m-1 mt-4" formGroupName="hidePurchased">

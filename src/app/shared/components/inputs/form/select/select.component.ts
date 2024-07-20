@@ -4,16 +4,16 @@ import {AbstractFormInputComponent} from '../abstract-form-input.component';
 
 
 @Component({
-  selector: 'cs-form-select',
+  selector: 'cs-select',
   templateUrl: '../abstract-form-input.component.html',
-  styleUrls: ['./form-select.component.scss'],
+  styleUrls: ['./select.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FormSelectComponent),
+      useExisting: forwardRef(() => SelectComponent),
       multi: true
     }
   ]
 })
-export class FormSelectComponent extends AbstractFormInputComponent<string> {
+export class SelectComponent extends AbstractFormInputComponent<string> {
 }

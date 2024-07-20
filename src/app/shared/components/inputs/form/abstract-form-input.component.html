@@ -36,7 +36,7 @@
     </div>
   </span>
   <div class="form-floating">
-    <ng-container *ngTemplateOutlet="nodeName === 'CS-FORM-SELECT' ? selectType : inputType"></ng-container>
+    <ng-container *ngTemplateOutlet="nodeName === 'CS-SELECT' ? selectType : inputType"></ng-container>
     <label [for]="id">{{ placeholder | titlecase }}</label>
   </div>
 </div>

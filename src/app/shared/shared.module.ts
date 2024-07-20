@@ -18,9 +18,6 @@ import {ModalBodyComponent} from './components/modal/modal-body/modal-body.compo
 import {ModalFooterComponent} from './components/modal/modal-footer/modal-footer.component';
 import {ModalButtonComponent} from './components/modal/modal-button/modal-button.component';
 import {IdGeneratorService} from './services/id-generator.service';
-import {FormInputComponent} from './components/inputs/form-input/form-input.component';
-import {FormSelectComponent} from './components/inputs/form-select/form-select.component';
-import {AbstractFormInputComponent} from './components/inputs/abstract-form-input.component';
 import {CheckNgContentDirective} from './directives/check-ng-content.directive';
 import {ModalBackdropComponent} from './components/modal/modals-container/modal-backdrop/modal-backdrop.component';
 import {ModalsContainerComponent} from './components/modal/modals-container/modals-container.component';
@@ -28,7 +25,10 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {ButtonComponent} from './components/basic/button/button.component';
 import {AccordionComponent} from './components/accordion/accordion.component';
 import {AccordionItemComponent} from './components/accordion/accordion-item/accordion-item.component';
-import { CheckboxComponent } from './components/inputs/checkbox/checkbox.component';
+import {AbstractFormInputComponent} from './components/inputs/form/abstract-form-input.component';
+import {CheckboxComponent} from './components/inputs/form/checkbox/checkbox.component';
+import {InputComponent} from './components/inputs/form/input/input.component';
+import {SelectComponent} from './components/inputs/form/select/select.component';
 
 
 @NgModule({
@@ -48,8 +48,8 @@ import { CheckboxComponent } from './components/inputs/checkbox/checkbox.compone
     SpinnerComponent,
     ModalButtonComponent,
     AbstractFormInputComponent,
-    FormInputComponent,
-    FormSelectComponent,
+    InputComponent,
+    SelectComponent,
     CheckNgContentDirective,
     ModalBackdropComponent,
     ModalsContainerComponent,
@@ -73,8 +73,8 @@ import { CheckboxComponent } from './components/inputs/checkbox/checkbox.compone
     ConfirmNavigationComponent,
     SpinnerComponent,
     ModalButtonComponent,
-    FormInputComponent,
-    FormSelectComponent,
+    InputComponent,
+    SelectComponent,
     AbstractFormInputComponent,
     ModalBackdropComponent,
     ModalsContainerComponent,
