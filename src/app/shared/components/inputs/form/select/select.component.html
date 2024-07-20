@@ -1,10 +1,10 @@
-<div class="drop-shadow-low rounded-3 input-group has-validation mt-2 mb-2">
+<div class="drop-shadow-low rounded-3 input-group has-validation mt-2 mb-2" (click)="onOpen()" style="min-height: 55px">
   <span style="min-width: 42px" class="d-flex justify-content-center input-group-text p-0 rounded-end-0">
     <!-- PROVIDED ICON -->
     <div csCheckNgContent #content>
       <ng-content></ng-content>
     </div>
-    <!-- DEFAULT ICONS -->
+    <!-- DEFAULT ICON -->
     <div *ngIf="!hasContent">
       <svg fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg"
            viewBox="0 0 450 450">
@@ -25,10 +25,23 @@
       </svg>
     </div>
   </span>
-  <div class="form-floating">
-    <select class="fa-options-container">
+  <div class="form-floating position-relative">
+    <cs-option *ngIf="showEmptyOption" [value]="null">Select {{ label }}</cs-option>
+    <!-- selected option -->
+    <div class="fa-option-selected" *ngIf="selected?.templateRef && !isOpen">
+      <ng-container *ngTemplateOutlet="selected.templateRef"></ng-container>
+    </div>
+    <!-- placeholder for content -->
+    <div *ngIf="isOpen" style="display: none">
       <ng-content select="cs-option"></ng-content>
-    </select>
+    </div>
+    <!-- displayed values from placeholder content -->
+    <div *ngIf="isOpen" class="fa-options-container">
+      <div class="fa-option" *ngFor="let option of _options">
+        <ng-container *ngTemplateOutlet="option.templateRef"></ng-container>
+      </div>
+    </div>
+
     <!--    <select class="form-select"-->
     <!--            [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"-->
     <!--            [attr.aria-label]="label + ' select' | titlecase"-->

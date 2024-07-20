@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, ViewChild} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {IdGeneratorService} from '../../../services/id-generator.service';
@@ -49,6 +49,7 @@ export class AbstractFormInputComponent<T> implements OnInit, OnChanges, AfterCo
       protected idGenerator: IdGeneratorService,
       protected elRef: ElementRef<HTMLElement>,
       protected changeDetector: ChangeDetectorRef,
+      protected renderer: Renderer2,
       @Optional() protected rootForm: FormGroupDirective,
       @Optional() protected formGroup: FormGroupName
   ) {}
