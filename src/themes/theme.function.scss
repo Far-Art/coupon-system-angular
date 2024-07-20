@@ -6,11 +6,11 @@
   }
 
   span:not(.bg-primary), li {
-    color: #{saturate($color, 50%)};
+    //color: #{saturate($color, 50%)};
   }
 
   a {
-    color: #{saturate($color, 50%)};
+    //color: #{saturate($color, 50%)};
 
     &:hover {
       color: #{adjust-hue(saturate($color, 50%), -70)};
@@ -22,18 +22,18 @@
   }
 
   .card {
-    --bs-card-bg: #{darken($color, 50%)}
+    //--bs-card-bg: #{darken($color, 50%)}
   }
 
   .nav-tabs {
-    --bs-border-color: #{darken($color, 35%)};
-    --bs-nav-tabs-link-hover-border-color: #{darken($color, 35%)};
+    //--bs-border-color: #{darken($color, 35%)};
+    //--bs-nav-tabs-link-hover-border-color: #{darken($color, 35%)};
   }
 
   .table {
-    --bs-table-bg: #{darken($color, 60%)};
-    --bs-table-color: #{saturate($color, 50%)};
-    --bs-table-border-color: #{darken($color, 45%)};
+    //--bs-table-bg: #{darken($color, 60%)};
+    //--bs-table-color: #{saturate($color, 50%)};
+    //--bs-table-border-color: #{darken($color, 45%)};
   }
 
   .btn-check:checked + .btn, .form-check-input:checked {
