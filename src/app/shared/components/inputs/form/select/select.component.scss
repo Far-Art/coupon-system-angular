@@ -15,11 +15,11 @@
   &-container {
     min-height: 58px;
     box-shadow: 0 0 0 max(100vw, 100vh) rgba(0 0 0 / .0);
-    transition: box-shadow 200ms ease;
 
     &.open {
       box-shadow: 0 0 0 max(100vw, 100vh) rgba(0 0 0 / .3);
       border-bottom-right-radius: 0 !important;
+      transition: box-shadow 250ms ease;
     }
   }
 

@@ -73,7 +73,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
       this.onOptionSelect(0);
     }
 
-    this.changeDetector.detectChanges();
+    // this.changeDetector.detectChanges();
   }
 
 }
