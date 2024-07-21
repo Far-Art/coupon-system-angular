@@ -7,7 +7,7 @@ import {AccordionComponent} from '../accordion.component';
   selector: 'cs-accordion-item',
   templateUrl: './accordion-item.component.html',
   styleUrls: ['./accordion-item.component.scss'],
-  animations: [arrowAnimation(150), textAnimation(200), contentAnimation(250)]
+  animations: [arrowAnimation(200), textAnimation(200), contentAnimation(250)]
 })
 export class AccordionItemComponent {
 

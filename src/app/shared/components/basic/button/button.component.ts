@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self} from '@angular/core';
 import {FormGroupDirective} from '@angular/forms';
 import {HostComponent} from '../host/host.component';
 
@@ -26,8 +26,9 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
 
   constructor(
       protected renderer: Renderer2,
-      @Self() protected selfRef: ElementRef<HTMLElement>,
-      @Optional() protected formGroup: FormGroupDirective
+      @Self() selfRef: ElementRef<HTMLElement>,
+      @Optional() protected formGroup: FormGroupDirective,
+      protected changeDetectorRef: ChangeDetectorRef
   ) {super(selfRef);}
 
   ngOnInit(): void {
@@ -39,22 +40,23 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
   }
 
   ngAfterViewInit(): void {
+
     // ensure all fields was set
-    this.setDisabled();
     setTimeout(() => {
       if (this.unsubscribe) this.unsubscribe();
       this.setAriaLabel();
-      if (this.type === 'submit' || this.type === 'reset') {
-        if (this.formGroup) {
-          this.initialFormValue = this.formGroup.value;
+      if (this.formGroup) {
+        if (this.type === 'submit') {
           const el = this.getParentElement(this.selfRef.nativeElement);
-          this.unsubscribe = this.renderer.listen(el, 'keydown.enter', event => this.onHostClick(event));
+          this.unsubscribe = this.renderer.listen(el, 'keydown.enter', () => this.onHostClick());
+        } else if (this.type === 'reset') {
+          this.initialFormValue = this.formGroup.value;
         }
       }
     });
   }
 
-  protected onHostClick(event: Event): void {
+  protected override onHostClick(event?: Event): void {
     if (!this.disabled) {
       if (this.formGroup) {
         if (this.type === 'submit' && !this.formGroup.submitted) {

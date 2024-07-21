@@ -21,7 +21,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
   @ContentChildren(OptionComponent) protected _optionsQueryList: QueryList<OptionComponent>;
   @ViewChild(OptionComponent) protected _emptyOption: OptionComponent;
 
-  @Input() showEmptyOption = true;
+  @Input() showEmptyOption = false;
   @Input('selected') selectedIndex: number;
 
   protected isOpen = false;
@@ -32,8 +32,9 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
     this.isOpen = !this.isOpen;
   }
 
-  onOptionClick(index: number) {
+  onOptionSelect(index: number) {
     this.selected = this._options[index];
+    this.selectedIndex = index;
     this.setValue(this.selected.value);
   }
 
@@ -57,11 +58,11 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
     this._options.push(...this._optionsQueryList);
 
     if (this.selectedIndex) {
-      this.onOptionClick(this.selectedIndex);
+      this.onOptionSelect(this.selectedIndex);
     }
 
-    if (!this.selected) {
-      this.selected = this._options.length > 0 ? this._options[0] : null;
+    if (!this.selected && this._options.length > 0) {
+      this.onOptionSelect(0);
     }
 
     this.changeDetector.detectChanges();

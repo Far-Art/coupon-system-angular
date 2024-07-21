@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, Optional, Renderer2, Self} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, Optional, Renderer2, Self} from '@angular/core';
 import {ModalComponent} from '../modal.component';
 import {ModalService} from '../modal.service';
 import {ButtonComponent} from '../../basic/button/button.component';
@@ -17,11 +17,12 @@ export class ModalButtonComponent extends ButtonComponent {
 
   constructor(
       @Optional() private hostModal: ModalComponent,
+      private service: ModalService,
       @Optional() formGroup: FormGroupDirective,
-      @Self() override selfRef: ElementRef<HTMLElement>,
-      override renderer: Renderer2,
-      private service: ModalService
-  ) {super(renderer, selfRef, formGroup);}
+      @Self() selfRef: ElementRef<HTMLElement>,
+      renderer: Renderer2,
+      changeDetectorRef: ChangeDetectorRef
+  ) {super(renderer, selfRef, formGroup, changeDetectorRef);}
 
   override ngOnInit(): void {
     super.ngOnInit();
@@ -46,13 +47,15 @@ export class ModalButtonComponent extends ButtonComponent {
     this.service.open(this.modalId);
   }
 
-  protected override onHostClick(event: Event) {
-    super.onHostClick(event);
-    if (this.action === 'close') {
-      this.close();
-    } else if (this.action === 'open') {
-      this.open();
+  protected override onHostClick() {
+    if (!this.disabled) {
+      if (this.action === 'close') {
+        this.close();
+      } else if (this.action === 'open') {
+        this.open();
+      }
     }
+
   }
 
   private setAction() {

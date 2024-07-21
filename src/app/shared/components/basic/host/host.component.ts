@@ -6,14 +6,14 @@ import {Component, ElementRef, HostListener} from '@angular/core';
 })
 export abstract class HostComponent {
 
-  protected constructor(private self: ElementRef<HTMLElement>) {}
+  protected constructor(protected selfRef: ElementRef<HTMLElement>) {}
 
   @HostListener('keydown.enter', ['$event'])
   @HostListener('keydown.space', ['$event'])
-  private onKeydownClick(event: Event): void {
+  private _onKeydownClick(event: Event): void {
     event.preventDefault();
-    if (this.self) {
-      this.self.nativeElement.click();
+    if (this.selfRef) {
+      this.selfRef.nativeElement.click();
     }
   }
 
@@ -23,6 +23,6 @@ export abstract class HostComponent {
     this.onHostClick(event);
   }
 
-  protected abstract onHostClick(event: Event): void;
+  protected abstract onHostClick(event?: Event): void;
 
 }

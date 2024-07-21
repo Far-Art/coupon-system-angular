@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService, SignupData, SignupForm, UserType} from '../auth.service';
 import {Router} from '@angular/router';
@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit, OnDestroy {
+export class SignupComponent implements OnInit, AfterViewInit, OnDestroy {
 
   form: FormGroup<SignupForm>;
 
@@ -29,7 +29,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   private defaultCustomerImgPath = 'assets/images/customer-default.png';
   private defaultCompanyImgPath  = 'assets/images/company-default.png';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.minLength = this.authService.passwordMinLength;
@@ -110,5 +110,9 @@ export class SignupComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.authService.signupFormData = this.form.value as SignupData;
     if (this.subscription) this.subscription.unsubscribe()
+  }
+
+  ngAfterViewInit(): void {
+    this.changeDetector.detectChanges();
   }
 }

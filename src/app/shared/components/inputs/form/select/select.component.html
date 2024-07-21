@@ -25,27 +25,34 @@
       </svg>
     </div>
   </span>
-  <div class="form-floating position-relative" [attr.aria-label]="'select ' + label"
+  <div class="form-floating position-relative" [attr.aria-label]="label + ' select'"
+       role="combobox"
+       [attr.tabindex]="disabled ? -1 : 0"
        [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}">
     <!-- selected option -->
-    <div [id]="id" class="fa-option-selected" *ngIf="selected?.templateRef && !isOpen">
+    <div [id]="id" class="fa-option-selected form-control" *ngIf="selected?.templateRef && !isOpen">
       <ng-container *ngTemplateOutlet="selected.templateRef"></ng-container>
     </div>
+    <label [for]="id">{{ label | titlecase }}</label>
 
     <!-- displayed values from placeholder content -->
-    <div *ngIf="isOpen" class="fa-options-container" role="combobox">
-      <div class="fa-option" (click)="onOptionClick(i)" *ngFor="let option of _options; let i = index" role="option">
+    <div *ngIf="isOpen" class="fa-options-container">
+      <div class="fa-option"
+           [ngClass]="{'active': i === selectedIndex}"
+           (click)="onOptionSelect(i)"
+           *ngFor="let option of _options; let i = index"
+           role="option"
+           [attr.aria-selected]="i === selectedIndex">
         <ng-container *ngTemplateOutlet="option.templateRef"></ng-container>
       </div>
     </div>
 
     <!-- placeholder for content -->
-    <div *ngIf="isOpen" style="display: none">
+    <div aria-hidden="true" *ngIf="isOpen" style="display: none">
       <ng-content select="cs-option"></ng-content>
     </div>
 
     <!-- empty option template -->
-    <cs-option style="display: none" *ngIf="showEmptyOption" [value]="null">Select {{ label }}</cs-option>
-    <label [for]="id">{{ label | titlecase }}</label>
+    <cs-option aria-hidden="true" style="display: none" *ngIf="showEmptyOption" [value]="null">Select {{ label }}</cs-option>
   </div>
 </div>
