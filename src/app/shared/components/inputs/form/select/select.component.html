@@ -25,10 +25,15 @@
       </svg>
     </div>
   </span>
-  <div class="form-floating position-relative" [attr.aria-label]="label + ' select'"
+  <div class="form-floating position-relative fa-combobox" [attr.aria-label]="label + ' select'"
        role="combobox"
        [attr.tabindex]="disabled ? -1 : 0"
-       [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}">
+       [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid, 'open': isOpen}">
+    <span class="fa-combobox-arrows">
+      <svg fill="currentColor" viewBox="0 -15 20 40" xmlns="http://www.w3.org/2000/svg"><path d="m12 6.586-8.707 8.707 1.414 1.414L12 9.414l7.293 7.293 1.414-1.414L12 6.586z" /></svg>
+      <svg fill="currentColor" viewBox="0 0 20 40" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.414 3.293 8.707l1.414-1.414L12 14.586l7.293-7.293 1.414 1.414L12 17.414z" /></svg>
+    </span>
+
     <!-- selected option -->
     <div [id]="id" class="fa-option-selected form-control" *ngIf="selected?.templateRef && !isOpen">
       <ng-container *ngTemplateOutlet="selected.templateRef"></ng-container>
