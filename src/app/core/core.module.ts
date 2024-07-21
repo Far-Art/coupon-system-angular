@@ -12,6 +12,7 @@ import {SharedModule} from '../shared/shared.module';
 import {ToastComponent} from './toasts/toast.component';
 import {ToastContainerComponent} from './toasts/toast-container/toast-container.component';
 import {DeviceService} from './services/device.service';
+import {BackdropComponent} from './services/backdrop/backdrop.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {DeviceService} from './services/device.service';
     MainHeaderContentComponent,
     FooterComponent,
     ToastComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
+    BackdropComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ import {DeviceService} from './services/device.service';
     HeaderComponent,
     MainHeaderContentComponent,
     FooterComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
+    BackdropComponent
   ],
   providers: [
     DeviceService
