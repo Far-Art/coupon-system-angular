@@ -19,7 +19,6 @@ import {ModalFooterComponent} from './components/modal/modal-footer/modal-footer
 import {ModalButtonComponent} from './components/modal/modal-button/modal-button.component';
 import {IdGeneratorService} from './services/id-generator.service';
 import {CheckNgContentDirective} from './directives/check-ng-content.directive';
-import {ModalBackdropComponent} from './components/modal/modals-container/modal-backdrop/modal-backdrop.component';
 import {ModalsContainerComponent} from './components/modal/modals-container/modals-container.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ButtonComponent} from './components/basic/button/button.component';
@@ -55,7 +54,6 @@ import {CloseButtonComponent} from './components/basic/close-button/close-button
     SelectComponent,
     OptionComponent,
     CheckNgContentDirective,
-    ModalBackdropComponent,
     ModalsContainerComponent,
     ButtonComponent,
     AccordionComponent,
@@ -83,7 +81,6 @@ import {CloseButtonComponent} from './components/basic/close-button/close-button
     SelectComponent,
     OptionComponent,
     AbstractFormInputComponent,
-    ModalBackdropComponent,
     ModalsContainerComponent,
     ButtonComponent,
     AccordionComponent,

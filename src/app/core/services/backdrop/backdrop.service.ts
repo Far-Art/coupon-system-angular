@@ -41,13 +41,13 @@ export class BackdropService {
 
   private showBackdropFlow() {
     this._isBackdropVisible.next(true);
-    this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
-    this.renderer.setStyle(this.containerElement, 'z-index', 2000);
+    this.renderer.setStyle(document.documentElement, 'overflow-y', 'hidden');
+    this.renderer.setStyle(this.containerElement, 'z-index', 1000);
   }
 
   private hideBackdropFlow() {
     this._isBackdropVisible.next(false);
-    this.renderer.setStyle(document.body, 'overflow-y', 'auto');
+    this.renderer.removeStyle(document.documentElement, 'overflow-y');
     this.renderer.setStyle(this.containerElement, 'z-index', -10);
   }
 

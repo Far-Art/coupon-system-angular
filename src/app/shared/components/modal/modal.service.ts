@@ -1,44 +1,40 @@
 import {ElementRef, Injectable, Renderer2, RendererFactory2} from '@angular/core';
 import {ModalComponent} from './modal.component';
 import {ModalButtonComponent} from './modal-button/modal-button.component';
-import {BehaviorSubject, Observable, Subject, take} from 'rxjs';
+import {Subject, take} from 'rxjs';
+import {BackdropService} from '../../../core/services/backdrop/backdrop.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModalService {
-  private modalsMap: Map<string, ModalComponent>        = new Map();
+  private modalsMap: Map<string, ModalComponent> = new Map();
   private buttonsMap: Map<string, ModalButtonComponent> = new Map();
-  private showBackdrop                                  = new BehaviorSubject(false);
-  private okToOpen: Subject<void>                       = new Subject();
+  private okToOpen: Subject<void> = new Subject();
   private renderer: Renderer2;
   private containerElement: HTMLElement;
   private prevModal: ModalComponent;
   private currentModal: ModalComponent;
   private backdropConfig: boolean | 'static';
 
-  constructor(rendererFactory: RendererFactory2) {
+  constructor(rendererFactory: RendererFactory2, private backdropService: BackdropService) {
     this.renderer = rendererFactory.createRenderer(null, null);
-  }
-
-  backdropVisible$(): Observable<boolean> {
-    return this.showBackdrop.asObservable();
+    backdropService.onBackdropClick$().subscribe(() => this.onBackdropClose());
   }
 
   /**
    * close current open modal
    */
   close(closeBackdrop = true): void {
-    if (closeBackdrop) {
-      this.showBackdrop.next(false);
-    }
     if (this.currentModal) {
       this.currentModal.leaveTransitionEnded$().pipe(take(1))
           .subscribe(() => {
+            if (closeBackdrop) {
+              this.backdropService.hide();
+            }
             this.renderer.removeChild(this.containerElement, this.currentModal['selfRef'].nativeElement);
-            this.renderer.setStyle(this.containerElement, 'z-index', -1);
-            this.renderer.removeStyle(document.body, 'overflow-y');
+            this.renderer.setStyle(this.containerElement, 'z-index', -10);
             this.currentModal = null;
             this.okToOpen.next();
           });
@@ -102,10 +98,9 @@ export class ModalService {
   private openModalFlow(modal: ModalComponent) {
     this.currentModal = modal;
     modal['setOpen']();
-    this.showBackdrop.next(true);
+    this.backdropService.show();
     this.backdropConfig = modal.backdrop;
-    this.renderer.setStyle(document.body, 'overflow-y', 'hidden');
-    this.renderer.setStyle(this.containerElement, 'z-index', 9999);
+    this.renderer.setStyle(this.containerElement, 'z-index', 1050);
     this.renderer.appendChild(this.containerElement, modal['selfRef'].nativeElement);
   }
 

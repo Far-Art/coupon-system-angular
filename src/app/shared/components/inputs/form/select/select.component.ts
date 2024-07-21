@@ -32,7 +32,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
   onOpen() {
     this.isOpen = true;
     this.backdropService.show();
-    this.renderer.setStyle(this.elRef.nativeElement, 'z-index', '2050');
+    this.renderer.setStyle(this.elRef.nativeElement, 'z-index', '1050');
   }
 
   onClose() {
