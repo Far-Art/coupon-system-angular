@@ -2,6 +2,7 @@ import {Component, ContentChildren, forwardRef, Input, QueryList, ViewChild} fro
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AbstractFormInputComponent} from '../abstract-form-input.component';
 import {OptionComponent} from './option/option.component';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -18,36 +19,43 @@ import {OptionComponent} from './option/option.component';
 })
 export class SelectComponent extends AbstractFormInputComponent<any> {
 
-  @ContentChildren(OptionComponent) protected _optionsQueryList: QueryList<OptionComponent>;
-  @ViewChild(OptionComponent) protected _emptyOption: OptionComponent;
-
   @Input() showEmptyOption = false;
   @Input('selected') selectedIndex: number;
-
+  @ContentChildren(OptionComponent) protected _optionsQueryList: QueryList<OptionComponent>;
+  @ViewChild(OptionComponent) protected _emptyOption: OptionComponent;
   protected isOpen = false;
   protected _options: OptionComponent[] = [];
   protected selected: OptionComponent;
 
+  private subscription: Subscription;
+
   onOpen() {
-    this.isOpen = !this.isOpen;
+    this.isOpen = true;
+    this.backdropService.show();
+    this.renderer.setStyle(this.elRef.nativeElement, 'z-index', '2050');
+  }
+
+  onClose() {
+    this.isOpen = false;
+    this.backdropService.hide();
+    this.renderer.removeStyle(this.elRef.nativeElement, 'z-index');
   }
 
   onOptionSelect(index: number) {
     this.selected = this._options[index];
     this.selectedIndex = index;
     this.setValue(this.selected.value);
+    this.onClose();
   }
 
   override ngOnInit(): void {
     super.ngOnInit();
+    this.subscription = this.backdropService.onBackdropClick$().subscribe(() => this.onClose());
   }
 
-  override ngOnChanges() {
-    super.ngOnChanges();
-  }
-
-  override ngAfterContentInit() {
-    super.ngAfterContentInit();
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.subscription.unsubscribe();
   }
 
   override ngAfterViewInit() {

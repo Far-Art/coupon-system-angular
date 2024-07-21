@@ -1,13 +1,28 @@
+:host {
+  position: relative;
+}
+
 .fa-options-container {
   display: flex;
   flex-direction: column;
   position: absolute;
-  margin-top: 50px;
+  margin-top: 58px;
   inset: 0;
   z-index: 1000;
 }
 
 .fa-combobox {
+  &-container {
+    min-height: 58px;
+    box-shadow: 0 0 0 max(100vw, 100vh) rgba(0 0 0 / .0);
+    transition: box-shadow 200ms ease;
+
+    &.open {
+      box-shadow: 0 0 0 max(100vw, 100vh) rgba(0 0 0 / .3);
+      border-bottom-right-radius: 0 !important;
+    }
+  }
+
   &:hover, &.open {
     svg {
       margin: 3px 0;

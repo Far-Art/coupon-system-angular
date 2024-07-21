@@ -1,8 +1,9 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, ViewChild, Renderer2} from '@angular/core';
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, ViewChild} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../../services/id-generator.service';
 import {Subscription} from 'rxjs';
 import {HostComponent} from '../../basic/host/host.component';
+import {BackdropService} from '../../../../core/services/backdrop/backdrop.service';
 
 
 export interface FormErrorParams<T> {
@@ -17,10 +18,6 @@ export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 
 })
 export class AbstractFormInputComponent<T> extends HostComponent implements OnInit, OnChanges, AfterContentInit, AfterViewInit, ControlValueAccessor, OnDestroy {
 
-  @ViewChild('content', {static: true}) protected content: ElementRef<HTMLDivElement>;
-  @HostBinding('style.width') protected width = '100%';
-  @HostBinding('attr.disabled') protected isDisabled = false;
-
   @Input() id: string = this.idGenerator.generate();
   @Input() label: string = 'input';
   @Input() type: InputTypes = 'text';
@@ -29,7 +26,6 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
   @Input() errors: FormErrorParams<T> | FormErrorParams<T>[];
   @Input() min: number;
   @Input() max: number;
-
   value: T;
   form: FormGroup;
   control: AbstractControl<any, any>;
@@ -41,14 +37,17 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
   nodeName: string;
   dayOfWeek: number;
   errorMessages: string[] = [];
-
+  @ViewChild('content', {static: true}) protected content: ElementRef<HTMLDivElement>;
+  @HostBinding('style.width') protected width = '100%';
+  @HostBinding('attr.disabled') protected isDisabled = false;
   protected _type: Exclude<InputTypes, 'currency' | 'search' | 'image' | 'textarea'>;
   protected _min: number;
   protected _max: number;
-  private subscription: Subscription;
+  private _subscription: Subscription;
 
   constructor(
       protected idGenerator: IdGeneratorService,
+      protected backdropService: BackdropService,
       protected elRef: ElementRef<HTMLElement>,
       protected changeDetector: ChangeDetectorRef,
       protected renderer: Renderer2,
@@ -106,7 +105,7 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
+    if (this._subscription) this._subscription.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -127,10 +126,12 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
 
       if (this.control) {
         this.handleFormStatusChanges();
-        this.subscription = this.control.valueChanges.subscribe(() => this.handleFormStatusChanges());
+        this._subscription = this.control.valueChanges.subscribe(() => this.handleFormStatusChanges());
       }
     }
   }
+
+  onHostClick(event: Event): void {}
 
   private setDayOfWeekIfDate() {
     if (this.control) {
@@ -194,7 +195,5 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
     }
 
   }
-
-  onHostClick(event: Event): void {}
 
 }
