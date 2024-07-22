@@ -36,7 +36,7 @@
 
     <!-- selected option -->
     <div [id]="id" class="fa-option-selected-container form-control">
-      <ng-container *ngTemplateOutlet="selected?.templateRef"></ng-container>
+      <ng-container *ngTemplateOutlet="selectedRef"></ng-container>
     </div>
     <label [for]="id">{{ label | titlecase }}</label>
 
@@ -61,3 +61,7 @@
     <cs-option inert aria-hidden="true" style="display: none" *ngIf="showEmptyOption" [value]="null">Select {{ label }}</cs-option>
   </div>
 </div>
+
+<ng-template #selectedRef>
+  <ng-container *ngTemplateOutlet="selected?.templateRef"></ng-container>
+</ng-template>
