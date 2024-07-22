@@ -43,10 +43,6 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
 
   onOptionSelect(index: number) {
     this.selected = this._options[index];
-    // this._optionsQueryList.filter(o => o?.templateRef?.elementRef?.nativeElement != null).forEach(option => {
-    //   this.renderer.removeClass(option.templateRef.elementRef.nativeElement, 'fa-option-selected');
-    // });
-    this.renderer.addClass(this.selected.templateRef.elementRef.nativeElement.parentElement, 'fa-option-selected')
     this.selectedIndex = index;
     this.onClose();
     this.setValue(this.selected.value);

@@ -19,9 +19,9 @@ export class AppComponent implements OnInit {
     this.authService.autoLogin();
     this.backdropService.isVisible$().subscribe(isVisible => {
       if (isVisible) {
-        this.renderer.setAttribute(this.content.nativeElement, 'inert', '');
+        // this.renderer.setAttribute(this.content.nativeElement, 'inert', '');
       } else {
-        this.renderer.removeAttribute(this.content.nativeElement, 'inert');
+        // this.renderer.removeAttribute(this.content.nativeElement, 'inert');
       }
     });
   }

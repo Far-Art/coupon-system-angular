@@ -17,6 +17,9 @@ export class BackdropService {
 
   show(): void {
     this.showBackdropFlow();
+    const tabbed = document.body.querySelectorAll('[tabindex="0"]');
+    tabbed.forEach(el => this.renderer.setAttribute(el,'tabindex', '-1'));
+    console.log(tabbed);
   }
 
   hide(): void {
