@@ -53,11 +53,11 @@
     </div>
 
     <!-- placeholder for content -->
-    <div aria-hidden="true" *ngIf="isOpen" style="display: none">
+    <div inert aria-hidden="true" *ngIf="isOpen" style="display: none">
       <ng-content select="cs-option"></ng-content>
     </div>
 
     <!-- empty option template -->
-    <cs-option aria-hidden="true" style="display: none" *ngIf="showEmptyOption" [value]="null">Select {{ label }}</cs-option>
+    <cs-option inert aria-hidden="true" style="display: none" *ngIf="showEmptyOption" [value]="null">Select {{ label }}</cs-option>
   </div>
 </div>
