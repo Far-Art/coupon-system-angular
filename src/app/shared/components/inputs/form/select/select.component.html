@@ -35,8 +35,8 @@
     </span>
 
     <!-- selected option -->
-    <div [id]="id" class="fa-option-selected form-control" *ngIf="selected?.templateRef && !isOpen">
-      <ng-container *ngTemplateOutlet="selected.templateRef"></ng-container>
+    <div [id]="id" class="fa-option-selected-container form-control">
+      <ng-container *ngTemplateOutlet="selected?.templateRef"></ng-container>
     </div>
     <label [for]="id">{{ label | titlecase }}</label>
 
