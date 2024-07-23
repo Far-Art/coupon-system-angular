@@ -44,8 +44,8 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
   onOptionSelect(index: number) {
     this.selected = this._options[index];
     this.selectedIndex = index;
-    this.onClose();
     this.setValue(this.selected.value);
+    this.onClose();
   }
 
   override ngAfterViewInit() {

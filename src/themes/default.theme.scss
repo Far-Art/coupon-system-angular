@@ -4,13 +4,23 @@
 
 :root {
   $primary-color: #e7103d;
+  --focus-color: #{$purple-500};
   --primary-color: #{$primary-color};
   --secondary-color: #{$gray-500};
+  --fa-focus-shadow-color: var(--focus-color);
+  --fa-focus-shadow: 0 0 0 0.31rem hsl(from var(--fa-focus-shadow-color) h s l / .35);
   scrollbar-color: #{$primary-color} #{$white};
   color-scheme: light;
 
   html, body {
     background: #{$gray-500};
+
+    *:focus {
+      outline: none;
+      --border-color: hsl(from var(--focus-color) h s l / .7);
+      box-shadow: var(--fa-focus-shadow);
+      border-color: var(--border-color);
+    }
   }
 
   @include recolor-main($primary-color);
