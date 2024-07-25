@@ -45,7 +45,7 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
       this.setAriaLabel();
       if (this.formGroup) {
         if (this.type === 'submit') {
-          const el = this.getParentElement(this.selfRef.nativeElement);
+          const el = this.getFormElement(this.selfRef.nativeElement);
           this.unsubscribe = this.renderer.listen(el, 'keydown.enter', () => this.onHostClick());
         } else if (this.type === 'reset') {
           this.initialFormValue = this.formGroup.value;
@@ -94,7 +94,7 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
     }
   }
 
-  private getParentElement(el: HTMLElement): HTMLElement {
+  private getFormElement(el: HTMLElement): HTMLElement {
     const parent = el.parentElement;
     if (!parent) {
       return el;
@@ -103,7 +103,7 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
     if (parent.tagName === 'BODY' || parent.tagName === 'FORM' || parent.role === 'form') {
       return parent;
     }
-    return this.getParentElement(parent);
+    return this.getFormElement(parent);
   }
 
   ngOnDestroy(): void {
