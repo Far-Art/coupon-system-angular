@@ -55,7 +55,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
     if (this.focusUnsubscribe) this.focusUnsubscribe();
     if (this.tabUnsubscribe) this.tabUnsubscribe();
     if (this.shiftTabUnsubscribe) this.shiftTabUnsubscribe();
-    this.selectedElement.nativeElement.focus();
+    setTimeout(() => this.selectedElement.nativeElement.focus());
   }
 
   onOptionSelect(option: OptionComponent) {
@@ -92,14 +92,17 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
 
   private onFocusCycleListener() {
     this.focusUnsubscribe = this.renderer.listen(window, 'keydown', (event: KeyboardEvent) => {
+
+      if (this.shiftTabUnsubscribe) this.shiftTabUnsubscribe();
       this.shiftTabUnsubscribe = this.renderer.listen(this._options.first['selfRef'].nativeElement, 'focusout', () => {
         if (event.shiftKey && event.key === 'Tab') {
           this._options.last['selfRef'].nativeElement.focus();
         }
       });
 
+      if (this.tabUnsubscribe) this.tabUnsubscribe();
       this.tabUnsubscribe = this.renderer.listen(this._options.last['selfRef'].nativeElement, 'focusout', () => {
-        if (event.key === 'Tab') {
+        if (!event.shiftKey && event.key === 'Tab') {
           this._options.first['selfRef'].nativeElement.focus();
         }
       });

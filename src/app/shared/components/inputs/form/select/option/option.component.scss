@@ -15,7 +15,8 @@
   }
 
   &.active {
-    background: #cbcbef;
+    --active-bg-color: hsl(from var(--primary-color) h 50 90);
+    background-color: var(--active-bg-color);
   }
 
 }
