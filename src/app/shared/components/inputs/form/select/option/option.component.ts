@@ -43,4 +43,6 @@ export class OptionComponent extends ButtonComponent {
     }
   }
 
+  protected override onEscapeKey(): void {}
+
 }

@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, TemplateRef, ViewChild} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../../services/id-generator.service';
 import {Subscription} from 'rxjs';
@@ -38,6 +38,7 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
   dayOfWeek: number;
   errorMessages: string[] = [];
   @ViewChild('content', {static: true}) protected content: ElementRef<HTMLDivElement>;
+  @ViewChild('inputType', {static: true}) protected inputTemplate: TemplateRef<HTMLElement>;
   @HostBinding('style.width') protected width = '100%';
   @HostBinding('attr.disabled') protected isDisabled = false;
   protected _type: Exclude<InputTypes, 'currency' | 'search' | 'image' | 'textarea'>;
@@ -196,6 +197,12 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
       this._max = this.max;
     }
 
+  }
+
+  protected override onEscapeKey(): void {
+    const parentEl: HTMLElement = this.inputTemplate.elementRef.nativeElement.parentElement;
+    parentEl.querySelector('input')?.blur();
+    parentEl.querySelector('textarea')?.blur();
   }
 
 }

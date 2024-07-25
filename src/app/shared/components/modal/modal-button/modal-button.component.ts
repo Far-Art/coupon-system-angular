@@ -92,4 +92,8 @@ export class ModalButtonComponent extends ButtonComponent {
     }
   }
 
+  protected override onEscapeKey(): void {
+    this.selfRef.nativeElement.blur();
+  }
+
 }

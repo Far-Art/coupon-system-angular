@@ -55,7 +55,6 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
   }
 
   protected override onHostClick(event?: Event): void {
-    // TODO add on enter listener
     if (!this.disabled) {
       if (this.formGroup) {
         if (this.type === 'submit' && !this.formGroup.submitted) {
@@ -112,4 +111,8 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
   }
 
   protected onHostFocus(): void {}
+
+  protected onEscapeKey(): void {
+    this.selfRef.nativeElement.blur();
+  }
 }
