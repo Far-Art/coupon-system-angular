@@ -1,0 +1,21 @@
+:host {
+  position: relative;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+
+  &:not(.disabled) {
+    cursor: pointer;
+  }
+
+  &:hover, &:focus, &:focus-visible {
+    z-index: 1;
+  }
+
+  &.active {
+    background: #cbcbef;
+  }
+
+}

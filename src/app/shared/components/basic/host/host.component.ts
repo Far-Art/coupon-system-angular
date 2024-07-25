@@ -12,6 +12,7 @@ export abstract class HostComponent {
   @HostListener('keydown.space', ['$event'])
   private _onKeydownClick(event: Event): void {
     event.preventDefault();
+    event.stopPropagation();
     if (this.selfRef) {
       this.selfRef.nativeElement.click();
     }
@@ -19,9 +20,17 @@ export abstract class HostComponent {
 
   @HostListener('click', ['$event'])
   private _onHostClick(event: Event): void {
-    event?.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
     this.onHostClick(event);
   }
+
+  @HostListener('focus', ['$event'])
+  private _onHostFocus(event: Event): void {
+    this.onHostFocus(event);
+  }
+
+  protected abstract onHostFocus(event?: Event): void;
 
   protected abstract onHostClick(event?: Event): void;
 

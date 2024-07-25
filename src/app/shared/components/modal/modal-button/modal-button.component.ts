@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, Optional, Renderer2, Self} from '@angular/core';
+import {Component, ElementRef, Input, Optional, Renderer2, Self} from '@angular/core';
 import {ModalComponent} from '../modal.component';
 import {ModalService} from '../modal.service';
 import {ButtonComponent} from '../../basic/button/button.component';
@@ -20,9 +20,8 @@ export class ModalButtonComponent extends ButtonComponent {
       private service: ModalService,
       @Optional() formGroup: FormGroupDirective,
       @Self() selfRef: ElementRef<HTMLElement>,
-      renderer: Renderer2,
-      changeDetectorRef: ChangeDetectorRef
-  ) {super(renderer, selfRef, formGroup, changeDetectorRef);}
+      renderer: Renderer2
+  ) {super(renderer, selfRef, formGroup);}
 
   override ngOnInit(): void {
     super.ngOnInit();

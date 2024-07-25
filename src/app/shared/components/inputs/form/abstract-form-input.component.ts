@@ -131,7 +131,9 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
     }
   }
 
-  onHostClick(event: Event): void {}
+  protected override onHostClick(event?: Event): void {}
+
+  protected override onHostFocus(event?: Event): void {}
 
   private setDayOfWeekIfDate() {
     if (this.control) {

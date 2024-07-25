@@ -3,15 +3,18 @@
 }
 
 .fa-options-container {
-  display: flex;
-  flex-direction: column;
   position: absolute;
-  margin-top: 58px;
+  margin-top: 60px;
   inset: 0;
   z-index: 1000;
 }
 
 .fa-combobox {
+  &.is-valid, &.is-invalid {
+    .fa-combobox-arrows.fa-combobox-arrows {
+      margin-right: 2rem !important;
+    }
+  }
 
   &-container {
     min-height: 58px;
@@ -53,28 +56,8 @@
   }
 }
 
-.fa-option, .fa-option-selected-container {
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-
-  &:not(.disabled) {
-    cursor: pointer;
-  }
-
-  &.active {
-    background: #8f8fbe;
-  }
-
-}
-
 .fa-option-selected-container {
-  justify-content: start;
-}
-
-.fa-option {
-
+  min-height: 50px;
+  text-align: start;
 }
 

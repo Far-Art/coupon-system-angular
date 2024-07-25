@@ -106,4 +106,6 @@ export class WheelPickerComponent extends AbstractFormInputComponent<number | st
     return this.selectFieldHeight * (this.selectedIndex % this.values.length);
   }
 
+  protected override onHostClick(): void {}
+
 }

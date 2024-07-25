@@ -38,9 +38,11 @@ export class CheckboxComponent extends AbstractFormInputComponent<boolean> {
     this.checkbox.nativeElement.indeterminate = this.indeterminate;
   }
 
-  override onHostClick() {
+  protected override onHostClick() {
     if (!this.isDisabled) {
       this.setValue(!this.value);
     }
   }
+
+  protected override onHostFocus(event: Event | undefined): void {}
 }

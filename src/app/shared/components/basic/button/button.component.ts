@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self} from '@angular/core';
 import {FormGroupDirective} from '@angular/forms';
 import {HostComponent} from '../host/host.component';
 
@@ -27,8 +27,7 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
   constructor(
       protected renderer: Renderer2,
       @Self() selfRef: ElementRef<HTMLElement>,
-      @Optional() protected formGroup: FormGroupDirective,
-      protected changeDetectorRef: ChangeDetectorRef
+      @Optional() protected formGroup: FormGroupDirective
   ) {super(selfRef);}
 
   ngOnInit(): void {
@@ -40,7 +39,6 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
   }
 
   ngAfterViewInit(): void {
-
     // ensure all fields was set
     setTimeout(() => {
       if (this.unsubscribe) this.unsubscribe();
@@ -111,4 +109,6 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
   ngOnDestroy(): void {
     if (this.unsubscribe) this.unsubscribe();
   }
+
+  protected onHostFocus(): void {}
 }
