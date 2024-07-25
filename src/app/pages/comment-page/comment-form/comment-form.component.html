@@ -1,0 +1,11 @@
+<div class="container card">
+  <form [formGroup]="form" class="p-4" (ngSubmit)="onSubmit()">
+    <cs-input formControlName="email" label="email (Optional)" type="email"></cs-input>
+    <cs-input formControlName="name" label="name (Optional)" type="text"></cs-input>
+    <cs-input formControlName="comment" label="comment" type="textarea"></cs-input>
+    <div class="row mt-3">
+      <cs-button class="col btn btn-outline-danger m-1" type="reset">Reset</cs-button>
+      <cs-button class="col btn btn-outline-success m-1" type="submit" [disabled]="form.invalid">Submit</cs-button>
+    </div>
+  </form>
+</div>
