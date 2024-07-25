@@ -15,7 +15,7 @@
   }
 
   &.active {
-    --active-bg-color: hsl(from var(--primary-color) h 50 90);
+    --active-bg-color: hsl(from var(--secondary-color) h s 94);
     background-color: var(--active-bg-color);
   }
 
