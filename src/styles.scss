@@ -32,6 +32,11 @@ html, body {
   width: 100vw;
   margin: 0;
   padding: 0;
+
+  *:focus-visible {
+    outline: none;
+    z-index: 999 !important;
+  }
 }
 
 @supports (height: 100svh) {

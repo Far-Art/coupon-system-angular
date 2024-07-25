@@ -47,7 +47,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
     }
   }
 
-  onClose() {
+  onClose(setFocus = true) {
     this.isOpen = false;
     this.renderer.removeStyle(this.elRef.nativeElement, 'z-index');
     if (this.clickUnsubscribe) this.clickUnsubscribe();
@@ -55,13 +55,13 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
     if (this.focusUnsubscribe) this.focusUnsubscribe();
     if (this.tabUnsubscribe) this.tabUnsubscribe();
     if (this.shiftTabUnsubscribe) this.shiftTabUnsubscribe();
-    setTimeout(() => this.selectedElement.nativeElement.focus());
+    if (setFocus) setTimeout(() => this.selectedElement.nativeElement.focus());
   }
 
-  onOptionSelect(option: OptionComponent) {
+  onOptionSelect(option: OptionComponent, setFocus = true) {
     this.selected = option;
     this.setValue(option.value);
-    this.onClose();
+    this.onClose(setFocus);
     this._options.forEach(opt => {
       const elRef = opt['selfRef'].nativeElement;
       if (opt === this.selected) {
@@ -78,11 +78,11 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
     super.ngAfterViewInit();
 
     if (this.selectedIndex) {
-      this.onOptionSelect(this._options.get(this.selectedIndex));
+      this.onOptionSelect(this._options.get(this.selectedIndex), false);
     }
 
     if (!this.selected && this._options) {
-      this.onOptionSelect(this._options.get(0));
+      this.onOptionSelect(this._options.get(0), false);
     }
   }
 
