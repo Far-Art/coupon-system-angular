@@ -49,6 +49,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
 
   onClose(setFocus = true) {
     this.isOpen = false;
+    // TODO add backdrop when select open to prevent clicks on other inputs
     this.renderer.removeStyle(this.elRef.nativeElement, 'z-index');
     if (this.clickUnsubscribe) this.clickUnsubscribe();
     if (this.escUnsubscribe) this.escUnsubscribe();
