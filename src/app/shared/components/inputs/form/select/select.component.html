@@ -34,6 +34,7 @@
 
     <!-- selected option -->
     <div [id]="id" class="fa-option-selected-container form-control"
+         #selectedOptionEl
          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
          role="combobox"
          [attr.aria-label]="label + ' select'"
@@ -43,7 +44,7 @@
     </div>
     <label [for]="id">{{ label | titlecase }}</label>
 
-    <!-- displayed values from placeholder content -->
+    <!-- displayed options -->
     <div *ngIf="isOpen" class="fa-options-container">
       <ng-content select="cs-option"></ng-content>
     </div>

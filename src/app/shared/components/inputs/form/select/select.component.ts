@@ -1,4 +1,4 @@
-import {Component, ContentChildren, forwardRef, Input, QueryList} from '@angular/core';
+import {Component, ContentChildren, ElementRef, forwardRef, Input, QueryList, ViewChild} from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AbstractFormInputComponent} from '../abstract-form-input.component';
 import {OptionComponent} from './option/option.component';
@@ -20,6 +20,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
 
   @Input('selected') selectedIndex: number;
   @ContentChildren(OptionComponent) protected _options: QueryList<OptionComponent>;
+  @ViewChild('selectedOptionEl', {static: true}) selectedElement: ElementRef<HTMLDivElement>;
   protected isOpen = false;
   private clickUnsubscribe: () => void;
   private escUnsubscribe: () => void;
@@ -54,7 +55,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
     if (this.focusUnsubscribe) this.focusUnsubscribe();
     if (this.tabUnsubscribe) this.tabUnsubscribe();
     if (this.shiftTabUnsubscribe) this.shiftTabUnsubscribe();
-    setTimeout(() => this.selfRef.nativeElement.focus());
+    this.selectedElement.nativeElement.focus();
   }
 
   onOptionSelect(option: OptionComponent) {
