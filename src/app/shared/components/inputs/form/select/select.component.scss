@@ -1,5 +1,11 @@
 :host {
   position: relative;
+
+  &.ng-valid, &.ng-invalid {
+    .fa-combobox-arrows {
+      margin-right: 2rem;
+    }
+  }
 }
 
 .fa-options-container {
@@ -10,12 +16,6 @@
 }
 
 .fa-combobox {
-  &.is-valid, &.is-invalid {
-    .fa-combobox-arrows.fa-combobox-arrows {
-      margin-right: 2rem !important;
-    }
-  }
-
   &-container {
     min-height: 58px;
     outline: 0 solid rgba(0 0 0 / .0);

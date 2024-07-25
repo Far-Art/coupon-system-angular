@@ -33,7 +33,7 @@
     </span>
 
     <!-- selected option -->
-    <div [id]="id" class="fa-option-selected-container form-control"
+    <div [id]="id" class="fa-option-selected-container form-control {{isRequired && isValid ? 'is-valid': ''}}"
          #selectedOptionEl
          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
          role="combobox"
