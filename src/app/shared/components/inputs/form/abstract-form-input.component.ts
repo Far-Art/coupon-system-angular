@@ -20,6 +20,7 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
 
   @Input() id: string = this.idGenerator.generate();
   @Input() label: string = 'input';
+  @Input() name: string = '';
   @Input() type: InputTypes = 'text';
   @Input() options: T[] = [];
   @Input() disabled: boolean;
@@ -62,6 +63,7 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
 
   ngOnInit(): void {
     this.setType();
+    this.setName();
     this.setMinMax();
     this.nodeName = this.elRef.nativeElement.nodeName;
   }
@@ -188,6 +190,12 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
         break;
       default:
         this._type = this.type;
+    }
+  }
+
+  private setName() {
+    if (!this.name && (this._type === 'password' || this._type === 'email')) {
+      this.name = this._type;
     }
   }
 

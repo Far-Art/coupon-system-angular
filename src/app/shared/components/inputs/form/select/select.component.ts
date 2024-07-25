@@ -43,7 +43,6 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
       });
       this.onFocusCycleListener();
       this.clickUnsubscribe = this.renderer.listen(document.documentElement, 'click', () => this.onClose());
-      // this.escUnsubscribe = this.renderer.listen(document.documentElement, 'keydown.escape', () => this.onClose());
     }
   }
 

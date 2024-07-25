@@ -36,6 +36,7 @@
 <ng-template #inputType>
   <input *ngIf="type !== 'textarea' && _type !== 'text'"
          [type]="_type"
+         [name]="name"
          class="form-control"
          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
          [attr.aria-label]=" label + ' input'"
@@ -47,6 +48,7 @@
          [placeholder]="label | titlecase">
   <input *ngIf="type !== 'textarea' && _type === 'text'"
          [type]="_type"
+         [name]="name"
          class="form-control"
          [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
          [attr.aria-label]=" label + ' input'"
@@ -58,6 +60,7 @@
          [placeholder]="label | titlecase">
   <textarea *ngIf="type === 'textarea'"
             class="form-control"
+            [name]="name"
             [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
             [attr.aria-label]="label + ' input'"
             [id]="id"
