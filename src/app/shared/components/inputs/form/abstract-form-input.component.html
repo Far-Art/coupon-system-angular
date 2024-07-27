@@ -61,6 +61,7 @@
   <textarea *ngIf="type === 'textarea'"
             class="form-control"
             [name]="name"
+            [rows]="rows"
             [ngClass]="{'is-valid': isRequired && isValid, 'is-invalid': isRequired && isTouched && !isValid}"
             [attr.aria-label]="label + ' input'"
             [id]="id"

@@ -21,7 +21,8 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
   @HostBinding('attr.aria-label') protected ariaLabel: string;
   @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
   @HostBinding('disabled') protected hostDisabled: boolean;
-  private unsubscribe: () => void;
+  private onEnterKeyUnsubscribe: () => void;
+  private rootFormElement: HTMLElement;
   private initialFormValue: any;
 
   constructor(
@@ -41,12 +42,12 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
   ngAfterViewInit(): void {
     // ensure all fields was set
     setTimeout(() => {
-      if (this.unsubscribe) this.unsubscribe();
+      if (this.onEnterKeyUnsubscribe) this.onEnterKeyUnsubscribe();
       this.setAriaLabel();
       if (this.formGroup) {
         if (this.type === 'submit') {
-          const el = this.getFormElement(this.selfRef.nativeElement);
-          this.unsubscribe = this.renderer.listen(el, 'keydown.enter', () => this.onHostClick());
+          this.rootFormElement = this.getRootFormElement(this.selfRef.nativeElement);
+          this.onEnterKeyUnsubscribe = this.renderer.listen(this.rootFormElement, 'keydown.enter', () => this.onHostClick());
         } else if (this.type === 'reset') {
           this.initialFormValue = this.formGroup.value;
         }
@@ -54,16 +55,8 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
     });
   }
 
-  protected override onHostClick(event?: Event): void {
-    if (!this.disabled) {
-      if (this.formGroup) {
-        if (this.type === 'submit' && !this.formGroup.submitted) {
-          this.formGroup.ngSubmit.emit();
-        } else if (this.type === 'reset') {
-          this.formGroup.form.reset(this.initialFormValue);
-        }
-      }
-    }
+  ngOnDestroy(): void {
+    if (this.onEnterKeyUnsubscribe) this.onEnterKeyUnsubscribe();
   }
 
   protected setAriaLabel() {
@@ -94,7 +87,28 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
     }
   }
 
-  private getFormElement(el: HTMLElement): HTMLElement {
+  protected onEscapeKey(): void {
+    this.selfRef.nativeElement.blur();
+  }
+
+  protected onHostFocus(): void {}
+
+  protected override onHostClick(event?: Event): void {
+    if (!this.disabled) {
+      if (this.formGroup) {
+        if (this.type === 'submit' && !this.formGroup.submitted) {
+          if (document.hasFocus() && document.activeElement.tagName === 'TEXTAREA') {
+            return;
+          }
+          this.formGroup.ngSubmit.emit();
+        } else if (this.type === 'reset') {
+          this.formGroup.form.reset(this.initialFormValue);
+        }
+      }
+    }
+  }
+
+  private getRootFormElement(el: HTMLElement): HTMLElement {
     const parent = el.parentElement;
     if (!parent) {
       return el;
@@ -103,16 +117,6 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
     if (parent.tagName === 'BODY' || parent.tagName === 'FORM' || parent.role === 'form') {
       return parent;
     }
-    return this.getFormElement(parent);
-  }
-
-  ngOnDestroy(): void {
-    if (this.unsubscribe) this.unsubscribe();
-  }
-
-  protected onHostFocus(): void {}
-
-  protected onEscapeKey(): void {
-    this.selfRef.nativeElement.blur();
+    return this.getRootFormElement(parent);
   }
 }
