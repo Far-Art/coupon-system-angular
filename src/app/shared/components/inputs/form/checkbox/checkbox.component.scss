@@ -65,7 +65,7 @@
 
     > svg {
       position: absolute;
-      z-index: 1;
+      z-index: 2;
       pointer-events: none;
     }
 
@@ -83,7 +83,7 @@
       border: 1px solid var(--checkbox-border-unchecked);
       border-radius: 0.3rem;
       transform: scale(1);
-      color: currentColor;
+      color: var(--checkbox-bg-unchecked);
       transition-duration: var(--checkbox-transition-duration);
       transition-timing-function: var(--checkbox-transition-function);
 

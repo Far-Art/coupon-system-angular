@@ -1,9 +1,8 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, TemplateRef, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Renderer2, TemplateRef, ViewChild} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormGroup, FormGroupDirective, FormGroupName, Validators} from '@angular/forms';
 import {IdGeneratorService} from '../../../services/id-generator.service';
 import {Subscription} from 'rxjs';
-import {HostComponent} from '../../basic/host/host.component';
-import {BackdropService} from '../../../../core/services/backdrop/backdrop.service';
+import {ElementRole, HostComponent} from '../../basic/host/host.component';
 
 
 export interface FormErrorParams<T> {
@@ -16,14 +15,13 @@ export type InputTypes = 'text' | 'textarea' | 'number' | 'currency' | 'date' | 
 @Component({
   templateUrl: './abstract-form-input.component.html'
 })
-export class AbstractFormInputComponent<T> extends HostComponent implements OnInit, OnChanges, AfterContentInit, AfterViewInit, ControlValueAccessor, OnDestroy {
+export class AbstractFormInputComponent<T> extends HostComponent implements OnInit, AfterContentInit, AfterViewInit, ControlValueAccessor, OnDestroy {
 
   @Input() id: string = this.idGenerator.generate();
   @Input() label: string = 'input';
   @Input() name: string = '';
   @Input() type: InputTypes = 'text';
   @Input() options: T[] = [];
-  @Input() disabled: boolean;
   @Input() errors: FormErrorParams<T> | FormErrorParams<T>[];
   @Input() min: number;
   @Input() max: number;
@@ -42,7 +40,7 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
   @ViewChild('content', {static: true}) protected content: ElementRef<HTMLDivElement>;
   @ViewChild('inputType', {static: true}) protected inputTemplate: TemplateRef<HTMLElement>;
   @HostBinding('style.width') protected width = '100%';
-  @HostBinding('attr.disabled') protected isDisabled = false;
+
   protected _type: Exclude<InputTypes, 'currency' | 'search' | 'image' | 'textarea'>;
   protected _min: number;
   protected _max: number;
@@ -50,13 +48,12 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
 
   constructor(
       protected idGenerator: IdGeneratorService,
-      protected backdropService: BackdropService,
       protected elRef: ElementRef<HTMLElement>,
       protected changeDetector: ChangeDetectorRef,
-      protected renderer: Renderer2,
+      renderer: Renderer2,
       @Optional() protected rootForm: FormGroupDirective,
       @Optional() protected formGroup: FormGroupName
-  ) {super(elRef);}
+  ) {super(renderer, elRef);}
 
   onChange: any = () => {};
 
@@ -67,11 +64,6 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
     this.setName();
     this.setMinMax();
     this.nodeName = this.elRef.nativeElement.nodeName;
-  }
-
-  ngOnChanges(): void {
-    this.isDisabled = this.disabled;
-    // this.handleErrors();
   }
 
   onBlur() {
@@ -212,6 +204,10 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
       this._max = this.max;
     }
 
+  }
+
+  protected role(): ElementRole {
+    return undefined;
   }
 
 }

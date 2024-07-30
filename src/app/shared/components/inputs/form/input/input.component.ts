@@ -16,7 +16,4 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
   ]
 })
 export class InputComponent extends AbstractFormInputComponent<any> {
-  protected override onHostClick(): void {}
-
-  protected override onHostFocus(): void {}
 }

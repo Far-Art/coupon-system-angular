@@ -1,7 +1,6 @@
-import {Component, ElementRef, Input, Optional, Renderer2, Self} from '@angular/core';
-import {ButtonComponent} from '../../../../basic/button/button.component';
-import {FormGroupDirective} from '@angular/forms';
+import {Component, ElementRef, HostBinding, Input, OnChanges, OnInit, Renderer2, Self} from '@angular/core';
 import {SelectComponent} from '../select.component';
+import {ElementRole, HostComponent} from '../../../../basic/host/host.component';
 
 
 @Component({
@@ -9,19 +8,19 @@ import {SelectComponent} from '../select.component';
   templateUrl: './option.component.html',
   styleUrls: ['./option.component.scss']
 })
-export class OptionComponent extends ButtonComponent {
+export class OptionComponent extends HostComponent implements OnInit, OnChanges {
 
   @Input() value: any;
 
+  @HostBinding('tabindex') protected tabIndex: number = 0;
+
   constructor(
       renderer: Renderer2,
-      @Self() selfRef: ElementRef<HTMLElement>,
-      @Optional() formGroup: FormGroupDirective,
-      private parent: SelectComponent
-  ) {super(renderer, selfRef, formGroup);}
+      private parent: SelectComponent,
+      @Self() selfRef: ElementRef<HTMLElement>
+  ) {super(renderer, selfRef);}
 
-  override ngOnInit() {
-    this.role = 'option';
+  ngOnInit() {
     this.hostClass = 'fa-option';
     this.ariaLabel = this.value ? this.value : 'empty option';
   }
@@ -41,5 +40,9 @@ export class OptionComponent extends ButtonComponent {
     if (!this.disabled) {
       this.parent.onOptionSelect(this);
     }
+  }
+
+  protected role(): ElementRole {
+    return 'option';
   }
 }

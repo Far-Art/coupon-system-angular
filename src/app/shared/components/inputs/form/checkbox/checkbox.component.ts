@@ -39,12 +39,12 @@ export class CheckboxComponent extends AbstractFormInputComponent<boolean> {
   }
 
   protected override onHostClick() {
-    if (!this.isDisabled) {
+    if (!this.isHostDisabled) {
       this.setValue(!this.value);
     }
   }
 
-  protected override onHostFocus(): void {}
-
-  protected override onEscapeClick(): void {}
+  protected override onSpaceClick() {
+    this.onHostClick();
+  }
 }

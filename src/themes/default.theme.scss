@@ -19,6 +19,7 @@
       --border-color: hsl(from var(--focus-color) h s l / .7);
       box-shadow: var(--fa-focus-shadow);
       border-color: var(--border-color);
+      z-index: 1 !important;
     }
   }
 

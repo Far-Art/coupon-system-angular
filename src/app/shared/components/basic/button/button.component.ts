@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self} from '@angular/core';
 import {FormGroupDirective} from '@angular/forms';
-import {HostComponent} from '../host/host.component';
+import {ElementRole, HostComponent} from '../host/host.component';
 
 
 @Component({
@@ -9,34 +9,24 @@ import {HostComponent} from '../host/host.component';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent extends HostComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  @Input('class') class: string;
-  @Input('disabled') disabled: boolean = false;
   @Input() type: 'submit' | 'button' | 'reset' = 'button';
   @Input() showSpinner = false;
   @Input() placeholder: string;
 
-  @HostBinding('class') protected hostClass: string;
-  @HostBinding('role') protected role: string = 'button';
   @HostBinding('tabindex') protected tabIndex: number = 0;
-  @HostBinding('attr.aria-label') protected ariaLabel: string;
-  @HostBinding('attr.aria-disabled') protected ariaDisabled: boolean = false;
-  @HostBinding('disabled') protected hostDisabled: boolean;
+
   private onEnterKeyUnsubscribe: () => void;
   private rootFormElement: HTMLElement;
   private initialFormValue: any;
 
   constructor(
-      protected renderer: Renderer2,
-      @Self() selfRef: ElementRef<HTMLElement>,
-      @Optional() protected formGroup: FormGroupDirective
-  ) {super(selfRef);}
+      renderer: Renderer2,
+      @Optional() protected formGroup: FormGroupDirective,
+      @Self() selfRef: ElementRef<HTMLElement>
+  ) {super(renderer, selfRef);}
 
   ngOnInit(): void {
     this.hostClass = 'position-relative ' + (this.class ? this.class : 'btn btn-primary');
-  }
-
-  ngOnChanges(): void {
-    this.setDisabled();
   }
 
   ngAfterViewInit(): void {
@@ -77,16 +67,6 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
     }
   }
 
-  protected setDisabled() {
-    if (this.disabled) {
-      this.renderer.addClass(this.selfRef.nativeElement, 'disabled');
-      this.ariaDisabled = true;
-    } else {
-      this.renderer.removeClass(this.selfRef.nativeElement, 'disabled');
-      this.ariaDisabled = false;
-    }
-  }
-
   protected override onEscapeClick(): void {
     this.selfRef.nativeElement.blur();
   }
@@ -118,5 +98,9 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
       return parent;
     }
     return this.getRootFormElement(parent);
+  }
+
+  protected role(): ElementRole {
+    return 'button';
   }
 }

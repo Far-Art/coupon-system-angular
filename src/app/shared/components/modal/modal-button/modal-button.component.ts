@@ -21,7 +21,7 @@ export class ModalButtonComponent extends ButtonComponent {
       @Optional() formGroup: FormGroupDirective,
       @Self() selfRef: ElementRef<HTMLElement>,
       renderer: Renderer2
-  ) {super(renderer, selfRef, formGroup);}
+  ) {super(renderer, formGroup, selfRef);}
 
   override ngOnInit(): void {
     super.ngOnInit();
