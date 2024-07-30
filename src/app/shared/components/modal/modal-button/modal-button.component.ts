@@ -91,9 +91,4 @@ export class ModalButtonComponent extends ButtonComponent {
       this.ariaLabel = 'Open ' + (title ? title + ' ' : '');
     }
   }
-
-  protected override onEscapeKey(): void {
-    this.selfRef.nativeElement.blur();
-  }
-
 }

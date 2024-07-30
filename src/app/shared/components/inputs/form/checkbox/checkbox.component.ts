@@ -46,5 +46,5 @@ export class CheckboxComponent extends AbstractFormInputComponent<boolean> {
 
   protected override onHostFocus(): void {}
 
-  protected override onEscapeKey(): void {}
+  protected override onEscapeClick(): void {}
 }

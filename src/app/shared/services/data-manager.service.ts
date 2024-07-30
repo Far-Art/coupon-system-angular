@@ -19,4 +19,8 @@ export class DataManagerService {
     return this.http.put<UserData>(`https://couponsasartng-default-rtdb.firebaseio.com/users/${id}.json`, data);
   }
 
+  putComment(id: string, data: Object): Observable<UserData> {
+    return this.http.put<UserData>(`https://couponsasartng-default-rtdb.firebaseio.com/comments/${id}.json`, data);
+  }
+
 }

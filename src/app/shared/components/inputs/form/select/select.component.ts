@@ -22,7 +22,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
   @ContentChildren(OptionComponent) protected _options: QueryList<OptionComponent>;
   @ViewChild('selectedOptionEl', {static: true}) selectedElement: ElementRef<HTMLDivElement>;
   protected isOpen = false;
-  private clickUnsubscribe: () => void;
+  private onOutsideClickUnsubscribe: () => void;
   private escUnsubscribe: () => void;
   private focusUnsubscribe: () => void;
   private tabUnsubscribe: () => void;
@@ -30,8 +30,8 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
   selected: OptionComponent;
 
   onOpen() {
-    if (this._options.length) {
-      this.isOpen = true;
+    if (!this.isOpen && this._options.length) {
+      setTimeout(() => this.isOpen = true);
       this.renderer.setStyle(this.elRef.nativeElement, 'z-index', '1050');
 
       setTimeout(() => {
@@ -42,20 +42,22 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
         }
       });
       this.onFocusCycleListener();
-      this.clickUnsubscribe = this.renderer.listen(document.documentElement, 'click', () => this.onClose());
+      this.onOutsideClickUnsubscribe = this.renderer.listen(window, 'click', () => this.onClose());
     }
   }
 
   onClose(setFocus = true) {
-    this.isOpen = false;
-    // TODO add backdrop when select open to prevent clicks on other inputs
-    this.renderer.removeStyle(this.elRef.nativeElement, 'z-index');
-    if (this.clickUnsubscribe) this.clickUnsubscribe();
-    if (this.escUnsubscribe) this.escUnsubscribe();
-    if (this.focusUnsubscribe) this.focusUnsubscribe();
-    if (this.tabUnsubscribe) this.tabUnsubscribe();
-    if (this.shiftTabUnsubscribe) this.shiftTabUnsubscribe();
-    if (setFocus) setTimeout(() => this.selectedElement.nativeElement.focus());
+    if (this.isOpen) {
+      setTimeout(() => this.isOpen = false);
+      // TODO add backdrop when select open to prevent clicks on other inputs
+      this.renderer.removeStyle(this.elRef.nativeElement, 'z-index');
+      if (this.onOutsideClickUnsubscribe) this.onOutsideClickUnsubscribe();
+      if (this.escUnsubscribe) this.escUnsubscribe();
+      if (this.focusUnsubscribe) this.focusUnsubscribe();
+      if (this.tabUnsubscribe) this.tabUnsubscribe();
+      if (this.shiftTabUnsubscribe) this.shiftTabUnsubscribe();
+      if (setFocus) setTimeout(() => this.selectedElement.nativeElement.focus());
+    }
   }
 
   onOptionSelect(option: OptionComponent, setFocus = true) {
@@ -109,7 +111,7 @@ export class SelectComponent extends AbstractFormInputComponent<any> {
     });
   }
 
-  protected override onEscapeKey(): void {
+  protected override onEscapeClick(): void {
     this.onClose();
   }
 }

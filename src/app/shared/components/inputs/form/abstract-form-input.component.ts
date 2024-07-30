@@ -135,16 +135,10 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
     }
   }
 
-  protected override onEscapeKey(): void {
+  protected override onEscapeClick(): void {
     const parentEl: HTMLElement = this.inputTemplate.elementRef.nativeElement.parentElement;
     parentEl.querySelector('input')?.blur();
     parentEl.querySelector('textarea')?.blur();
-    const formEl = this.getRootFormElement(parentEl);
-    if (formEl) {
-      this.renderer.setAttribute(formEl, 'tabindex', '0');
-      formEl.focus();
-      this.renderer.setAttribute(formEl, 'tabindex', '-1');
-    }
   }
 
   protected override onHostFocus(event?: Event): void {}
@@ -218,18 +212,6 @@ export class AbstractFormInputComponent<T> extends HostComponent implements OnIn
       this._max = this.max;
     }
 
-  }
-
-  private getRootFormElement(el: HTMLElement): HTMLElement {
-    const parent = el.parentElement;
-    if (!parent) {
-      return el;
-    }
-
-    if (parent.tagName === 'BODY' || parent.tagName === 'FORM' || parent.role === 'form') {
-      return parent;
-    }
-    return this.getRootFormElement(parent);
   }
 
 }

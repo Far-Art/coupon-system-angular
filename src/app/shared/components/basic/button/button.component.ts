@@ -87,7 +87,7 @@ export class ButtonComponent extends HostComponent implements OnInit, OnChanges,
     }
   }
 
-  protected onEscapeKey(): void {
+  protected override onEscapeClick(): void {
     this.selfRef.nativeElement.blur();
   }
 

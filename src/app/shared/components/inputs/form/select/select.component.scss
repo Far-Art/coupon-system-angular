@@ -16,6 +16,12 @@
 }
 
 .fa-combobox {
+  cursor: pointer;
+
+  &:disabled, &.disabled {
+    cursor: not-allowed;
+  }
+
   &-container {
     min-height: 58px;
     outline: 0 solid rgba(0 0 0 / .0);
@@ -32,10 +38,10 @@
     }
   }
 
-  &:hover {
+  &:hover:not(.open) {
     svg {
       animation-name: expandContract;
-      animation-duration: 550ms;
+      animation-duration: 400ms;
       animation-timing-function: ease-out;
     }
   }
@@ -79,7 +85,7 @@
   }
 
   50% {
-    margin: 3px 0;
+    margin: 2px 0;
   }
 
   100% {

@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {DataManagerService} from '../../../shared/services/data-manager.service';
+import {IdGeneratorService} from '../../../shared/services/id-generator.service';
 
 
 @Component({
@@ -10,6 +12,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 export class CommentFormComponent implements OnInit {
   form: FormGroup;
 
+  constructor(private dataManager: DataManagerService, private idGenerator: IdGeneratorService) {}
+
   ngOnInit(): void {
     this.form = new FormGroup({
       email: new FormControl<string>(null),
@@ -19,7 +23,11 @@ export class CommentFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.value);
+    this.dataManager.putComment(this.idGenerator.generate(10), this.form.value).subscribe({
+      next: () => {
+        this.form.reset();
+      }
+    });
   }
 
 }
