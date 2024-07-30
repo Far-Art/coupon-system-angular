@@ -81,6 +81,8 @@ export class FilterModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onFormReset() {
     this.filterService.updateDisplayedCoupons(null);
+    this.form     = this.initForm() as FormGroup<MainFormType<Filters>>;
+    this.prevForm = this.initForm() as FormGroup<MainFormType<Filters>>;
   }
 
   onCategoryReset() {
