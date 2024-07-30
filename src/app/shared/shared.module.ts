@@ -31,6 +31,7 @@ import {SelectComponent} from './components/inputs/form/select/select.component'
 import {IconContainerComponent} from './components/icon-container/icon-container.component';
 import {OptionComponent} from './components/inputs/form/select/option/option.component';
 import {CloseButtonComponent} from './components/basic/close-button/close-button.component';
+import {IconButtonComponent} from './components/basic/icon-button/icon-button.component';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import {CloseButtonComponent} from './components/basic/close-button/close-button
     AccordionItemComponent,
     CheckboxComponent,
     CloseButtonComponent,
-    IconContainerComponent
+    IconContainerComponent,
+    IconButtonComponent
   ],
   exports: [
     SliceTxtPipe,
@@ -86,7 +88,8 @@ import {CloseButtonComponent} from './components/basic/close-button/close-button
     AccordionComponent,
     AccordionItemComponent,
     CheckboxComponent,
-    CloseButtonComponent
+    CloseButtonComponent,
+    IconButtonComponent
   ],
   imports: [
     CommonModule,

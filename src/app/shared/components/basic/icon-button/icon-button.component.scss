@@ -1,0 +1,44 @@
+cs-icon-button {
+  --min-size: 16px;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  aspect-ratio: 1 / 1;
+  min-width: var(--min-size);
+  min-height: var(--min-size);
+
+  &::before {
+    content: "";
+    --focus-bg-size: calc(100% * 2.5);
+    position: absolute;
+    border-radius: 100%;
+    min-width: var(--focus-bg-size);
+    min-height: var(--focus-bg-size);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.4);
+    transition-property: transform, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+  }
+
+  &:focus-visible {
+    box-shadow: none !important;
+    border-color: transparent !important;
+
+    &::before {
+      --focus-bg-color: color-mix(in srgb, currentColor 15%, transparent);
+      --focus-border-color: color-mix(in srgb, currentColor 40%, transparent);
+      border: 1px solid var(--focus-border-color);
+      background: var(--focus-bg-color);
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  > svg {
+    position: absolute;
+    inset: 0;
+  }
+}
