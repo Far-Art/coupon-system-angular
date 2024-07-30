@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.user     = user;
       this.userName = this.userName = user.name || 'Guest';
       this.theme    = this.themeService.currentTheme;
+      this.theme    = 'light';
     });
 
     this.scrollService.scrollPosition$().subscribe(s => {

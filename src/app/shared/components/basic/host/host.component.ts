@@ -18,9 +18,7 @@ export abstract class HostComponent {
     this.selfRef.nativeElement.click();
   }
 
-  protected onSpaceClick(event: Event) {
-    this.selfRef.nativeElement.click();
-  }
+  protected onSpaceClick(event: Event) {}
 
   @HostListener('keydown.enter', ['$event'])
   private _onEnterClick(event: Event): void {
