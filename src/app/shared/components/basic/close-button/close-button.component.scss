@@ -8,10 +8,10 @@
   }
 
   &:hover, &:focus-visible {
+    color: var(--primary-color);
+
     svg {
-      scale: 1.5;
-      color: var(--primary-color);
+      scale: 1.3;
     }
   }
-
 }

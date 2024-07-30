@@ -9,6 +9,8 @@ import {ButtonComponent} from '../button/button.component';
 })
 export class CloseButtonComponent extends ButtonComponent {
 
-  override ngOnInit(): void {}
+  override ngOnInit(): void {
+    this.tabIndex = -1;
+  }
 
 }

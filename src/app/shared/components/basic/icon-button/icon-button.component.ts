@@ -10,4 +10,5 @@ import {ButtonComponent} from '../button/button.component';
 })
 export class IconButtonComponent extends ButtonComponent {
 
+  override ngOnInit() {}
 }

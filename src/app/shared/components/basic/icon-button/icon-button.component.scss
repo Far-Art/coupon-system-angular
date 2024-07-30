@@ -4,13 +4,14 @@ cs-icon-button {
   justify-content: center;
   align-items: center;
   display: flex;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1;
   min-width: var(--min-size);
   min-height: var(--min-size);
 
   &::before {
+    --focus-bg-size: calc(100% * 2.3);
+
     content: "";
-    --focus-bg-size: calc(100% * 2.5);
     position: absolute;
     border-radius: 100%;
     min-width: var(--focus-bg-size);
@@ -19,8 +20,16 @@ cs-icon-button {
     opacity: 0;
     transform: scale(0.4);
     transition-property: transform, opacity;
-    transition-duration: 200ms;
-    transition-timing-function: ease-out;
+    transition-duration: 110ms;
+    transition-timing-function: ease-in-out;
+  }
+
+  &:hover {
+    &::before {
+      background: color-mix(in srgb, currentColor 10%, transparent);
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 
   &:focus-visible {
@@ -28,10 +37,8 @@ cs-icon-button {
     border-color: transparent !important;
 
     &::before {
-      --focus-bg-color: color-mix(in srgb, currentColor 15%, transparent);
-      --focus-border-color: color-mix(in srgb, currentColor 40%, transparent);
-      border: 1px solid var(--focus-border-color);
-      background: var(--focus-bg-color);
+      border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+      background: color-mix(in srgb, currentColor 15%, transparent);
       opacity: 1;
       transform: scale(1);
     }
